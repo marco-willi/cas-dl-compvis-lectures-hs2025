@@ -1,0 +1,27 @@
+book/*
+.env
+.vscode/**
+**/.ipynb_checkpoints/**
+TODO.md
+**/archive/**
+_site/*
+_output*
+**/.jupyter_cache
+/.quarto/
+/_*.local
+_freeze/*
+site_libs/*
+
+data/*
+
+demos/data/*
+
+demos/*
+
+
+# Data not relevant
+assets/images/object_detection/*
+assets/images/segmentation/*
+**/execute-results/**
+
+**/*.quarto_ipynb

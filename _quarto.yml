@@ -1,0 +1,94 @@
+project:
+  type: website
+  output-dir: _output
+  render:
+    - "*.qmd"
+    - "!NOTES.md"
+    - "!demos/*"
+
+author: "Marco Willi"
+affiliation: "Institute for Data Science I4DS, FHNW"
+
+execute:
+  freeze: True
+
+pdf-engine: xelatex
+
+website:
+  page-navigation: true
+  title: "CAS Deep Learning - Computer Vision"
+  description: "Homepage for CAS Deep Learning - Computer Vision (Part1) with reading materials and exercises"
+
+  site-url: "https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025/"
+  repo-url: https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025
+  repo-actions: [issue]
+
+  google-analytics: "G-SCHRGR3LNM"
+
+  page-footer:
+    right: "This page is built with [Quarto](https://quarto.org/)."
+    left: "&copy; Copyright 2024, Marco Willi"
+    #background: "#D9E3E4"
+
+  sidebar:
+    logo: "/assets/logo.webp"
+    pinned: true
+    search: true
+    align: center
+    style: "docked"
+    collapse-level: 1
+    tools:
+      - icon: github
+        href: https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025
+        text: "GitHub organization"
+      - icon: code-square
+
+    contents:
+      - text: "Home"
+        href: index.qmd
+      # ------ SLIDES ---------------------------- #
+      - section: Slides
+        contents:
+          - slides/intro.qmd
+          - slides/cnns.qmd
+          - slides/image_classification.qmd
+          - slides/practical.qmd
+          - slides/recent_advances.qmd
+      # ------ Exercises ---------------------------- #
+      - text: "Exercises"
+        href: pages/exercises.qmd
+        # ------ Quiz & Exam Prep---------------------------- #
+      - text: "Quiz & Exam Prep"
+        href: pages/quiz.qmd
+      # ------ Lecture ---------------------------- #
+      - section: Lectures
+        contents:
+          - lectures/intro.qmd
+          - lectures/frameworks.qmd
+          - lectures/neural_networks.qmd
+          - lectures/cnns.qmd
+          - lectures/classification.qmd
+          - lectures/practical.qmd
+          - lectures/recent_advances.qmd
+      # ------ Misc ---------------------------- #
+      - section: Resources
+        contents:
+          - pages/literature.qmd
+          - pages/links.qmd
+          - pages/notation.qmd
+
+bibliography: assets/references.bib
+
+institute: "Institute for Data Science I4DS, FHNW"
+
+format:
+  html:
+    theme: yeti
+    css: styles.css
+    toc: true
+    code-fold: false
+    code-tools: true
+    highlight-style: github
+  # pdf:
+  #   include-in-header:
+  #     - "./assets/_macros.tex"

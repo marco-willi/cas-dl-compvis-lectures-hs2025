@@ -1,0 +1,69 @@
+
+[tool.poetry]
+name = "cas-dl-cv"
+version = "0.1.0"
+description = "CAS Deep Learning - Computer Vision HS2025"
+authors = ["Marco Willi <marco.willi@fhnw.ch>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.13"
+
+# --- visualize & image processing --- #
+plotly = "*"
+matplotlib = "*"
+seaborn = "*"
+altair = "*"
+scikit-image = "*"
+
+# --- machine learning --- #
+mlxtend = "*"
+scikit-learn = "*"
+timm = "*"
+
+# --- PyTorch & related (CPU by default; see Dockerfile for CUDA note) --- #
+torch = ">=2.2,<3.0"
+torchvision = ">=0.17,<1.0"
+torchaudio = ">=2.2,<3.0"
+torchmetrics = "*"
+lightning = "*"
+captum = "*"
+
+# --- experiment tracking --- #
+tensorboard = "*"
+wandb = "*"
+
+# --- hyper-parameter opt --- #
+# Poetry extras syntax for tune:
+ray = { version = "*", extras = ["tune"] }
+optuna = "*"
+
+# --- jupyter & friends --- #
+jupyter-cache = "*"
+ipywidgets = ">=8"
+nbgrader = "*"
+jupyter_client = "*"
+ipykernel = "*"
+jupyter = "*"
+
+# --- development/runtime utilities --- #
+tabulate = "*"
+python-dotenv = "*"
+opencv-python-headless = "*"
+pillow = "*"
+kornia = "*"
+gdown = "*"
+transformers = "*"
+torchshow = "*"
+torchviz = "*"
+torchinfo = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+ruff = "*"
+pre-commit = "*"
+jupyter-black = "*"
+
+[tool.poetry.scripts]
+# optional entry points, e.g.: cas-dl = "your_pkg.cli:main"
