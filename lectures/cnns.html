@@ -97,7 +97,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-a6e161b2431e1f94a14e0f5d32135a3c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e0449c57dc659bcd97f89e2c92d66f0b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7365f4c1a6be05280eba792c58017f0b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -920,7 +920,7 @@ Note
 </div>
 </div>
 <p>The following output shows the number of parameters in an MLP and a CNN (each with two hidden layers) on the CIFAR10 dataset.</p>
-<div id="25e3cb76" class="cell" data-execution_count="1">
+<div id="aab25a97" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
@@ -966,7 +966,7 @@ Estimated Total Size (MB): 0.81
 ==========================================================================================</code></pre>
 </div>
 </div>
-<div id="2c829726" class="cell" data-execution_count="2">
+<div id="39e069f0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
@@ -1237,7 +1237,7 @@ Figure&nbsp;36: Source: <span class="citation" data-cites="yu_multi-scale_2016">
 </section>
 <section id="pytorch-examples" class="level2">
 <h2 class="anchored" data-anchor-id="pytorch-examples">PyTorch Examples</h2>
-<div id="06824311" class="cell" data-execution_count="3">
+<div id="528be547" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.nn <span class="im">import</span> functional <span class="im">as</span> F</span>
@@ -1245,7 +1245,7 @@ Figure&nbsp;36: Source: <span class="citation" data-cites="yu_multi-scale_2016">
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="04df463f" class="cell" data-execution_count="4">
+<div id="430711ed" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#img = Image.open({{&lt; meta params.images_path &gt;}}'cat.jpg')</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>image_path <span class="op">=</span> <span class="st">"../assets/images/cnns/cat.jpg"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.<span class="bu">open</span>(image_path)</span>
@@ -1258,7 +1258,7 @@ Figure&nbsp;36: Source: <span class="citation" data-cites="yu_multi-scale_2016">
 </div>
 </div>
 </div>
-<div id="a4df9837" class="cell" data-execution_count="5">
+<div id="1e6ade9d" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span> <span class="op">=</span> torch.tensor(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    [   [[<span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]], <span class="co"># R</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        [[<span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>]], <span class="co"># G</span></span>
@@ -1273,16 +1273,16 @@ Figure&nbsp;36: Source: <span class="citation" data-cites="yu_multi-scale_2016">
 </div>
 </div>
 </div>
-<div id="3d96cc29" class="cell" data-execution_count="6">
+<div id="fa58325d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">input</span> <span class="op">=</span> torch.tensor(np.array(img)).unsqueeze(<span class="dv">0</span>).permute(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>).<span class="bu">float</span>() <span class="co"># (N, C, H, W)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">input</span> <span class="op">/=</span> <span class="fl">255.0</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">input</span> <span class="op">-=</span> <span class="fl">1.0</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> F.conv2d(<span class="bu">input</span>, <span class="bu">filter</span>, stride<span class="op">=</span><span class="dv">1</span>, padding<span class="op">=</span><span class="dv">0</span>, dilation<span class="op">=</span><span class="dv">1</span>, groups<span class="op">=</span><span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f68a3346" class="cell" data-execution_count="7">
+<div id="52eba558" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ts.show(result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/home/jovyan/.venv/lib/python3.13/site-packages/torchshow/visualization.py:385: UserWarning:
+<pre><code>/opt/hostedtoolcache/Python/3.12.11/x64/lib/python3.12/site-packages/torchshow/visualization.py:385: UserWarning:
 
 Original input range is not 0-1 when using grayscale mode. Auto-rescaling it to 0-1 by default.
 </code></pre>
@@ -1296,7 +1296,7 @@ Original input range is not 0-1 when using grayscale mode. Auto-rescaling it to 
 </div>
 </div>
 <p>2D-Convolution:</p>
-<div id="956703d0" class="cell" data-execution_count="8">
+<div id="8fda4968" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> F.conv2d(<span class="bu">input</span>, <span class="bu">filter</span>, stride<span class="op">=</span><span class="dv">6</span>, padding<span class="op">=</span><span class="dv">0</span>, dilation<span class="op">=</span><span class="dv">1</span>, groups<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ts.show(result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -1308,7 +1308,7 @@ Original input range is not 0-1 when using grayscale mode. Auto-rescaling it to 
 </div>
 </div>
 <p>Transposed convolution:</p>
-<div id="9e65403e" class="cell" data-execution_count="9">
+<div id="77c103c8" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> F.conv2d(<span class="bu">input</span>, <span class="bu">filter</span>, stride<span class="op">=</span><span class="dv">6</span>, padding<span class="op">=</span><span class="dv">0</span>, dilation<span class="op">=</span><span class="dv">1</span>, groups<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> F.conv_transpose2d(result, weight<span class="op">=</span>torch.ones_like(<span class="bu">filter</span>))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ts.show(result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1321,7 +1321,7 @@ Original input range is not 0-1 when using grayscale mode. Auto-rescaling it to 
 </div>
 </div>
 <p>Max-Pooling:</p>
-<div id="65892ac8" class="cell" data-execution_count="10">
+<div id="e45aed19" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> F.max_pool2d(<span class="bu">input</span>, kernel_size<span class="op">=</span><span class="dv">8</span>, stride<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>ts.show(result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
