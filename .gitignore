@@ -18,6 +18,7 @@ demos/data/*
 
 demos/*
 
+node_modules/*
 
 # Data not relevant
 assets/images/object_detection/*
