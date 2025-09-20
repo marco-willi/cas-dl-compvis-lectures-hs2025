@@ -1,0 +1,10 @@
+.git
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+.venvs/
+.cache/
+data/
+datasets/
+weights/
+wandb/

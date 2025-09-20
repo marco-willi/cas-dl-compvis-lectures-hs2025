@@ -8,9 +8,9 @@ Herzlich willkommen zum Modul **Computer Vision mit Deep Learning** (1. Teil)!
 
 Hier finden Sie Unterlagen und aktuelle Informationen zum Modul.
 
-[Modul Page](https://www.fhnw.ch/de/weiterbildung/technik/computer-vision-mit-deep-learning)
+[Modul Computer Vision mit DL](https://www.fhnw.ch/de/weiterbildung/informatik/fachvertiefungsmodule-data-science/computer-vision-mit-deep-learning)
 
-[CAS Page](https://www.fhnw.ch/de/weiterbildung/technik/cas-deep-learning)
+[CAS Page](https://www.fhnw.ch/de/weiterbildung/informatik/cas-deep-learning)
 
 
 ## Lernziele

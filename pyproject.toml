@@ -8,62 +8,72 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.13"
+python = ">=3.12,<3.13"
 
-# --- visualize & image processing --- #
-plotly = "*"
+# core
+numpy = "*"
+scikit-learn = "*"
 matplotlib = "*"
 seaborn = "*"
-altair = "*"
-scikit-image = "*"
+pillow = "*"
+tabulate = "*"
+python-dotenv = "*"
+ipywidgets = ">=8"
+jupyter = "*"
+ipykernel = "*"
+jupyterlab = "*"
 
-# --- machine learning --- #
-mlxtend = "*"
-scikit-learn = "*"
+# CV/ML core
+scikit-image = "*"
 timm = "*"
 
-# --- PyTorch & related (CPU by default; see Dockerfile for CUDA note) --- #
-torch = ">=2.2,<3.0"
-torchvision = ">=0.17,<1.0"
-torchaudio = ">=2.2,<3.0"
+torch = {version = "2.8.0+cpu", source = "pytorch-cpu"}
+torchvision = {version = "0.23+cpu", source = "pytorch-cpu"}
+
 torchmetrics = "*"
 lightning = "*"
-captum = "*"
+transformers = "*"
+opencv-python-headless = "*"
+mlxtend = "*"
+kornia = "*"
 
 # --- experiment tracking --- #
 tensorboard = "*"
-wandb = "*"
 
-# --- hyper-parameter opt --- #
-# Poetry extras syntax for tune:
-ray = { version = "*", extras = ["tune"] }
-optuna = "*"
+# visualization extras
+plotly = "*"
+altair = "*"
 
-# --- jupyter & friends --- #
-jupyter-cache = "*"
-ipywidgets = ">=8"
-nbgrader = "*"
-jupyter_client = "*"
-ipykernel = "*"
-jupyter = "*"
-
-# --- development/runtime utilities --- #
-tabulate = "*"
-python-dotenv = "*"
-opencv-python-headless = "*"
-pillow = "*"
-kornia = "*"
+# handy tools
 gdown = "*"
-transformers = "*"
 torchshow = "*"
 torchviz = "*"
 torchinfo = "*"
+
+[tool.poetry.group.dev]
+optional = true
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
 ruff = "*"
 pre-commit = "*"
 jupyter-black = "*"
+python-dotenv = "*"
 
-[tool.poetry.scripts]
-# optional entry points, e.g.: cas-dl = "your_pkg.cli:main"
+# Heavy/optional groups
+[tool.poetry.group.ray]
+optional = true
+
+[tool.poetry.group.ray.dependencies]
+ray = { version = "*", extras = ["tune"] }
+
+[tool.poetry.group.nbgrader]
+optional = true
+
+[tool.poetry.group.nbgrader.dependencies]
+nbgrader = "*"
+
+[[tool.poetry.source]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "supplemental"

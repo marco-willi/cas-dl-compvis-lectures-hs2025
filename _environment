@@ -1,1 +1,1 @@
-QUARTO_PYTHON=/opt/conda/bin/python3
+QUARTO_PYTHON=/opt/venv/bin/python

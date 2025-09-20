@@ -4,9 +4,15 @@ This repository uses Quarto to build a website with lecture notes, materials and
 
 [Quarto](https://quarto.org/)
 
-Module description: https://www.fhnw.ch/de/weiterbildung/technik/computer-vision-mit-deep-learning
+Module description: https://www.fhnw.ch/de/weiterbildung/informatik/fachvertiefungsmodule-data-science/computer-vision-mit-deep-learning
 
-Part of: https://www.fhnw.ch/de/weiterbildung/technik/cas-deep-learning
+Part of: https://www.fhnw.ch/de/weiterbildung/informatik/cas-deep-learning
+
+## Setup
+
+```
+poetry install
+```
 
 ## Quarto
 
