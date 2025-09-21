@@ -72,10 +72,11 @@ data/**
 demos/**/figure-*/
 demos/**/cache/
 demos/**/.ipynb_checkpoints/
+demos/*
 # Allow actual demo notebooks and qmd
-!demos/**/*.ipynb
-!demos/**/*.qmd
-!demos/data/README.md
+# !demos/**/*.ipynb
+# !demos/**/*.qmd
+# !demos/data/README.md
 
 ########## Assets (selective exclusions) ##########
 # Ignore certain large, topic-specific image folders not used in current build.
