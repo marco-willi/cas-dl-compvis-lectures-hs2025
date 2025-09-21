@@ -5,6 +5,16 @@ params:
    images_path: "/assets/images/cnns/"
 ---
 
+::: {.callout-tip title="Learning Objectives"}
+
+After this lecture you should be able to:
+- Explain why CNN inductive biases (local connectivity, weight sharing) improve efficiency on images.
+- Compute output shapes and parameter counts for convolutional layers (stride, padding, dilation).
+- Distinguish invariance vs equivariance and relate them to layer design (convs, pooling, global average pooling).
+- Describe receptive field growth through stacking and dilation.
+- Compare alternative convolution variants (depthwise separable, 1x1, transposed) and their use cases.
+:::
+
 ::: {.content-hidden}
 $$
 {{< include /assets/_macros.tex >}}
@@ -13,11 +23,11 @@ $$
 
 ## Introduction & Motivation
 
-Images have the following relevant properties when modelling them:
+Images have the following relevant properties when modeling them:
 
 - High-Dimensional: An RGB image of size $224 \times 224$  (height, width) has = $150'528$ values.
 - Locality: Nearby pixels are statistically related
-- Stability under transformations: Interpretation of an image does not change under many geomoetric transformations.
+- Stability under transformations: Interpretation of an image does not change under many geometric transformations.
 
 :::{#fig-cnn-example-rgb-image width=600}
 
@@ -386,8 +396,14 @@ You can calculate the dimensionality of the activation maps with the following f
 
 
 \begin{equation}
-o = \left\lfloor \frac{i + 2p - k-(k-1)(d-1)}{s} \right\rfloor + 1
+o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 \end{equation}
+
+::: {.callout-note title="Quiz: Output Shape" collapse="true"}
+Given: $i=32, k=3, p=1, s=2, d=1$. What is $o$?
+
+Solution: $o = \lfloor (32 + 2 - 1\cdot(3-1) -1)/2 + 1 \rfloor = \lfloor (32)/2 + 1 \rfloor = 17$.
+:::
 
 Note: If dilation is 1 $(k-1)(d-1)$ equals 0.
 

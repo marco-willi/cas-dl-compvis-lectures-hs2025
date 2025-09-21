@@ -7,6 +7,16 @@ execute:
   freeze: false
 ---
 
+::: {.callout-tip title="Learning Objectives"}
+After this lecture you should be able to:
+
+- Define multi-class vs multi-label classification and their output encodings.
+- Derive the softmax and cross-entropy from a maximum likelihood perspective.
+- Interpret logits, probabilities, and calibration (temperature, label smoothing high-level).
+- Compare classic CNN architectures (AlexNet→VGG→ResNet→ConvNeXt) and choose a baseline.
+- Apply transfer learning and explain when to freeze vs fine-tune layers.
+:::
+
 ::: {.content-hidden}
 $$
 {{< include /assets/_macros.tex >}}
@@ -57,7 +67,7 @@ With a Softmax Classifier, we interpret model predictions/scores as probabilitie
 To obtain a valid probability distribution, the untransformed outputs $\vect{z}$, also called logits, of a model are transformed with the softmax function $\sigma(\vect{z})$:
 
 $$
-P(Y = k| X = \vect{x}^{(i)}) = \sigma(\vect{z})_k = \frac{e^{z_k}}{\sum_i^K e^{z_i}}
+P(Y = k \mid X = \vect{x}^{(i)}) = \sigma(\vect{z})_k = \frac{e^{z_k}}{\sum_{j=1}^K e^{z_j}}
 $$
 
 @fig-classification-logits-to-probs shows an example of the effect of the softmax transformation.
@@ -612,6 +622,17 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 ```
 
+
+
+::: {.callout-tip title="Recap"}
+Key takeaways:
+
+- Softmax + cross-entropy arises naturally from maximum likelihood with a categorical distribution.
+- Logits provide a numerically stable pre-softmax representation (prefer `log_softmax` + `nll_loss` internally).
+- Architecture choice should start from proven baselines (ResNet / ConvNeXt) before experimentation.
+- Transfer learning offers data efficiency; freezing early layers can regularize when data is scarce.
+- Proper preprocessing (resize, normalize) and calibration techniques (label smoothing, temperature) improve robustness.
+:::
 
 ## References
 

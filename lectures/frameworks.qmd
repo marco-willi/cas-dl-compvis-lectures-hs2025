@@ -4,6 +4,16 @@ params:
    images_path: "/assets/images/frameworks/"
 ---
 
+::: {.callout-tip title="Learning Objectives"}
+After this lecture you should be able to:
+
+- Explain the role of computational graphs and automatic differentiation in deep learning frameworks.
+- Construct and inspect tensors, modules, and optimization loops in PyTorch.
+- Distinguish autograd vs manual gradient computation and identify common pitfalls (in-place ops, forgetting zero_grad).
+- Describe core hardware considerations (GPU parallelism, data loading bottlenecks, CUDA/cuDNN impact).
+- Load and adapt pre-trained models responsibly for downstream tasks.
+:::
+
 ::: {.content-hidden}
 $$
 {{< include /assets/_macros.tex >}}
@@ -59,14 +69,19 @@ d = a * b
 e = d + c
 f = e.sum()
 
-df_de = 1.0
-de_dd = 1.0
-de_dc = c
-dd_da = b
+df_de = 1.0               # d f / d e
+de_dd = 1.0               # d e / d d   (since e = d + c)
+de_dc = np.ones_like(c)   # d e / d c   (derivative of addition w.r.t. c)
+dd_da = b                 # d (a*b) / d a
+dd_db = a                 # d (a*b) / d b
 
-df_da = df_de * de_dd * dd_da
+df_da = df_de * de_dd * dd_da          # chain rule
+df_db = df_de * de_dd * dd_db
+df_dc = df_de * de_dc                  # equals ones
 
-print(df_da)
+print("df/da=\n", df_da)
+print("df/db=\n", df_db)
+print("df/dc=\n", df_dc)
 
 ```
 
