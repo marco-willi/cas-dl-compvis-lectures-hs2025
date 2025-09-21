@@ -1,0 +1,195 @@
+---
+title: "Foundation Models for Vision"
+params:
+   images_path: "/assets/images/recent_advances/"
+---
+
+::: {.callout-tip title="Learning Objectives"}
+By the end of this lecture you should be able to:
+
+- Define what distinguishes a *foundation model* from a conventional pretrained network.
+- Compare major vision pretraining objectives (contrastive, self-distillation, masked modeling, vision–language alignment).
+- Explain why DINOv3 representations are powerful for low‑label transfer and domain shift robustness.
+- Choose an adaptation strategy (linear probe, fine-tune, adapters/LoRA, prompt-like conditioning) based on constraints.
+- Design a minimal evaluation protocol (linear probe + k-NN + retrieval) for a new dataset using frozen features.
+:::
+
+::: {.content-hidden}
+$$
+{{< include /assets/_macros.tex >}}
+$$
+:::
+
+## Motivation: From Hand‑Crafted Features to Foundation Models
+
+Traditional pipelines progressed: SIFT / HOG → AlexNet → ResNet → EfficientNet → Vision Transformer (ViT) → CLIP → DINO (v1/v2/v3) → MAE/iBOT → Segment Anything (SAM) → Diffusion & Multimodal Agentic Systems.
+
+| Era | Representative Models | Key Shift | Limitation Exposed |
+|-----|-----------------------|-----------|--------------------|
+| Hand‑crafted | SIFT, HOG | Local gradient patterns | Poor semantic abstraction |
+| Early Deep | AlexNet, VGG | Learned hierarchical features | Data / compute hungry |
+| Residual Scaling | ResNet, EfficientNet | Deeper + parameter scaling laws | Limited global context |
+| Tokenization | ViT | Global self-attention over patches | Needs large-scale data |
+| Self-Supervised & Distillation | DINOv2/v3, iBOT | Strong semantics without labels | Adaptation strategy choices |
+| Multimodal | CLIP, BLIP-2 | Joint vision–language embedding | Biases from web text |
+| Geometric & Promptable | SAM | Zero-shot segmentation | Heavy footprint |
+| Generative Priors | Stable Diffusion | Latent diffusion prior | Slow sampling (improving) |
+
+: Evolution of vision model paradigms {#tbl-fm-evolution .striped .hover}
+
+## What Is a Foundation Model?
+
+A foundation model is a large (parameter & data scale) model trained with an objective *broad* enough that its learned representation supports many downstream tasks with minimal task-specific supervision.
+
+Essential characteristics:
+
+- Scale (data + parameters + training duration)
+- General objective (contrast, masked prediction, alignment, distillation)
+- Robustness across domains (reduced overfitting to narrow distributions)
+- Economies of reuse (amortized cost → many tasks)
+- Composability (can be paired with light heads, prompts, adapters)
+
+::: callout-note
+**Not everything pretrained is a foundation model.** A small ResNet on a niche dataset is *pretrained* but not a broadly reusable *foundation*.
+:::
+
+## Objective Taxonomy
+
+| Objective Type | Examples | Positive Pair Source | Needs Text? | Spatial Detail | Strengths | Limitations |
+|----------------|----------|----------------------|-------------|---------------|-----------|------------|
+| Supervised Classification | ResNet, ConvNeXt | Label identity | No | Medium | Strong top-1 | Label bias, fewer invariances |
+| Contrastive SSL | SimCLR, MoCo | Augmented view pairs | No | Medium | Appearance invariance | May drop fine detail |
+| Self-Distillation | DINO v1/v2/v3 | Teacher vs student multiview | No | High | Semantic clustering | Aug recipe sensitivity |
+| Masked Modeling | MAE, iBOT | Masked patch prediction | No | High (patch) | Structural understanding | Slower convergence |
+| Vision–Language Align | CLIP, BLIP-2 | Image–text pairs | Yes | Medium | Zero-shot via text prompts | Web text biases |
+| Promptable Segmentation | SAM | Masks + prompts | No (prompts optional) | Very High | Region generalization | Large memory use |
+| Generative Latent | Stable Diffusion | Text–image + denoising | Yes | Medium | Versatile prior | Multi-step sampling |
+
+: Taxonomy of pretraining objectives {#tbl-fm-objectives .striped .hover}
+
+## Spotlight: DINOv3 (Core Section)
+
+DINOv3 advances self-distillation with architectural and training refinements targeted at *representation quality under scale*. While DINOv2 already delivered strong clustering and linear probe scores, v3 tightens semantic cohesion while improving robustness to distribution shift.
+
+### Why DINOv3 Matters for Transfer
+
+1. **Label Efficiency**: Linear probes on a few percent of ImageNet labels approach fully supervised baselines.
+2. **Domain Robustness**: Maintains separation on sketches, satellite, and medical imagery better than purely supervised ViTs of similar size.
+3. **Semantic Patch Tokens**: Patch embeddings align with meaningful object parts → supports prototype-based segmentation or region proposals.
+4. **Stable Scaling**: Training recipe (multi-crop / variable resolution, teacher EMA schedule, augmentation balance) keeps gradients stable as model width/depth grows.
+5. **Flexible Adaptation**: Works well with: (a) frozen backbone + linear head, (b) LoRA rank-8 adapters, (c) full fine-tune when task data ≥ moderate size.
+6. **Unified Embedding Space**: Single space supports clustering, retrieval, anomaly detection without re-learning task-specific heads.
+
+::: {.callout-tip title="Transfer Design Pattern"}
+Start with: (1) Extract DINOv3 embeddings → (2) Run k-NN (baseline) → (3) Train linear probe → (4) If gap persists, add LoRA adapters → (5) Only full fine-tune if accuracy plateaus & you have enough data.
+:::
+
+### Potential Pitfalls
+
+| Pitfall | Cause | Mitigation |
+|---------|-------|-----------|
+| Over-aggressive color jitter removes subtle cues | Aug recipe mismatch | Tone down jitter; modest blur |
+| Resolution mismatch vs pretraining | Too low inference resolution | Center-crop / interpolate pos encodings |
+| Head overfits tiny dataset | High feature dimensionality | L2 / weight decay; reduce head size |
+| Losing learned invariances | Partial fine-tune destabilizes | Freeze more layers; lower LR |
+
+: Common pitfalls adapting DINOv3 features {#tbl-fm-pitfalls .striped .hover}
+
+### Quick Embedding Extraction
+
+```python
+import timm, torch
+from torch import nn
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+# Try to prefer a v3 tag if present; fallback gracefully
+candidates = [m for m in timm.list_models() if 'dino' in m.lower()]
+preferred = next((m for m in candidates if 'v3' in m.lower()),
+                 next((m for m in candidates if 'v2' in m.lower()), 'vit_base_patch16_224'))
+
+model = timm.create_model(preferred, pretrained=True).to(device)
+model.eval()
+if hasattr(model, 'reset_classifier'):
+    model.reset_classifier(0)  # drop classification head if any
+
+@torch.no_grad()
+def extract_features(x: torch.Tensor):
+    feats = model.forward_features(x.to(device))
+    # Handle dict outputs (ViT style) vs tensor
+    if isinstance(feats, dict):
+        # Common keys vary across timm versions
+        for k in ['x_norm_clstoken', 'pooled', 'x_norm']:  # try ordered keys
+            if k in feats:
+                return feats[k]
+        # Fallback: first value
+        return next(iter(feats.values()))
+    return feats
+```
+
+## Adaptation Strategies
+
+| Strategy | Trainable % | Memory | Speed | Data Regime | Pros | Cons |
+|----------|------------|--------|-------|-------------|------|------|
+| k-NN (frozen) | 0 | Low | Medium | Ultra low-label | Zero training | Slow large-scale inference |
+| Linear Probe | <1 | Very Low | Fast | Low–Medium | Strong baseline | Limited capacity |
+| LoRA / Adapters | 1–10 | Low | Fast | Medium | Efficient specialization | Hyperparam tuning |
+| Partial Fine-Tune | 10–40 | Medium | Medium | Medium–Large | Better alignment | Forgetting risk |
+| Full Fine-Tune | 100 | High | Slow | Large | Highest ceiling | Compute + overfit |
+
+: Adaptation strategies trade-offs {#tbl-fm-adaptation .striped .hover}
+
+## Minimal Evaluation Protocol
+
+1. Feature extraction (store embeddings, optionally L2-normalize).
+2. k-NN (k=5 or 10) accuracy.
+3. Linear probe (logistic regression) – early stopping.
+4. Retrieval mAP (optional) for multi-class similarity sanity check.
+5. If gap > X% vs task SOTA → attempt LoRA rank sweep (r ∈ {4,8,16}).
+
+## Model Comparison Matrix
+
+| Model | Modality | Objective | Zero-Shot? | Spatial | Strengths | Common Uses |
+|-------|----------|----------|-----------|---------|-----------|-------------|
+| ResNet-50 | Vision | Supervised CE | No | Medium | Solid baseline | Feature extractor, classification |
+| ViT-B/16 | Vision | Supervised CE | No | Medium | Scales with data | Fine-tuning baseline |
+| CLIP ViT-B/16 | Vision+Text | Contrastive align | Yes (text) | Medium | Prompt flexibility | Zero-shot cls, retrieval |
+| DINOv2 ViT-L | Vision | Self-distillation | Partial | High | Strong clustering | Linear probe, retrieval |
+| DINOv3 (ViT-L/giant) | Vision | Refined distillation | Partial | High | Label-efficient, robust | Few-shot, anomaly detection |
+| MAE ViT-H | Vision | Masked modeling | No | High | Structural detail | Detection, segmentation |
+| SAM Encoder | Vision | Promptable segmentation | With prompts | Very High | Region generalization | Zero-shot segmentation |
+| Stable Diffusion VAE+UNet | Vision+Text | Latent diffusion | Yes (text) | Medium | Generative prior | Editing, synthesis |
+
+: Comparison of major vision foundation models {#tbl-fm-models .striped .hover}
+
+## Case Study: Few-Shot Classification
+
+Describe (conceptually) comparing random init vs DINOv3 embeddings on 5 classes with 20 images/class. Expect linear probe to substantially outperform training from scratch within a few epochs.
+
+## Exercises (Add to Practice)
+
+1. Run k-NN vs linear probe on a small subset (CIFAR-10 or custom). Report accuracy & confusion matrix.
+2. Evaluate cluster purity of DINOv3 features vs supervised ViT using k-means (k = number of classes). Compute NMI.
+3. Implement a LoRA adapter fine-tune and compare parameter count vs full fine-tune.
+4. Perform nearest-neighbor retrieval for anomaly detection (leave-one-class-out). Plot distance distributions.
+
+## Interactivity Ideas
+
+- Precompute embeddings JSON + interactive scatter (UMAP) with hover labels.
+- Attention rollout for a sample image (layer slider).
+- Patch token similarity heatmap (select class prototype).
+
+##  Recap
+
+::: {.callout-tip title="Recap"}
+- Foundation models deliver reusable semantic embeddings that dramatically lower labeled data requirements.
+- DINOv3 refines self-distillation to yield robust, high-fidelity patch & global representations.
+- Adaptation path: k-NN → Linear Probe → Adapters/LoRA → (optional) Full Fine-Tune.
+- Objective choice influences invariances, spatial detail retention, and zero-shot capabilities.
+:::
+
+## References
+
+
+::: {#refs}
+:::

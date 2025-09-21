@@ -119,3 +119,5 @@ logs/
 #   negate its path similarly to keep documentation but ignore bulk binaries.
 # - Adjust data/ & model weight patterns if versioning small models intentionally.
 #############################################
+
+**/*.quarto_ipynb

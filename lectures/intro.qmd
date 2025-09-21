@@ -759,6 +759,7 @@ CNNs are still in use today (2025). Meanwhile, there are alternative architectur
 
 ::: {.callout-tip title="Recap"}
 Key takeaways:
+
 - Computer vision tasks differ in output structure (class label, bounding boxes, pixel masks, generated images).
 - Deep learning displaced feature-engineering pipelines through end-to-end optimization and data scaling.
 - Core challenges (illumination, occlusion, intra-class variation, semantic gap) motivate inductive biases in architectures.

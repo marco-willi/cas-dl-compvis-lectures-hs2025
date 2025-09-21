@@ -52,6 +52,7 @@ website:
           - slides/intro.qmd
           - slides/cnns.qmd
           - slides/image_classification.qmd
+          - slides/foundation_models.qmd
           - slides/practical.qmd
           - slides/recent_advances.qmd
       # ------ Exercises ---------------------------- #
@@ -67,6 +68,7 @@ website:
           - lectures/frameworks.qmd
           - lectures/neural_networks.qmd
           - lectures/cnns.qmd
+          - lectures/foundation_models.qmd
           - lectures/classification.qmd
           - lectures/practical.qmd
           - lectures/recent_advances.qmd

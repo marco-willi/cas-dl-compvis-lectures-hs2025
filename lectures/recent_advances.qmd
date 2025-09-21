@@ -5,6 +5,11 @@ params:
 ---
 
 
+::: {.callout-tip title="Looking for a full overview of Foundation Models?"}
+This lecture focuses on *emerging* advances. A structured treatment (objectives taxonomy, DINOv3 deep-dive, adaptation strategies) now lives in **Foundation Models for Vision**: see `lectures/foundation_models.qmd`.
+:::
+
+
 ::: {.content-hidden}
 $$
 {{< include /assets/_macros.tex >}}

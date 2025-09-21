@@ -52,11 +52,13 @@ Neural networks are often represented with a graph. The _nodes_ are individual n
 
 ::: {.callout-note title="Activation Function Cheat Sheet"}
 Common choices:
+
 - ReLU: $\max(0, x)$ (sparse activations, mitigates vanishing gradients).
 - LeakyReLU / GELU: Smoother or with negative slope; GELU often used in transformers.
 - Sigmoid: Saturates; mainly for probabilities/logits output.
 - Tanh: Zero-centered but still saturates; rarely preferred over ReLU-family now.
 - Softplus / Mish / Swish: Smooth alternatives; sometimes modest gains, higher compute.
+
 Guideline: Start with ReLU (or GELU for transformer-like blocks); change only if you have empirical evidence.
 :::
 

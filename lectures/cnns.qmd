@@ -1,4 +1,3 @@
-
 ---
 title: "4 - Convolutional Neural Networks"
 params:
@@ -8,6 +7,7 @@ params:
 ::: {.callout-tip title="Learning Objectives"}
 
 After this lecture you should be able to:
+
 - Explain why CNN inductive biases (local connectivity, weight sharing) improve efficiency on images.
 - Compute output shapes and parameter counts for convolutional layers (stride, padding, dilation).
 - Distinguish invariance vs equivariance and relate them to layer design (convs, pooling, global average pooling).
@@ -788,6 +788,10 @@ Max-Pooling:
 result = F.max_pool2d(input, kernel_size=8, stride=8)
 ts.show(result)
 ```
+
+::: {.callout-tip title="Next: Beyond Convolutions"}
+CNNs bake in locality and translation equivariance as *inductive biases*. The next lecture **Foundation Models for Vision** shows how large-scale self-supervised and multimodal pretraining (e.g. DINOv3, CLIP) relaxes some of these architectural assumptions while achieving strong transfer with fewer task-specific labels.
+:::
 
 ## References
 

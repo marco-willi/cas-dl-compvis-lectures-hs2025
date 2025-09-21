@@ -19,9 +19,9 @@ pillow = "*"
 tabulate = "*"
 python-dotenv = "*"
 ipywidgets = ">=8"
-jupyter = "*"
 ipykernel = "*"
 jupyterlab = "*"
+jupyter-cache = "*"
 
 # CV/ML core
 scikit-image = "*"
