@@ -81,7 +81,13 @@ DINOv3 advances self-distillation with architectural and training refinements ta
 6. **Unified Embedding Space**: Single space supports clustering, retrieval, anomaly detection without re-learning task-specific heads.
 
 ::: {.callout-tip title="Transfer Design Pattern"}
-Start with: (1) Extract DINOv3 embeddings → (2) Run k-NN (baseline) → (3) Train linear probe → (4) If gap persists, add LoRA adapters → (5) Only full fine-tune if accuracy plateaus & you have enough data.
+Start with:
+
+1. Extract DINOv3 embeddings
+2. Run k-NN (baseline)
+3. Train linear probe
+4. If gap persists, add LoRA adapters
+5. Only full fine-tune if accuracy plateaus & you have enough data.
 :::
 
 ### Potential Pitfalls

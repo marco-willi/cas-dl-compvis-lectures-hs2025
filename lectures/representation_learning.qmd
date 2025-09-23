@@ -1,0 +1,278 @@
+---
+title: "Representation Learning & Foundation Models"
+params:
+   images_path: "/assets/images/representation_learning/"
+---
+
+::: {.callout-tip title="Learning Objectives" collapse="true"}
+By the end of this lecture you should be able to:
+
+- Explain what a representation is and why invariance & selectivity matter.
+- Distinguish supervised, self-supervised (contrastive, masked, distillation), and multimodal representation objectives.
+- Describe how layer depth changes semantic abstraction in CNNs & ViTs.
+- Evaluate representations with linear probes, k-NN, clustering metrics, and retrieval.
+- Choose a transfer strategy (feature extraction vs fine-tune vs adapters) for a new dataset.
+- Justify when to favor DINOv3 vs CLIP vs supervised ViT for a downstream task.
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+Short summary:
+
+- Foundation models deliver reusable semantic embeddings that dramatically lower labeled data requirements.
+- DINOv3 refines self-distillation to yield robust, high-fidelity patch & global representations.
+- Adaptation path: k-NN → Linear Probe → Adapters/LoRA → (optional) Full Fine-Tune.
+- Objective choice influences invariances, spatial detail retention, and zero-shot capabilities.
+:::
+
+::: {.content-hidden}
+$$
+{{< include /assets/_macros.tex >}}
+$$
+:::
+
+## Motivation
+
+Which of the following images are similar to each other? How would you rank them in terms of their similarity and why?
+
+::: {#fig-rl-intro layout-ncol=2}
+
+![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Elephant (example 1, similar)" width=90%}
+![]({{< meta params.images_path >}}elephant1.jpg){fig-alt="Elephant (example 2, similar)" width=90%}
+
+![]({{< meta params.images_path >}}giraffe.jpg){fig-alt="Giraffe (less similar)" width=90%}
+![]({{< meta params.images_path >}}car.jpg){fig-alt="Car (dissimilar)" width=90%}
+
+Images of various degree of similarity (Images from Usplash).
+:::
+
+
+
+## What Is Representation Learning?
+
+A *representation* maps raw, high-dimensional input $x$ (pixels, words, amino acids, nodes) into a vector (or set of tokens) $z = f(x)$ capturing task-relevant structure while discarding nuisance variation.
+
+
+
+::: {.callout-note title="Key Desiderata"}
+We seek representations that are:
+
+1. **Invariant** to nuisance factors (lighting, small translations, style) that do not change semantic identity.
+2. **Equivariant** (when needed) so transformations in input induce predictable transformations in representation (important for geometry-aware tasks).
+3. **Disentangled** (ideally) so independent latent factors are separated (rarely fully achieved in practice).
+4. **Composable** enabling combination for larger reasoning tasks.
+:::
+
+
+
+Modalities differ vastly in raw state-space size:
+
+| Modality | Example Unit | Typical Raw Dimensionality (Sample) | Challenges |
+|----------|--------------|--------------------------------------|------------|
+| Images | 224x224 RGB | ~150K pixels | Local correlations, spatial invariance |
+| Text | Tokens (512 seq) | variable (subword vocab ~50K) | Long-range dependencies |
+| Genomics | Nucleotides (10K) | 4-letter alphabet | Long-range, hierarchical motifs |
+| Graphs | Nodes/Edges | Irregular structure | Permutation invariance |
+| Multimodal | Image+Text | Combined modalities | Alignment & grounding |
+
+: Representative raw modality characteristics {.striped .hover #tbl-repr-modalities}
+
+**Why learn them (vs hand-crafting)?** Data scale, task diversity, and domain shift outgrew manual feature engineering (e.g., SIFT) — necessitating *learned* feature spaces that generalize.
+
+::: {.callout-warning title="Pitfall"}
+Over-constraining invariance (e.g., aggressive data augmentation) can remove discriminative cues (color for bird species). Balance augmentation with task semantics.
+:::
+
+### 1.1 Invariance vs Equivariance
+
+- *Invariance:* $f(Tx) = f(x)$ (classification robustness).
+- *Equivariance:* $f(Tx) = T' f(x)$ (segmentation, detection require spatial structure).
+Convolutions approximate translation equivariance; self-attention is *structurally agnostic* and must learn inductive biases via data.
+
+### 1.2 Hierarchical Abstraction
+
+Lower layers: edges, colors, local patterns → mid-layers: motifs/parts → deeper layers: object & global scene semantics.
+
+<!-- TODO: Visual: Grid of activations from early vs mid vs deep CNN layer; plus ViT attention heads highlighting object parts. -->
+
+## 2. Deep Image Representations
+
+CNNs encode locality and translation inductive biases; Vision Transformers (ViTs) rely on larger data + patch embedding + positional encodings.
+
+| Aspect | CNN | ViT |
+|--------|-----|-----|
+| Inductive Bias | Strong (locality, weight sharing) | Minimal (global token mixing) |
+| Data Efficiency | Higher for small data | Needs large-scale pretraining |
+| Receptive Field Growth | Layer stacking / dilation | Immediate global attention |
+| Positional Handling | Implicit via convolution structure | Explicit positional embeddings |
+| Adaptation (small data) | Often fine-tune later layers | Prefer frozen features + probe / adapters |
+
+: CNN vs ViT representation properties {.striped .hover #tbl-repr-cnn-vit}
+
+**Story:** Inductive bias trades off with flexibility. ViTs + massive self-supervised training (e.g., DINOv2/v3) *recover* desirable invariances without manual architectural constraints.
+
+## 3. Transfer Learning
+
+Reusing a source representation $f_{\theta}$ trained on large dataset $D_s$ for target dataset $D_t$ (possibly small / domain shifted):
+
+| Strategy | Frozen? | Trainable Params | When to Use | Risk |
+|----------|---------|------------------|-------------|------|
+| Feature Extraction + Linear Probe | Yes | ~Head only | Very small target | Underfitting complex tasks |
+| Partial Fine-Tune (top blocks) | Partially | 10–40% | Medium data | Forgetting lower-level invariances |
+| Full Fine-Tune | No | 100% | Large labeled target | Overfitting / compute |
+| LoRA / Adapters | Base frozen | 1–10% | Medium data / resource-bound | Adapter configuration tuning |
+| Prompt / Text Prompt (CLIP) | Base frozen | 0–Few tokens | Zero/Few-shot | Prompt sensitivity |
+
+: Transfer strategy comparison {.striped .hover #tbl-repr-transfer}
+
+::: {.callout-tip title="Heuristic"}
+Start simple: Linear probe → If performance gap > X% vs baseline, move to LoRA/adapters → escalate to partial fine-tune → only full fine-tune when data & compute justify.
+:::
+
+### 3.1 Diagnostic Signals
+
+- Linear probe saturates early + large gap to supervised SOTA ⇒ consider partial fine-tune.
+- Training loss ↓ but validation plateaus ⇒ representation mismatch (try LoRA).
+- Large domain color/style shift ⇒ consider small color-specific adapter or augment recipe adjustment.
+
+<!-- TODO: Visual: Flowchart of decision path for adaptation strategy. -->
+
+## 4. Self-Supervised Learning (SSL)
+
+Goal: Learn $f(x)$ without manual labels; leverage structure in data via pretext tasks.
+
+| Paradigm | Core Idea | Positive Pair Definition | Example Models | Notable Strength | Typical Weakness |
+|----------|-----------|--------------------------|----------------|------------------|------------------|
+| Contrastive | Pull positives, push negatives | Augmented views of same image | SimCLR, MoCo | Strong invariance | Needs large batch / memory bank |
+| Self-Distillation | Match teacher & student views | Teacher EMA vs student features | DINO v1/v2/v3 | Rich semantics w/o negatives | Augmentation sensitivity |
+| Masked Modeling | Reconstruct masked content | Original vs masked patches | MAE, iBOT | Structural detail retention | Slower convergence |
+| Multi-Modal Align | Align cross-modal embeddings | Paired image-text | CLIP, BLIP-2 | Zero / few-shot via text | Text bias & leakage |
+| Predictive Coding | Predict future / context | Temporal or spatial neighbors | CPC variants | Sequential structure | Complexity of objectives |
+
+: Major self-supervised paradigms {.striped .hover #tbl-repr-ssl}
+
+### 4.1 Contrastive (InfoNCE)
+Objective: maximize similarity of positive pair while minimizing others:
+$$\mathcal{L}_{\text{InfoNCE}} = - \log \frac{\exp(\text{sim}(z_i, z_i^+)/\tau)}{\sum_{j=1}^N \exp(\text{sim}(z_i, z_j)/\tau)}$$
+Temperature $\tau$ tunes concentration; similarity often cosine.
+
+::: {.callout-note title="Quiz" collapse="true"}
+**Question:** What happens if $\tau$ is extremely small?
+**Answer (click to reveal):** <details><summary>Answer</summary>The loss focuses on the single hardest negative; training can become unstable.</details>
+:::
+
+### 4.2 Self-Distillation (DINO Family)
+Teacher network (EMA of student) provides soft targets for multi-crop student views. Avoids explicit negatives; emergent clustering.
+
+### 4.3 Masked Image Modeling (MAE / iBOT)
+Randomly mask patches (40–75%), reconstruct pixel space or latent tokens; forces holistic context modeling.
+
+### 4.4 Multimodal Alignment (CLIP)
+Image encoder + text encoder; contrastive loss aligns matching pairs enabling text-driven zero-shot transfer.
+
+<!-- TODO: Visual: Side-by-side small schematics of each SSL paradigm (contrastive, distillation, masked, multimodal). -->
+
+## 5. Evaluating Representations
+
+No single metric suffices—use *battery* of probes.
+
+| Method | Procedure | Signals | Pros | Cons |
+|--------|-----------|---------|------|------|
+| k-NN | Compare feature similarity | Local neighborhood structure | No training | Slow for large N |
+| Linear Probe | Train logistic/regression on frozen features | Linear separability | Fast, comparable | Ignores non-linear capacity |
+| Clustering (k-means) | Cluster embeddings, measure NMI/ARI | Unsupervised grouping quality | Label-free diagnostic | Sensitive to feature scaling |
+| Retrieval mAP | Query vs gallery similarity ranking | Ranking robustness | Task-agnostic | Needs curated gallery |
+| Few-shot Episodes | N-way K-shot average accuracy | Data efficiency | Mirrors target tasks | Variance with small K |
+
+: Representation evaluation toolbox {.striped .hover #tbl-repr-eval}
+
+::: {.callout-note title="Exercise Idea"}
+Compute k-NN (k=5) accuracy, then a linear probe. Report relative improvement. Reflect: does larger gap imply under-expressive head or insufficient representation invariance?
+:::
+
+### 5.1 Failure Diagnostics
+
+- High linear probe, poor retrieval ⇒ representation collapses fine-grained similarity.
+- Good k-NN, poor clustering NMI ⇒ global structure fragmented; consider whitening or normalization.
+- Poor few-shot but good full-data accuracy ⇒ representation needs adaptation (try LoRA).
+
+## 6. Foundation Models (Bridge)
+
+Full deep-dive in `lectures/foundation_models.qmd`. Here we contextualize *representations* origin:
+
+| Model | Objective Category | Emergent Property | Transfer Sweet Spot |
+|-------|--------------------|-------------------|---------------------|
+| DINOv3 | Self-distillation | Semantic clusters & patch semantics | Few-shot classification, anomaly |
+| CLIP | Contrastive multimodal | Language-aligned embeddings | Zero-shot, prompt-based tasks |
+| MAE | Masked modeling | Fine structural detail | Dense prediction fine-tune |
+| SAM Encoder | Promptable segmentation | High-resolution region semantics | Zero-shot segmentation |
+
+: Selected foundation models & representation characteristics {.striped .hover #tbl-repr-foundation-overview}
+
+### 6.1 Choosing Among DINOv3 vs CLIP
+
+| Scenario | Recommended | Rationale |
+|----------|------------|-----------|
+| Few labeled images, no text prompts | DINOv3 | Strong linear probe performance |
+| Need zero-shot open vocabulary | CLIP | Text prompts act as classifier |
+| Downstream segmentation with prompts | SAM Encoder | Mask generalization |
+| Style-rich generation/editing | Stable Diffusion (latent) | Generative prior |
+
+: Scenario-based model selection {.striped .hover #tbl-repr-scenarios}
+
+## 7. A Practical Recipe
+
+1. Select backbone (start with DINOv3 ViT-B/L depending on resource).
+2. Extract & store normalized embeddings (optionally PCA → 256 dims for speed).
+3. Run k-NN baseline.
+4. Train linear probe (early stopping on validation).
+5. Evaluate clustering NMI & retrieval mAP (optional).
+6. If gap > target, add LoRA (r=8) to attention projection matrices; tune LR.
+7. Monitor forgetting: compare feature drift (cosine sim pre/post adaptation).
+8. Document final transfer cost (GPU hours) vs accuracy.
+
+<!-- TODO: Visual: Flow diagram of the practical recipe steps with decision diamonds. -->
+
+### 7.1 Minimal PyTorch Sketch (Probe)
+
+```python
+# pseudo-code: linear probe on frozen backbone features
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Assume we precomputed (X_train, y_train), (X_val, y_val) via DINOv3 extractor
+clf = LogisticRegression(max_iter=1000, n_jobs=-1)
+clf.fit(X_train, y_train)
+val_acc = accuracy_score(y_val, clf.predict(X_val))
+print(f"Linear probe val accuracy: {val_acc:.3f}")
+```
+
+## 8. Quizzes & Reflection
+
+::: {.callout-note title="Quiz 1: Invariance vs Equivariance"}
+**Question:** Give one example where too much invariance harms performance.
+<details><summary>Answer</summary>Face recognition losing fine-grained identity cues if heavy blurring / color jitter removes distinguishing patterns.</details>
+:::
+
+::: {.callout-note title="Quiz 2: Probing"}
+**Question:** Why is k-NN often a stronger baseline than expected on high-quality representations?
+<details><summary>Answer</summary>Because semantic neighborhoods are already well-formed; a parametric head adds little beyond nearest neighbor majority vote.</details>
+:::
+
+## 9. Recap
+
+::: {.callout-tip title="Recap"}
+- Representations trade off invariance, equivariance, and detail retention.
+- Self-supervised objectives sculpt semantic geometry without labels.
+- Evaluation requires multiple probes (k-NN + linear + few-shot) to avoid false confidence.
+- DINOv3 & CLIP illustrate specialization (label-efficient vs open-vocabulary).
+- Systematic adaptation flow reduces unnecessary fine-tuning cost.
+:::
+
+## 10. References
+
+Inline references to integrate (add bib entries if missing): DINO @caron_emerging_2021; DINOv2 @oquab_dinov2_2023; CLIP @radford_learning_2021; MAE @he_masked_2022; ViT @dosovitskiy_image_2020; ResNet @he_deep_2016; LoRA @hu_lora_2022.
+
+
+::: {#refs}
+:::
