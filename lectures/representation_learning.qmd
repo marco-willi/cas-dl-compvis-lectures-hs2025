@@ -43,16 +43,103 @@ Which of the following images are similar to each other? How would you rank them
 ![]({{< meta params.images_path >}}giraffe.jpg){fig-alt="Giraffe (less similar)" width=90%}
 ![]({{< meta params.images_path >}}car.jpg){fig-alt="Car (dissimilar)" width=90%}
 
-Images of various degree of similarity (Images from Usplash).
+Images of various degree of similarity (Images from Unsplash - [top left](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick),
+[bottom left](https://unsplash.com/de/fotos/grauer-elefant-spielt-mit-schlamm-xYO4F6HoxOQ),
+[top right](https://unsplash.com/de/fotos/drei-giraffen-tagsuber-auf-braunem-rasen-eQdDUdi5qLk), 
+[bottom right](https://unsplash.com/de/fotos/geparkter-weisser-ford-explorer-suv-a4S6KUuLeoM)).
 :::
 
+
+::: {#fig-raw-elephant layout-ncol=1}
+![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Raw RGB image used to illustrate pixel-space representations" width=70%}
+
+Example Image.
+:::
+
+A raw image is a 3D tensor of pixel intensities. Before any encoder is applied, it already contains structure (spatial locality, color correlations) but no task-specific abstractions. Inspecting its dimensionality highlights why learning compact representations matters.
+
+```{python}
+#| eval: true
+#| echo: false
+#| label: tbl-rl-example-raw-dim
+#| tbl-cap: "Raw elephant image dimensionality summary"
+#| tbl-subtitle: "Single 224×224 crop used as running example"
+from pathlib import Path
+from PIL import Image
+import numpy as np
+import pandas as pd
+from IPython.display import HTML
+
+img_path = Path("/workspace/assets/images/representation_learning/elephant.jpg")
+with Image.open(img_path) as img:
+    width, height = img.size
+    channels = len(img.getbands())
+    pixels = width * height
+    values = pixels * channels
+    arr_dtype = np.array(img).dtype
+
+raw_stats = pd.DataFrame(
+    {
+        "Statistic": ["Width (px)", "Height (px)", "Channels", "Total Pixels", "Total Values", "Array dtype"],
+        "Value": [width, height, channels, f"{pixels:,}", f"{values:,}", str(arr_dtype)],
+    }
+)
+
+table_html = raw_stats.to_html(
+    index=False,
+    border=0,
+    classes="table table-sm table-striped align-middle caption-top"
+)
+
+HTML(table_html)
+```
+
+Modalities differ vastly in raw state-space size:
+
+```{python}
+#| label: tbl-repr-modalities
+#| echo: false
+#| fig-cap: "Representative raw modality characteristics"
+#| tbl-colwidths: [0.12, 0.22, 0.30, 0.36]
+#| tbl-subtitle: "Interactive view with quick export"
+#| layout-nrow: 1
+import pandas as pd
+from IPython.display import Markdown
+
+data = [
+    ("Images", "224×224 RGB", "≈150K pixels", "Local correlations, spatial invariance"),
+    ("Text", "Tokens (512 seq)", "Variable (subword vocab ≈50K)", "Long-range dependencies"),
+    ("Genomics", "Nucleotides (10K)", "4-letter alphabet", "Long-range, hierarchical motifs"),
+    ("Graphs", "Nodes / Edges", "Irregular structure", "Permutation invariance"),
+    ("Multimodal", "Image + Text", "Combined modalities", "Alignment & grounding"),
+]
+
+df_modalities = pd.DataFrame(data, columns=[
+    "Modality",
+    "Example Unit",
+    "Typical Raw Dimensionality (Sample)",
+    "Challenges",
+])
+
+try:
+    from itables import show, options
+
+    options.classes = "display nowrap compact stripe hover order-column"
+    options.dom = "Bfrtip"
+    options.buttons = ["copy", "csv", "excel"]
+    options.searching = False
+    options.lengthMenu = False
+    show(df_modalities, index=False)
+except Exception:
+    Markdown(df_modalities.to_markdown(index=False))
+```
 
 
 ## What Is Representation Learning?
 
-A *representation* maps raw, high-dimensional input $x$ (pixels, words, amino acids, nodes) into a vector (or set of tokens) $z = f(x)$ capturing task-relevant structure while discarding nuisance variation.
+A representation is the output $z = f(x)$ produced by an encoder $f$ applied to input $x$; $z$ retains task‑relevant structure while discarding nuisance variation. The encoder $f$ is the mapping; the representation $z$ is its result.
 
-
+### What are good representations?
 
 ::: {.callout-note title="Key Desiderata"}
 We seek representations that are:
@@ -64,18 +151,12 @@ We seek representations that are:
 :::
 
 
+::: {#fig-rl-augmentations}
+![]({{< meta params.images_path >}}rl_example_augmentations.png){fig-alt="Semantic-preserving augmentations applied to an elephant image" width=100%}
 
-Modalities differ vastly in raw state-space size:
+Collage of semantic-preserving augmentations (crop, jitter, blur, noise) used to motivate invariance: each view retains the elephant identity despite appearance changes.
+:::
 
-| Modality | Example Unit | Typical Raw Dimensionality (Sample) | Challenges |
-|----------|--------------|--------------------------------------|------------|
-| Images | 224x224 RGB | ~150K pixels | Local correlations, spatial invariance |
-| Text | Tokens (512 seq) | variable (subword vocab ~50K) | Long-range dependencies |
-| Genomics | Nucleotides (10K) | 4-letter alphabet | Long-range, hierarchical motifs |
-| Graphs | Nodes/Edges | Irregular structure | Permutation invariance |
-| Multimodal | Image+Text | Combined modalities | Alignment & grounding |
-
-: Representative raw modality characteristics {.striped .hover #tbl-repr-modalities}
 
 **Why learn them (vs hand-crafting)?** Data scale, task diversity, and domain shift outgrew manual feature engineering (e.g., SIFT) — necessitating *learned* feature spaces that generalize.
 
@@ -83,19 +164,55 @@ Modalities differ vastly in raw state-space size:
 Over-constraining invariance (e.g., aggressive data augmentation) can remove discriminative cues (color for bird species). Balance augmentation with task semantics.
 :::
 
-### 1.1 Invariance vs Equivariance
+### Invariance vs Equivariance
 
 - *Invariance:* $f(Tx) = f(x)$ (classification robustness).
 - *Equivariance:* $f(Tx) = T' f(x)$ (segmentation, detection require spatial structure).
 Convolutions approximate translation equivariance; self-attention is *structurally agnostic* and must learn inductive biases via data.
 
-### 1.2 Hierarchical Abstraction
+### Hierarchical Abstraction
 
 Lower layers: edges, colors, local patterns → mid-layers: motifs/parts → deeper layers: object & global scene semantics.
 
-<!-- TODO: Visual: Grid of activations from early vs mid vs deep CNN layer; plus ViT attention heads highlighting object parts. -->
+::: {.panel-tabset #fig-zeiler-hierarchy}
+### Layer 1
+![]({{< meta params.images_path >}}zeiler_layer1.png){fig-alt="Layer 1: Gabor-like edges and color blobs" width=95%}
 
-## 2. Deep Image Representations
+Edges, color opponency, and Gabor-like filters emerge first.
+
+### Layer 2
+![]({{< meta params.images_path >}}zeiler_layer2.png){fig-alt="Layer 2: Corners and simple textures" width=95%}
+
+Edges combine into corners, contours, and early texture motifs.
+
+### Layer 3
+![]({{< meta params.images_path >}}zeiler_layer3.png){fig-alt="Layer 3: Texture motifs and repeated patterns" width=95%}
+
+Mid-level texture repetitions (fur, mesh) and shape fragments appear.
+
+### Layer 4
+![]({{< meta params.images_path >}}zeiler_layer4.png){fig-alt="Layer 4: Object parts such as faces and wheels" width=95%}
+
+Semantically meaningful object parts (faces, limbs, wheels) are isolated.
+
+### Layer 5
+![]({{< meta params.images_path >}}zeiler_layer5.png){fig-alt="Layer 5: Full object templates" width=95%}
+
+Full object templates activate, providing category-level abstraction.
+:::
+
+Activation maximization reconstructions from Zeiler & Fergus (2014) illustrate how deeper CNN layers capture increasingly abstract concepts.
+
+* Layer 1 focuses on oriented edges and color opponency — the digital analogue of Gabor filters.
+* Layer 2 composes edges into corners, gradients, and early texture motifs.
+* Layer 3 aggregates motifs into mid-level textures (fur, mesh) and shape fragments.
+* Layer 4 responds to semantically meaningful parts (faces, limbs, wheels) aggregated across spatial context.
+* Layer 5 fires on entire object templates, providing category-level abstraction that feeds classifier heads.
+
+## Deep Image Representations
+
+
+<!-- TODO: include figures from Zeiler and Ferguson: zeiler_layer1.png, zeiler_layer2.png, zeiler_layer3.png, zeiler_layer4.png, zeiler_layer5.png -->
 
 CNNs encode locality and translation inductive biases; Vision Transformers (ViTs) rely on larger data + patch embedding + positional encodings.
 
