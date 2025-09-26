@@ -23,11 +23,12 @@ $$
 
 ## Introduction & Motivation
 
-Images have the following relevant properties when modeling them:
+Images have unique properties that make them challenging for standard neural networks:
 
-- High-Dimensional: An RGB image of size $224 \times 224$  (height, width) has = $150'528$ values.
-- Locality: Nearby pixels are statistically related
-- Stability under transformations: Interpretation of an image does not change under many geometric transformations.
+- **High-Dimensional**: An RGB image of size $224 \times 224$ has $224 \times 224 \times 3 = 150{,}528$ values
+- **Locality**: Nearby pixels are statistically related (edges, textures, objects)
+- **Translation Invariance**: A cat should be recognized regardless of its position in the image
+- **Hierarchical Structure**: Images contain features at multiple scales (pixels → edges → textures → objects)
 
 :::{#fig-cnn-example-rgb-image width=600}
 
@@ -93,15 +94,54 @@ Illustration of different inputs with the same pattern but shifted spatially.
 
 :::
 
-
 ::: {.callout-note appearance="simple"}
 
-**Question**
+**Question**: Can an MLP learn to detect the same pattern at different spatial locations? If yes, how?
 
+**Think about it:** If an MLP learns to detect a cat in the center of an image, what happens when the same cat appears in the corner?
 
-How do MLPs deal with such pattern shifts?
+<details>
+<summary>Click for answer</summary>
+
+MLPs must learn separate detectors for each possible position! This is extremely inefficient because:
+
+1. **Parameter explosion**: Need different weights for each spatial location
+2. **Data requirements**: Must see cats in every possible position during training
+3. **Poor generalization**: Fails on positions not seen during training
+
+This is why MLPs with the same number of parameters perform much worse on image tasks compared to CNNs.
+</details>
 
 :::
+
+::: {.callout-tip title="Interactive Demo"}
+Try this visualization to see the difference:
+
+- [MLP vs CNN on 2D patterns](https://adamharley.com/nn_vis/mlp/2d.html)
+- [CNN Filter Visualization](https://adamharley.com/nn_vis/cnn/2d.html)
+
+Notice how CNNs reuse the same filter across all positions!
+:::
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+::: {#tbl-mlp-vs-cnn tbl-colwidths="[20,20,60]"}
+
+| Aspect | MLP | CNN |
+|--------|-----|-----|
+| **Connectivity** | Every neuron connects to all inputs | Local connectivity only |
+| **Parameters** | Scales with input size | Constant regardless of input size |
+| **Translation** | Must learn patterns at each position | Automatically detects patterns everywhere |
+| **Inductive Bias** | None (learns from scratch) | Locality + Translation equivariance |
+
+Comparison of MLPs vs CNNs for image processing
+:::
+
+:::
+
+:::: 
 
 
 
@@ -117,8 +157,44 @@ Inputs transformed with a permuation matrix.
 
 **Question**
 
-Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e. $f(P(\vect{x}))$?
+Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e., $f(P(\vect{x}))$?
 
+**Hint:** Think carefully - what if EVERY image is permuted with the SAME permutation matrix?
+
+<details>
+<summary>Click for the surprising answer</summary>
+
+**Yes, MLPs CAN learn on consistently permuted images!** This is a crucial insight:
+
+**Why MLPs can handle consistent permutation:**
+
+1. **Consistent mapping**: If every image uses the same permutation $P$, pixel position relationships are preserved
+2. **Learning is still possible**: The MLP can learn that "pixel at position 247 (originally position 12) connects to pixel at position 891 (originally position 13)"
+3. **No information is lost**: Permutation is just a reordering, not destruction of information
+
+**The real insight:**
+
+- ✅ **Same permutation for all images**: MLP can learn the task
+- ❌ **Different permutations per image**: MLP cannot learn effectively  
+- ❌ **No permutation but objects move around**: MLP struggles with translation
+
+**Why this matters**: This thought experiment reveals that MLPs' problem with images isn't about permutation per se, but about **spatial relationships and translation invariance**:
+
+1. **Natural images**: Objects appear at different positions → MLP must learn separate detectors for each position
+2. **Consistently permuted images**: Spatial relationships are preserved (just reordered) → MLP can learn
+3. **CNNs**: Built-in translation equivariance makes them efficient for natural images regardless of object position
+
+**Key takeaway**: The issue isn't that spatial structure is "destroyed" by permutation, but that CNNs are specifically designed to handle the **translation variability** in natural images efficiently.
+</details>
+
+:::
+
+::: {.callout-tip title="Deep Learning Insight"}
+This reveals a fundamental principle: **The right inductive bias matters more than the raw capability to learn**.
+
+- MLPs are universal function approximators and *could* learn vision tasks
+- CNNs use the right inductive biases (locality + translation equivariance) to learn vision tasks *efficiently*
+- Architecture choice is about **sample efficiency** and **generalization**, not just theoretical capability
 :::
 
 
@@ -129,17 +205,28 @@ To summarize MLPs on images:
 - Stability under transformations: MLPs need to learn position-dependent patterns which is very inefficient.
 
 
-::: {.callout-note appearance="simple"}
+## From Problems to Solutions: Enter CNNs
 
-**Demonstration**
+Now that we've seen the limitations of MLPs for images, let's explore how **Convolutional Neural Networks (CNNs)** address these challenges.
 
-[https://adamharley.com/nn_vis/mlp/2d.html](https://adamharley.com/nn_vis/mlp/2d.html)
+::: {.callout-tip title="The Big Idea"}
+**Instead of connecting every neuron to every input**, CNNs use three key principles:
 
+1. **Local Connectivity**: Each neuron only looks at a small spatial region
+2. **Parameter Sharing**: The same filter/detector is used across all spatial locations  
+3. **Translation Equivariance**: If the input shifts, the output shifts correspondingly
+
+These aren't just technical tricks—they encode our **prior knowledge** about how images work!
 :::
 
+### The CNN Advantage
 
+A single neuron in a CNN is only connected to a small portion (local connectivity) of the image (see @fig-cnn-cnn-spatial). As a result:
 
-A single neuron in a CNN is only connected to a small portion (local connectivity) of the image (see @fig-cnn-cnn-spatial). As a result, the neurons have far fewer parameters than in an MLP. The 2-D structure of the image is also preserved, meaning they do not need to be flattened as in an MLP. This exploits the property of images that certain features, such as edges and corners, are relevant throughout the image. By convolving the neurons across the entire input, the same feature can be detected by a neuron throughout the image. In an MLP, a specific feature would need to be relearned at each position.
+✅ **Fewer Parameters**: Neurons have far fewer connections than in MLPs  
+✅ **Spatial Structure Preserved**: No need to flatten 2D images into 1D vectors  
+✅ **Translation Equivariance**: Same detector works everywhere in the image  
+✅ **Hierarchical Feature Learning**: Stack layers to learn increasingly complex patterns
 
 :::{#fig-cnn-cnn-spatial}
 
@@ -158,24 +245,37 @@ What properties do we want?
 
 ### Invariance and Equivariance
 
-For many tasks small variations in the input should either **not** change the model output (invariance) or should change the output **in tandem** with the input changes (equivariance).
+For many vision tasks, we need our models to handle transformations gracefully. There are two key concepts:
 
+::: {.callout-important title="Key Definitions"}
 
-A function $f(\vect{x})$ is **invariant** to a transformation $g(\vect{x})$ if:
+A function $f(\vect{x})$ is **invariant** to transformation $g(\vect{x})$ if:
+$$f(g(\vect{x})) = f(\vect{x})$$
 
-\begin{align}
-f(g(\vect{x})) = f(\vect{x})
-\end{align}
+A function $f(\vect{x})$ is **equivariant** to transformation $g(\vect{x})$ if:
+$$f(g(\vect{x})) = g(f(\vect{x}))$$
 
+**Intuition**: 
 
-A function $f(\vect{x})$ (such as a layer in a neural network) of an image $\vect{x}$ is **equivariant** with respect to a transformation $g(\vect{\vect{x}})$ if:
+- **Invariant** = "I don't care about the transformation" 
+- **Equivariant** = "I transform my output the same way the input was transformed"
+:::
 
-\begin{align}
-f(g(\vect{x})) = g(f(\vect{x}))
-\end{align}
+::: {.callout-note title="When do we want each?"}
 
+| Task Type | Property Needed | Why? |
+|-----------|-----------------|------|
+| **Classification** | Translation Invariance | Cat is still a cat regardless of position |
+| **Object Detection** | Translation Equivariance | If object moves right, bounding box moves right |
+| **Semantic Segmentation** | Translation Equivariance | If input shifts, pixel-wise labels shift |
+| **Style Transfer** | Some invariance to content position | Style should apply regardless of where objects are |
 
-Example where invariance is required:
+: {tbl-colwidths="[20,20,60]"}
+
+Understanding this distinction is crucial for choosing the right architecture!
+:::
+
+**Example: Classification (Invariance Needed)**
 
 
 ::: {#fig-cnns-invariance-example}
@@ -187,14 +287,20 @@ When objects in the input translate spatially, the output (in this case the clas
 :::
 
 
-Example where equivariance is required:
+**Example: Object Detection (Equivariance Needed)**
 
 ::: {#fig-cnns-equivariance-example}
 
 ![]({{< meta params.images_path >}}cows2_small_detection_collage.png)
 
-When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model  $f(\vect{x})$ that produces the bounding boxes is thus equivariant with respect to spatial translations.
+When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model $f(\vect{x})$ that produces the bounding boxes is thus equivariant with respect to spatial translations.
 
+:::
+
+::: {.callout-tip title="Key Insight"}
+**CNNs naturally provide translation equivariance** due to their convolution operation. However, they need additional components (like pooling or global average pooling) to achieve translation invariance for classification tasks.
+
+This is why CNN architecture design matters so much!
 :::
 
 
@@ -348,8 +454,39 @@ Convolution with zero-padding and $5 \times 5$ kernel that produces activations 
 
 **Question**
 
-What is the difference between using 3x3 vs 5x5 kernels? What is the same?
+What is the difference between using 3×3 vs 5×5 kernels? What is the same?
 
+**Think first**: Consider computational cost, receptive field, and parameter count.
+
+<details>
+<summary>Click for detailed comparison</summary>
+
+| Aspect | 3×3 Kernel | 5×5 Kernel |
+|--------|------------|------------|
+| **Parameters** | 9 × input_channels | 25 × input_channels |
+| **Computation** | Less (fewer multiplications) | More (more multiplications) |
+| **Receptive Field** | Smaller (grows slowly) | Larger (grows faster) |
+| **Detail Capture** | Fine-grained features | Broader spatial patterns |
+
+**What's the same**:
+- Both preserve translation equivariance
+- Both use parameter sharing
+- Both can learn spatial features
+
+**Key Insight**: You can achieve the same receptive field with **two 3×3 convolutions** as one 5×5, but with fewer parameters: $(3×3 + 3×3) = 18$ vs $5×5 = 25$ parameters per channel.
+
+This is why modern architectures (like ResNet) prefer stacking smaller kernels!
+</details>
+
+:::
+
+::: {.callout-tip title="Best Practice"}
+**Modern CNN Design**: Use multiple 3×3 convolutions instead of larger kernels to get:
+
+- ✅ Fewer parameters  
+- ✅ More non-linearity (more activation functions)
+- ✅ Better gradient flow
+- ✅ Similar receptive field coverage
 :::
 
 **Dilation** specifies how much the kernel is spread out and thus directly influences the receptive field. @fig-cnn-dilation shows how it works.
@@ -364,8 +501,48 @@ Illustration of how a kernel with dilation=2 (middle) is applied to the input ac
 
 **Question**
 
-Why would we use dilation $d \gt 1$?
+Why would we use dilation $d > 1$?
 
+**Consider**: What happens to the receptive field? What about computational cost?
+
+<details>
+<summary>Click for comprehensive answer</summary>
+
+**Dilation increases receptive field without adding parameters or computation!**
+
+**Benefits of dilation**:
+
+1. **Larger receptive field**: See more context without more layers
+2. **Same parameter count**: Filter size stays the same  
+3. **Preserve resolution**: No spatial downsampling
+4. **Multi-scale features**: Different dilation rates capture different scales
+
+**Use cases**:
+
+- **Semantic segmentation**: Need large receptive fields while preserving spatial resolution
+- **Dense prediction tasks**: Want to see global context for local predictions  
+- **Efficient architectures**: Alternative to deeper networks
+
+**Trade-offs**:
+
+- ✅ Larger receptive field with same parameters
+- ✅ No resolution loss
+- ❌ May miss fine-grained spatial relationships  
+- ❌ Can create "grid artifacts" if not used carefully
+
+**Example**: A 3×3 kernel with dilation=2 has the receptive field of a 5×5 kernel but only 9 parameters instead of 25!
+</details>
+
+:::
+
+::: {.callout-tip title="Architectural Pattern"}
+**Atrous/Dilated Convolutions** are especially popular in:
+
+- **DeepLab** (semantic segmentation)
+- **WaveNet** (audio generation)  
+- **Dilated ResNets** (dense prediction)
+
+The key insight: **expand the receptive field without losing resolution**!
 :::
 
 ::: {.callout-note appearance="simple"}
@@ -399,10 +576,75 @@ You can calculate the dimensionality of the activation maps with the following f
 o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 \end{equation}
 
-::: {.callout-note title="Quiz: Output Shape" collapse="true"}
-Given: $i=32, k=3, p=1, s=2, d=1$. What is $o$?
+::: {.callout-note title="📝 Quiz: Output Shape Calculation" collapse="true"}
 
-Solution: $o = \lfloor (32 + 2 - 1\cdot(3-1) -1)/2 + 1 \rfloor = \lfloor (32)/2 + 1 \rfloor = 17$.
+**Problem**: You're designing a CNN layer with the following parameters:
+
+- Input size: $i = 32$ (height and width)
+- Kernel size: $k = 3$
+- Padding: $p = 1$ 
+- Stride: $s = 2$
+- Dilation: $d = 1$
+
+**Question**: What is the output size $o$?
+
+**Step-by-step solution**:
+
+1. Apply the formula: $o = \lfloor \frac{i + 2p - d(k-1) - 1}{s} + 1 \rfloor$
+2. Substitute: $o = \lfloor \frac{32 + 2(1) - 1(3-1) - 1}{2} + 1 \rfloor$
+3. Simplify: $o = \lfloor \frac{32 + 2 - 2 - 1}{2} + 1 \rfloor$
+4. Calculate: $o = \lfloor \frac{31}{2} + 1 \rfloor = \lfloor 15.5 + 1 \rfloor = 16$
+
+**Answer**: $o = 16$
+
+**Intuition**: With stride 2, we're roughly halving the spatial dimensions, but padding helps maintain some size.
+:::
+
+::: {.callout-note title="🧮 Practice Quiz: Parameter Counting" collapse="true"}
+
+**Scenario**: Design a convolutional layer with:
+
+- Input: $3 \times 32 \times 32$ (RGB image)  
+- 64 output channels
+- Kernel size: $5 \times 5$
+- Include bias terms
+
+**Questions**:
+
+1. How many weights in the filters?
+2. How many bias parameters? 
+3. Total parameters?
+4. If we used a fully connected layer instead, how many parameters would that require?
+
+**Solutions**:
+
+1. **Filter weights**: $(5 \times 5) \times 3 \times 64 = 4{,}800$
+2. **Bias parameters**: $64$ (one per output channel)
+3. **Total parameters**: $4{,}800 + 64 = 4{,}864$ 
+4. **Fully connected alternative**: $(32 \times 32 \times 3) \times 64 = 196{,}608$
+
+**Insight**: CNNs use **40× fewer parameters** while being more effective for images!
+:::
+
+::: {.callout-note title="🎯 Challenge Quiz: Receptive Field" collapse="true"}
+
+**Network Architecture**:
+
+- Layer 1: Conv2d(kernel=3, stride=1)
+- Layer 2: Conv2d(kernel=3, stride=2)  
+- Layer 3: Conv2d(kernel=5, stride=1)
+
+**Question**: What is the receptive field of the final layer with respect to the input?
+
+**Solution using the formula**:
+$$r_0 = \sum_{l=1}^3 \left( (k_l - 1) \prod_{i=1}^{l-1} s_i \right) + 1$$
+
+- $r_0 = (3-1) \cdot 1 + (3-1) \cdot 1 + (5-1) \cdot (1 \cdot 2) + 1$
+- $r_0 = 2 + 2 + 8 + 1 = 13$
+
+**Answer**: $13 \times 13$ receptive field
+
+**Practical insight**: Each output pixel "sees" a $13 \times 13$ region of the input image.
 :::
 
 Note: If dilation is 1 $(k-1)(d-1)$ equals 0.
@@ -437,17 +679,61 @@ If each output channel has a bias term, add an additional $C_{out}$ weights for 
 
 **Question**
 
+**Real-World Scenario**: You're building a medical imaging system for chest X-ray analysis.
+
 **Scenario:**
 
-- Input activations: $3 \times 32 \times 32$ (C, H, W)
-- Convolution: 10 filters with: $k=5  \times 5$, $s=1$, $p=2$, $d=1$
+- Input X-rays: $1 \times 512 \times 512$ (grayscale)
+- First conv layer: 32 filters, $k=7 \times 7$, $s=2$, $p=3$, $d=1$
 
-**Questions:**
+**Your Tasks:**
 
-1. What is the size of the activation map  $C_{out}, H_{out}, W_{out}$ ?
+1. What is the output activation map size $(C_{out}, H_{out}, W_{out})$?
+2. How many parameters does this layer have?
+3. Why might we choose $k=7$ for medical images vs $k=3$ for natural images?
+4. What's the receptive field of each output pixel?
 
-2. How many weights / parameters defines this operation?
+<details>
+<summary>Click for detailed solutions</summary>
 
+**Solutions:**
+
+1. **Output size**:
+   - $C_{out} = 32$ (number of filters)
+   - $H_{out} = W_{out} = \lfloor \frac{512 + 2(3) - 1(7-1) - 1}{2} \rfloor + 1 = 256$
+   - **Answer**: $(32, 256, 256)$
+
+2. **Parameters**:
+   - Filter weights: $(7 \times 7) \times 1 \times 32 = 1{,}568$
+   - Biases: $32$
+   - **Total**: $1{,}600$ parameters
+
+3. **Why $k=7$ for medical images?**
+   - Medical features often span larger spatial areas (organ boundaries, lesions)
+   - Need to capture broader anatomical context early
+   - Higher resolution medical images benefit from larger initial receptive fields
+   - Natural images have more fine-grained local features
+
+4. **Receptive field**: $7 \times 7$ (same as kernel size for first layer)
+
+**Key Insight**: Domain knowledge should inform architectural choices!
+</details>
+
+:::
+
+::: {.callout-tip title="Domain-Specific Design"}
+Different domains need different CNN architectures:
+
+| Domain | Typical Kernel Sizes | Why? |
+|--------|---------------------|------|
+| **Natural Images** | 3×3, 1×1 | Fine details, efficiency |
+| **Medical Imaging** | 5×5, 7×7 | Larger anatomical features |
+| **Satellite Imagery** | 7×7, 9×9 | Geographic features at scale |
+| **Text Recognition** | Rectangular (1×3, 3×1) | Character and word shapes |
+
+: {tbl-colwidths="[30,20,50]"}
+
+Understanding your data is crucial for good architecture design!
 :::
 
 
