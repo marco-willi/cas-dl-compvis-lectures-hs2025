@@ -123,6 +123,8 @@ Try this visualization to see the difference:
 Notice how CNNs reuse the same filter across all positions!
 :::
 
+
+<!-- TODO: move the CNN  vs MLP to a later part since CNNs are not yet introduced -->
 :::: {.columns}
 
 ::: {.column width="70%"}
@@ -157,7 +159,7 @@ Inputs transformed with a permuation matrix.
 
 **Question**
 
-Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e., $f(P(\vect{x}))$?
+Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e., $f(P(\vect{x}))$? See @fig-cnns-mlp-pattern-shift.
 
 **Hint:** Think carefully - what if EVERY image is permuted with the SAME permutation matrix?
 
@@ -188,6 +190,8 @@ Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted wi
 </details>
 
 :::
+
+<!-- TODO: move this part later since CNNs and their properties have not yet been introduced -->
 
 ::: {.callout-tip title="Deep Learning Insight"}
 This reveals a fundamental principle: **The right inductive bias matters more than the raw capability to learn**.

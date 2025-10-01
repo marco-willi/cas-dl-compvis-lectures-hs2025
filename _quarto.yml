@@ -2,7 +2,9 @@ project:
   type: website
   output-dir: _output
   render:
-    - "*.qmd"
+    #- "*.qmd"
+    - lectures/*.qmd
+    - "index.qmd"
     - "!NOTES.md"
     - "!demos/*"
 
@@ -27,11 +29,12 @@ website:
 
   page-footer:
     right: "This page is built with [Quarto](https://quarto.org/)."
-    left: "&copy; Copyright 2024, Marco Willi"
+    left: "&copy; Copyright 2025, Marco Willi"
     #background: "#D9E3E4"
 
   sidebar:
-    logo: "/assets/logo.webp"
+    #logo: "/assets/logo.webp"
+    logo: "/assets/logo2.png"
     pinned: true
     search: true
     align: center
@@ -52,7 +55,7 @@ website:
           - slides/intro.qmd
           - slides/cnns.qmd
           - slides/image_classification.qmd
-          #- slides/representation_learning.qmd
+          - slides/representation_learning.qmd
           - slides/practical.qmd
       # ------ Exercises ---------------------------- #
       - text: "Exercises"
@@ -66,6 +69,7 @@ website:
           - lectures/intro.qmd
           - lectures/frameworks.qmd
           - lectures/neural_networks.qmd
+          #- lectures/modelling_images.qmd
           - lectures/cnns.qmd
           - lectures/classification.qmd
           - lectures/representation_learning.qmd
