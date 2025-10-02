@@ -45,7 +45,7 @@ Which of the following images are similar to each other? How would you rank them
 
 Images of various degree of similarity (Images from Unsplash - [top left](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick),
 [bottom left](https://unsplash.com/de/fotos/grauer-elefant-spielt-mit-schlamm-xYO4F6HoxOQ),
-[top right](https://unsplash.com/de/fotos/drei-giraffen-tagsuber-auf-braunem-rasen-eQdDUdi5qLk), 
+[top right](https://unsplash.com/de/fotos/drei-giraffen-tagsuber-auf-braunem-rasen-eQdDUdi5qLk),
 [bottom right](https://unsplash.com/de/fotos/geparkter-weisser-ford-explorer-suv-a4S6KUuLeoM)).
 :::
 
@@ -183,7 +183,7 @@ Good representations transform raw data into a format that makes relevant patter
 - *Trade-off:* Too much invariance → loss of discriminative details
 - *Sweet spot:* Preserve task-relevant variations, discard irrelevant ones
 
-**2. Geometric Structure Preservation**  
+**2. Geometric Structure Preservation**
 
 - **Smooth manifold:** Similar semantic concepts cluster in representation space
 - **Composability:** $f(x_1) \oplus f(x_2) \approx f(\text{combine}(x_1, x_2))$ for vector operations
@@ -192,7 +192,7 @@ Good representations transform raw data into a format that makes relevant patter
 **3. Transfer Efficiency**
 
 - **Low sample complexity:** Few examples needed for downstream adaptation
-- **Broad applicability:** Same $f(\cdot)$ works across multiple tasks/domains  
+- **Broad applicability:** Same $f(\cdot)$ works across multiple tasks/domains
 - **Graceful degradation:** Performance degrades slowly with domain shift
 
 **4. Computational Practicality**
@@ -216,12 +216,12 @@ Rather than binary categories, think of a **continuum** of spatial sensitivity:
 ::: {#fig-invariance-equivariance-spectrum}
 ```{mermaid}
 graph LR
-    A["Full Invariance<br/>f(Tx) = f(x)<br/>📊 Classification"] --> B["Partial Invariance<br/>Small changes OK<br/>🔍 Retrieval"] 
+    A["Full Invariance<br/>f(Tx) = f(x)<br/>📊 Classification"] --> B["Partial Invariance<br/>Small changes OK<br/>🔍 Retrieval"]
     B --> C["Local Equivariance<br/>f(Tx) ≈ T'f(x)<br/>🎯 Detection"]
     C --> D["Strict Equivariance<br/>f(Tx) = T'f(x)<br/>🎨 Segmentation"]
-    
+
     style A fill:#FFE4E1
-    style B fill:#F0F8FF  
+    style B fill:#F0F8FF
     style C fill:#F0FFF0
     style D fill:#FFF8DC
 ```
@@ -253,14 +253,14 @@ Collage of semantic-preserving augmentations (crop, jitter, blur, noise) used to
 ::: {.callout-tip title="Try It Yourself!" collapse="false"}
 **Interactive Demo:** Run the `demos/augmentation_collage.ipynb` notebook to:
 - Generate your own augmentation collage
-- Compare pixel-level vs CNN embedding similarities  
+- Compare pixel-level vs CNN embedding similarities
 - Visualize representation spaces with MDS projections
 
 **Key Insight:** Notice how pixel-level similarity fails to capture semantic relationships, while learned CNN embeddings cluster augmented variants together and separate different object classes.
 :::
 
 
-**Why learn representations (vs hand-crafting)?** 
+**Why learn representations (vs hand-crafting)?**
 
 The evolution from manual to learned features reflects three key limitations of hand-crafted approaches:
 
@@ -278,7 +278,7 @@ The evolution from manual to learned features reflects three key limitations of 
 **Common failure modes to avoid:**
 
 1. **Over-invariance:** Aggressive augmentation removes task-critical information (e.g., color for flower classification)
-2. **Under-selectivity:** Representations collapse, making different classes indistinguishable  
+2. **Under-selectivity:** Representations collapse, making different classes indistinguishable
 3. **Brittleness:** High performance on training domain, catastrophic failure on test shifts
 4. **Interpretability loss:** Complex embeddings become black boxes, hindering debugging
 5. **Computational bloat:** Representations grow unnecessarily large without performance gains
@@ -303,7 +303,7 @@ Beyond basic invariance, modern representations exhibit sophisticated geometric 
 
 **Robustness Properties:**
 - **Adversarial stability:** Embeddings remain consistent under small perturbations
-- **Distributional shift tolerance:** Performance degrades gracefully with domain changes  
+- **Distributional shift tolerance:** Performance degrades gracefully with domain changes
 - **Continual learning capability:** New tasks learned without catastrophic forgetting
 :::
 
@@ -395,17 +395,17 @@ flowchart TD
     D -->|No| F{"Domain Shift?"}
     F -->|High| G["Partial Fine-tune<br/>(Top layers)"]
     F -->|Low| H["Full Fine-tune<br/>(All parameters)"]
-    
+
     C --> I["Evaluate Gap"]
     I --> J{"Gap > 10%?"}
     J -->|Yes| E
     J -->|No| K["✓ Ship Linear Probe"]
-    
+
     E --> L["Monitor Forgetting"]
     L --> M{"Performance Drop?"}
     M -->|Yes| N["Reduce LR/<br/>Add Regularization"]
     M -->|No| O["✓ Ship Adapter"]
-    
+
     style K fill:#90EE90
     style O fill:#90EE90
     style G fill:#FFE4B5
@@ -450,7 +450,7 @@ graph TB
         A3 --> A4["Positive: Same image<br/>Negative: Different images"]
         A4 --> A5["InfoNCE Loss"]
     end
-    
+
     subgraph "Self-Distillation (DINO)"
         B1["Image"] --> B2["Multi-crop<br/>Augmentation"]
         B2 --> B3["Student<br/>Encoder"]
@@ -458,21 +458,21 @@ graph TB
         B3 --> B5["Cross-entropy<br/>Distillation"]
         B4 --> B5
     end
-    
+
     subgraph "Masked Modeling (MAE)"
         C1["Image"] --> C2["Random<br/>Masking (75%)"]
         C2 --> C3["Encoder<br/>(visible patches)"]
         C3 --> C4["Decoder<br/>Reconstruction"]
         C4 --> C5["Pixel/Token<br/>Loss"]
     end
-    
+
     subgraph "Multimodal (CLIP)"
         D1["Image"] --> D3["Image<br/>Encoder"]
         D2["Text"] --> D4["Text<br/>Encoder"]
         D3 --> D5["Contrastive<br/>Alignment"]
         D4 --> D5
     end
-    
+
     style A5 fill:#FFE4E1
     style B5 fill:#E0E6FF
     style C5 fill:#E6FFE6
@@ -521,7 +521,7 @@ Image encoder + text encoder; contrastive loss aligns matching pairs enabling te
 **Hands-on Challenge:** Load a pretrained model (ResNet-50, DINOv3) and evaluate it on a small dataset using multiple probes:
 
 1. **k-NN baseline** (k=5): No training required
-2. **Linear probe**: Train only a classifier head  
+2. **Linear probe**: Train only a classifier head
 3. **Clustering quality**: Measure NMI/ARI on embeddings
 4. **Retrieval performance**: Query-gallery similarity ranking
 
@@ -594,14 +594,14 @@ flowchart TD
     H --> I["7. Monitor Forgetting<br/>(Cosine sim drift)"]
     I --> J["8. Document Cost<br/>(GPU hrs vs accuracy)"]
     J --> K["✓ Deploy Adapted Model"]
-    
+
     style G fill:#90EE90
     style K fill:#90EE90
-    
+
     classDef evaluation fill:#FFF8DC
     class C,D,E evaluation
-    
-    classDef adaptation fill:#E6FFE6  
+
+    classDef adaptation fill:#E6FFE6
     class H,I adaptation
 ```
 
@@ -611,7 +611,7 @@ Systematic adaptation workflow: Start simple, escalate only when justified, and 
 ::: {.callout-tip title="Implementation Checklist"}
 **Before you start:**
 - [ ] Baseline established (random features, ImageNet supervised)
-- [ ] Validation split held out for hyperparameter tuning  
+- [ ] Validation split held out for hyperparameter tuning
 - [ ] Compute budget allocated (linear probe: minutes, LoRA: hours, full fine-tune: days)
 
 **During adaptation:**
@@ -648,7 +648,7 @@ print(f"Linear probe val accuracy: {val_acc:.3f}")
 
 1. **Run `demos/augmentation_collage.ipynb`:**
    - Generate augmentation matrices for semantic similarity
-   - Compare ResNet-18 vs DINOv3 embeddings  
+   - Compare ResNet-18 vs DINOv3 embeddings
    - Analyze MDS projections of representation spaces
 
 2. **Run `demos/rl_examples.ipynb`:**
@@ -685,7 +685,7 @@ print(f"Linear probe val accuracy: {val_acc:.3f}")
 
 **Discussion:** Which would you choose and why? Consider:
 - Training objective alignment with your task
-- Data efficiency for few-shot scenarios  
+- Data efficiency for few-shot scenarios
 - Expected transfer performance for fine-grained classification
 
 <details><summary>Reasoning</summary>

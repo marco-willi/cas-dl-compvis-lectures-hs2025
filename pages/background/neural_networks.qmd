@@ -1,10 +1,11 @@
 ---
-title: "3 - Neural Networks"
+title: "Neural Networks"
 params:
    images_path: "/assets/images/neural_networks/"
 ---
 
-::: {.callout-tip title="Learning Objectives"}
+
+::: {.callout-tip title="Learning Objectives" collapse="true"}
 After this lecture you should be able to:
 
 - Explain the relationship between linear models and multilayer perceptrons.
@@ -12,6 +13,11 @@ After this lecture you should be able to:
 - Interpret the role of depth vs width (efficiency of representation, hierarchical features).
 - Implement and configure simple MLP architectures in PyTorch.
 - Reason about universal approximation and its practical limits.
+:::
+
+<!-- TODO: fill in TLDR -->
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
 :::
 
 ::: {.content-hidden}
@@ -306,6 +312,25 @@ summary(model, input_size=(32, 784))
 **Question**
 
 How many parameters does this neural network have, and why?
+
+<details>
+<summary>Answer</summary>
+
+Based on the `torchinfo` summary output above, the network has:
+
+**Layer 1**: 784 inputs × 128 hidden units + 128 biases = **100,480 parameters**
+
+**Layer 2**: 128 inputs × 10 outputs + 10 biases = **1,290 parameters**
+
+**Total: 101,770 parameters**
+
+Each fully connected layer has:
+- Weight matrix of size (input_dim × output_dim)
+- Bias vector of size (output_dim)
+
+This is why the number of parameters grows quickly with network size!
+
+</details>
 
 :::
 

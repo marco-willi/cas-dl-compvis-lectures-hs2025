@@ -1,10 +1,10 @@
 ---
-title: "2 - Software & Hardware for Deep Learning"
+title: "Software & Hardware for Deep Learning"
 params:
    images_path: "/assets/images/frameworks/"
 ---
 
-::: {.callout-tip title="Learning Objectives"}
+::: {.callout-tip title="Learning Objectives" collapse="true"}
 After this lecture you should be able to:
 
 - Explain the role of computational graphs and automatic differentiation in deep learning frameworks.
@@ -12,6 +12,32 @@ After this lecture you should be able to:
 - Distinguish autograd vs manual gradient computation and identify common pitfalls (in-place ops, forgetting zero_grad).
 - Describe core hardware considerations (GPU parallelism, data loading bottlenecks, CUDA/cuDNN impact).
 - Load and adapt pre-trained models responsibly for downstream tasks.
+:::
+
+<!-- TODO:refine PyTorch sub-section -->
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**Software:**
+
+- Deep learning frameworks (PyTorch, TensorFlow) provide automatic differentiation via computational graphs
+- Key concepts: tensors, modules, autograd, optimizers
+- Pre-trained models enable transfer learning and rapid development
+
+**Hardware:**
+
+- GPUs enable parallel computation essential for deep learning
+- CUDA/cuDNN optimize neural network operations on NVIDIA GPUs
+- Data loading can be a bottleneck (GPU starvation) - use multi-threaded data loaders
+- GPU parallelism: data parallelism (model copies) vs model parallelism (split model)
+
+**PyTorch:**
+
+- `PyTorch`:
+- Use `DataLoader` with multiple workers to prevent GPU starvation
+- Remember to call `optimizer.zero_grad()` before each backward pass
+- Move tensors to GPU with `.to(device)` or `.cuda()`
+
 :::
 
 ::: {.content-hidden}

@@ -16,8 +16,51 @@ After this lecture you should be able to:
 :::
 
 
-<!-- TODO: fill out TLDR -->
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**Computer Vision Tasks:**
+- **Classification**: Assign images to predefined classes
+- **Detection**: Locate and recognize multiple objects with bounding boxes
+- **Segmentation**: Assign each pixel to objects (instance) or classes (semantic)
+- **Generation**: Transform or create images (translation, synthesis, super-resolution, text-to-image)
+- **Keypoint Detection**: Localize specific points (e.g., human joints)
+
+**Key Challenges:**
+- Semantic gap (pixels → meaning)
+- Viewpoint, illumination, occlusion variations
+- Intra-class variation and background clutter
+- Context dependence
+
+**Classical vs. Modern Approaches:**
+- **Classical CV**: Hand-crafted features (HOG, SIFT, color histograms) + ML classifiers
+  - Limited by manual feature design, poor scalability
+- **Deep Learning**: End-to-end learned hierarchical representations
+  - Automatic feature extraction, better scaling with data
+
+**Historical Milestones:**
+- **1959**: Hubel & Wiesel - receptive fields in visual cortex
+- **1980**: Neocognitron - hierarchical neural network for vision
+- **1986**: Backpropagation - training algorithm for neural networks
+- **1998**: LeNet - first successful CNN for digit recognition
+- **2012**: AlexNet/ImageNet breakthrough - 9.4% error reduction, marked the deep learning revolution
+- **2014-2015**: VGGNet (depth), ResNet (skip connections) - enabled very deep networks
+- **2020s**: Transformers and hybrid architectures competing with CNNs
+
+**Why Deep Learning Won:**
+- Large-scale datasets (ImageNet: 1.4M images, 1K classes)
+- GPU computing power (parallel processing)
+- Better architectures (CNNs exploit 2D structure)
+- End-to-end optimization (learn features + classifier together)
+
+**Applications:**
+- Autonomous driving, medical imaging, facial recognition
+- Photo editing, image generation, agricultural monitoring
+- Embedded systems (mobile chips for on-device inference)
+
+**Ethical Considerations:**
+- Synthetic media and deepfakes (misinformation risks)
+- Bias in training data and model predictions
+- Privacy concerns with facial recognition
 
 :::
 
@@ -428,31 +471,17 @@ Is this a tiger? Context clues help determine the answer. [Source](https://www.l
 :::
 
 
-## Background & Fundamentals {.unnumbered}
+## Machine Learning Basics
 
-::: {.callout-note title="📚 Optional Background Material" collapse="true"}
+::: {.callout-note title="📚 Quick ML Refresher"}
 
-This section provides optional refresher material on machine learning fundamentals and classical computer vision. If you're already familiar with these concepts, feel free to skip to the [Deep Learning](#deep-learning) section.
+This course uses machine learning concepts throughout. If you need a detailed refresher on ML fundamentals, see our [Machine Learning Basics](../background/machine_learning.qmd) background page.
 
-**Students with ML background**: You can skip this section.
+**Quick summary**: We follow a data-driven approach:
 
-**New to ML?** Review this material to ensure you have the necessary foundation.
-
-:::
-
-
-### Machine Learning Basics {.unnumbered}
-
-::: {.callout-tip title="💡 Quick Refresher" collapse="true"}
-
-#### The Data-Driven Approach
-
-We follow a data-driven approach in machine learning to solve various tasks. Typically, the process involves:
-
-- Collecting a dataset of images and their labels.
-- Using a machine learning algorithm to train a model that learns to associate images with labels.
-- Evaluating/applying the model on new data.
-
+1. **Collect** a dataset of images and labels
+2. **Train** a model that learns to map images to labels
+3. **Evaluate** the model on new data
 
 ```{python}
 #| eval: false
@@ -469,66 +498,81 @@ def predict(test_images, model):
  return predictions
 ```
 
-### Key Concepts
+**Key concepts:**
 
-**Model**: A function $f(\mathbf{x}^{(i)}) = \hat{y}^{(i)}$ with parameters $\theta$ that maps inputs to outputs.
-
-**Optimization**: Find parameters that minimize a loss function:
-$$\mathsf{argmin}_{\theta} J\Big(f_{\theta}(\mathbf{X}), \mathbf{y}\Big)$$
-
-**Model Selection**: Split data into train/validation/test sets to avoid overfitting.
-
-::: {#fig-intro-train-test-split}
-![]({{< meta params.images_path >}}train_test_split.png){width=500}
-
-Train-Validation-Test split for model selection and evaluation.
-:::
+- **Model**: Function $f_{\theta}(\mathbf{x}) = \hat{y}$ with learnable parameters $\theta$
+- **Optimization**: Find $\theta$ that minimizes loss $J(f_{\theta}(\mathbf{X}), \mathbf{y})$
+- **Model Selection**: Use train/validation/test splits to avoid overfitting
 
 :::
 
-## Classical Computer Vision {.unnumbered}
 
-::: {.callout-tip title="💡 The Old Way: Hand-Crafted Features" collapse="true"}
+## Classical vs. Modern Computer Vision
 
-Before deep learning, computer vision relied on **hand-engineered features**. Instead of learning from raw pixels, algorithms extracted predefined patterns:
+### ML with Classical Computer Vision
 
-:::: {.columns}
-::: {.column width="50%"}
-**Feature Types:**
-- Color histograms
-- HOG (Histogram of Oriented Gradients)
-- SIFT keypoints
-- Bag of Visual Words
+Images typically have very high dimensionality. For example, an RGB image with a resolution of $800 \times 600$ has a dimensionality of $800 \times 600 \times 3 = 1,440,000$. Classical machine learning algorithms often struggle with such high dimensionalities:
+
+- They are very slow or require a lot of memory.
+- They cannot exploit the 2-D structure of images.
+- They are very sensitive to slight changes in images (e.g., rotations).
+- They can easily overfit, as the number of features is close to the number of observations (training set).
+
+When modeling images with (classical) machine learning algorithms, methods from (classical) computer vision are often used. With the help of such methods, features can be extracted from images, and the algorithms can learn on these features. This avoids modeling high-dimensional raw data. @fig-intro-color-histograms, @fig-intro-hog-features, and @fig-intro-bow-features show various feature extraction methods.
+
+@fig-intro-color-histograms shows that, for example, the distribution over the color spectrum can be extracted from an image. This could be an important feature.
+
+::: {#fig-intro-color-histograms}
+
+![]({{< meta params.images_path >}}color_histogram.png){width=600}
+
+
+Color Histograms as Features (Source: @johnson_eecs_2022)
 :::
 
-::: {.column width="50%"}
-**Limitations:**
-- Manual feature design
-- Domain-specific tuning
-- Limited scalability
-- Poor generalization
-:::
-::::
+@fig-intro-hog-features shows that techniques like Histogram of Oriented Gradients (HOG) @dalal_histograms_2005 can be used to extract structures from images. Such features were successfully used for pedestrian detection @dalal_histograms_2005.
 
-::: {#fig-intro-classical-features layout-ncol=2}
-![Color Histograms]({{< meta params.images_path >}}color_histogram.png)
-![HOG Features]({{< meta params.images_path >}}hog_features.png)
+::: {#fig-intro-hog-features}
 
-Classical CV: Extract hand-crafted features, then train classifiers. Sources: @johnson_eecs_2022
+![]({{< meta params.images_path >}}hog_features.png){width=600}
+
+
+HOG as Features (Source: @johnson_eecs_2022)
 :::
 
-**Why this approach failed to scale:**
+@fig-intro-bow-features shows another feature variant. Visual patches can be extracted from a dataset, clustered, and then used as descriptors.
 
-Images have very high dimensionality (e.g., 800×600×3 = 1.44M dimensions). Classical ML algorithms struggle because they:
-- Cannot exploit 2-D spatial structure
-- Are sensitive to small changes (rotation, translation)
-- Easily overfit with high-dimensional inputs
+::: {#fig-intro-bow-features}
 
-**The paradigm shift:** Deep learning replaces manual feature engineering with learned hierarchical representations.
+![]({{< meta params.images_path >}}bag_of_words_features.png){width=600}
 
+
+Bag of (visual) words Features (Source: @johnson_eecs_2022)
 :::
 
-## Deep Learning
+Finally, all features can be combined, often more is better, as shown in @fig-intro-concat-features.
+
+::: {#fig-intro-concat-features}
+
+![]({{< meta params.images_path >}}features_concat.png){width=600}
+
+
+Image Features (Source: @johnson_eecs_2022)
+:::
+
+Depending on the parameterization, HOG descriptors, for example, can be very large for images. The resulting feature vector from @fig-intro-concat-features can still be reduced in dimensionality, e.g., with Principal Component Analysis.
+
+@fig-intro-cifar10 shows the CIFAR10 dataset. A well-known dataset for testing models, consisting of 10 classes with 6,000 images each.
+
+::: {#fig-intro-cifar10}
+
+![]({{< meta params.images_path >}}cifar10.jpg){width=600}
+
+
+CIFAR10 Dataset [Source](https://www.cs.toronto.edu/~kriz/cifar.html)
+:::
+
+### Deep Learning
 
 To accelerate research in computer vision and make progress more measurable, the PASCAL VOC Challenges were introduced @everingham_pascal_2007. These involved various tasks, such as detecting objects in photographs (@fig-intro-pascal).
 
@@ -560,7 +604,7 @@ Since 2010, challenges have been regularly conducted on the ImageNet dataset @ru
 Source: @johnson_eecs_2022
 :::
 
-### The ImageNet Breakthrough (2012)
+#### The ImageNet Breakthrough (2012)
 
 The year 2012 marked a watershed moment in computer vision. Until then, the state-of-the-art in the ImageNet competition relied on classical approaches. In 2011, the winning team @perronnin_large-scale_2010 combined various hand-crafted feature extraction methods (SIFT features) with Support Vector Machines (SVMs), achieving a top-5 error rate of 25.8%.
 

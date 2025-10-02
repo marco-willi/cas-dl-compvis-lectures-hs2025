@@ -3,7 +3,8 @@ project:
   output-dir: _output
   render:
     #- "*.qmd"
-    - lectures/*.qmd
+    - pages/lectures/*.qmd
+    - pages/background/*.qmd
     - "index.qmd"
     - "!NOTES.md"
     - "!demos/*"
@@ -34,7 +35,7 @@ website:
 
   sidebar:
     #logo: "/assets/logo.webp"
-    logo: "/assets/logo2.png"
+    logo: "/assets/logo_small.png"
     pinned: true
     search: true
     align: center
@@ -49,38 +50,43 @@ website:
     contents:
       - text: "Home"
         href: index.qmd
-      # ------ SLIDES ---------------------------- #
-      - section: Slides
+      # ------ Background & Preparation------------ #
+      - section: Background & Preparation
         contents:
-          - slides/intro.qmd
-          - slides/cnns.qmd
-          - slides/image_classification.qmd
-          - slides/representation_learning.qmd
-          - slides/practical.qmd
-      # ------ Exercises ---------------------------- #
-      - text: "Exercises"
-        href: pages/exercises.qmd
-        # ------ Quiz & Exam Prep---------------------------- #
-      - text: "Quiz & Exam Prep"
-        href: pages/quiz.qmd
+          - pages/background/machine_learning.qmd
+          - pages/background/neural_networks.qmd
+          - pages/background/frameworks.qmd
       # ------ Lecture ---------------------------- #
       - section: Lectures
         contents:
-          - lectures/intro.qmd
-          - lectures/frameworks.qmd
-          - lectures/neural_networks.qmd
-          #- lectures/modelling_images.qmd
-          - lectures/cnns.qmd
-          - lectures/classification.qmd
-          - lectures/representation_learning.qmd
-          - lectures/practical.qmd
-          - lectures/recent_advances.qmd
+          - pages/lectures/intro.qmd
+          #- pages/lectures/modelling_images.qmd
+          - pages/lectures/cnns.qmd
+          - pages/lectures/classification.qmd
+          - pages/lectures/representation_learning.qmd
+          - pages/lectures/practical.qmd
+          - pages/lectures/recent_advances.qmd
+      # ------ SLIDES ---------------------------- #
+      - section: Slides
+        contents:
+          - pages/slides/intro.qmd
+          - pages/slides/cnns.qmd
+          - pages/slides/image_classification.qmd
+          - pages/slides/representation_learning.qmd
+          - pages/slides/practical.qmd
+      # ------ Exercises ---------------------------- #
+      - text: "Exercises"
+        href: pages/misc/exercises.qmd
+        # ------ Quiz & Exam Prep---------------------------- #
+      - text: "Quiz & Exam Prep"
+        href: pages/misc/quiz.qmd
+
       # ------ Misc ---------------------------- #
       - section: Resources
         contents:
-          - pages/literature.qmd
-          - pages/links.qmd
-          - pages/notation.qmd
+          - pages/misc/literature.qmd
+          - pages/misc/links.qmd
+          - pages/misc/notation.qmd
 
 bibliography: assets/references.bib
 

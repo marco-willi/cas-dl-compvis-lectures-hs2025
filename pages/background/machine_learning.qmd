@@ -1,0 +1,137 @@
+---
+title: "Machine Learning Basics"
+params:
+  images_path: "/assets/images/machine_learning/"
+---
+
+This page provides a comprehensive overview of machine learning fundamentals for students who need a refresher before diving into deep learning for computer vision.
+
+## The Data-Driven Approach
+
+We follow a data-driven approach in machine learning to solve various tasks. Typically, the process involves:
+
+- Collecting a dataset of images and their labels.
+- Using a machine learning algorithm to train a model that learns to associate images with labels.
+- Evaluating/applying the model on new data.
+
+
+```{python}
+#| eval: false
+#| echo: true
+
+def train(images, labels):
+ """ Train a Model """
+ # Fit Model here
+ return model
+
+def predict(test_images, model):
+ """ Predict """
+ predictions = model(test_images)
+ return predictions
+```
+
+::: {#fig-super-resolution-demo}
+
+![]({{< meta params.images_path >}}super_resolution_demo.png){width=100%}
+
+Image super-resolution demonstration: Converting a low-resolution (100×100 pixels) image to high-resolution (400×400 pixels). The middle panel shows why naive upscaling fails—it remains pixelated. Machine learning models learn to add realistic high-frequency details.
+:::
+
+::: {.callout-note appearance="simple"}
+
+**🤔 Think About It**
+
+How would you train a model for image super-resolution? The task is to upscale low-resolution images to high-resolution with the best possible quality.
+
+<details>
+<summary>Key considerations</summary>
+
+- **Training data**: Pairs of low-res and high-res images (can be created by downsampling high-res images)
+- **Loss function**: Measure difference between predicted high-res and actual high-res
+- **Architecture**: CNN that learns to add high-frequency details
+- **Evaluation**: Visual quality metrics (PSNR, SSIM) and perceptual similarity
+
+</details>
+
+:::
+
+
+## Machine Learning Process
+
+When modeling data, one often follows certain process steps: acquiring data, preparing it, training multiple models, selecting the most suitable model, estimating its future performance, and finally deploying it in production. @fig-ml-pipeline illustrates this process graphically.
+
+::: {#fig-ml-pipeline}
+
+![]({{< meta params.images_path >}}python_ml.png){width=600}
+
+
+Machine Learning Pipeline (Source: @raschka_python_2020)
+:::
+
+At the core of a machine learning application is typically a mathematical model, which is fitted to a dataset so that it can then be used for prediction (in supervised learning). We often refer to 'models', meaning the mathematical description of the dataset.
+
+## Models
+
+A model is typically described as a function of a data point, generating an output $\hat{y}$:
+
+\begin{align*}
+f(\mathbf{x}^{(i)}) = \hat{y}^{(i)}
+\end{align*}
+
+Most models have parameters or coefficients that describe the model. The entirety of all parameters is denoted by $\theta$.
+
+\begin{align*}
+f_{\theta}(\mathbf{x}^{(i)}) \text{ or } f(\theta, \mathbf{x}^{(i)})
+\end{align*}
+
+For simplicity, we often omit $\theta$: $f(\mathbf{x}^{(i)})$
+
+## Optimization
+
+The coefficients are fitted to a training dataset through an optimization procedure.
+
+The optimization procedure can often be influenced by additional factors, called hyperparameters ($\alpha, \lambda, \dots$). These cannot be directly optimized.
+
+The function/quantity to be optimized is usually called the cost function, i.e., cost function (other terms include objective function, loss function, etc.). We use $J(\cdot)$ to denote the cost function. Often, the cost function is also referred to as the loss function $L(\cdot)$. We use $l(\cdot)$ for the per-sample loss, i.e., the computation of the cost function on a single sample.
+
+Our goal is to find a model (and its parameters) that minimizes the cost function:
+
+\begin{equation*}
+\mathsf{argmin}_{\theta, \lambda} J\Big(f_{\theta, \lambda}(\mathbf{X}), \mathbf{y}\Big)
+\end{equation*}
+
+Usually, preprocessing of variables precedes the learning of the coefficients. Forms of preprocessing include standardizing, normalizing, feature encoding, dimensionality reduction, and more. This preprocessing also affects the optimization procedure and can be considered hyperparameters.
+
+## Model Selection
+
+Model selection is one of the most important and complex components of the machine learning process. This step involves comparing multiple models and selecting the "best" model for the task to be modeled. Which model is the "best" must be defined based on a metric that measures the model's performance.
+
+If we calculate the value of the metric on the training dataset, our model is usually too optimistic about its general performance. This is because the data points in the training dataset were directly used to optimize the cost function, and the model coefficients are thus optimally adjusted to them. New data points, for which predictions are to be made, could not have been used for optimization. Therefore, a dataset is usually divided into a training set and a test set. The model is trained with the training set and its performance is measured on the test set. When comparing many models, it is advisable to compare them on a separate validation set (see @fig-train-test-split) and evaluate only the best model on the test set. This makes the estimate on the test set more accurate.
+
+::: {#fig-train-test-split}
+
+![]({{< meta params.images_path >}}train_test_split.png){width=600}
+
+
+Train-Test Split to select and evaluate models.
+:::
+
+## Key Concepts Summary
+
+::: {.callout-tip title="Quick Reference"}
+
+**Model**: A function $f_{\theta}(\mathbf{x}^{(i)}) = \hat{y}^{(i)}$ with parameters $\theta$ that maps inputs to outputs.
+
+**Optimization**: Find parameters that minimize a loss function:
+$$\mathsf{argmin}_{\theta} J\Big(f_{\theta}(\mathbf{X}), \mathbf{y}\Big)$$
+
+**Hyperparameters**: Settings that control the learning process but are not learned from data (e.g., learning rate, regularization strength).
+
+**Model Selection**: Split data into train/validation/test sets to avoid overfitting and get accurate performance estimates.
+
+:::
+
+## References
+
+::: {#refs}
+:::

@@ -143,7 +143,7 @@ Comparison of MLPs vs CNNs for image processing
 
 :::
 
-:::: 
+::::
 
 
 
@@ -177,7 +177,7 @@ Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted wi
 **The real insight:**
 
 - ✅ **Same permutation for all images**: MLP can learn the task
-- ❌ **Different permutations per image**: MLP cannot learn effectively  
+- ❌ **Different permutations per image**: MLP cannot learn effectively
 - ❌ **No permutation but objects move around**: MLP struggles with translation
 
 **Why this matters**: This thought experiment reveals that MLPs' problem with images isn't about permutation per se, but about **spatial relationships and translation invariance**:
@@ -217,7 +217,7 @@ Now that we've seen the limitations of MLPs for images, let's explore how **Conv
 **Instead of connecting every neuron to every input**, CNNs use three key principles:
 
 1. **Local Connectivity**: Each neuron only looks at a small spatial region
-2. **Parameter Sharing**: The same filter/detector is used across all spatial locations  
+2. **Parameter Sharing**: The same filter/detector is used across all spatial locations
 3. **Translation Equivariance**: If the input shifts, the output shifts correspondingly
 
 These aren't just technical tricks—they encode our **prior knowledge** about how images work!
@@ -227,9 +227,9 @@ These aren't just technical tricks—they encode our **prior knowledge** about h
 
 A single neuron in a CNN is only connected to a small portion (local connectivity) of the image (see @fig-cnn-cnn-spatial). As a result:
 
-✅ **Fewer Parameters**: Neurons have far fewer connections than in MLPs  
-✅ **Spatial Structure Preserved**: No need to flatten 2D images into 1D vectors  
-✅ **Translation Equivariance**: Same detector works everywhere in the image  
+✅ **Fewer Parameters**: Neurons have far fewer connections than in MLPs
+✅ **Spatial Structure Preserved**: No need to flatten 2D images into 1D vectors
+✅ **Translation Equivariance**: Same detector works everywhere in the image
 ✅ **Hierarchical Feature Learning**: Stack layers to learn increasingly complex patterns
 
 :::{#fig-cnn-cnn-spatial}
@@ -259,9 +259,9 @@ $$f(g(\vect{x})) = f(\vect{x})$$
 A function $f(\vect{x})$ is **equivariant** to transformation $g(\vect{x})$ if:
 $$f(g(\vect{x})) = g(f(\vect{x}))$$
 
-**Intuition**: 
+**Intuition**:
 
-- **Invariant** = "I don't care about the transformation" 
+- **Invariant** = "I don't care about the transformation"
 - **Equivariant** = "I transform my output the same way the input was transformed"
 :::
 
@@ -487,7 +487,7 @@ This is why modern architectures (like ResNet) prefer stacking smaller kernels!
 ::: {.callout-tip title="Best Practice"}
 **Modern CNN Design**: Use multiple 3×3 convolutions instead of larger kernels to get:
 
-- ✅ Fewer parameters  
+- ✅ Fewer parameters
 - ✅ More non-linearity (more activation functions)
 - ✅ Better gradient flow
 - ✅ Similar receptive field coverage
@@ -517,21 +517,21 @@ Why would we use dilation $d > 1$?
 **Benefits of dilation**:
 
 1. **Larger receptive field**: See more context without more layers
-2. **Same parameter count**: Filter size stays the same  
+2. **Same parameter count**: Filter size stays the same
 3. **Preserve resolution**: No spatial downsampling
 4. **Multi-scale features**: Different dilation rates capture different scales
 
 **Use cases**:
 
 - **Semantic segmentation**: Need large receptive fields while preserving spatial resolution
-- **Dense prediction tasks**: Want to see global context for local predictions  
+- **Dense prediction tasks**: Want to see global context for local predictions
 - **Efficient architectures**: Alternative to deeper networks
 
 **Trade-offs**:
 
 - ✅ Larger receptive field with same parameters
 - ✅ No resolution loss
-- ❌ May miss fine-grained spatial relationships  
+- ❌ May miss fine-grained spatial relationships
 - ❌ Can create "grid artifacts" if not used carefully
 
 **Example**: A 3×3 kernel with dilation=2 has the receptive field of a 5×5 kernel but only 9 parameters instead of 25!
@@ -543,7 +543,7 @@ Why would we use dilation $d > 1$?
 **Atrous/Dilated Convolutions** are especially popular in:
 
 - **DeepLab** (semantic segmentation)
-- **WaveNet** (audio generation)  
+- **WaveNet** (audio generation)
 - **Dilated ResNets** (dense prediction)
 
 The key insight: **expand the receptive field without losing resolution**!
@@ -586,7 +586,7 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 
 - Input size: $i = 32$ (height and width)
 - Kernel size: $k = 3$
-- Padding: $p = 1$ 
+- Padding: $p = 1$
 - Stride: $s = 2$
 - Dilation: $d = 1$
 
@@ -608,7 +608,7 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 
 **Scenario**: Design a convolutional layer with:
 
-- Input: $3 \times 32 \times 32$ (RGB image)  
+- Input: $3 \times 32 \times 32$ (RGB image)
 - 64 output channels
 - Kernel size: $5 \times 5$
 - Include bias terms
@@ -616,7 +616,7 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 **Questions**:
 
 1. How many weights in the filters?
-2. How many bias parameters? 
+2. How many bias parameters?
 3. Total parameters?
 4. If we used a fully connected layer instead, how many parameters would that require?
 
@@ -624,7 +624,7 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 
 1. **Filter weights**: $(5 \times 5) \times 3 \times 64 = 4{,}800$
 2. **Bias parameters**: $64$ (one per output channel)
-3. **Total parameters**: $4{,}800 + 64 = 4{,}864$ 
+3. **Total parameters**: $4{,}800 + 64 = 4{,}864$
 4. **Fully connected alternative**: $(32 \times 32 \times 3) \times 64 = 196{,}608$
 
 **Insight**: CNNs use **40× fewer parameters** while being more effective for images!
@@ -635,7 +635,7 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 **Network Architecture**:
 
 - Layer 1: Conv2d(kernel=3, stride=1)
-- Layer 2: Conv2d(kernel=3, stride=2)  
+- Layer 2: Conv2d(kernel=3, stride=2)
 - Layer 3: Conv2d(kernel=5, stride=1)
 
 **Question**: What is the receptive field of the final layer with respect to the input?
@@ -1016,11 +1016,12 @@ from PIL import Image
 from matplotlib import pyplot as plt
 ```
 
+<!-- TODO: replace relative path with absolute -->
 ```{python}
 #| eval: true
 #| echo: true
 #img = Image.open({{< meta params.images_path >}}'cat.jpg')
-image_path = "../assets/images/cnns/cat.jpg"
+image_path = "../../assets/images/cnns/cat.jpg"
 img = Image.open(image_path)
 img
 ```
