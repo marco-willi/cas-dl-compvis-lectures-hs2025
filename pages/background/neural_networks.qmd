@@ -12,11 +12,46 @@ After this lecture you should be able to:
 - Describe why activation functions enable non-linear function approximation.
 - Interpret the role of depth vs width (efficiency of representation, hierarchical features).
 - Implement and configure simple MLP architectures in PyTorch.
-- Reason about universal approximation and its practical limits.
 :::
 
-<!-- TODO: fill in TLDR -->
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**From Linear to Non-Linear:**
+
+- Linear models: $f(\mathbf{x}) = \mathbf{W}\mathbf{x} + \mathbf{b}$ (limited to linear decision boundaries)
+- Neural networks add **activation functions** (ReLU, sigmoid, tanh) enabling non-linear mappings
+- Without activation functions, multiple layers collapse to a single linear transformation
+
+**Key Concepts:**
+
+- **Layers**: Input → Hidden (intermediate computations) → Output
+- **Activation Functions**: ReLU most common ($\max(0,x)$), enables modeling complex patterns
+- **Universal Approximation**: Shallow networks can approximate any continuous function (theoretically)
+- **Depth vs Width**: Deep networks more efficient than wide shallow ones for complex functions
+
+**Why Deep Learning Works:**
+
+- **Hierarchical Features**: Early layers learn simple patterns (edges, colors) → deeper layers learn complex concepts (objects, faces)
+- **Efficiency**: Adding depth requires fewer neurons than increasing width
+- **Biological Inspiration**: Mimics hierarchical processing in visual cortex
+
+**Architecture Components:**
+
+- **Multilayer Perceptron (MLP)**: Fully connected layers with activation functions
+- **Parameters**: Weights $\mathbf{W}$ and biases $\mathbf{b}$ learned via optimization (backpropagation)
+- **Example**: 784 → 128 → 10 network has ~102K parameters (784×128 + 128×10 + biases)
+
+**Practical Implementation (PyTorch):**
+```python
+model = nn.Sequential(
+    nn.Flatten(),
+    nn.Linear(784, 128),
+    nn.ReLU(),
+    nn.Linear(128, 10)
+)
+```
+
+**Key Takeaway:** Neural networks transform inputs through learned hierarchical representations, with activation functions enabling the non-linearity needed to solve complex real-world problems.
 
 :::
 

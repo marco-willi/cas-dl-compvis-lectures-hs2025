@@ -14,8 +14,6 @@ After this lecture you should be able to:
 - Load and adapt pre-trained models responsibly for downstream tasks.
 :::
 
-<!-- TODO:refine PyTorch sub-section -->
-
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
 
 **Software:**
@@ -31,12 +29,25 @@ After this lecture you should be able to:
 - Data loading can be a bottleneck (GPU starvation) - use multi-threaded data loaders
 - GPU parallelism: data parallelism (model copies) vs model parallelism (split model)
 
-**PyTorch:**
+**PyTorch Best Practices:**
 
-- `PyTorch`:
-- Use `DataLoader` with multiple workers to prevent GPU starvation
-- Remember to call `optimizer.zero_grad()` before each backward pass
-- Move tensors to GPU with `.to(device)` or `.cuda()`
+- **Tensors**: N-dimensional arrays (like NumPy) with GPU support via `.to(device)`
+- **Autograd**: Automatic differentiation with `requires_grad=True` and `.backward()`
+- **Modules**: Build networks by inheriting `nn.Module` and implementing `forward()`
+- **Optimizers**: Use `optimizer.zero_grad()` before each backward pass to clear gradients
+- **DataLoaders**: Use multiple workers to prevent GPU starvation
+- **Common Pitfalls**: Forgetting `zero_grad()`, in-place operations breaking autograd, device mismatches
+
+**Quick Training Loop Pattern:**
+```python
+for epoch in range(num_epochs):
+    for batch_x, batch_y in dataloader:
+        optimizer.zero_grad()        # Reset gradients
+        predictions = model(batch_x) # Forward pass
+        loss = loss_fn(predictions, batch_y)
+        loss.backward()              # Compute gradients
+        optimizer.step()             # Update parameters
+```
 
 :::
 
@@ -164,11 +175,30 @@ c = c.to(device=device)
 
 In this class, we use PyTorch. PyTorch has gained enormous popularity in recent years and stands out for its high flexibility, a clean API, and many open-source resources.
 
+::: {.callout-note title="Why PyTorch?" collapse="true"}
+
+**Key Advantages:**
+- **Pythonic API**: Feels natural to Python developers, easy to debug
+- **Dynamic computation graphs**: Build graphs on-the-fly, great for research
+- **Strong ecosystem**: torchvision (CV), torchaudio (audio), transformers library integration
+- **Industry & research adoption**: Used by Meta, Tesla, OpenAI, and top ML research labs
+- **Excellent documentation**: Comprehensive tutorials and active community
+
+**When to use PyTorch:**
+- Research projects requiring flexibility
+- Computer vision and NLP applications
+- When you need fine-grained control over training loops
+- Prototyping new architectures or training procedures
+
+:::
+
 ## Fundamental Concepts
 
-- Tensor: N-dimensional array, similar to [`numpy.array`](https://numpy.org/doc/stable/reference/generated/numpy.array.html)
-- Autograd: Functionality to create computational graphs and compute gradients.
-- Module: Class to define components of neural networks
+PyTorch is built around three core concepts:
+
+- **Tensor**: N-dimensional array, similar to [`numpy.array`](https://numpy.org/doc/stable/reference/generated/numpy.array.html) but with GPU acceleration
+- **Autograd**: Automatic differentiation to create computational graphs and compute gradients
+- **Module**: Base class (`nn.Module`) to define components of neural networks with learnable parameters
 
 ## Tensors
 
@@ -283,6 +313,13 @@ torch.mul(tensor, tensor, out=z3)
 To train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an _auto-diff_ functionality:
 [`torch.autograd`](https://pytorch.org/docs/stable/autograd.html). This can automatically compute gradients for a _computational graph_.
 
+::: {.callout-tip title="Autograd Key Points"}
+- Set `requires_grad=True` on tensors you want to track for gradient computation
+- Call `.backward()` on a scalar loss to compute all gradients
+- Access gradients via `.grad` attribute of tensors
+- Use `torch.no_grad()` context for inference to save memory and speed up computation
+:::
+
 The following is an example using a 1-layer neural network (see @fig-infrastructure-comp-graph ):
 
 ::: {#fig-infrastructure-comp-graph}
@@ -319,6 +356,24 @@ print(b.grad)
 ## torch.nn
 
 PyTorch provides various building blocks for creating neural networks. These are available in [`torch.nn`](https://pytorch.org/docs/stable/nn.html). Additionally, you can define any compositions of such building blocks that inherit from [`torch.nn.Module`](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module). A neural network is typically a `torch.nn.Module`. Each module implements the `forward()` method to define how data is processed.
+
+::: {.callout-tip title="Building Blocks in torch.nn"}
+**Common layers:**
+- `nn.Linear`: Fully connected layer
+- `nn.Conv2d`: 2D convolutional layer
+- `nn.MaxPool2d`: Max pooling layer
+- `nn.Dropout`: Regularization via random dropout
+- `nn.BatchNorm2d`: Batch normalization
+
+**Common activations:**
+- `nn.ReLU()`, `nn.LeakyReLU()`, `nn.GELU()`
+- `nn.Sigmoid()`, `nn.Tanh()`, `nn.Softmax()`
+
+**Loss functions:**
+- `nn.CrossEntropyLoss()`: Classification
+- `nn.MSELoss()`: Regression
+- `nn.BCEWithLogitsLoss()`: Binary classification
+:::
 
 Here is an example:
 
@@ -381,6 +436,16 @@ make_dot(logits)
 
 To optimize the parameters of a model, you need an optimization algorithm. [`torch.optim`](https://pytorch.org/docs/stable/optim.html) implements various algorithms, such as _Stochastic Gradient Descent_ or the often used _Adam Optimizer_.
 
+::: {.callout-tip title="Common Optimizers"}
+- **SGD**: Basic stochastic gradient descent (with optional momentum)
+- **Adam**: Adaptive learning rates, good default choice
+- **AdamW**: Adam with weight decay, often better for transformers
+- **RMSprop**: Adaptive learning rates, good for RNNs
+- **Learning rate schedulers**: Adjust learning rate during training (e.g., `torch.optim.lr_scheduler`)
+
+**Rule of thumb**: Start with Adam, then try SGD with momentum if you need better generalization.
+:::
+
 ```{python}
 #| eval: true
 #| echo: true
@@ -404,7 +469,65 @@ for i in range(0, 3):
 ```
 
 ::: {.callout-note}
-Note `optimizer.zero_grad()` which resets the accumulated gradients of the variables to 0.
+**Critical**: Always call `optimizer.zero_grad()` before computing gradients! PyTorch accumulates gradients by default, so failing to zero them will cause incorrect gradient updates.
+:::
+
+::: {.callout-tip title="Common Pitfalls & Solutions"}
+
+**Pitfall 1: Forgetting zero_grad()**
+```python
+# ❌ Wrong - gradients accumulate
+for batch in dataloader:
+    loss = compute_loss(batch)
+    loss.backward()
+    optimizer.step()
+
+# ✅ Correct
+for batch in dataloader:
+    optimizer.zero_grad()  # Clear previous gradients
+    loss = compute_loss(batch)
+    loss.backward()
+    optimizer.step()
+```
+
+**Pitfall 2: Device mismatch**
+```python
+# ❌ Wrong - model on GPU, data on CPU
+model = model.cuda()
+for batch_x, batch_y in dataloader:
+    pred = model(batch_x)  # Error!
+
+# ✅ Correct
+model = model.cuda()
+for batch_x, batch_y in dataloader:
+    batch_x = batch_x.cuda()
+    batch_y = batch_y.cuda()
+    pred = model(batch_x)
+```
+
+**Pitfall 3: In-place operations breaking autograd**
+```python
+# ❌ Wrong - in-place operations can break gradient computation
+x = x * 2  # In-place when x requires grad
+x += 5     # In-place
+
+# ✅ Correct
+x = x * 2  # Creates new tensor
+x = x + 5  # Creates new tensor
+```
+
+**Pitfall 4: Not using eval() mode for inference**
+```python
+# ❌ Wrong - dropout and batchnorm active during inference
+predictions = model(test_data)
+
+# ✅ Correct
+model.eval()
+with torch.no_grad():
+    predictions = model(test_data)
+model.train()  # Switch back to training mode
+```
+
 :::
 
 

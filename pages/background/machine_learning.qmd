@@ -4,7 +4,68 @@ params:
   images_path: "/assets/images/machine_learning/"
 ---
 
-This page provides a comprehensive overview of machine learning fundamentals for students who need a refresher before diving into deep learning for computer vision.
+
+::: {.callout-tip title="Learning Objectives" collapse="true"}
+After reviewing this material you should be able to:
+
+- Describe the data-driven approach to machine learning and its core workflow (collect, train, evaluate).
+- Define what a model is mathematically and distinguish between parameters and hyperparameters.
+- Explain the role of optimization in fitting models and identify common cost/loss functions.
+- Justify why train/validation/test splits are necessary for unbiased model evaluation.
+- Interpret the machine learning pipeline from data acquisition through deployment.
+- Apply model selection principles to choose between competing models.
+- Recognize the importance of preprocessing (normalization, encoding, dimensionality reduction).
+:::
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**The Data-Driven Approach:**
+```python
+def train(images, labels):
+    return model  # Fit model to data
+
+def predict(test_images, model):
+    return model(test_images)  # Make predictions
+```
+
+**Core Concepts:**
+
+- **Model**: Function $f_{\theta}(\mathbf{x}) = \hat{y}$ mapping inputs to outputs via learned parameters $\theta$
+- **Optimization**: Find parameters that minimize loss: $\mathsf{argmin}_{\theta} J(f_{\theta}(\mathbf{X}), \mathbf{y})$
+- **Hyperparameters**: Settings that control learning (learning rate, regularization) but aren't learned from data
+- **Loss Functions**: Measure prediction error (MSE for regression, cross-entropy for classification)
+
+**The ML Pipeline:**
+
+1. **Data Acquisition** → Collect and prepare labeled dataset
+2. **Preprocessing** → Normalize, encode features, reduce dimensionality
+3. **Model Training** → Optimize parameters on training set
+4. **Model Selection** → Compare models on validation set
+5. **Evaluation** → Assess final model on held-out test set
+6. **Deployment** → Integrate into production systems
+
+**Train/Validation/Test Splits:**
+
+- **Train set**: Used to optimize model parameters
+- **Validation set**: Used to compare models and tune hyperparameters
+- **Test set**: Final evaluation to estimate real-world performance (use only once!)
+- **Why?** Training metrics are too optimistic; need unbiased performance estimates
+
+**Key Insight:** The test set represents "future unseen data" - touching it during development leads to overfitting and unreliable performance estimates.
+
+**Example Application:** Image super-resolution (shown in @fig-super-resolution-demo):
+- **Training data**: Low-res/high-res image pairs
+- **Model**: CNN that learns to add high-frequency details
+- **Loss**: Pixel-wise difference between predicted and true high-res
+- **Evaluation**: PSNR, SSIM, perceptual similarity metrics
+
+:::
+
+::: {.content-hidden}
+$$
+{{< include /assets/_macros.tex >}}
+$$
+:::
 
 ## The Data-Driven Approach
 
@@ -30,6 +91,8 @@ def predict(test_images, model):
  return predictions
 ```
 
+
+<!-- TODO: add a sentence here to make the transition to the super-resolutiuon task and the associated question more smooth -->
 ::: {#fig-super-resolution-demo}
 
 ![]({{< meta params.images_path >}}super_resolution_demo.png){width=100%}

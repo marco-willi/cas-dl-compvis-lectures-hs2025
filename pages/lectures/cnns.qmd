@@ -1,10 +1,10 @@
 ---
-title: "4 - Convolutional Neural Networks"
+title: "Convolutional Neural Networks"
 params:
    images_path: "/assets/images/cnns/"
 ---
 
-::: {.callout-tip title="Learning Objectives"}
+::: {.callout-tip title="Learning Objectives" collapse="true"}
 
 After this lecture you should be able to:
 
@@ -13,6 +13,87 @@ After this lecture you should be able to:
 - Distinguish invariance vs equivariance and relate them to layer design (convs, pooling, global average pooling).
 - Describe receptive field growth through stacking and dilation.
 - Compare alternative convolution variants (depthwise separable, 1x1, transposed) and their use cases.
+:::
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**Why CNNs? The Problem with MLPs on Images**
+
+- Images are high-dimensional (e.g., $224 \times 224 \times 3 = 150{,}528$ pixels)
+- MLPs flatten images, losing spatial structure
+- Fully connected layers require millions of parameters: $(150{,}528 \times 1{,}000 = 150M$ parameters for just one layer!
+- MLPs don't exploit natural image properties (locality, translation invariance)
+
+**The CNN Solution: Three Key Principles**
+
+1. **Local Connectivity**: Each neuron only connects to a small spatial region (receptive field)
+2. **Parameter Sharing**: Same filter/detector applied across all spatial locations
+3. **Translation Equivariance**: If input shifts, output shifts correspondingly
+
+**Core Operation: Convolution**
+
+$$S(i, j) = (K * I)(i, j) = \sum_m\sum_n I(i + m, j + n)K(m, n)$$
+
+- **Input** $I$: Activation maps $(C_{in} \times H \times W)$
+- **Kernel** $K$: Learnable filter $(C_{out} \times C_{in} \times k \times k)$
+- **Output** $S$: Feature maps $(C_{out} \times H' \times W')$
+
+**Key Hyperparameters**
+
+- **Kernel Size** $k$: Spatial extent (usually 3×3 or 5×5)
+- **Stride** $s$: Step size (controls downsampling)
+- **Padding** $p$: Zero-padding to preserve spatial size
+- **Dilation** $d$: Spacing between kernel elements (expands receptive field)
+
+**Output Size Formula**
+
+$$o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor$$
+
+**Parameter Count**
+
+$$\text{Total Parameters} = (k \times k \times C_{in} \times C_{out}) + C_{out}$$
+
+**Invariance vs Equivariance**
+
+- **Invariant**: $f(g(x)) = f(x)$ — output unchanged by transformation (needed for *classification*)
+- **Equivariant**: $f(g(x)) = g(f(x))$ — output transforms with input (needed for *detection*, *segmentation*)
+- **CNNs are naturally translation equivariant** due to convolution operation
+- Add pooling/global average pooling for translation *invariance*
+
+**Receptive Field**
+
+The input region that affects a single output activation:
+
+$$r_0 = \sum_{l=1}^L \left( (k_l - 1) \prod_{i=1}^{l-1} s_i \right) + 1$$
+
+- Grows with depth: stacking small kernels (3×3) more efficient than large kernels (5×5)
+- Example: Two 3×3 convs = 18 params/channel vs one 5×5 = 25 params/channel
+
+**Common Operations**
+
+- **Pooling**: Spatial downsampling (max-pooling, average-pooling)
+- **1×1 Convolution**: Change number of channels without spatial effect
+- **Global Average Pooling**: $(C \times H \times W) \rightarrow (C \times 1 \times 1)$ for classification
+- **Upsampling**: Increase spatial size (interpolation, transposed convolution)
+- **Depthwise Separable**: Efficient convolutions with fewer parameters
+
+**Architectural Best Practices**
+
+✅ Use multiple small kernels (3×3) instead of large ones
+✅ Add non-linearity (ReLU, etc.) between conv layers
+✅ Use batch normalization for stable training
+✅ Stack conv layers to build hierarchical features
+✅ Use global average pooling instead of large fully-connected layers
+
+**Parameter Efficiency Example**
+
+For CIFAR-10 images (32×32×3):
+
+- **MLP** (2 hidden layers): ~200K parameters
+- **CNN** (2 conv layers): ~5K parameters (40× fewer!)
+
+**Key Insight**: CNNs encode our prior knowledge about images as *inductive biases* — assumptions baked into the architecture that make learning more efficient and effective.
+
 :::
 
 ::: {.content-hidden}
@@ -73,7 +154,7 @@ Source: @li_cs231n_2023
 For larger images, which are often encountered in practice, the number of weights is correspondingly much larger. Many neurons are also used, further increasing the number of parameters, leading to overfitting, and making learning the weights more difficult.
 
 
-The dimensionality of weight matrix $\m{W}$ scales with input size.  $\m{W} \in \mathbb{R}^{d \times k}$, while $d$ the dimensionality of the inputs, and $k$ the number of neurons in the first hidden layer. The columns of the weight matrix $\m{W}$ (in the first hidden layer) can be visualized to learn what kind pattern a specific neuron has learned. See @fig-cnn-mlp-example-weights.
+The dimensionality of weight matrix $\m{W}$ scales with input size.  $\m{W} \in \mathbb{R}^{d \times k}$, while $d$ the dimensionality of the inputs, and $k$ the number of neurons in the first hidden layer. The columns of the weight matrix $\m{W}$ (in the first hidden layer) can be visualized to learn what kind pattern a specific neuron has learned (see @fig-cnn-mlp-example-weights).
 
 :::{#fig-cnn-mlp-example-weights}
 
@@ -83,7 +164,7 @@ Illustration of weight matrix $\m{W}$ and how the weights of a single neuron can
 :::
 
 
-Often the patterns we want to learn are not stationary. Ideally we want to recognize them at all positions, particularly under translations of the inputs, e.g. $g(\vect{x})$ where $g()$ is a spatial translation. Figure @fig-cnns-mlp-pattern-shift illustrated the problem.
+Often the patterns we want to learn are not stationary. Ideally we want to recognize them at all positions, particularly under translations of the inputs, e.g. $g(\vect{x})$ where $g()$ is a spatial translation. @fig-cnns-mlp-pattern-shift illustrates the problem.
 
 
 ::: {#fig-cnns-mlp-pattern-shift}
@@ -106,7 +187,7 @@ Illustration of different inputs with the same pattern but shifted spatially.
 MLPs must learn separate detectors for each possible position! This is extremely inefficient because:
 
 1. **Parameter explosion**: Need different weights for each spatial location
-2. **Data requirements**: Must see cats in every possible position during training
+2. **Data requirements**: Must see target pattern in every possible position during training
 3. **Poor generalization**: Fails on positions not seen during training
 
 This is why MLPs with the same number of parameters perform much worse on image tasks compared to CNNs.
@@ -124,26 +205,7 @@ Notice how CNNs reuse the same filter across all positions!
 :::
 
 
-<!-- TODO: move the CNN  vs MLP to a later part since CNNs are not yet introduced -->
-:::: {.columns}
 
-::: {.column width="70%"}
-
-::: {#tbl-mlp-vs-cnn tbl-colwidths="[20,20,60]"}
-
-| Aspect | MLP | CNN |
-|--------|-----|-----|
-| **Connectivity** | Every neuron connects to all inputs | Local connectivity only |
-| **Parameters** | Scales with input size | Constant regardless of input size |
-| **Translation** | Must learn patterns at each position | Automatically detects patterns everywhere |
-| **Inductive Bias** | None (learns from scratch) | Locality + Translation equivariance |
-
-Comparison of MLPs vs CNNs for image processing
-:::
-
-:::
-
-::::
 
 
 
@@ -191,15 +253,7 @@ Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted wi
 
 :::
 
-<!-- TODO: move this part later since CNNs and their properties have not yet been introduced -->
 
-::: {.callout-tip title="Deep Learning Insight"}
-This reveals a fundamental principle: **The right inductive bias matters more than the raw capability to learn**.
-
-- MLPs are universal function approximators and *could* learn vision tasks
-- CNNs use the right inductive biases (locality + translation equivariance) to learn vision tasks *efficiently*
-- Architecture choice is about **sample efficiency** and **generalization**, not just theoretical capability
-:::
 
 
 To summarize MLPs on images:
@@ -227,10 +281,10 @@ These aren't just technical tricks—they encode our **prior knowledge** about h
 
 A single neuron in a CNN is only connected to a small portion (local connectivity) of the image (see @fig-cnn-cnn-spatial). As a result:
 
-✅ **Fewer Parameters**: Neurons have far fewer connections than in MLPs
-✅ **Spatial Structure Preserved**: No need to flatten 2D images into 1D vectors
-✅ **Translation Equivariance**: Same detector works everywhere in the image
-✅ **Hierarchical Feature Learning**: Stack layers to learn increasingly complex patterns
+- ✅ **Fewer Parameters**: Neurons have far fewer connections than in MLPs
+- ✅ **Spatial Structure Preserved**: No need to flatten 2D images into 1D vectors
+- ✅ **Translation Equivariance**: Same detector works everywhere in the image
+- ✅ **Hierarchical Feature Learning**: Stack layers to learn increasingly complex patterns
 
 :::{#fig-cnn-cnn-spatial}
 
@@ -580,6 +634,7 @@ You can calculate the dimensionality of the activation maps with the following f
 o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 \end{equation}
 
+<!-- TODO: hide Answer part of the followig questions  -->
 ::: {.callout-note title="📝 Quiz: Output Shape Calculation" collapse="true"}
 
 **Problem**: You're designing a CNN layer with the following parameters:
@@ -678,7 +733,7 @@ If each output channel has a bias term, add an additional $C_{out}$ weights for 
 \text{Total Parameters} = (k \times k \times C_{in} \times C_{out}) + C_{out}
 \end{equation}
 
-
+<!-- TODO: verify whether k=7 and justification really makes sense -->
 ::: {.callout-note appearance="simple"}
 
 **Question**
@@ -740,7 +795,7 @@ Different domains need different CNN architectures:
 Understanding your data is crucial for good architecture design!
 :::
 
-
+<!-- TODO: figure out how to handel the Properties section here and some of this information that was already provided previously    -->
 ## Properties
 
 ### Local (Sparse) Connectivity & Parameter Sharing
@@ -749,6 +804,7 @@ Fully connected layers are, as discussed, impractical when working with high-dim
 
 Parameter sharing in convolutional layers is used to reduce the number of parameters. Since the filters are convolved over the inputs, the individual weights of the filters are identical over the spatial extent of the input volume. One of the main assumptions behind CNNs is the following: If it is useful to learn a specific (visual) feature at a certain position, then it is probably useful at other positions as well. In other words: If I learn filters that detect edges, corners, or cats, then it is a reasonable assumption that I want to do this throughout the image.
 
+<!-- TODO: add an example image or a series of face images -->
 ::: {.callout-note}
 Sometimes parameter sharing does not make sense. This can be the case, for example, if we have centered structures in the images. Then you might want to learn position-dependent features. An example is images of faces that have been centered, where you might want to learn filters that detect the mouth only in the lower middle area (locally connected layers).
 :::
@@ -923,6 +979,54 @@ r_0 = \sum_{l=1}^L \left( (k_l - 1) \prod_{i=1}^{l-1} s_i \right) + 1
 @araujo_computing_2019 have written a nice article about receptive fields and how to calculate them.
 
 
+### Comparing MLPs and CNNs
+
+Now that we understand how CNNs work, let's compare them systematically to MLPs:
+
+:::{.callout-note appearance="simple"}
+
+**Question**
+
+How do MLPs and CNNs differ in their approach to processing images?
+
+**Think first**: Consider parameter count, assumptions about data, and what each architecture "knows" about images.
+
+<details>
+<summary>Click for detailed comparison</summary>
+
+| Aspect | MLP | CNN |
+|--------|-----|-----|
+| **Input** | Flattened vector | Preserve spatial structure (H×W×C) |
+| **Connections** | Fully connected | Locally connected |
+| **Parameter Sharing** | None (each weight unique) | Shared across spatial locations |
+| **Translation Equivariance** | ❌ No | ✅ Yes (by design) |
+| **Assumptions** | None about spatial structure | Locality + stationarity of statistics |
+| **Parameter Count** | Very high | Much lower |
+| **Learns Position** | Must learn same feature at each position | Learns once, applies everywhere |
+| **Best For** | Tabular data, general patterns | Images, spatial data |
+
+: {tbl-colwidths="[20,40,40]"}
+
+**Key Takeaway**: MLPs *can* theoretically learn to process images (universal approximation theorem), but CNNs bake in the right inductive biases, making learning vastly more efficient.
+
+</details>
+
+:::
+
+::: {.callout-tip title="Deep Learning Insight: Inductive Bias"}
+**Inductive bias** refers to the assumptions a learning algorithm makes to generalize from training data to unseen data.
+
+**MLPs**: Minimal inductive bias (very general, but requires lots of data)
+**CNNs**: Strong inductive bias (assumes locality, translation equivariance → more efficient learning)
+
+The right inductive bias for your data is key to success! This is why:
+
+- CNNs excel at images (spatial locality matters)
+- Transformers excel at sequences (long-range dependencies matter)
+- Graph Neural Networks excel at networks (graph structure matters)
+
+Choosing architecture = choosing which assumptions to bake in!
+:::
 
 
 ## More Layers & Operations
@@ -1016,7 +1120,6 @@ from PIL import Image
 from matplotlib import pyplot as plt
 ```
 
-<!-- TODO: replace relative path with absolute -->
 ```{python}
 #| eval: true
 #| echo: true

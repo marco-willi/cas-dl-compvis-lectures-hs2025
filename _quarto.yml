@@ -35,7 +35,7 @@ website:
 
   sidebar:
     #logo: "/assets/logo.webp"
-    logo: "/assets/logo_small.png"
+    logo: "/assets/logo3_small_transparent.png"
     pinned: true
     search: true
     align: center
