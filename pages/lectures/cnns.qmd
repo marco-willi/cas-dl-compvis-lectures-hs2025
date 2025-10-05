@@ -195,6 +195,7 @@ This is why MLPs with the same number of parameters perform much worse on image 
 
 :::
 
+<!-- TODO: remove CNN Filter Visualizatoin? Beacuse CNNs not yet introduced  -->
 ::: {.callout-tip title="Interactive Demo"}
 Try this visualization to see the difference:
 
@@ -263,7 +264,7 @@ To summarize MLPs on images:
 - Stability under transformations: MLPs need to learn position-dependent patterns which is very inefficient.
 
 
-## From Problems to Solutions: Enter CNNs
+## Convolutional Neural Networks
 
 Now that we've seen the limitations of MLPs for images, let's explore how **Convolutional Neural Networks (CNNs)** address these challenges.
 
@@ -277,6 +278,8 @@ Now that we've seen the limitations of MLPs for images, let's explore how **Conv
 These aren't just technical tricks—they encode our **prior knowledge** about how images work!
 :::
 
+
+<!-- TODO: consider re-arranging the following section or parts of it. The section "convolutional layers" introduces many of the concepts to really udnerstand the properties here. -->
 ### The CNN Advantage
 
 A single neuron in a CNN is only connected to a small portion (local connectivity) of the image (see @fig-cnn-cnn-spatial). As a result:
@@ -355,6 +358,7 @@ When objects in the input (first row) translate spatially, the detections (bound
 
 :::
 
+<!-- TODO: move or remove this becauwse the convolution operation has not yet been discussed in detail -->
 ::: {.callout-tip title="Key Insight"}
 **CNNs naturally provide translation equivariance** due to their convolution operation. However, they need additional components (like pooling or global average pooling) to achieve translation invariance for classification tasks.
 

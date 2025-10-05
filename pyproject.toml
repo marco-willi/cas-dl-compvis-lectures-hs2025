@@ -27,8 +27,8 @@ jupyter-cache = "*"
 scikit-image = "*"
 timm = "*"
 
-torch = {version = "2.8.0+cpu", source = "pytorch-cpu"}
-torchvision = {version = "0.23+cpu", source = "pytorch-cpu"}
+torch = { version = "2.8.0+cpu", source = "pytorch-cpu" }
+torchvision = { version = "0.23+cpu", source = "pytorch-cpu" }
 
 torchmetrics = "*"
 lightning = "*"
@@ -36,6 +36,10 @@ transformers = "*"
 opencv-python-headless = "*"
 mlxtend = "*"
 kornia = "*"
+
+# --- generative ai--- #
+openai = "^2.1.0"
+replicate = "^1.0.7"
 
 # --- experiment tracking --- #
 tensorboard = "*"

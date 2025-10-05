@@ -297,7 +297,7 @@ def create_interactive_logits_explorer():
         max_prob = np.max(probs)
 
         button = dict(
-            label=name,
+            label=f"{name} (max prob={max_prob:.3f}, Entropy (H)={entropy:.2f})",
             method="update",
             args=[
                 {
@@ -309,8 +309,7 @@ def create_interactive_logits_explorer():
                     "marker.color": [logit_colors, prob_colors]
                 },
                 {
-                    "title": f"Scenario: {name} | Max Probability: {max_prob:.3f} | Entropy: {entropy:.3f}"
-                    #"annotations[0].text": f"Sum = {sum(probs):.6f}"
+                    "annotations[2].text": f"Sum = {sum(probs):.6f}"
                 }
             ]
         )
@@ -332,11 +331,10 @@ def create_interactive_logits_explorer():
                 buttons=buttons
             )
         ],
-        height=500,
+        height=300,
         showlegend=False,
         yaxis1=dict(title="Logit Value"),
-        yaxis2=dict(title="Probability", range=[0, 1.05]),
-        title=f"Scenario: {initial_name} | Max Probability: {initial_max_prob:.3f} | Entropy: {initial_entropy:.3f}"
+        yaxis2=dict(title="Probability", range=[0, 1.05])
     )
 
     # Add sum annotation for probabilities

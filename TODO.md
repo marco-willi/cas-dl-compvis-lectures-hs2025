@@ -11,6 +11,9 @@ This file tracks the enhancement tasks for the CAS Deep Learning Computer Vision
 
 ## In Progress / Pending
 
+- [ ] Rethink the Computer Vision Tasks section in the intro with respect to:
+  - Generative AI content (image manipulation, image generation, video generation)
+  - Make a note with respect to images vs videos (we focus on images but many concepts extend to video)
 - [ ] Classification updates
   - Fix softmax denominator indices (ensure Σ over j=1..K) — partially addressed, confirm.
   - Add architecture comparison table (ConvNet vs ResNet vs ViT vs ConvNeXt vs Hybrid).
