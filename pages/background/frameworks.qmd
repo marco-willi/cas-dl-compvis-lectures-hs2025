@@ -359,6 +359,7 @@ PyTorch provides various building blocks for creating neural networks. These are
 
 ::: {.callout-tip title="Building Blocks in torch.nn"}
 **Common layers:**
+
 - `nn.Linear`: Fully connected layer
 - `nn.Conv2d`: 2D convolutional layer
 - `nn.MaxPool2d`: Max pooling layer
@@ -366,10 +367,12 @@ PyTorch provides various building blocks for creating neural networks. These are
 - `nn.BatchNorm2d`: Batch normalization
 
 **Common activations:**
+
 - `nn.ReLU()`, `nn.LeakyReLU()`, `nn.GELU()`
 - `nn.Sigmoid()`, `nn.Tanh()`, `nn.Softmax()`
 
 **Loss functions:**
+
 - `nn.CrossEntropyLoss()`: Classification
 - `nn.MSELoss()`: Regression
 - `nn.BCEWithLogitsLoss()`: Binary classification
@@ -436,6 +439,7 @@ make_dot(logits)
 
 To optimize the parameters of a model, you need an optimization algorithm. [`torch.optim`](https://pytorch.org/docs/stable/optim.html) implements various algorithms, such as _Stochastic Gradient Descent_ or the often used _Adam Optimizer_.
 
+<!-- TODO: validate rule of thumb -> better use adamw alaways -->
 ::: {.callout-tip title="Common Optimizers"}
 - **SGD**: Basic stochastic gradient descent (with optional momentum)
 - **Adam**: Adaptive learning rates, good default choice

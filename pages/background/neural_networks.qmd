@@ -91,17 +91,6 @@ Artificial neural networks are models of biological networks. Such models were c
 
 Neural networks are often represented with a graph. The _nodes_ are individual neurons in the network, and the _edges_ are connections between the neurons (see @fig-mlp-structure). The neurons are arranged in _layers_, with each neuron in a layer connected to every neuron in adjacent layers. The _input layer_ represents the data, the _output layer_ the (observable) outputs, and the _hidden layers_ are within the network. The connections between the neurons are weighted.
 
-::: {.callout-note title="Activation Function Cheat Sheet"}
-Common choices:
-
-- ReLU: $\max(0, x)$ (sparse activations, mitigates vanishing gradients).
-- LeakyReLU / GELU: Smoother or with negative slope; GELU often used in transformers.
-- Sigmoid: Saturates; mainly for probabilities/logits output.
-- Tanh: Zero-centered but still saturates; rarely preferred over ReLU-family now.
-- Softplus / Mish / Swish: Smooth alternatives; sometimes modest gains, higher compute.
-
-Guideline: Start with ReLU (or GELU for transformer-like blocks); change only if you have empirical evidence.
-:::
 
 ::: {#fig-mlp-structure}
 
@@ -230,6 +219,18 @@ plt.show()
 ![]({{< meta params.images_path >}}mlp_shallow.jpg){width=800}
 
 A neural network with a _hidden layer_. The lines show connections between neurons and their weights $w_{i,j}$.
+:::
+
+::: {.callout-note title="Activation Function Cheat Sheet"}
+Common choices:
+
+- ReLU: $\max(0, x)$ (sparse activations, mitigates vanishing gradients).
+- LeakyReLU / GELU: Smoother or with negative slope; GELU often used in transformers.
+- Sigmoid: Saturates; mainly for probabilities/logits output.
+- Tanh: Zero-centered but still saturates; rarely preferred over ReLU-family now.
+- Softplus / Mish / Swish: Smooth alternatives; sometimes modest gains, higher compute.
+
+Guideline: Start with ReLU (or GELU for transformer-like blocks); change only if you have empirical evidence.
 :::
 
 ### Universal Approximation Theorem

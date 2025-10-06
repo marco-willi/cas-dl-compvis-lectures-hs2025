@@ -1,5 +1,5 @@
 ---
-title: "Image Classification"
+title: "3 - Image Classification"
 params:
    images_path: "/assets/images/classification/"
 execute:
@@ -206,24 +206,34 @@ plt.show()
 **Try different logit distributions** and see how softmax transforms them into probabilities!
 
 ```{python}
-#| eval: true
-#| echo: false
-#| fig-width: 800
+# | eval: true
+# | echo: false
+# | fig-width: 800
 
+import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+
 def softmax(logits):
     """Compute softmax values for logits."""
-    exp_logits = np.exp(logits - np.max(logits))  # Subtract max for numerical stability
+    exp_logits = np.exp(logits - np.max(logits))  # numerical stability
     return exp_logits / np.sum(exp_logits)
 
-def create_interactive_logits_explorer():
-    """Interactive exploration of logits to probabilities transformation."""
 
+def _padded_range(vals, frac=0.18, min_abs_pad=0.35):
+    """Return a y-range padded enough so 'textposition=outside' is always visible."""
+    vmin, vmax = float(np.min(vals)), float(np.max(vals))
+    span = max(1e-9, vmax - vmin)
+    pad = max(min_abs_pad, span * frac)
+    return [vmin - pad, vmax + pad]
+
+
+def create_interactive_logits_explorer():
+    """Interactive exploration of logits → probabilities."""
     n_classes = 5
 
-    # Create different scenarios with interesting logit distributions
+    # Scenarios
     scenarios = {
         "Uniform Logits": [1.0, 1.0, 1.0, 1.0, 1.0],
         "Clear Winner": [5.0, 1.0, 0.5, 0.0, -0.5],
@@ -232,7 +242,7 @@ def create_interactive_logits_explorer():
         "Negative Logits": [-0.5, -1.0, -1.5, -2.0, -2.5],
         "Mixed Range": [3.0, 0.0, -1.0, 0.5, 2.0],
         "Two Leaders": [4.0, 3.8, 0.0, 0.0, 0.0],
-        "Random-ish": [1.5, -0.3, 2.1, 0.8, -0.8]
+        "Random-ish": [1.5, -0.3, 2.1, 0.8, -0.8],
     }
 
     # Initial scenario
@@ -240,85 +250,102 @@ def create_interactive_logits_explorer():
     initial_logits = scenarios[initial_name]
     initial_probs = softmax(initial_logits)
 
-    # Create figure
+    # Figure and subplots
     fig = make_subplots(
-        rows=1, cols=2,
+        rows=1,
+        cols=2,
         subplot_titles=("Logits (Raw Model Outputs)", "Probabilities (After Softmax)"),
-        horizontal_spacing=0.12
+        horizontal_spacing=0.12,
     )
 
-    # Determine colors for initial state
-    max_logit_idx = np.argmax(initial_logits)
-    logit_colors = ['lightblue' if i != max_logit_idx else 'steelblue' for i in range(n_classes)]
+    # Nudge subplot titles slightly down to leave a lane for the dropdown above them
+    for ann in fig.layout.annotations:
+        if ann.text in ("Logits (Raw Model Outputs)", "Probabilities (After Softmax)"):
+            ann.y = 1.0
+            ann.yanchor = "bottom"
 
-    max_prob_idx = np.argmax(initial_probs)
-    prob_colors = ['lightcoral' if i != max_prob_idx else 'crimson' for i in range(n_classes)]
+    # Colors for initial state
+    max_logit_idx = int(np.argmax(initial_logits))
+    logit_colors = [
+        "lightblue" if i != max_logit_idx else "steelblue" for i in range(n_classes)
+    ]
 
-    # Add initial logits bar chart
+    max_prob_idx = int(np.argmax(initial_probs))
+    prob_colors = [
+        "lightcoral" if i != max_prob_idx else "crimson" for i in range(n_classes)
+    ]
+
+    # Left: logits bars
     fig.add_trace(
         go.Bar(
-            x=[f'Class {i}' for i in range(n_classes)],
+            x=[f"Class {i}" for i in range(n_classes)],
             y=initial_logits,
             name="Logits",
             marker_color=logit_colors,
             text=[f"{z:.2f}" for z in initial_logits],
-            textposition='outside'
+            textposition="outside",
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
-    # Add initial probabilities bar chart
+    # Right: probability bars
     fig.add_trace(
         go.Bar(
-            x=[f'Class {i}' for i in range(n_classes)],
+            x=[f"Class {i}" for i in range(n_classes)],
             y=initial_probs,
             name="Probabilities",
             marker_color=prob_colors,
             text=[f"{p:.3f}" for p in initial_probs],
-            textposition='outside'
+            textposition="outside",
         ),
-        row=1, col=2
+        row=1,
+        col=2,
     )
 
-    # Create dropdown buttons for scenarios
+    # Dropdown buttons
     buttons = []
     for name, logits in scenarios.items():
         probs = softmax(logits)
 
-        # Determine colors
-        max_logit_idx = np.argmax(logits)
-        logit_colors = ['lightblue' if i != max_logit_idx else 'steelblue' for i in range(n_classes)]
+        max_logit_idx = int(np.argmax(logits))
+        logit_colors = [
+            "lightblue" if i != max_logit_idx else "steelblue" for i in range(n_classes)
+        ]
 
-        max_prob_idx = np.argmax(probs)
-        prob_colors = ['lightcoral' if i != max_prob_idx else 'crimson' for i in range(n_classes)]
+        max_prob_idx = int(np.argmax(probs))
+        prob_colors = [
+            "lightcoral" if i != max_prob_idx else "crimson" for i in range(n_classes)
+        ]
 
-        # Calculate statistics
         entropy = -np.sum(probs * np.log(probs + 1e-10))
-        max_prob = np.max(probs)
+        max_prob = float(np.max(probs))
 
-        button = dict(
-            label=f"{name} (max prob={max_prob:.3f}, Entropy (H)={entropy:.2f})",
-            method="update",
-            args=[
-                {
-                    "y": [logits, probs],
-                    "text": [
-                        [f"{z:.2f}" for z in logits],
-                        [f"{p:.3f}" for p in probs]
-                    ],
-                    "marker.color": [logit_colors, prob_colors]
-                },
-                {
-                    "annotations[2].text": f"Sum = {sum(probs):.6f}"
-                }
-            ]
+        y1_range = _padded_range(logits)
+
+        buttons.append(
+            dict(
+                label=f"{name} (max prob={max_prob:.3f}, H={entropy:.2f})",
+                method="update",
+                args=[
+                    {
+                        "y": [logits, probs],
+                        "text": [
+                            [f"{z:.2f}" for z in logits],
+                            [f"{p:.3f}" for p in probs],
+                        ],
+                        "marker.color": [logit_colors, prob_colors],
+                    },
+                    {
+                        "yaxis.range": y1_range,  # left subplot (logits)
+                        "yaxis2.range": [0, 1.1],  # right subplot fixed
+                        "annotations[2].text": f"Sum = {sum(probs):.6f}",  # keep "Sum=" annotation current
+                    },
+                ],
+            )
         )
-        buttons.append(button)
 
-    # Calculate initial stats
-    initial_entropy = -np.sum(initial_probs * np.log(initial_probs + 1e-10))
-    initial_max_prob = np.max(initial_probs)
-
+    # Layout: compact head space; dropdown above titles; opens upward
     fig.update_layout(
         updatemenus=[
             dict(
@@ -326,18 +353,27 @@ def create_interactive_logits_explorer():
                 direction="down",
                 x=0.5,
                 xanchor="center",
-                y=1.15,
-                yanchor="top",
-                buttons=buttons
+                y=1.06,
+                yanchor="bottom",  # sits just above titles
+                buttons=buttons,
+                pad=dict(t=4, r=6, l=6, b=10),
+                bgcolor="white",
+                bordercolor="#ddd",
+                borderwidth=1,
             )
         ],
-        height=300,
+        height=380,  # compact but comfortable
+        margin=dict(t=90, r=40, b=60, l=60),
         showlegend=False,
-        yaxis1=dict(title="Logit Value"),
-        yaxis2=dict(title="Probability", range=[0, 1.05])
+        uniformtext_minsize=10,
+        uniformtext_mode="hide",
+        yaxis1=dict(
+            title="Logit Value", range=_padded_range(initial_logits), automargin=True
+        ),
+        yaxis2=dict(title="Probability", range=[0, 1.1], automargin=True),
     )
 
-    # Add sum annotation for probabilities
+    # Sum annotation for probabilities (right subplot)
     fig.add_annotation(
         x=2,
         y=0.98,
@@ -349,10 +385,11 @@ def create_interactive_logits_explorer():
         bgcolor="lightyellow",
         bordercolor="green",
         borderwidth=2,
-        borderpad=4
+        borderpad=4,
     )
 
     return fig
+
 
 fig = create_interactive_logits_explorer()
 fig.show()
@@ -496,6 +533,160 @@ display_likelihood(y_true, y_pred)
 
 :::
 
+::: {.callout-note appearance="simple" title="📝 Quiz: Cat vs Dog Likelihood"}
+
+**Scenario**: Your CNN model classifies 5 images from our dataset. Let's explore how different prediction confidences affect likelihood!
+
+**The Images**:
+![Cat]({{< meta params.images_path >}}cats_and_dogs/cat_01.png){width=80}
+![Dog]({{< meta params.images_path >}}cats_and_dogs/dog_01.png){width=80}
+![Cat]({{< meta params.images_path >}}cats_and_dogs/cat_02.png){width=80}
+![Dog]({{< meta params.images_path >}}cats_and_dogs/dog_02.png){width=80}
+![Dog]({{< meta params.images_path >}}cats_and_dogs/dog_03.png){width=80}
+
+**True Labels**: $\vect{y} = [\text{Cat}, \text{Dog}, \text{Cat}, \text{Dog}, \text{Dog}]$ or $[0, 1, 0, 1, 1]$ in binary encoding.
+
+**Question 1**: Model A predicts: $P(\text{Cat}) = [0.9, 0.2, 0.8, 0.3, 0.1]$. What's the likelihood?
+
+**Think first**: For each image, what's the probability of the *correct* class?
+
+<details>
+<summary>Click for result</summary>
+
+```{python}
+#| eval: true
+#| echo: true
+
+import numpy as np
+
+# True labels: [Cat=0, Dog=1, Cat=0, Dog=1, Dog=1]
+y_true = np.array([0, 1, 0, 1, 1])
+
+# Model A predictions: P(Cat) for each image
+p_cat = np.array([0.9, 0.2, 0.8, 0.3, 0.1])
+p_dog = 1 - p_cat  # P(Dog) = 1 - P(Cat)
+
+# Extract probability of correct class for each image
+p_correct = np.where(y_true == 0, p_cat, p_dog)
+print(f"P(correct class): {p_correct}")
+
+# Likelihood = product of correct probabilities
+likelihood = np.prod(p_correct)
+print(f"Likelihood = {likelihood:.6f}")
+
+# Individual contributions
+for i, (true_label, prob) in enumerate(zip(y_true, p_correct)):
+    label_name = "Cat" if true_label == 0 else "Dog"
+    print(f"Image {i+1} ({label_name}): P = {prob:.1f}")
+```
+
+**Interpretation**: Model A is confident about the first cat (0.9) and the last dog (0.9), but uncertain about the middle images.
+
+</details>
+
+**Question 2**: Model B predicts: $P(\text{Cat}) = [0.8, 0.1, 0.9, 0.2, 0.1]$. Which model is better?
+
+**Hint**: Compare the likelihoods. Higher likelihood = better model!
+
+<details>
+<summary>Click for result</summary>
+
+```{python}
+#| eval: true
+#| echo: true
+
+# Model B predictions
+p_cat_B = np.array([0.8, 0.1, 0.9, 0.2, 0.1])
+p_dog_B = 1 - p_cat_B
+
+# Extract probability of correct class
+p_correct_B = np.where(y_true == 0, p_cat_B, p_dog_B)
+print(f"Model B - P(correct class): {p_correct_B}")
+
+likelihood_B = np.prod(p_correct_B)
+print(f"Model B - Likelihood = {likelihood_B:.6f}")
+
+print(f"\nComparison:")
+print(f"Model A: {likelihood:.6f}")
+print(f"Model B: {likelihood_B:.6f}")
+print(f"Model {'B' if likelihood_B > likelihood else 'A'} is better!")
+```
+
+**Key Insight**: Model B is more confident on the second cat (0.9 vs 0.8), leading to higher overall likelihood.
+
+</details>
+
+**Question 3**: What if we have a poorly calibrated model? Model C: $P(\text{Cat}) = [0.6, 0.4, 0.6, 0.4, 0.4]$
+
+**Consider**: This model is not very confident about anything. How does this affect likelihood?
+
+<details>
+<summary>Click for result</summary>
+
+```{python}
+#| eval: true
+#| echo: true
+
+# Model C: low confidence predictions
+p_cat_C = np.array([0.6, 0.4, 0.6, 0.4, 0.4])
+p_dog_C = 1 - p_cat_C
+
+p_correct_C = np.where(y_true == 0, p_cat_C, p_dog_C)
+print(f"Model C - P(correct class): {p_correct_C}")
+
+likelihood_C = np.prod(p_correct_C)
+print(f"Model C - Likelihood = {likelihood_C:.6f}")
+
+print(f"\nAll Models Comparison:")
+print(f"Model A (mixed confidence): {likelihood:.6f}")
+print(f"Model B (high confidence):  {likelihood_B:.6f}")
+print(f"Model C (low confidence):   {likelihood_C:.6f}")
+
+# Log-likelihoods (what we actually optimize)
+print(f"\nNegative Log-Likelihoods (Cross-Entropy Loss):")
+print(f"Model A: {-np.log(likelihood):.3f}")
+print(f"Model B: {-np.log(likelihood_B):.3f}")
+print(f"Model C: {-np.log(likelihood_C):.3f}")
+print(f"Lower is better for loss!")
+```
+
+**Critical Observation**:
+- **Confident correct predictions** (Model B) → High likelihood → Low loss ✅
+- **Low confidence** (Model C) → Low likelihood → High loss ❌
+- **This is why we train models to be confident when correct!**
+
+</details>
+
+**Bonus Question**: What's the perfect model's likelihood?
+
+<details>
+<summary>Perfect Model Analysis</summary>
+
+```{python}
+#| eval: true
+#| echo: true
+
+# Perfect model: 100% confident and always correct
+p_cat_perfect = np.array([1.0, 0.0, 1.0, 0.0, 0.0])  # Certain about each class
+p_dog_perfect = 1 - p_cat_perfect
+
+p_correct_perfect = np.where(y_true == 0, p_cat_perfect, p_dog_perfect)
+print(f"Perfect Model - P(correct class): {p_correct_perfect}")
+
+likelihood_perfect = np.prod(p_correct_perfect)
+print(f"Perfect Model - Likelihood = {likelihood_perfect}")
+print(f"Perfect Model - Negative Log-Likelihood = {-np.log(likelihood_perfect)}")
+
+print(f"\n🎯 Maximum possible likelihood = 1.0")
+print(f"🎯 Minimum possible loss = 0.0")
+```
+
+**The Goal**: Train your CNN to approach this perfect confidence on the training set (while generalizing to new data)!
+
+</details>
+
+:::
+
 
 ### Maximum Likelihood
 
@@ -507,13 +698,26 @@ The likelihood $P(\vect{y} | \theta, \m{X})$ of observing our entire dataset $(\
 
 Under the Maximum Likelihood approach, we seek the parameters $\theta$ that maximize the likelihood of observing the dataset.
 
+
+### Negative Log-Likelihood
+
+With Maximum Likelihood, we aim to choose the parameters $\theta$ such that $p(\vect{y} | \theta, \m{X})$ is maximized. However, this function can be complex to handle, and we can use some mathematical tricks. We take the logarithm of the likelihood so that the product of probabilities becomes a sum. Since the logarithm is a monotonically increasing function, we can maximize its logarithm instead of the function $p(\vect{y} | \theta, \m{X})$. Finally, we take the negative of the function, allowing us to minimize it.
+
+\begin{equation}
+L(\m{X}, \vect{y}, \theta) = - \log \prod_{i=1}^N \prod_{j=1}^K P(Y = j| X = \vect{x}^{(i)})^{y^{(i)}_j} \\
+L(\m{X}, \vect{y}, \theta) = -\sum_{i=1}^N \sum_{j=1}^K y^{(i)}_j \log  P(Y = j| X = \vect{x}^{(i)})
+\end{equation}
+
+
 ::: {.callout-tip title="💡 Maximum Likelihood Intuition" collapse="true"}
+
 **Visualize the connection: Likelihood → Log-Likelihood → Cross-Entropy Loss**:
 
 ```{python}
-#| eval: true
-#| echo: false
-#| fig-width: 800
+# | eval: true
+# | echo: false
+# | fig-width: 800
+
 
 def create_likelihood_viz():
     """Visualize how likelihood changes with model quality (calibration)."""
@@ -559,13 +763,14 @@ def create_likelihood_viz():
 
     # Create subplots with more space for title
     fig = make_subplots(
-        rows=3, cols=1,
+        rows=3,
+        cols=1,
         subplot_titles=(
             "Likelihood: L(θ) = ∏ᵢ p(yᵢ|xᵢ,θ)  [Product of probabilities]",
             "Log-Likelihood: log L(θ) = Σᵢ log p(yᵢ|xᵢ,θ)  [Sum of log-probabilities]",
-            "Negative Log-Likelihood: -log L(θ) = Cross-Entropy Loss"
+            "Negative Log-Likelihood: -log L(θ) = Cross-Entropy Loss",
         ),
-        vertical_spacing=0.15
+        vertical_spacing=0.15,
     )
 
     # Panel 1: Likelihood (gets very small!)
@@ -573,13 +778,14 @@ def create_likelihood_viz():
         go.Scatter(
             x=calibration_values,
             y=likelihoods,
-            mode='lines',
-            name='Likelihood',
-            line=dict(color='blue', width=3),
-            fill='tozeroy',
-            hovertemplate='Calibration: %{x:.3f}<br>Likelihood: %{y:.6f}<extra></extra>'
+            mode="lines",
+            name="Likelihood",
+            line=dict(color="blue", width=3),
+            fill="tozeroy",
+            hovertemplate="Calibration: %{x:.3f}<br>Likelihood: %{y:.6f}<extra></extra>",
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # Panel 2: Log-likelihood (numerically stable)
@@ -587,13 +793,14 @@ def create_likelihood_viz():
         go.Scatter(
             x=calibration_values,
             y=log_likelihoods,
-            mode='lines',
-            name='Log-Likelihood',
-            line=dict(color='green', width=3),
-            fill='tozeroy',
-            hovertemplate='Calibration: %{x:.3f}<br>Log-Likelihood: %{y:.3f}<extra></extra>'
+            mode="lines",
+            name="Log-Likelihood",
+            line=dict(color="green", width=3),
+            fill="tozeroy",
+            hovertemplate="Calibration: %{x:.3f}<br>Log-Likelihood: %{y:.3f}<extra></extra>",
         ),
-        row=2, col=1
+        row=2,
+        col=1,
     )
 
     # Panel 3: Negative log-likelihood (this is the LOSS we minimize)
@@ -601,17 +808,22 @@ def create_likelihood_viz():
         go.Scatter(
             x=calibration_values,
             y=neg_log_likelihoods,
-            mode='lines',
-            name='Negative Log-Likelihood',
-            line=dict(color='red', width=3),
-            fill='tozeroy',
-            hovertemplate='Calibration: %{x:.3f}<br>NLL Loss: %{y:.3f}<extra></extra>'
+            mode="lines",
+            name="Negative Log-Likelihood",
+            line=dict(color="red", width=3),
+            fill="tozeroy",
+            hovertemplate="Calibration: %{x:.3f}<br>NLL Loss: %{y:.3f}<extra></extra>",
         ),
-        row=3, col=1
+        row=3,
+        col=1,
     )
 
     # Update axes labels
-    fig.update_xaxes(title_text="Model Calibration (probability assigned to correct class)", row=3, col=1)
+    fig.update_xaxes(
+        title_text="Model Calibration (probability assigned to correct class)",
+        row=3,
+        col=1,
+    )
     fig.update_yaxes(title_text="Likelihood", row=1, col=1)
     fig.update_yaxes(title_text="Log-Likelihood", row=2, col=1)
     fig.update_yaxes(title_text="Loss", row=3, col=1)
@@ -620,46 +832,56 @@ def create_likelihood_viz():
         height=850,
         showlegend=False,
         title={
-            'text': "Maximum Likelihood ↔ Cross-Entropy Connection<br><sub>Dataset: 5 samples (3 Dogs, 2 Cats)</sub>",
-            'y': 0.98,
-            'x': 0.5,
-            'xanchor': 'center',
-            'yanchor': 'top'
-        }
+            "text": "Maximum Likelihood ↔ Cross-Entropy Connection<br><sub>Dataset: 5 samples (3 Dogs, 2 Cats)</sub>",
+            "y": 1.0,
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
     )
 
     # Add explanatory annotations
     fig.add_annotation(
-        x=0.95, y=max(likelihoods)*0.5,
+        x=0.95,
+        y=max(likelihoods) * 0.5,
         text="MAXIMIZE<br>THIS<br>(Training Goal)",
         showarrow=True,
         arrowhead=2,
-        ax=-50, ay=0,
-        row=1, col=1,
-        font=dict(size=11, color='darkblue')
+        ax=-50,
+        ay=0,
+        row=1,
+        col=1,
+        font=dict(size=11, color="darkblue"),
     )
 
     fig.add_annotation(
-        x=0.95, y=max(log_likelihoods)*0.5,
+        x=0.95,
+        y=max(log_likelihoods) * 0.5,
         text="MAXIMIZE<br>THIS<br>(Equivalent Goal)",
         showarrow=True,
         arrowhead=2,
-        ax=-50, ay=0,
-        row=2, col=1,
-        font=dict(size=11, color='darkgreen')
+        ax=-50,
+        ay=0,
+        row=2,
+        col=1,
+        font=dict(size=11, color="darkgreen"),
     )
 
     fig.add_annotation(
-        x=0.95, y=min(neg_log_likelihoods)*1.5,
+        x=0.95,
+        y=min(neg_log_likelihoods) * 1.5,
         text="MINIMIZE<br>THIS<br>(Actual Training Loss)",
         showarrow=True,
         arrowhead=2,
-        ax=-50, ay=30,
-        row=3, col=1,
-        font=dict(size=11, color='darkred')
+        ax=-50,
+        ay=30,
+        row=3,
+        col=1,
+        font=dict(size=11, color="darkred"),
     )
 
     return fig
+
 
 fig = create_likelihood_viz()
 fig.show()
@@ -675,15 +897,6 @@ fig.show()
 
 The visualization shows: as model calibration improves (x increases), likelihood increases, log-likelihood increases, and loss (NLL) decreases.
 :::
-
-### Negative Log-Likelihood
-
-With Maximum Likelihood, we aim to choose the parameters $\theta$ such that $p(\vect{y} | \theta, \m{X})$ is maximized. However, this function can be complex to handle, and we can use some mathematical tricks. We take the logarithm of the likelihood so that the product of probabilities becomes a sum. Since the logarithm is a monotonically increasing function, we can maximize its logarithm instead of the function $p(\vect{y} | \theta, \m{X})$. Finally, we take the negative of the function, allowing us to minimize it.
-
-\begin{equation}
-L(\m{X}, \vect{y}, \theta) = - \log \prod_{i=1}^N \prod_{j=1}^K P(Y = j| X = \vect{x}^{(i)})^{y^{(i)}_j} \\
-L(\m{X}, \vect{y}, \theta) = -\sum_{i=1}^N \sum_{j=1}^K y^{(i)}_j \log  P(Y = j| X = \vect{x}^{(i)})
-\end{equation}
 
 ### Cross-Entropy
 
@@ -803,9 +1016,10 @@ plt.show()
 **See how different predictions map to loss values on the curve**:
 
 ```{python}
-#| eval: true
-#| echo: false
-#| fig-width: 800
+# | eval: true
+# | echo: false
+# | fig-width: 800
+
 
 def create_multiclass_ce_demo():
     """Interactive multi-class cross-entropy demonstration."""
@@ -820,7 +1034,7 @@ def create_multiclass_ce_demo():
         "Confident Correct": [0.05, 0.85, 0.05, 0.03, 0.02],
         "Uncertain Correct": [0.15, 0.35, 0.2, 0.15, 0.15],
         "Confident Wrong": [0.85, 0.05, 0.05, 0.03, 0.02],
-        "Uniform (Random)": [0.2, 0.2, 0.2, 0.2, 0.2]
+        "Uniform (Random)": [0.2, 0.2, 0.2, 0.2, 0.2],
     }
 
     # Calculate cross-entropy for each scenario
@@ -831,13 +1045,14 @@ def create_multiclass_ce_demo():
 
     # Create visualization with 2 rows
     fig = make_subplots(
-        rows=2, cols=1,
+        rows=2,
+        cols=1,
         subplot_titles=(
             "Predicted Probabilities",
-            "Cross-Entropy Loss Landscape - Red Dot Shows Current Loss"
+            "Cross-Entropy Loss Landscape - Red Dot Shows Current Loss",
         ),
         row_heights=[0.45, 0.55],
-        vertical_spacing=0.15
+        vertical_spacing=0.15,
     )
 
     # Initial scenario
@@ -845,17 +1060,20 @@ def create_multiclass_ce_demo():
     initial_probs = scenarios[initial_name]
 
     # Row 1: Add probability bars
-    colors = ['lightcoral' if i != true_class else 'lightgreen' for i in range(n_classes)]
+    colors = [
+        "lightcoral" if i != true_class else "lightgreen" for i in range(n_classes)
+    ]
     fig.add_trace(
         go.Bar(
-            x=[f'Class {i}' for i in range(n_classes)],
+            x=[f"Class {i}" for i in range(n_classes)],
             y=initial_probs,
             marker_color=colors,
             name="Probabilities",
             text=[f"{p:.2f}" for p in initial_probs],
-            textposition='outside'
+            textposition="outside",
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # Row 2: Add CE loss landscape
@@ -866,12 +1084,13 @@ def create_multiclass_ce_demo():
         go.Scatter(
             x=p_pred,
             y=loss_curve,
-            mode='lines',
-            name='CE Loss Curve',
-            line=dict(color='blue', width=3),
-            showlegend=False
+            mode="lines",
+            name="CE Loss Curve",
+            line=dict(color="blue", width=3),
+            showlegend=False,
         ),
-        row=2, col=1
+        row=2,
+        col=1,
     )
 
     # Add point for initial scenario on the loss landscape
@@ -882,89 +1101,130 @@ def create_multiclass_ce_demo():
         go.Scatter(
             x=[initial_pred],
             y=[initial_loss],
-            mode='markers',
+            mode="markers",
             marker=dict(
                 size=15,
-                color='red',
-                symbol='circle',
-                line=dict(width=2, color='darkred')
+                color="red",
+                symbol="circle",
+                line=dict(width=2, color="darkred"),
             ),
             name=initial_name,
             text=[f"{initial_name}<br>p={initial_pred:.3f}<br>Loss={initial_loss:.3f}"],
-            hovertemplate='%{text}<extra></extra>',
-            showlegend=False
+            hovertemplate="%{text}<extra></extra>",
+            showlegend=False,
         ),
-        row=2, col=1
+        row=2,
+        col=1,
     )
 
     # Add true label indicator
     fig.add_annotation(
-        x=f'Class {true_class}',
+        x=f"Class {true_class}",
         y=1.05,
         text="← TRUE LABEL",
         showarrow=False,
         yref="y1",
         xref="x1",
-        font=dict(size=12, color="green", family="Arial Black")
+        font=dict(size=12, color="green", family="Arial Black"),
     )
 
-    # Create buttons for scenarios
+    # Build scenario buttons
     buttons = []
     for name, probs in scenarios.items():
-        colors = ['lightcoral' if i != true_class else 'lightgreen' for i in range(n_classes)]
+        colors = [
+            "lightcoral" if i != true_class else "lightgreen" for i in range(n_classes)
+        ]
         pred_for_true = probs[true_class]
         loss = ce_losses[name]
 
-        button = dict(
-            label=name,
-            method="update",
-            args=[
-                {
-                    "y": [
-                        probs,
-                        loss_curve,
-                        [loss]
-                    ],
-                    "text": [
-                        [f"{p:.2f}" for p in probs],
-                        None,
-                        [f"{name}<br>p={pred_for_true:.3f}<br>Loss={loss:.3f}"]
-                    ],
-                    "x": [
-                        [f'Class {i}' for i in range(n_classes)],
-                        p_pred,
-                        [pred_for_true]
-                    ]
-                },
-                {"title": f"Scenario: {name} | Probability for True Class = {pred_for_true:.3f} | Loss = {loss:.3f}"}
-            ]
+        buttons.append(
+            dict(
+                label=name,
+                method="update",
+                args=[
+                    {
+                        "y": [
+                            probs,  # bars (row 1)
+                            loss_curve,  # CE curve (row 2)
+                            [loss],  # red dot y (row 2)
+                        ],
+                        "text": [
+                            [f"{p:.2f}" for p in probs],
+                            None,
+                            [f"{name}<br>p={pred_for_true:.3f}<br>Loss={loss:.3f}"],
+                        ],
+                        "x": [
+                            [f"Class {i}" for i in range(n_classes)],
+                            p_pred,
+                            [pred_for_true],
+                        ],
+                    },
+                    {
+                        "title.text": f"Scenario: {name} | Probability for True Class = {pred_for_true:.3f} | Loss = {loss:.3f}"
+                    },
+                ],
+            )
         )
-        buttons.append(button)
 
+    # --- Fix overlaps ---
+    # 1) Move subplot titles slightly *down*; give row-2 (bottom) title extra downward shift
+    for ann in fig.layout.annotations:
+        if ann.text == "Predicted Probabilities":
+            ann.y = 1.0
+            ann.yanchor = "bottom"
+            ann.yshift = -2
+        elif ann.text == "Cross-Entropy Loss Landscape - Red Dot Shows Current Loss":
+            ann.y = 1.0
+            ann.yanchor = "bottom"
+            ann.yshift = -10  # more space so it doesn't collide with yaxis2 title
+
+    # 2) Increase standoff for yaxis2 title to keep it clear of the plot area and subtitles
+    #    (this adds horizontal spacing between axis title and ticks/plot body)
+    yaxis2_layout = dict(
+        title="Cross-Entropy Loss", range=[0, 5], automargin=True, title_standoff=20
+    )
+
+    # 3) Place dropdown *below* the overall title, clearly separated (opens downward)
+    #    Adjust top margin to reserve space for title + menu without overlap.
     fig.update_layout(
         updatemenus=[
             dict(
                 type="dropdown",
-                direction="down",
+                direction="down",  # opens downward
                 x=0.5,
                 xanchor="center",
-                y=1.08,
-                yanchor="top",
-                buttons=buttons
+                y=1.2,
+                yanchor="top",  # just below the figure title
+                buttons=buttons,
+                pad=dict(t=4, r=6, l=6, b=10),
+                bgcolor="white",
+                bordercolor="#ddd",
+                borderwidth=1,
             )
         ],
         height=700,
+        margin=dict(t=120, r=40, b=60, l=70),  # a bit more left margin for yaxis title
         showlegend=False,
-        yaxis1=dict(range=[0, 1.1], title="Probability"),
-        yaxis2=dict(title="Cross-Entropy Loss", range=[0, 5]),
+        yaxis1=dict(range=[0, 1.1], title="Probability", automargin=True),
+        yaxis2=yaxis2_layout,
         xaxis2=dict(title="Predicted Probability for True Class (Class 1)"),
-        title=f"Scenario: {initial_name} | Probability for True Class = {initial_pred:.3f} | Loss = {initial_loss:.3f}"
+        title=dict(
+            text=f"Scenario: {initial_name} | Probability for True Class = {initial_pred:.3f} | Loss = {initial_loss:.3f}",
+            y=0.985,  # overall title near top
+            yanchor="top",
+            x=0.5,
+            xanchor="center",
+            pad=dict(t=6, b=6),
+        ),
     )
 
     return fig
 
+
 fig = create_multiclass_ce_demo()
 fig.show()
+
+
 ```
 
 **Key Takeaways**:

@@ -49,6 +49,7 @@ site_libs/**
 
 ########## Legacy / Unneeded Book Build ##########
 book/
+old_lectures/
 
 ########## Archives & Large Bundles ##########
 **/archive/**
