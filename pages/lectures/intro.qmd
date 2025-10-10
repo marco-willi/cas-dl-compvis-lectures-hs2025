@@ -19,6 +19,7 @@ After this lecture you should be able to:
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
 
 **Computer Vision Tasks:**
+
 - **Classification**: Assign images to predefined classes
 - **Detection**: Locate and recognize multiple objects with bounding boxes
 - **Segmentation**: Assign each pixel to objects (instance) or classes (semantic)
@@ -26,18 +27,21 @@ After this lecture you should be able to:
 - **Keypoint Detection**: Localize specific points (e.g., human joints)
 
 **Key Challenges:**
+
 - Semantic gap (pixels → meaning)
 - Viewpoint, illumination, occlusion variations
 - Intra-class variation and background clutter
 - Context dependence
 
 **Classical vs. Modern Approaches:**
+
 - **Classical CV**: Hand-crafted features (HOG, SIFT, color histograms) + ML classifiers
   - Limited by manual feature design, poor scalability
 - **Deep Learning**: End-to-end learned hierarchical representations
   - Automatic feature extraction, better scaling with data
 
 **Historical Milestones:**
+
 - **1959**: Hubel & Wiesel - receptive fields in visual cortex
 - **1980**: Neocognitron - hierarchical neural network for vision
 - **1986**: Backpropagation - training algorithm for neural networks
@@ -47,17 +51,20 @@ After this lecture you should be able to:
 - **2020s**: Transformers and hybrid architectures competing with CNNs
 
 **Why Deep Learning Won:**
+
 - Large-scale datasets (ImageNet: 1.4M images, 1K classes)
 - GPU computing power (parallel processing)
 - Better architectures (CNNs exploit 2D structure)
 - End-to-end optimization (learn features + classifier together)
 
 **Applications:**
+
 - Autonomous driving, medical imaging, facial recognition
 - Photo editing, image generation, agricultural monitoring
 - Embedded systems (mobile chips for on-device inference)
 
 **Ethical Considerations:**
+
 - Synthetic media and deepfakes (misinformation risks)
 - Bias in training data and model predictions
 - Privacy concerns with facial recognition
@@ -376,6 +383,19 @@ There are many more computer vision tasks. The following list is not exhaustive:
 
 ::::
 
+### What about videos?
+
+Many of the image-level tasks can be extended to videos. After all, videos are nothing but a sequence of images.
+
+The most recent impressive examples are from video generative models:
+
+::: {#fig-intro-sora}
+
+{{< video https://vimeo.com/913454615?fl=pl&fe=sh width=800 >}}
+
+[OpenAI Sora](https://openai.com/index/sora/) - Text-to-video generation example.
+:::
+
 
 
 ## Challenges
@@ -388,7 +408,7 @@ The semantic gap refers to the discrepancy between the low-level pixel informati
 
 ::: {#fig-cat-number-grid}
 
-![]({{< meta params.images_path >}}semantic_gap.jpg){width=600}
+![]({{< meta params.images_path >}}semantic_gap_comparison.png){width=600}
 
 Illustration of the semantic gap: computers see numbers, humans see meaning.
 :::
@@ -399,9 +419,9 @@ The semantic meaning of an image remains constant regardless of camera viewpoint
 
 ::: {#fig-intro-challenge-viewpoint}
 
-![]({{< meta params.images_path >}}viewpoint.png){width=600}
+![]({{< meta params.images_path >}}viewpoint_challenge.png){width=600}
 
-The same cat from different viewpoints looks completely different at the pixel level. [Source](http://cs231n.stanford.edu/)
+The same cat from different viewpoints looks completely different at the pixel level.
 :::
 
 ### Deformation

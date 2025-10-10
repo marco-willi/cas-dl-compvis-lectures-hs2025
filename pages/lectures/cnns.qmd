@@ -79,11 +79,11 @@ $$r_0 = \sum_{l=1}^L \left( (k_l - 1) \prod_{i=1}^{l-1} s_i \right) + 1$$
 
 **Architectural Best Practices**
 
-✅ Use multiple small kernels (3×3) instead of large ones
-✅ Add non-linearity (ReLU, etc.) between conv layers
-✅ Use batch normalization for stable training
-✅ Stack conv layers to build hierarchical features
-✅ Use global average pooling instead of large fully-connected layers
+- ✅ Use multiple small kernels (3×3) instead of large ones
+- ✅ Add non-linearity (ReLU, etc.) between conv layers
+- ✅ Use batch normalization for stable training
+- ✅ Stack conv layers to build hierarchical features
+- ✅ Use global average pooling instead of large fully-connected layers
 
 **Parameter Efficiency Example**
 

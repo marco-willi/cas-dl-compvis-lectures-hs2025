@@ -17,11 +17,14 @@ Hier finden Sie Unterlagen und aktuelle Informationen zum Modul.
 
 - Die fundamentalen Herausforderungen bei Modellieren von Bilddaten verstehen
 - Convolutional Neural Networks verstehen, implementieren und trainieren können
+- Foundation-Models als Grundlage für viele Vision Tasks verstehen und einsetzten können
 - Bildklassifikation verstehen und systematisch umsetzen können
 - Mit Deep Learning Frameworks umgehen und Libraries verwenden können
 - Praktische Anwendung umsetzen, vorstellen und erklären können
 
 ## Inhalte
+
+Folgendes Programm ist noch provisorisch.
 
 
 ### Tag 1 -  Grundlagen Convolutional Neural Networks
@@ -33,22 +36,22 @@ Hier finden Sie Unterlagen und aktuelle Informationen zum Modul.
 |10:30  - 10:45	| Pause
 |10:45 - 12:00	| Convolutional Neural Networks
 |12:00 - 13:00	| Mittagspause
-|13:00 - 16:30	| Übung: CNNs für Bildklassifikation
+|13:00 - 14:00	| Übung: CNNs vs MLPS
+|14:15 - 15:00	| Theorie: Bildklassifikation
+|15:15 - 16:30	| Übung: Bildklassifikation
 
 
 ### Tag 2 -  Bildklassifikation und Anwendungen
 
 | Zeit | Thema |
 |------|--------|
-|8:45 - 9:30	| Theorie: Bildklassifikation & Recap
-|9:30 - 10:30 	| Theorie: Praktische Überlegungen
-|10:30  - 10:45	| Pause
-|10:45 - 12:00	| Übung: Bildklassifikation
+|8:45 - 10:00	| Theorie: Foundation Models & Representation Learning
+|10:15 - 11:15 	| Übung: Foundation Models
+|11:30  - 12:00	| Theorie: Praktische Tipps
 |12:00 - 13:00	| Mittagspause
-|13:00 - 14:30	| Übung: Bildklassifikation
-|14:30  - 14:45	| Pause
-|14:45  - 15:15	| Theorie: Recent Advances
-|15:15 - 16:30	| Übung: Recent Advances
+|13:00 - 15:30	| Übung: End-To-End Beispiel
+|15:30  - 15:45	| Pause
+|15:45  - 16:30	| Q&A / Buffer
 
 
 <!--

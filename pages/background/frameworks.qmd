@@ -178,13 +178,15 @@ In this class, we use PyTorch. PyTorch has gained enormous popularity in recent 
 ::: {.callout-note title="Why PyTorch?" collapse="true"}
 
 **Key Advantages:**
+
 - **Pythonic API**: Feels natural to Python developers, easy to debug
 - **Dynamic computation graphs**: Build graphs on-the-fly, great for research
 - **Strong ecosystem**: torchvision (CV), torchaudio (audio), transformers library integration
-- **Industry & research adoption**: Used by Meta, Tesla, OpenAI, and top ML research labs
+- **Industry & research adoption**: Used by Meta, [Tesla](https://youtu.be/oBklltKXtDE?si=arGXjt3JX6NbpStj&t=116), OpenAI, and top ML research labs ([Source](https://pytorch.org/blog/pytorch-the-open-language-of-ai/))
 - **Excellent documentation**: Comprehensive tutorials and active community
 
 **When to use PyTorch:**
+
 - Research projects requiring flexibility
 - Computer vision and NLP applications
 - When you need fine-grained control over training loops
@@ -369,13 +371,13 @@ PyTorch provides various building blocks for creating neural networks. These are
 **Common activations:**
 
 - `nn.ReLU()`, `nn.LeakyReLU()`, `nn.GELU()`
-- `nn.Sigmoid()`, `nn.Tanh()`, `nn.Softmax()`
+- `nn.Sigmoid()`, `nn.Softmax()`
 
 **Loss functions:**
 
 - `nn.CrossEntropyLoss()`: Classification
-- `nn.MSELoss()`: Regression
 - `nn.BCEWithLogitsLoss()`: Binary classification
+- `nn.MSELoss()`: Regression
 :::
 
 Here is an example:
@@ -443,7 +445,7 @@ To optimize the parameters of a model, you need an optimization algorithm. [`tor
 ::: {.callout-tip title="Common Optimizers"}
 - **SGD**: Basic stochastic gradient descent (with optional momentum)
 - **Adam**: Adaptive learning rates, good default choice
-- **AdamW**: Adam with weight decay, often better for transformers
+- **AdamW**: Adam with weight decay, often better for transformers (see @loshchilov_decoupled_2019)
 - **RMSprop**: Adaptive learning rates, good for RNNs
 - **Learning rate schedulers**: Adjust learning rate during training (e.g., `torch.optim.lr_scheduler`)
 
@@ -509,18 +511,7 @@ for batch_x, batch_y in dataloader:
     pred = model(batch_x)
 ```
 
-**Pitfall 3: In-place operations breaking autograd**
-```python
-# ❌ Wrong - in-place operations can break gradient computation
-x = x * 2  # In-place when x requires grad
-x += 5     # In-place
-
-# ✅ Correct
-x = x * 2  # Creates new tensor
-x = x + 5  # Creates new tensor
-```
-
-**Pitfall 4: Not using eval() mode for inference**
+**Pitfall 3: Not using eval() mode for inference**
 ```python
 # ❌ Wrong - dropout and batchnorm active during inference
 predictions = model(test_data)
@@ -541,10 +532,11 @@ model.train()  # Switch back to training mode
 Typically, you put together a training loop to train a model. A training loop iterates over batches of data and optimizes the model parameters with each iteration.
 
 ```{python}
-#| eval: true
-#| echo: true
+# | eval: true
+# | echo: true
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
+    model.train()  # <-- important!
     for batch, (X, y) in enumerate(dataloader):
         # Compute prediction and loss
         pred = model(X)
@@ -561,11 +553,13 @@ def train_loop(dataloader, model, loss_fn, optimizer):
 
 
 def test_loop(dataloader, model, loss_fn):
+    model.eval()  # <-- important!
+
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     test_loss, correct = 0, 0
 
-    with torch.no_grad():
+    with torch.no_grad():  # disables gradient tracking for efficiency
         for X, y in dataloader:
             pred = model(X)
             test_loss += loss_fn(pred, y).item()
@@ -573,7 +567,9 @@ def test_loop(dataloader, model, loss_fn):
 
     test_loss /= num_batches
     correct /= size
-    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    print(
+        f"Test Error:\n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f}\n"
+    )
 ```
 
 ```{python}
@@ -592,7 +588,7 @@ print("Done!")
 ```
 
 ::: {.callout-note}
-High-level APIs such as [Lightning](https://lightning.ai/) and [Keras](https://keras.io/) provide many functionalities to simplify managing training loops. It is highly recommended to use such libraries to reduce boiler-plate code. However, it depends on the individual complexitiy of a project to what degree such libraries are useful.
+High-level APIs such as [Lightning](https://lightning.ai/) and [Keras](https://keras.io/) provide many functionalities to simplify managing training loops. It is highly recommended to use such libraries to reduce boiler-plate code. However, it depends on the individual complexity of a project to what degree such libraries are useful.
 :::
 
 
@@ -616,11 +612,20 @@ Other important frameworks are listed below (not exhaustive).
 
 ## TensorFlow
 
-For a long time, PyTorch and TensorFlow have been the biggest deep learning frameworks. TensorFlow stands out with a clean high-level API with [`Keras`](https://keras.io/), which allows for easy implementation of complex models. Traditionally, TensorFlow is well established in the industry, while PyTorch is widely used in academia.
+For a long time, PyTorch and TensorFlow have been the two dominant deep learning frameworks.
+TensorFlow, developed by Google, is known for its production-readiness, ecosystem integration (e.g., [TensorFlow Extended (TFX)](https://www.tensorflow.org/tfx) for MLOps pipelines, [LiteRT](https://ai.google.dev/edge/litert) for mobile, and [TensorFlow.js](https://www.tensorflow.org/js) for web), and its scalability across distributed hardware.
+
+In recent years, however, TensorFlow’s low-level API has become less popular in research compared to PyTorch, which offers more flexibility and Pythonic design. Today, most TensorFlow users rely almost exclusively on Keras, its high-level API, to define and train models, while the TensorFlow backend provides performance, device management, and deployment capabilities.
+
+## Keras
+[Keras](https://keras.io/) started as an independent high-level deep learning API designed to simplify model creation with a clean and intuitive syntax.
+Since 2017, it has been tightly integrated into TensorFlow as its official front-end (tf.keras), and in 2023, Keras Core was introduced, a framework-agnostic version that can run on multiple backends such as TensorFlow, JAX, and PyTorch.
+
+Keras focuses on ease of use, modularity, and rapid prototyping, making it an excellent choice for teaching, applied machine learning, and fast experimentation, while still being production-ready through TensorFlow’s ecosystem.
 
 ## Jax
 
-[Jax](https://jax.readthedocs.io/en/latest/) has gained much popularity in recent years. It has been developed by people working for Google and is being used primarily in research settings. It is aking to `numpy`, however, with automatic-differentiation.
+[Jax](https://jax.readthedocs.io/en/latest/) has gained significant popularity in recent years. Developed by researchers at Google, it is primarily used in research and foundation-model development. Jax provides a NumPy-like API with automatic differentiation (autodiff) and function transformations such as jit (for compilation) and vmap (for vectorization). It enables high-performance, composable numerical computing, and serves as the foundation for frameworks such as [Flax (Neural Networks)](https://flax.readthedocs.io/en/stable/) and [Haiku (ML Research)](https://dm-haiku.readthedocs.io/en/latest/).
 
 
 ## Scikit-Learn
@@ -628,8 +633,8 @@ For a long time, PyTorch and TensorFlow have been the biggest deep learning fram
 [`Scikit-Learn`](https://scikit-learn.org/stable/) is THE machine learning framework in Python. However, Scikit-Learn never covered the area of neural networks and lacks auto-diff functionality. Therefore, Scikit-Learn is irrelevant when training neural networks. However, Scikit-Learn functionalities are often used to carry out the machine learning process, such as splitting datasets into train, validation, and test sets. Also, visualizations, such as the confusion matrix or calculating metrics, can be done via Scikit-Learn.
 
 ## ONNX
-
-[ONNX](https://onnx.ai/) is an open format to represent machine learning models. It allows models trained in one framework to be transferred to another. Trained models can also be deployed on various platforms.
+y§
+[ONNX](https://onnx.ai/) (Open Neural Network Exchange) is an open format to represent machine learning models. It allows models trained in one framework to be transferred to another. Trained models can also be deployed on various platforms.
 
 ## Monitoring
 
