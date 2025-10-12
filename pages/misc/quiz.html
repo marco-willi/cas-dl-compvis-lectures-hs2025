@@ -8,7 +8,7 @@
 
 <meta name="author" content="Marco Willi">
 
-<title>Willkommen zum Modul Computer Vision mit Deep Learning – CAS Deep Learning - Computer Vision</title>
+<title>Quiz – CAS Deep Learning - Computer Vision</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,24 +59,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./pages/background/machine_learning.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-159896a7fbbc1299bfd73fe3af9cd852.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-065a5179aebd64318d7ea99d77b64a9e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-159896a7fbbc1299bfd73fe3af9cd852.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -114,8 +113,37 @@ gtag('js', new Date());
 gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light">
@@ -127,7 +155,7 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Home</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Quiz</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -141,9 +169,9 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./assets/cv_logo_small.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="./assets/cv_logo_small.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../assets/cv_logo_small.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../assets/cv_logo_small.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main">
     <a href="https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
@@ -159,7 +187,7 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
@@ -174,19 +202,19 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/background/machine_learning.html" class="sidebar-item-text sidebar-link">
+  <a href="../../pages/background/machine_learning.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Machine Learning Basics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/background/neural_networks.html" class="sidebar-item-text sidebar-link">
+  <a href="../../pages/background/neural_networks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Neural Networks</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/background/frameworks.html" class="sidebar-item-text sidebar-link">
+  <a href="../../pages/background/frameworks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Software &amp; Hardware for Deep Learning</span></a>
   </div>
 </li>
@@ -214,19 +242,19 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/misc/literature.html" class="sidebar-item-text sidebar-link">
+  <a href="../../pages/misc/literature.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Books</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/misc/links.html" class="sidebar-item-text sidebar-link">
+  <a href="../../pages/misc/links.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Helpful Links &amp; Resources</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/misc/notation.html" class="sidebar-item-text sidebar-link">
+  <a href="../../pages/misc/notation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Mathematical Notation</span></a>
   </div>
 </li>
@@ -242,12 +270,10 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#lernziele" id="toc-lernziele" class="nav-link active" data-scroll-target="#lernziele">Lernziele</a></li>
-  <li><a href="#inhalte" id="toc-inhalte" class="nav-link" data-scroll-target="#inhalte">Inhalte</a>
-  <ul class="collapse">
-  <li><a href="#tag-1---grundlagen-convolutional-neural-networks" id="toc-tag-1---grundlagen-convolutional-neural-networks" class="nav-link" data-scroll-target="#tag-1---grundlagen-convolutional-neural-networks">Tag 1 - Grundlagen Convolutional Neural Networks</a></li>
-  <li><a href="#tag-2---bildklassifikation-und-anwendungen" id="toc-tag-2---bildklassifikation-und-anwendungen" class="nav-link" data-scroll-target="#tag-2---bildklassifikation-und-anwendungen">Tag 2 - Bildklassifikation und Anwendungen</a></li>
-  </ul></li>
+  <li><a href="#convolutions" id="toc-convolutions" class="nav-link active" data-scroll-target="#convolutions">Convolutions</a></li>
+  <li><a href="#cnns" id="toc-cnns" class="nav-link" data-scroll-target="#cnns">CNNs</a></li>
+  <li><a href="#image-classification" id="toc-image-classification" class="nav-link" data-scroll-target="#image-classification">Image Classification</a></li>
+  <li><a href="#foundation-models" id="toc-foundation-models" class="nav-link" data-scroll-target="#foundation-models">Foundation Models</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -256,7 +282,7 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Willkommen zum Modul Computer Vision mit Deep Learning</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Quiz</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -286,120 +312,51 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
 </header>
 
 
-<p>Herzlich willkommen zum Modul <strong>Computer Vision mit Deep Learning</strong> (1. Teil)!</p>
-<p>Hier finden Sie Unterlagen und aktuelle Informationen zum Modul.</p>
-<p><a href="https://www.fhnw.ch/de/weiterbildung/informatik/fachvertiefungsmodule-data-science/computer-vision-mit-deep-learning">Modul Computer Vision mit DL</a></p>
-<p><a href="https://www.fhnw.ch/de/weiterbildung/informatik/cas-deep-learning">CAS Page</a></p>
-<section id="lernziele" class="level2">
-<h2 class="anchored" data-anchor-id="lernziele">Lernziele</h2>
+<p>The following questions could be exam questions.</p>
+<section id="convolutions" class="level2">
+<h2 class="anchored" data-anchor-id="convolutions">Convolutions</h2>
+<ol type="1">
+<li><p>A convolutional layer has 64 input activations (<span class="math inline">\(C_{in} = 64\)</span> and <span class="math inline">\(H=16\)</span>, <span class="math inline">\(W=16\)</span>). You want to reduce its spatial dimensionality by half, while doubling the number of channels. How do you parameterize your convolutional layer? Provide an example.</p></li>
+<li><p>In the example above: How many weights do you need to learn?</p></li>
+<li><p>You have very large images (<span class="math inline">\(8000 \times 8000\)</span> pixels). Your model always crashes with out-of-memory-errors. What options do you have when parameterizing your convolutions?</p></li>
+</ol>
+</section>
+<section id="cnns" class="level2">
+<h2 class="anchored" data-anchor-id="cnns">CNNs</h2>
+<ol type="1">
+<li>Can CNNs be used to count objects? Take a look at the following figure. You want to count in how many quadrants an objects occurs. Justify your answer.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/images/quiz/counting.jpg" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Can CNNs count objects</figcaption>
+</figure>
+</div>
+<ol start="2" type="1">
+<li><p>Can CNNs be used to model inputs, e.g.&nbsp;satellite data that are not RGB images, i.e.&nbsp;have more than 3 input channels? Justify your answer.</p></li>
+<li><p>You want to model images which are not square. They have a spatial resolution of 800x400. What is different within a CNN as opposed to if they were square?</p></li>
+</ol>
+</section>
+<section id="image-classification" class="level2">
+<h2 class="anchored" data-anchor-id="image-classification">Image Classification</h2>
+<ol type="1">
+<li>You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verificaiton by an expert. Which do you choose? Justify your answer.</li>
+</ol>
+</section>
+<section id="foundation-models" class="level2">
+<h2 class="anchored" data-anchor-id="foundation-models">Foundation Models</h2>
+<ol type="1">
+<li>You applied CLIP on a dataset to identify synthetic / fake images and used the following prompts:</li>
+</ol>
 <ul>
-<li>Die fundamentalen Herausforderungen beim Modellieren von Bilddaten verstehen</li>
-<li>Convolutional Neural Networks verstehen, implementieren und trainieren können</li>
-<li>Foundation-Models als Grundlage für viele Vision Tasks verstehen und einsetzten können</li>
-<li>Bildklassifikation verstehen und systematisch umsetzen können</li>
-<li>Mit Deep Learning Frameworks umgehen und Libraries verwenden können</li>
-<li>Praktische Anwendung umsetzen, vorstellen und erklären können</li>
+<li>“A synthetic image”.</li>
+<li>“A real image”.</li>
 </ul>
-</section>
-<section id="inhalte" class="level2">
-<h2 class="anchored" data-anchor-id="inhalte">Inhalte</h2>
-<p>Folgendes Programm ist noch provisorisch.</p>
-<section id="tag-1---grundlagen-convolutional-neural-networks" class="level3">
-<h3 class="anchored" data-anchor-id="tag-1---grundlagen-convolutional-neural-networks">Tag 1 - Grundlagen Convolutional Neural Networks</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Zeit</th>
-<th>Thema</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>8:45 - 9:30</td>
-<td>Einführung Computer Vision mit Deep Learning</td>
-</tr>
-<tr class="even">
-<td>9:30 - 10:30</td>
-<td>Übung: Deep Learning mit PyTorch und Bildern</td>
-</tr>
-<tr class="odd">
-<td>10:30 - 10:45</td>
-<td>Pause</td>
-</tr>
-<tr class="even">
-<td>10:45 - 12:00</td>
-<td>Convolutional Neural Networks</td>
-</tr>
-<tr class="odd">
-<td>12:00 - 13:00</td>
-<td>Mittagspause</td>
-</tr>
-<tr class="even">
-<td>13:00 - 14:00</td>
-<td>Übung: CNNs vs MLPs</td>
-</tr>
-<tr class="odd">
-<td>14:15 - 15:00</td>
-<td>Theorie: Bildklassifikation</td>
-</tr>
-<tr class="even">
-<td>15:15 - 16:30</td>
-<td>Übung: Bildklassifikation</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="tag-2---bildklassifikation-und-anwendungen" class="level3">
-<h3 class="anchored" data-anchor-id="tag-2---bildklassifikation-und-anwendungen">Tag 2 - Bildklassifikation und Anwendungen</h3>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Zeit</th>
-<th>Thema</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>8:45 - 10:00</td>
-<td>Theorie: Foundation Models &amp; Representation Learning</td>
-</tr>
-<tr class="even">
-<td>10:15 - 11:15</td>
-<td>Übung: Foundation Models</td>
-</tr>
-<tr class="odd">
-<td>11:30 - 12:00</td>
-<td>Theorie: Praktische Tipps</td>
-</tr>
-<tr class="even">
-<td>12:00 - 13:00</td>
-<td>Mittagspause</td>
-</tr>
-<tr class="odd">
-<td>13:00 - 15:30</td>
-<td>Übung: End-To-End Beispiel</td>
-</tr>
-<tr class="even">
-<td>15:30 - 15:45</td>
-<td>Pause</td>
-</tr>
-<tr class="odd">
-<td>15:45 - 16:30</td>
-<td>Q&amp;A / Buffer</td>
-</tr>
-</tbody>
-</table>
-<!--
-| Datum | Thema                                               | Übung
-|-----------------|-----------------------------------------------------|----------------------|
-| 09 - 1.11.2024 | Einführung in Deep Learning für Computer Vision     | PyTorch Intro
-| 10 - 2.11.2024 | Convolutional Neural Networks                       | Neural Networks / CNNs
-           -->
+<p>When you compare to the ground truth labels that you have collected you see that the model does not perform well. What options do you have to improve the model?</p>
 
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -853,78 +810,59 @@ gtag('config', 'G-SCHRGR3LNM', { 'anonymize_ip': true});
       }
     }
   });
-  </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./pages/background/machine_learning.html" class="pagination-link" aria-label="Machine Learning Basics">
-        <span class="nav-page-text">Machine Learning Basics</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Willkommen zum Modul Computer Vision mit Deep Learning"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> false</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Quiz"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">params:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  images_path: /assets/images/quiz/</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Herzlich willkommen zum Modul **Computer Vision mit Deep Learning** (1. Teil)!</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>Hier finden Sie Unterlagen und aktuelle Informationen zum Modul.</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Modul Computer Vision mit DL</span><span class="co">](https://www.fhnw.ch/de/weiterbildung/informatik/fachvertiefungsmodule-data-science/computer-vision-mit-deep-learning)</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">CAS Page</span><span class="co">](https://www.fhnw.ch/de/weiterbildung/informatik/cas-deep-learning)</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>::: {.content-hidden}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /assets/_macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>The following questions could be exam questions.</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Lernziele</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Convolutions</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Die fundamentalen Herausforderungen beim Modellieren von Bilddaten verstehen</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Convolutional Neural Networks verstehen, implementieren und trainieren können</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Foundation-Models als Grundlage für viele Vision Tasks verstehen und einsetzten können</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bildklassifikation verstehen und systematisch umsetzen können</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Mit Deep Learning Frameworks umgehen und Libraries verwenden können</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Praktische Anwendung umsetzen, vorstellen und erklären können</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A convolutional layer has 64 input activations ($C_{in} = 64$ and $H=16$, $W=16$). You want to reduce its spatial dimensionality by half, while doubling the number of channels. How do you parameterize your convolutional layer? Provide an example.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>In the example above: How many weights do you need to learn?</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>You have very large images ($8000 \times 8000$ pixels). Your model always crashes with out-of-memory-errors. What options do you have when parameterizing your convolutions?</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Inhalte</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## CNNs</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Folgendes Programm ist noch provisorisch.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Can CNNs be used to count objects? Take a look at the following figure. You want to count in how many quadrants an objects occurs. Justify your answer.</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tag 1 -  Grundlagen Convolutional Neural Networks</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="al">![Can CNNs count objects]({{&lt; meta params.images_path &gt;}}counting.jpg)</span>{width=60%}</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Zeit <span class="pp">|</span> Thema <span class="pp">|</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|--------|</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>8:45 - 9:30    <span class="pp">|</span> Einführung Computer Vision mit Deep Learning</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>9:30 - 10:30   <span class="pp">|</span> Übung: Deep Learning mit PyTorch und Bildern</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>10:30  - 10:45 <span class="pp">|</span> Pause</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>10:45 - 12:00  <span class="pp">|</span> Convolutional Neural Networks</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>12:00 - 13:00  <span class="pp">|</span> Mittagspause</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>13:00 - 14:00  <span class="pp">|</span> Übung: CNNs vs MLPs</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>14:15 - 15:00  <span class="pp">|</span> Theorie: Bildklassifikation</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>15:15 - 16:30  <span class="pp">|</span> Übung: Bildklassifikation</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Can CNNs be used to model inputs, e.g. satellite data that are not RGB images, i.e. have more than 3 input channels? Justify your answer.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>You want to model images which are not square. They have a spatial resolution of 800x400. What is different within a CNN as opposed to if they were square?</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Image Classification</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verificaiton by an expert. Which do you choose? Justify your answer.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tag 2 -  Bildklassifikation und Anwendungen</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Foundation Models</span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Zeit <span class="pp">|</span> Thema <span class="pp">|</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|--------|</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>8:45 - 10:00   <span class="pp">|</span> Theorie: Foundation Models &amp; Representation Learning</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>10:15 - 11:15  <span class="pp">|</span> Übung: Foundation Models</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>11:30  - 12:00 <span class="pp">|</span> Theorie: Praktische Tipps</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>12:00 - 13:00  <span class="pp">|</span> Mittagspause</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>13:00 - 15:30  <span class="pp">|</span> Übung: End-To-End Beispiel</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>15:30  - 15:45 <span class="pp">|</span> Pause</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>15:45  - 16:30 <span class="pp">|</span> Q&amp;A / Buffer</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">| Datum | Thema                                               | Übung</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">|-----------------|-----------------------------------------------------|----------------------|</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">| 09 - 1.11.2024 | Einführung in Deep Learning für Computer Vision     | PyTorch Intro</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co">| 10 - 2.11.2024 | Convolutional Neural Networks                       | Neural Networks / CNNs</span></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">           --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You applied CLIP on a dataset to identify synthetic / fake images and used the following prompts:</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"A synthetic image".</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"A real image".</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>When you compare to the ground truth labels that you have collected you see that the model does not perform well. What options do you have to improve the model?</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
