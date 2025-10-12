@@ -27,7 +27,7 @@ website:
   repo-url: https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025
   repo-actions: [issue]
 
-  google-analytics: "G-SCHRGR3LNM"
+  google-analytics: "G-97BR3FTSN1"
 
   page-footer:
     right: "This page is built with [Quarto](https://quarto.org/)."
@@ -75,8 +75,8 @@ website:
       #     - pages/slides/representation_learning.qmd
       #     - pages/slides/practical.qmd
       # ------ Exercises ---------------------------- #
-      # - text: "Exercises"
-      #   href: pages/misc/exercises.qmd
+      - text: "Exercises"
+        href: pages/misc/exercises.qmd
       # ------ Quiz & Exam Prep---------------------------- #
       # - text: "Quiz & Exam Prep"
       #   href: pages/misc/quiz.qmd
