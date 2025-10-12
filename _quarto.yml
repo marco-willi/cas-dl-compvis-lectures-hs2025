@@ -3,8 +3,9 @@ project:
   output-dir: _output
   render:
     #- "*.qmd"
-    - pages/lectures/*.qmd
+    #- pages/lectures/*.qmd
     - pages/background/*.qmd
+    - pages/misc/*.qmd
     - "index.qmd"
     - "!NOTES.md"
     - "!demos/*"
