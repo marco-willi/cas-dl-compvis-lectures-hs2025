@@ -34,8 +34,7 @@ website:
     #background: "#D9E3E4"
 
   sidebar:
-    #logo: "/assets/logo.webp"
-    logo: "/assets/logo3_small_transparent.png"
+    logo: "/assets/cv_logo_small.png"
     pinned: true
     search: true
     align: center
@@ -61,25 +60,25 @@ website:
         contents:
           - pages/lectures/intro.qmd
           #- pages/lectures/modelling_images.qmd
-          - pages/lectures/cnns.qmd
-          - pages/lectures/classification.qmd
-          - pages/lectures/representation_learning.qmd
-          - pages/lectures/practical.qmd
-          - pages/lectures/recent_advances.qmd
+          # - pages/lectures/cnns.qmd
+          # - pages/lectures/classification.qmd
+          # - pages/lectures/representation_learning.qmd
+          # - pages/lectures/practical.qmd
+          # - pages/lectures/recent_advances.qmd
       # ------ SLIDES ---------------------------- #
-      - section: Slides
-        contents:
-          - pages/slides/intro.qmd
-          - pages/slides/cnns.qmd
-          - pages/slides/image_classification.qmd
-          - pages/slides/representation_learning.qmd
-          - pages/slides/practical.qmd
+      # - section: Slides
+      #   contents:
+      #     - pages/slides/intro.qmd
+      #     - pages/slides/cnns.qmd
+      #     - pages/slides/image_classification.qmd
+      #     - pages/slides/representation_learning.qmd
+      #     - pages/slides/practical.qmd
       # ------ Exercises ---------------------------- #
-      - text: "Exercises"
-        href: pages/misc/exercises.qmd
-        # ------ Quiz & Exam Prep---------------------------- #
-      - text: "Quiz & Exam Prep"
-        href: pages/misc/quiz.qmd
+      # - text: "Exercises"
+      #   href: pages/misc/exercises.qmd
+      # ------ Quiz & Exam Prep---------------------------- #
+      # - text: "Quiz & Exam Prep"
+      #   href: pages/misc/quiz.qmd
 
       # ------ Misc ---------------------------- #
       - section: Resources

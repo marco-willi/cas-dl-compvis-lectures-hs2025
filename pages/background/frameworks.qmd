@@ -9,45 +9,57 @@ After this lecture you should be able to:
 
 - Explain the role of computational graphs and automatic differentiation in deep learning frameworks.
 - Construct and inspect tensors, modules, and optimization loops in PyTorch.
-- Distinguish autograd vs manual gradient computation and identify common pitfalls (in-place ops, forgetting zero_grad).
+- Distinguish autograd vs manual gradient computation and identify common pitfalls (forgetting zero_grad, device mismatches).
 - Describe core hardware considerations (GPU parallelism, data loading bottlenecks, CUDA/cuDNN impact).
 - Load and adapt pre-trained models responsibly for downstream tasks.
 :::
 
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
 
-**Software:**
+**PyTorch Fundamentals:**
 
-- Deep learning frameworks (PyTorch, TensorFlow) provide automatic differentiation via computational graphs
-- Key concepts: tensors, modules, autograd, optimizers
-- Pre-trained models enable transfer learning and rapid development
+- **Tensors**: Multi-dimensional arrays (like NumPy) optimized for GPU computation
+- **Autograd**: Automatic differentiation via computational graphs
+- **Dynamic Graphs**: Built on-the-fly during forward pass for flexibility
+- **Device Management**: Easy CPU ↔ GPU transfer with `.to(device)`
 
-**Hardware:**
+**Training Loop Structure:**
+```python
+model.train()  # Training mode
+for X_batch, y_batch in dataloader:
+    optimizer.zero_grad()        # Clear old gradients
+    y_pred = model(X_batch)      # Forward pass
+    loss = criterion(y_pred, y_batch)  # Compute loss
+    loss.backward()              # Backward pass (compute gradients)
+    optimizer.step()             # Update parameters
+```
+
+**Key Components:**
+
+- **nn.Module**: Base class for all neural network layers and models
+- **Loss Functions**: MSE, CrossEntropy, etc. (in `torch.nn`)
+- **Optimizers**: SGD, Adam, etc. (in `torch.optim`)
+- **DataLoader**: Efficient batching and shuffling of datasets
+
+**Common Patterns:**
+
+- Use `model.eval()` and `torch.no_grad()` for inference/validation
+- Move data and model to same device: `X.to(device)`, `model.to(device)`
+- Save/load models: `torch.save(model.state_dict(), path)`
+
+**Hardware Considerations:**
 
 - GPUs enable parallel computation essential for deep learning
 - CUDA/cuDNN optimize neural network operations on NVIDIA GPUs
 - Data loading can be a bottleneck (GPU starvation) - use multi-threaded data loaders
 - GPU parallelism: data parallelism (model copies) vs model parallelism (split model)
 
-**PyTorch Best Practices:**
+**Best Practices:**
 
-- **Tensors**: N-dimensional arrays (like NumPy) with GPU support via `.to(device)`
-- **Autograd**: Automatic differentiation with `requires_grad=True` and `.backward()`
-- **Modules**: Build networks by inheriting `nn.Module` and implementing `forward()`
-- **Optimizers**: Use `optimizer.zero_grad()` before each backward pass to clear gradients
-- **DataLoaders**: Use multiple workers to prevent GPU starvation
-- **Common Pitfalls**: Forgetting `zero_grad()`, in-place operations breaking autograd, device mismatches
-
-**Quick Training Loop Pattern:**
-```python
-for epoch in range(num_epochs):
-    for batch_x, batch_y in dataloader:
-        optimizer.zero_grad()        # Reset gradients
-        predictions = model(batch_x) # Forward pass
-        loss = loss_fn(predictions, batch_y)
-        loss.backward()              # Compute gradients
-        optimizer.step()             # Update parameters
-```
+- Always call `optimizer.zero_grad()` before backward pass
+- Use appropriate loss functions for your task
+- Monitor training on validation set to detect overfitting
+- Leverage GPU when available for significant speedup
 
 :::
 
@@ -473,10 +485,6 @@ for i in range(0, 3):
     loss.backward()
     optimizer.step()
 ```
-
-::: {.callout-note}
-**Critical**: Always call `optimizer.zero_grad()` before computing gradients! PyTorch accumulates gradients by default, so failing to zero them will cause incorrect gradient updates.
-:::
 
 ::: {.callout-tip title="Common Pitfalls & Solutions"}
 

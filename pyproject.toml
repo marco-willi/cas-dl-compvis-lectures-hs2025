@@ -20,6 +20,7 @@ tabulate = "*"
 python-dotenv = "*"
 ipywidgets = ">=8"
 ipykernel = "*"
+jupyter = "*"
 jupyterlab = "*"
 jupyter-cache = "*"
 

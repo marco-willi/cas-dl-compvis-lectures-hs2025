@@ -11,7 +11,6 @@ After this lecture you should be able to:
 - Describe key real-world application domains and practical challenges (occlusion, illumination, intra-class variation).
 - Explain why deep learning reshaped computer vision (data, compute, architectures).
 - Identify major historical milestones leading to modern CNNs and foundation models.
-- Articulate ethical considerations (misinformation, bias, synthetic media) at a high level.
 
 :::
 
@@ -63,11 +62,6 @@ After this lecture you should be able to:
 - Photo editing, image generation, agricultural monitoring
 - Embedded systems (mobile chips for on-device inference)
 
-**Ethical Considerations:**
-
-- Synthetic media and deepfakes (misinformation risks)
-- Bias in training data and model predictions
-- Privacy concerns with facial recognition
 
 :::
 
@@ -389,11 +383,12 @@ Many of the image-level tasks can be extended to videos. After all, videos are n
 
 The most recent impressive examples are from video generative models:
 
-::: {#fig-intro-sora}
 
-{{< video https://vimeo.com/913454615?fl=pl&fe=sh width=800 >}}
+::: {#fig-intro-sora2}
 
-[OpenAI Sora](https://openai.com/index/sora/) - Text-to-video generation example.
+{{< video https://openaiassets.blob.core.windows.net/$web/nf2/blog-final2/20250929_0337_New%20Video_simple_compose_01k6agr8ctey29mze208t29w38%20(1).mp4 width=800 >}}
+
+[OpenAI Sora 2](https://openai.com/index/sora-2/) - Prompt: a man rides a horse which is on another horse
 :::
 
 
@@ -489,6 +484,15 @@ High intra-class variation: all are cats but with vastly different appearances. 
 
 Is this a tiger? Context clues help determine the answer. [Source](https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&utm_medium=member_desktop_web)
 :::
+
+
+::: {#fig-blop-context}
+
+![]({{< meta params.images_path >}}challenges_context_blop.png){width=600}
+
+In the presence of image degradation a visual system (e.g. humans) heavily use context information. Even though the circled blops are identical, we interpret them as either: plate, bottle, cell phone, car, pedestrian or shoe. Source @torralba_using_2010
+:::
+
 
 
 ## Machine Learning Basics

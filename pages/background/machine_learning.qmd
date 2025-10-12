@@ -14,7 +14,6 @@ After reviewing this material you should be able to:
 - Justify why train/validation/test splits are necessary for unbiased model evaluation.
 - Interpret the machine learning pipeline from data acquisition through deployment.
 - Apply model selection principles to choose between competing models.
-- Recognize the importance of preprocessing (normalization, encoding, dimensionality reduction).
 :::
 
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
