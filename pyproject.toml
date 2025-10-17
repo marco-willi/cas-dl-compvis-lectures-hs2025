@@ -54,6 +54,7 @@ gdown = "*"
 torchshow = "*"
 torchviz = "*"
 torchinfo = "*"
+visualtorch = "*"
 
 [tool.poetry.group.dev]
 optional = true

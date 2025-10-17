@@ -13,3 +13,4 @@ jupyter-cache
 plotly
 torchshow
 torchviz
+visualtorch

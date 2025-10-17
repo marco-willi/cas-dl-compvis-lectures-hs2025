@@ -3,7 +3,7 @@ project:
   output-dir: _output
   render:
     #- "*.qmd"
-    #- pages/lectures/*.qmd
+    - pages/lectures/*.qmd
     - pages/background/*.qmd
     - pages/misc/*.qmd
     - "index.qmd"
@@ -60,11 +60,10 @@ website:
       - section: Lectures
         contents:
           - pages/lectures/intro.qmd
-          #- pages/lectures/modelling_images.qmd
-          # - pages/lectures/cnns.qmd
-          # - pages/lectures/classification.qmd
-          # - pages/lectures/representation_learning.qmd
-          # - pages/lectures/practical.qmd
+          - pages/lectures/cnns.qmd
+          - pages/lectures/classification.qmd
+          - pages/lectures/representation_learning.qmd
+          - pages/lectures/practical.qmd
           # - pages/lectures/recent_advances.qmd
       # ------ SLIDES ---------------------------- #
       # - section: Slides
