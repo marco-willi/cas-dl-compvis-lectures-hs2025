@@ -2,37 +2,25 @@
 title: "Books"
 ---
 
-## PyTorch
+## Computer Vision mit Deep Learning
 
-Stevens, Eli and Antiga, Luca and Viehmann, Thomas, **Deep learning with PyTorch**, Manning Publications Co, @stevens_deep_2020
+Torralba, A. and Isola, P. and Freeman, W.T., **Foundations of Computer Vision**, @torralba_foundations_2024
 
- - Kann als PDF gratis heruntergeladen werden
- - Einführung in PyTorch von Grund auf mit Anwendungsbeispielen
-
+  - Exzellentes Buch zu Computer Vision mit Deep Learning
+  - Ausgezeichnete Illustrationen
+  - Online verfügbar: [Link](https://visionbook.mit.edu/)
 
 ## Deep Learning
 
 Simon J.D. Prince, **Understanding Deep Learning**, MIT Press,  @prince_understanding_2023
 
-  - Brandaktuelles Buch über Deep Learning
-  - Umfassende Einführung ins Thema mit sehr guten Illustrationen
+  - Umfassende Einführung in Deep Learning mit sehr guten Illustrationen
   - Online verfügbar: [Link](https://udlbook.github.io/udlbook/)
-
-
-Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron, **Deep Learning**, MIT Press,  @goodfellow_deep_2016
-
- - Sehr gute und umfassende Einführung in Deep Learning
- - Etwas älter aber immer noch in weiten Teilen aktuell
- - Online verfügbar: [Link](https://www.deeplearningbook.org/)
 
 
 Chollet, François, **Deep Learning with Python**, Second Edition, Manning Publications, @chollet_deep_2021
 
-- chapters 8-9 are about computer vision
-- free access with  FHNW-Emailadresse in O’Reilly online Mediathek
-
-
-Stevens et al, **Deep Learning with PyTorch**, Manning Publications, @stevens_deep_2020
+- Ein Klassiker für eine Einführung in Deep Learning (und Keras)
 
 
 ## Machine Learning
@@ -54,9 +42,23 @@ Kevin P. Murphy, **Probabilistic Machine Learning: An Introduction**, MIT Press 
   - Umfassende Einführung in Machine Learning mit ausführlichen theoretischen Hintergründen
 
 
-Chollet F, **Deep Learning with Python**, 2nd Edition, MEAP 2020
+## PyTorch
 
-  - Ein Klassiker für eine Einführung in Deep Learning (und Keras)
+Stevens, Eli and Antiga, Luca and Viehmann, Thomas, **Deep learning with PyTorch**, Manning Publications Co, @stevens_deep_2020
+
+ - Kann als PDF gratis heruntergeladen werden
+ - Einführung in PyTorch von Grund auf mit Anwendungsbeispielen
+
+
+## Honorable Mentions - Nicht mehr aktuell
+
+Stevens et al, **Deep Learning with PyTorch**, Manning Publications, @stevens_deep_2020
+
+Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron, **Deep Learning**, MIT Press,  @goodfellow_deep_2016
+
+ - Sehr gute und umfassende Einführung in Deep Learning
+ - Etwas älter aber immer noch in weiten Teilen aktuell
+ - Online verfügbar: [Link](https://www.deeplearningbook.org/)
 
 
 Hastie T et al., **Elements of Statistical Learning**, Springer 2009.

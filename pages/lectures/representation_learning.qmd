@@ -34,7 +34,7 @@ $$
 ## Motivation
 
 
-Different properties and challenges, such as the [semantic gap](intro.qmd#sec-intro-challenges-semantic-gap), are reasons modelling images is difficult, in particular extracting generic, semantically meaningful information is hard. Humans, however, excel at this task and can easily and  comprehensively describe images with relatively few bits of information. A good example is @fig-raw-elephant:
+Different properties and challenges, such as the [semantic gap](intro.qmd#sec-intro-challenges-semantic-gap), are reasons modelling images is difficult. In particular extracting generic, semantically meaningful information is hard. Humans, however, excel at this task and can easily and  comprehensively describe images with relatively few bits of information. A good example is @fig-raw-elephant:
 
 ::: {#fig-raw-elephant layout-ncol=1}
 ![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Raw RGB image used to illustrate pixel-space representations" width=100%}
@@ -126,7 +126,7 @@ We can also say: By describing the image we **represent** the image with natural
 
 This is exactly what **Representation Learning** is interested in: How can we find compact representations wich are significantly smaller than the raw, original representations while retaining _relevant_ information?
 
-The idea is that such compact representations are well suited for down-strean tasks, such as image classification.
+The idea is that such compact representations are well suited for down-stream tasks, such as image classification.
 
 ## What Is Representation Learning?
 
@@ -138,16 +138,24 @@ Therefore, when we refer to representations we typically mean vector-valued (dis
 
 Let's take a look at the (synthetic) images in @fig-rl-examples:
 
-::: {#fig-rl-examples layout-nrow=3}
+::: {#fig-rl-examples layout-nrow=2}
 
-![Elephant - Day 1]({{< meta params.images_path >}}examples/elephant_day_01.png){fig-alt="Elephant in daylight savanna" width=45%}
-![Elephant - Day 2]({{< meta params.images_path >}}examples/elephant_day_02.png){fig-alt="Elephant by watering hole in daylight" width=45%}
 
-![Giraffe - Day]({{< meta params.images_path >}}examples/giraffe_day_01.png){fig-alt="Giraffe in daylight grassland" width=45%}
-![Rhino - Night]({{< meta params.images_path >}}examples/rhino_night_01.png){fig-alt="Rhinoceros at nighttime" width=45%}
+![Elephant - Day 1]({{< meta params.images_path >}}examples/elephant_day_01.png){fig-alt="Elephant in daylight savanna"}
 
-![Elephant - Night]({{< meta params.images_path >}}examples/elephant_night_01.png){fig-alt="Elephant at night with moonlight" width=45%}
-![Car - Day]({{< meta params.images_path >}}examples/car_day_01.png){fig-alt="Modern car in bright daylight" width=45%}
+![Elephant - Day 1]({{< meta params.images_path >}}augmented/elephant_flip_horizontal.png){fig-alt="Elephant in daylight savanna"}
+
+![Elephant - Day 1]({{< meta params.images_path >}}augmented/elephant_brightness_1.8x.png){fig-alt="Elephant in daylight savanna"}
+
+![Elephant - Day 2]({{< meta params.images_path >}}examples/elephant_day_02.png){fig-alt="Elephant by watering hole in daylight"}
+
+![Giraffe - Day]({{< meta params.images_path >}}examples/giraffe_day_01.png){fig-alt="Giraffe in daylight grassland"}
+
+![Rhino - Night]({{< meta params.images_path >}}examples/rhino_night_01.png){fig-alt="Rhinoceros at nighttime"}
+
+![Elephant - Night]({{< meta params.images_path >}}examples/elephant_night_01.png){fig-alt="Elephant at night with moonlight"}
+
+![Car - Day]({{< meta params.images_path >}}examples/car_day_01.png){fig-alt="Modern car in bright daylight"}
 
 Synthetic images illustrating representation learning challenges.
 :::
@@ -159,7 +167,7 @@ Imagine you have to represent those in 2-D: $\vect{z} \in \mathbb{R}^2$. How wou
 How would you represent the images of @fig-rl-examples in 2 dimensions? Why?
 
 **Hint**:
-Similar images might be close to each other.
+Similar images might should be close to each other. Exact positions do not matter, only distances.
 
 
 <details>
@@ -186,7 +194,7 @@ The images demonstrate different types of similarity challenges in representatio
 
 ### What are good representations?
 
-Good representations transform raw data into a format that makes relevant patterns explicit and accessible. Think of them as **semantic coordinate systems** where distances reflect meaningful relationships.
+Good representations transform raw data into a format that makes relevant patterns explicit and accessible. They represent a **semantic coordinate systems** where distances $\|\vect{z}_i - \vect{z}_j\|_2$ reflect meaningful relationships.
 
 ::: {.callout-note title="Core Properties of Effective Representations"}
 
@@ -236,13 +244,6 @@ Such a representation is much more compact, yet retains the most relevant inform
 
 This begs the question:
 
-
-
-::: {#fig-raw-elephant layout-ncol=1}
-![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Raw RGB image used to illustrate pixel-space representations" width=70%}
-
-Example Image [Source](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick).
-:::
 
 A raw image is a 3D tensor of pixel intensities. Before any encoder is applied, it already contains structure (spatial locality, color correlations) but no task-specific abstractions. Inspecting its dimensionality highlights why learning compact representations matters.
 
