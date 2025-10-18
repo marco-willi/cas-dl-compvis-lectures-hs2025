@@ -1,5 +1,5 @@
 ---
-title: "Representation Learning & Foundation Models"
+title: "4 - Representation Learning & Foundation Models"
 params:
    images_path: "/assets/images/representation_learning/"
 ---
@@ -33,27 +33,215 @@ $$
 
 ## Motivation
 
-Which of the following images are similar to each other? How would you rank them in terms of their similarity and why?
 
-::: {#fig-rl-intro layout-ncol=2}
+Different properties and challenges, such as the [semantic gap](intro.qmd#sec-intro-challenges-semantic-gap), are reasons modelling images is difficult, in particular extracting generic, semantically meaningful information is hard. Humans, however, excel at this task and can easily and  comprehensively describe images with relatively few bits of information. A good example is @fig-raw-elephant:
 
-![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Elephant (example 1, similar)" width=90%}
-![]({{< meta params.images_path >}}elephant1.jpg){fig-alt="Elephant (example 2, similar)" width=90%}
+::: {#fig-raw-elephant layout-ncol=1}
+![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Raw RGB image used to illustrate pixel-space representations" width=100%}
 
-![]({{< meta params.images_path >}}giraffe.jpg){fig-alt="Giraffe (less similar)" width=90%}
-![]({{< meta params.images_path >}}car.jpg){fig-alt="Car (dissimilar)" width=90%}
-
-Images of various degree of similarity (Images from Unsplash - [top left](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick),
-[bottom left](https://unsplash.com/de/fotos/grauer-elefant-spielt-mit-schlamm-xYO4F6HoxOQ),
-[top right](https://unsplash.com/de/fotos/drei-giraffen-tagsuber-auf-braunem-rasen-eQdDUdi5qLk),
-[bottom right](https://unsplash.com/de/fotos/geparkter-weisser-ford-explorer-suv-a4S6KUuLeoM)).
+Example Image [Source](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick).
 :::
+
+It is easy for humans to describe the image. For example:
+
+```{python}
+# | eval: false
+# | echo: true
+"""
+An photograph of an elephant facing the camera.
+The elephant has large tusks and ears and is standing in a flat savannah.
+Is is bright day light with a cloudy sky.
+"""
+```
+
+::: {.callout-note title="Information Content: Raw vs Natural Language" collapse="true"}
+
+Let's quantify the dramatic compression achieved by semantic description:
+
+**Raw Image (Pixel Representation):**
+
+- Resolution: 640 × 360 pixels
+- Channels: 3 (RGB)
+- Bits per pixel: 8 bits per channel
+
+```{python}
+# | eval: true
+# | echo: false
+import pandas as pd
+from IPython.display import HTML
+
+# Natural language description
+description = """
+An photograph of an elephant facing the camera.
+The elephant has large tusks and ears and is standing in a flat savannah.
+Is is bright day light with a cloudy sky.
+"""
+
+# Calculate bits for natural language
+char_count = len(description)
+bits_utf8 = char_count * 8  # UTF-8 uses 8 bits per character
+bits_ascii = char_count * 7  # ASCII uses 7 bits per character
+
+# Raw image stats (from earlier calculation)
+width, height, channels = 640, 360, 3
+raw_bits = width * height * channels * 8
+
+# Compression ratio
+compression_ratio = raw_bits / bits_utf8
+
+# Create comparison table
+comparison_data = pd.DataFrame(
+    {
+        "Representation": [
+            "Raw RGB Image",
+            "Natural Language (UTF-8)",
+            "Natural Language (ASCII)",
+        ],
+        "Size (bits)": [f"{raw_bits:,}", f"{bits_utf8:,}", f"{bits_ascii:,}"],
+        "Size (KB)": [
+            f"{raw_bits / 8 / 1024:.1f}",
+            f"{bits_utf8 / 8 / 1024:.2f}",
+            f"{bits_ascii / 8 / 1024:.2f}",
+        ],
+        "Compression Factor": [
+            "1×",
+            f"{compression_ratio:.0f}×",
+            f"{raw_bits / bits_ascii:.0f}×",
+        ],
+    }
+)
+
+table_html = comparison_data.to_html(
+    index=False,
+    border=0,
+    classes="table table-sm table-striped align-middle caption-top",
+)
+
+HTML(table_html)
+```
+:::
+
+
+We can also say: By describing the image we **represent** the image with natural language, instead of the raw pixels.
+
+This is exactly what **Representation Learning** is interested in: How can we find compact representations wich are significantly smaller than the raw, original representations while retaining _relevant_ information?
+
+The idea is that such compact representations are well suited for down-strean tasks, such as image classification.
+
+## What Is Representation Learning?
+
+A representation is the output $\vect{z} = f(\vect{x})$ produced by an encoder $f$ applied to input $\vect{x}$; $\vect{z}$ retains task‑relevant structure while discarding nuisance variation. The encoder $f$ is the mapping; the representation $\vect{z}$ is its result.
+
+Therefore, when we refer to representations we typically mean vector-valued (distributed) representations and not, for example, natural language descriptions.
+
+### Intuition
+
+Let's take a look at the (synthetic) images in @fig-rl-examples:
+
+::: {#fig-rl-examples layout-nrow=3}
+
+![Elephant - Day 1]({{< meta params.images_path >}}examples/elephant_day_01.png){fig-alt="Elephant in daylight savanna" width=45%}
+![Elephant - Day 2]({{< meta params.images_path >}}examples/elephant_day_02.png){fig-alt="Elephant by watering hole in daylight" width=45%}
+
+![Giraffe - Day]({{< meta params.images_path >}}examples/giraffe_day_01.png){fig-alt="Giraffe in daylight grassland" width=45%}
+![Rhino - Night]({{< meta params.images_path >}}examples/rhino_night_01.png){fig-alt="Rhinoceros at nighttime" width=45%}
+
+![Elephant - Night]({{< meta params.images_path >}}examples/elephant_night_01.png){fig-alt="Elephant at night with moonlight" width=45%}
+![Car - Day]({{< meta params.images_path >}}examples/car_day_01.png){fig-alt="Modern car in bright daylight" width=45%}
+
+Synthetic images illustrating representation learning challenges.
+:::
+
+Imagine you have to represent those in 2-D: $\vect{z} \in \mathbb{R}^2$. How would you proceed from a human point of view?
+
+::: {.callout-note title="Representation Intuition"}
+
+How would you represent the images of @fig-rl-examples in 2 dimensions? Why?
+
+**Hint**:
+Similar images might be close to each other.
+
+
+<details>
+<summary>Click for result</summary>
+
+**Key Considerations:**
+
+The images demonstrate different types of similarity challenges in representation learning:
+
+1. **Same class, same conditions** (Elephant Day 1 & Elephant Day 2): These are most similar - both elephants photographed in daylight. They exhibit **intra-class variation** while maintaining the same semantic category.
+
+2. **Same class, different conditions** (Elephant Day vs. Elephant Night): Moderate similarity - same animal class but dramatically different lighting conditions. This tests **illumination invariance**.
+
+3. **Different classes, same conditions** (Elephants, Giraffe, Rhino by day): Animals share similar contexts (daytime, natural habitat) but different semantics, requiring **inter-class discrimination**.
+
+4. **Different domain** (Animals vs. Car): Least similar - represents a complete **domain shift** from wildlife to manufactured objects.
+
+**Ideal representation learning:** A good model should group the two daytime elephants closely, maintain reasonable similarity between day/night elephants, distinguish between different animal classes, and clearly separate animals from vehicles.
+
+</details>
+
+:::
+
+
+### What are good representations?
+
+Good representations transform raw data into a format that makes relevant patterns explicit and accessible. Think of them as **semantic coordinate systems** where distances reflect meaningful relationships.
+
+::: {.callout-note title="Core Properties of Effective Representations"}
+
+**Mathematical Framework:**
+
+Given input $\vect{x} \in \mathcal{X}$ and encoder $f: \mathcal{X} \to \mathcal{Z}$, we want representation $\vect{z} = f(\vect{x})$ such that:
+
+**1. Invariance & Selectivity Balance**
+
+- **Invariance:** $\|f(\vect{x}) - f(g(\vect{x}))\|_2 < \epsilon$ for nuisance transform $g$ (lighting, pose)
+- **Selectivity:** $\|f(\vect{x}_i) - f(\vect{x}_j)\|_2 > \delta$ for semantically different $\vect{x}_i, \vect{x}_j$
+- *Trade-off:* Too much invariance → loss of discriminative details
+- *Sweet spot:* Preserve task-relevant variations, discard irrelevant ones
+
+**2. Geometric Structure Preservation**
+
+- **Smooth manifold:** Similar semantic concepts cluster in representation space
+- **Composability:** $f(\vect{x}_1) \oplus f(\vect{x}_2) \approx f(\text{combine}(\vect{x}_1, \vect{x}_2))$ for vector operations
+- **Interpolability:** Linear interpolation $\alpha f(\vect{x}_1) + (1-\alpha) f(\vect{x}_2)$ yields meaningful intermediate concepts
+
+**3. Transfer Efficiency**
+
+- **Low sample complexity:** Few examples needed for downstream adaptation
+- **Broad applicability:** Same $f(\cdot)$ works across multiple tasks/domains
+- **Graceful degradation:** Performance degrades slowly with domain shift
+
+**4. Computational Practicality**
+
+- **Compact dimensionality:** $\text{dim}(\vect{z}) \ll \text{dim}(\vect{x})$ while preserving information
+- **Fast computation:** Forward pass $f(\vect{x})$ efficient for real-time applications
+- **Stable training:** Representation learning converges reliably
+
+:::
+
+::: {#fig-representation-quality-spectrum}
+![]({{< meta params.images_path >}}representation_quality_spectrum.png){fig-alt="Spectrum from poor to excellent representations" width=100%}
+
+**Representation Quality Spectrum:** From pixel-level chaos (left) through hand-crafted features (SIFT, HOG) to modern learned embeddings (right), showing increasing semantic organization and task performance.
+:::
+
+
+## Representation Learning and Similarities
+
+
+
+Such a representation is much more compact, yet retains the most relevant information.
+
+This begs the question:
+
 
 
 ::: {#fig-raw-elephant layout-ncol=1}
 ![]({{< meta params.images_path >}}elephant.jpg){fig-alt="Raw RGB image used to illustrate pixel-space representations" width=70%}
 
-Example Image.
+Example Image [Source](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick).
 :::
 
 A raw image is a 3D tensor of pixel intensities. Before any encoder is applied, it already contains structure (spatial locality, color correlations) but no task-specific abstractions. Inspecting its dimensionality highlights why learning compact representations matters.
@@ -164,50 +352,6 @@ Before diving into learning objectives, let's examine how different similarity m
 :::
 
 This motivates why we need **learned representations** that capture semantic similarity rather than superficial pixel patterns.
-
-## What Is Representation Learning?
-
-A representation is the output $z = f(x)$ produced by an encoder $f$ applied to input $x$; $z$ retains task‑relevant structure while discarding nuisance variation. The encoder $f$ is the mapping; the representation $z$ is its result.
-
-### What are good representations?
-
-Good representations transform raw data into a format that makes relevant patterns explicit and accessible. Think of them as **semantic coordinate systems** where distances reflect meaningful relationships rather than superficial similarities.
-
-::: {.callout-note title="Core Properties of Effective Representations"}
-**Mathematical Framework:** Given input $x \in \mathcal{X}$ and encoder $f: \mathcal{X} \to \mathcal{Z}$, we want representation $z = f(x)$ such that:
-
-**1. Invariance & Selectivity Balance**
-
-- **Invariance:** $\|f(x) - f(T(x))\|_2 < \epsilon$ for nuisance transform $T$ (lighting, pose)
-- **Selectivity:** $\|f(x_i) - f(x_j)\|_2 > \delta$ for semantically different $x_i, x_j$
-- *Trade-off:* Too much invariance → loss of discriminative details
-- *Sweet spot:* Preserve task-relevant variations, discard irrelevant ones
-
-**2. Geometric Structure Preservation**
-
-- **Smooth manifold:** Similar semantic concepts cluster in representation space
-- **Composability:** $f(x_1) \oplus f(x_2) \approx f(\text{combine}(x_1, x_2))$ for vector operations
-- **Interpolability:** Linear interpolation $\alpha f(x_1) + (1-\alpha) f(x_2)$ yields meaningful intermediate concepts
-
-**3. Transfer Efficiency**
-
-- **Low sample complexity:** Few examples needed for downstream adaptation
-- **Broad applicability:** Same $f(\cdot)$ works across multiple tasks/domains
-- **Graceful degradation:** Performance degrades slowly with domain shift
-
-**4. Computational Practicality**
-
-- **Compact dimensionality:** $\text{dim}(z) \ll \text{dim}(x)$ while preserving information
-- **Fast computation:** Forward pass $f(x)$ efficient for real-time applications
-- **Stable training:** Representation learning converges reliably
-
-:::
-
-::: {#fig-representation-quality-spectrum}
-![]({{< meta params.images_path >}}representation_quality_spectrum.png){fig-alt="Spectrum from poor to excellent representations" width=100%}
-
-**Representation Quality Spectrum:** From pixel-level chaos (left) through hand-crafted features (SIFT, HOG) to modern learned embeddings (right), showing increasing semantic organization and task performance.
-:::
 
 ### The Invariance-Equivariance Spectrum
 
@@ -724,9 +868,6 @@ print(f"Linear probe val accuracy: {val_acc:.3f}")
 - Systematic adaptation flow reduces unnecessary fine-tuning cost.
 :::
 
-## 10. References
-
-Inline references to integrate (add bib entries if missing): DINO @caron_emerging_2021; DINOv2 @oquab_dinov2_2023; CLIP @radford_learning_2021; MAE @he_masked_2022; ViT @dosovitskiy_image_2020; ResNet @he_deep_2016; LoRA @hu_lora_2022.
 
 
 ::: {#refs}

@@ -63,7 +63,7 @@ $$
 
 ## Biological Neural Networks
 
-A biological neural network is a part of the nervous system and consists of interconnected neurons. A neuron is connected to other neurons via dendrites (these are "weighted" input signals) and via the axon (output signal) (see @fig-nn-neurons). If the input signals exceed a certain threshold, the neuron "fires" and sends a signal through the axon, which then serves as an input signal for other neurons. Humans have about 86 billion neurons, each connected to about 1000 others on average ([source](https://en.wikipedia.org/wiki/Brain)).
+A biological neural network is a part of the nervous system and consists of interconnected neurons. A neuron is connected to other neurons via dendrites (these are "weighted" input signals) and via the axon (output signal) (see @fig-nn-neurons). If the input signals exceed a certain threshold, the neuron "fires" and sends a signal through the axon, which then serves as an input signal for other neurons. Humans have about 86 billion neurons, each connected to about 1000 others on average ([See Wikipedia](https://en.wikipedia.org/wiki/Brain)).
 
 ::: {#fig-nn-neurons}
 
@@ -99,60 +99,51 @@ Neural networks are often represented with a graph. The _nodes_ are individual n
 A neural network with two _hidden layers_. The lines show connections between neurons. Source: @li_cs231n_2022.
 :::
 
-## From Linear Models to Neural Networks
+## From Linear Models to Neural Networks {#sec-nn-mlps}
 
-In the following, we will describe neural networks mathematically. We start with a linear model. A linear model has the following form:
+In the following, we will describe neural networks mathematically. We start with a linear model. A linear model has the following form (see @eq-nn-linear-model):
 
-\begin{equation}
+$$
    f(\mathbf{x}^{(i)}) = \mathbf{W} \mathbf{x}^{(i)}  +  \mathbf{b}
-\end{equation}
+$$ {#eq-nn-linear-model}
 
-The data point $i$ is:
+With the following elements:
 
-\begin{equation}
-    \mathbf{x}^{(i)} \in \mathbb{R}^{p \times 1}
-\end{equation}
+- The $i$-th data point $\vect{x}^{(i)}$ is a $p$-dimensional vector: $\in \mathbb{R}^{p \times 1}$
+- Model weights $\m{W} \in \mathbb{R}^{k \times p}$ linearily project the data point to $k$ dimensions.
+- A bias term $\vect{b} \in \mathbb{R}^{k \times 1}$ is added to the result.
 
-And model weights:
+$f(\mathbf{x}^{(i)})$ is thus $\in  \mathbb{R}^{k \times 1}$.
 
-\begin{equation}
-   \mathbf{W} \in \mathbb{R}^{k \times p}
-\end{equation}
+The following parameters must be learned from training data using an optimization method: $\m{W}$ and $\vect{b}$.
 
-As well as a bias term:
 
-\begin{equation}
-   \mathbf{b} \in \mathbb{R}^{k \times 1}
-\end{equation}
+In neural networks, the linear model is extended with additional _layers_. @eq-nn-deep-linear-model defines a neural network with two layers (one hidden layer $\m{W}^{(1)}, \vect{b}^{(1)}$ and one output layer $\m{W}^{(2)}, \vect{b}^{(2)}$).
 
-The following parameters must be learned from data using an optimization method: $\mathbf{W}$ and $\mathbf{b}$.
+$$
+   f(\vect{x}^{(i)}) = \m{W}^{(2)} g\big(\m{W}^{(1)} \vect{x}^{(i)}  +  \vect{b}^{(1)} \big)  +  \vect{b}^{(2)}
+$$ {#eq-nn-deep-linear-model}
 
-In neural networks, the linear model is extended with additional _layers_. The following equation defines a neural network with two layers.
+Where $g()$ is an _activation function_, such as the _ReLU_ function shown in @eq-nn-relu. Only due to _activation functions_ non-linear relationships can be modelled. Without activation functions, the model collapses to a simple linear model with one layer.
 
-\begin{equation}
-   f(\mathbf{x}^{(i)}) = \mathbf{W}^{(2)} g\big(\mathbf{W}^{(1)} \mathbf{x}^{(i)}  +  \mathbf{b}^{(1)} \big)  +  \mathbf{b}^{(2)}
-\end{equation}
-
-Where $g()$ is a so-called _activation function_, such as the _ReLU_ function:
-
-\begin{equation}
+$$
 \text{ReLU}(x) = \begin{cases}
 x, & \text{if } x \geq 0 \\
 0, & \text{if } x < 0
 \end{cases}
-\end{equation}
+$$ {#eq-nn-relu}
 
-Only due to the _activation function_ are non-linear relationships modelable. Without the activation function, the model collapses to a simple linear model.
+
 
 Every layer between the input and output layer is called a _hidden layer_.
 
-Typically, not just one data point is processed but a _mini-batch_ of data, or even the entire dataset. The data points are arranged in a data matrix $\mathbf{X} \in \mathbb{R}^{n \times p}$. The linear model is then defined as follows:
+Typically, not just one data point is processed but a _mini-batch_ of data, or even the entire dataset. The data points are arranged in a data matrix $\m{X} \in \mathbb{R}^{n \times p}$. The linear model from @eq-nn-linear-model can be rewritten in matrix notation as shown in @eq-nn-linear-model-matrix.
 
-\begin{equation}
-   f( \mathbf{X}) = \mathbf{X} \mathbf{W}^T  +  \mathbf{b}^T
-\end{equation}
+$$
+   f( \m{X}) = \m{X} \m{W}^T  +  \vect{b}^T
+$$ {#eq-nn-linear-model-matrix}
 
-The bias term $\mathbf{b}$ is _broadcasted_ (details here [Link](https://pytorch.org/docs/stable/notes/broadcasting.html)), so it can be added.
+The bias term $\vect{b}$ is _broadcast_ ([details here](https://pytorch.org/docs/stable/notes/broadcasting.html)), so it can be added to each projected input.
 
 ### Activation Functions
 
@@ -246,9 +237,16 @@ Approximation of a 1-D function with piecewise linear regions. The more regions,
 
 **Neural networks are therefore a particularly powerful class of models!**
 
+::: {.callout-tip}
+## Refresh your neural network know-how!
+
+{{< video https://youtu.be/aircAruvnKk?feature=shared width=800 height=450 >}}
+
+:::
+
 ## Deep Learning
 
-When there are multiple _hidden layers_, it is called deep learning. Fig. @fig-nn-deep-learning illustrates such a model with 5 hidden layers.
+Using neural networks with multiple _hidden layers_ is refered to as deep learning. @fig-nn-deep-learning illustrates such a model with 5 hidden layers and ReLU activation functions. Such a neural network is also called a _multilayer perceptron_ (MLP) or a _fully connected neural network_ or a network with _dense layers_. It consists of linear layers and activation functions.
 
 ::: {#fig-nn-deep-learning}
 
@@ -257,26 +255,24 @@ When there are multiple _hidden layers_, it is called deep learning. Fig. @fig-n
 Illustration of a _deep learning_ model with 5 _hidden layers_, from @johnson_eecs_2022
 :::
 
-Such a model is also called a _multilayer perceptron_ (MLP). It consists of linear layers and activation functions.
 
-Deep neural networks have more than one hidden layer. Although _shallow neural networks_ can theoretically model arbitrarily complex functions, the number of neurons required is often impractical. It can be shown that adding _hidden layers_ (increasing the depth of a network) is much more efficient (requires fewer neurons) for modeling complex functions.
+Although _shallow neural networks_ can theoretically model arbitrarily complex functions, the number of neurons required is often impractical. It can be shown that adding _hidden layers_ (increasing the depth of a network) is much more efficient (requires fewer neurons) for modeling complex functions.
 
-In practice, it has been shown that the first layers in a network learn simple features. These are combined in deeper layers to learn and detect increasingly abstract concepts. This is well illustrated with images. When a neural network is applied to images, the first layers learn to detect simple features, such as edges and
-
- colors. Further layers then detect shapes and objects, leading to specific items or people (see Fig. @fig-nn-efficience-deep-learning).
+In practice, it has been shown that the first layers in a network learn simple features. These are combined in deeper layers to learn and detect increasingly abstract concepts. This is well illustrated with images. When a neural network is applied to images, the first layers learn to detect simple features, such as edges and colors. Further layers then detect shapes and objects, leading to specific items or people (see @fig-nn-efficience-deep-learning).
 
 ::: {#fig-nn-efficience-deep-learning}
 
-![]({{< meta params.images_path >}}hierarchical_features.jpg){width=800}
+![]({{< meta params.images_path >}}hierarchical_features.jpg)
 
 Hierarchical features, from @lee_unsupervised_2011
 :::
 
-::: {.callout-note appearance="simple"}
-
-**Info**
+::: {.callout-tip}
+**Train Neural Networks in your Browser!**
 
 To directly observe the functioning of a neural network and try out the influence of various configurations, you can train networks directly in the browser using the following link: [TensorFlow Playground](https://playground.tensorflow.org/).
+
+![]({{< meta params.images_path >}}tf_playground.png){width=600}
 
 :::
 
@@ -367,14 +363,6 @@ Each fully connected layer has:
 This is why the number of parameters grows quickly with network size!
 
 </details>
-
-:::
-
-::: {.callout-note appearance="simple"}
-
-**Info**
-
-To refresh your knowledge on neural networks, it is worth watching the following videos: [3Blue1Brown - Neural Networks](https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&pp=iAQB)
 
 :::
 

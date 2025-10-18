@@ -108,14 +108,14 @@ Images have unique properties that make them challenging for standard neural net
 
 - **High-Dimensional**: An RGB image of size $224 \times 224$ has $224 \times 224 \times 3 = 150{,}528$ values
 - **Locality**: Nearby pixels are statistically related (edges, textures, objects)
-- **Translation Invariance**: A cat should be recognized regardless of its position in the image
+- **Stability under transformations**: Interpretation of an image does not change under many geometric transformations. A cat should be recognized regardless of its position in the image.
 - **Hierarchical Structure**: Images contain features at multiple scales (pixels → edges → textures → objects)
 
 :::{#fig-cnn-example-rgb-image width=600}
 
 ![ ]({{< meta params.images_path >}}cows2_small.png){width=600}
 
-High-resolution image. [Image Source](https://unsplash.com/de/fotos/braune-schafe-auf-grunem-grasfeld-tagsuber-olonUwUrmQk)
+A high-resolution photograph. [Image Source](https://unsplash.com/de/fotos/braune-schafe-auf-grunem-grasfeld-tagsuber-olonUwUrmQk)
 :::
 
 ::: {.callout-note appearance="simple"}
@@ -140,7 +140,7 @@ Looking at @fig-cnn-example-rgb-image, can you explain how nearby pixels are rel
 
 :::
 
-We will see that CNNs are much better suited to model images than MLPs. Unlike MLPs, CNNs explicitly assume that inputs (e.g., pixels) that are close together need to be considered together and that information is locally correlated. This allows certain properties to be embedded in the architecture of CNNs (inductive biases) to define models much more efficiently (with fewer parameters).
+We will see that Convolutional Neural Networks (CNNs) are much better suited to model images than MLPs. Unlike MLPs, CNNs explicitly assume that inputs (e.g., pixels) that are close together need to be considered together and that information is locally correlated. Certain properties are thus directly embedded in the architecture of CNNs (inductive biases), enabling them to exploit these properties efficiently (for example, with fewer model parameters).
 
 ### MLPs and Images
 
@@ -156,7 +156,7 @@ Illustration of an MLP applied to an image.
 
 
 
- In the CIFAR-10 dataset, which consists of very small images of $\in \mathbb{R}^{32 \times 32 \times 3}$ (height, width, colors), a single neuron in the first hidden layer has 32 * 32 * 3 = 3,072 weights to learn (see @fig-cnn-mlp-images).
+ In the CIFAR-10 dataset, which consists of very small images of $\in \mathbb{R}^{3 \times 32 \times 32}$ (colors, height, width), a single neuron in the first hidden layer has 3 * 32 * 32 = 3,072 weights to learn (see @fig-cnn-mlp-images).
 
 
 :::{#fig-cnn-mlp-images}
@@ -176,7 +176,10 @@ Source: @li_cs231n_2023
 For larger images, which are more common in practice, the number of weights is correspondingly much larger. Furthermore, to identify all significant patterns many neurons are required, further increasing the number of parameters. This may lead to overfitting and difficulty in learning the weights.
 
 
-The dimensionality of weight matrix $\m{W}$ scales linearly with input size:  $\m{W} \in \mathbb{R}^{d \times k}$ ($d$ is input dimensionality, $k$ the number of neurons). The columns of the weight matrix $\m{W}$ (in the first hidden layer) can be visualized to learn what kind pattern a specific neuron has learned (see @fig-cnn-mlp-example-weights).
+The dimensionality of weight matrix $\m{W}$ scales linearly with input size:  $\m{W} \in \mathbb{R}^{d \times k}$ ($d$ is input dimensionality, $k$ the number of neurons), or quadratically with the side length of an image (assuming a square image).
+
+Since each neuron in the first hidden layer is connected to each input value (single color channel of a pixel) and each such connection has a specific weight (matrix $\m{W}$ ) the number of weights for each neuron is identical to the number of input values. Therefore, the weights of individual neurons (columns of $\m{W}$ ) can be reshaped to the image dimensionality and thus be visualized. This reveals the patterns a specific neuron is reacting to. See  @fig-cnn-mlp-example-weights for an illustration.
+
 
 :::{#fig-cnn-mlp-example-weights}
 
@@ -193,13 +196,12 @@ Often the patterns we want to learn are not stationary. Ideally we want to recog
 
 ![]({{< meta params.images_path >}}mlp_images_example_pattern_shifts.png){width=600}
 
-Illustration of different inputs with the same pattern but shifted spatially.
-
+Illustration of different inputs with the same pattern but shifted spatially. Illustrated are the weights of the first neuron. Green cells represent high weight values and yellow cells represent low values.
 :::
 
 ::: {.callout-note appearance="simple"}
 
-**Question**: Can an MLP learn to detect the same pattern at different spatial locations? If yes, how?
+**Question**: Can an MLP learn to detect the same pattern at different spatial locations? If yes, how? See @fig-cnns-mlp-pattern-shift.
 
 **Think about it:** If an MLP learns to detect a cat in the center of an image, what happens when the same cat appears in the corner?
 
@@ -289,7 +291,7 @@ Try to draw the same digit at different positions and observe what happens!
 ### Invariance and Equivariance
 
 
-For many tasks involving image data, certain variations in the input should either not change the model output (invariance) or should change the output in tandem with the input changes (equivariance).
+For many tasks involving image data, small variations in the input should either **not** change the model output (_invariance_) or should change the output **in tandem** with the input changes (_equivariance_).
 
 A function $f(\vect{x})$ is **invariant** to transformation $g(\vect{x})$ if:
 $$f(g(\vect{x})) = f(\vect{x})$$
@@ -305,7 +307,8 @@ $$f(g(\vect{x})) = g(f(\vect{x}))$$
 
 
 
-**Example: Classification (Invariance Needed)**
+@fig-cnns-invariance-example shows an example of image classification. In this case, a model needs to be invariant to spatial translations of objects (if these do not change the image's class).
+
 
 ::: {.callout-note appearance="simple"}
 
@@ -350,11 +353,7 @@ When objects in the input translate spatially, the output (in this case the clas
 :::
 
 
-**Example: Object Detection (Equivariance Needed)**
-
-
-@fig-cnns-equivariance-example shows an application of object detection. In this case, the model needs to be equivariant with respect to spatial translations (i.e., the bounding boxes that indicate an object’s location need to translate with the input). The model should remain invariant with respect to small changes in color, such as brightness adjustments.
-
+@fig-cnns-equivariance-example shows an application of object detection. In this case, the model needs to be equivariant with respect to spatial translations (i.e., the bounding boxes that indicate an object's location need to translate with the input). The model should remain invariant with respect to small changes in color, such as brightness adjustments.
 
 ::: {#fig-cnns-equivariance-example}
 
@@ -440,27 +439,34 @@ Sometimes different layers are combined and referred to as a block. For example,
 
 ### Convolution Operation
 
-Convolutional layers are the main layers in CNNs responsible for extracting visual features. The weights of a convolutional layer consist of a set of learnable filters. Each filter is typically small along the spatial dimensions (height, width) relative to the input but extends over the entire input depth. A typical filter in the first layer, for example, has the dimension $7 \times 7 \times 3$ (7 pixels along height/width and 3 along the color channels). During the forward pass, the filters are convolved along height/width over the input. At each position, the dot product (when considering the input and filter as 1-D vectors) between the filter and input is calculated. This produces a 2-D activation map representing the filter's expression at each position in the input. Intuitively, the CNN learns filters corresponding to typical visual patterns, such as edges and colors. A set of $K$ filters produces activation maps with a depth of $K$.
+Convolutional layers are the primary layers in CNNs, responsible for extracting visual features. The weights of a convolutional layer consist of a set of learnable filters. Each filter is typically small along the spatial dimensions (height, width) relative to the input but extends across the entire input depth. For example, a typical filter in the first layer might have dimensions $3 \times 7 \times 7$ (3 pixels for the three color channels, 7 pixels along height/width). During the forward pass, the filters are convolved along the height and width over the input. At each position, the dot product between the filter and input is calculated (viewing both as 1-D vectors), producing a 2-D activation map that represents the filter's response at each position in the input. Intuitively, the CNN learns filters corresponding to typical visual patterns, such as edges and colors, in the first layer. A set of $C_{out}$ filters produces activation maps with a depth of $C_{out}$.
 
 ::: {.callout-important title="Filters vs Kernels"}
 Filter and kernel are sometimes used synonymously. Here, we differentiate by considering a filter as 3-dimensional (CxHxW) and a kernel as 2-dimensional (HxW). A filter consists of C kernels.
 :::
 
 
-::: {.callout-note title="Mathematical Definition of Convolution" collapse="true"}
-Convolution in deep learning is typically implemented as cross-correlation.
-
-\begin{equation}
+$$
 S(i, j) = (K * I)(i, j) =\sum_m\sum_n I(i + m, j + n)K(m, n)
-\end{equation}
+$$ {#eq-cnn-convolution}
 
-$I$ is the input (for example an image), $K$ is the kernel (typically smaller than $I$) and $b$ is a bias term which is being added to the weighted sum.
+With the following components:
 
-If $I$ is an RGB image (in the first layer of a CNN for example), the kernel $K$ would have dimensionality $3 \times K \times K$ (assuming a square kernel). More generally we learn kernels of the dimensionality $C_{in} \times K \times K$.
+- $I$ is the input (for example, an image),
+- $K$ is the kernel (typically smaller than $I$),
+- $b$ is a bias term added to the weighted sum,
+- $i$ and $j$ index the spatial positions.
 
-Multiple kernels, let's say $C_o$ kernels, can be grouped together: $C_o \times C_{in} \times K \times K$.
+If $I$ is an RGB image (e.g., in the first layer of a CNN), the filter $K$ would have dimensions $3 \times k \times k$ (assuming a square kernel). More generally, we learn filters with dimensions $C_{in} \times k \times k$.
+
+Multiple filters, say $C_{out}$ filters, can be grouped together: $C_{out} \times C_{in} \times k \times k$.
 
 We often refer to such tensors as filters or filter banks.
+
+::: {.callout-note}
+
+Convolution in deep learning is typically implemented as cross-correlation. @eq-cnn-convolution actually defines cross-correlation.
+
 :::
 
 
@@ -469,6 +475,8 @@ Convolution on RGB images is nicely illusrated in @fig-cnns-intro-example. We ca
 ::: {#fig-cnns-intro-example}
 
 ![Source:  @prince_understanding_2023]({{< meta params.images_path >}}convolution_prince_rgb.png)
+
+An RGB image is represented as a grid of pixels, each consisting of three color values $C_{in}=3$. Illusrated is how a filter with dimensionality $3 \times 3 \times 3 (C \times H \times W)$ is first multiplied elementwise with a specific input volume $3 \times 3 \times 3 (C \times H \times W)$ and then summed up to produce one single value in the output activation map (bright gray). Source:  @prince_understanding_2023
 
 :::
 
@@ -998,13 +1006,16 @@ Input in 2-D (top left), the flattened version of it (bottom left), expected out
 
 :::
 
-### Translation Invariance / Equivariance
+### Translation Equivariance
 
-Translation invariant is a function that produces the same value under translations $g()$ of the input $x$:
+Convolutions are translation equivariant, as illustrated well in the following example:
 
-\begin{equation}
-f(g(x))=f(x)
-\end{equation}
+::: {#fig-cnn-translation-equivariance}
+
+{{< video https://www.youtube.com/embed/qoWAFBYOtoU start="50" >}}
+
+Illustration of translation equivariance in convolutional layers.
+:::
 
 Translation equivariant is a function that produces the same value under translations $g()$ of the input $x$, provided that it is also shifted by $g()$:
 
@@ -1012,13 +1023,6 @@ Translation equivariant is a function that produces the same value under transla
 f(g(x))=g(f(x))
 \end{equation}
 
-Convolutions are translation equivariant, as illustrated well in the following example:
-
-{{< video https://www.youtube.com/embed/qoWAFBYOtoU start="50" >}}
-
-
-<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/qoWAFBYOtoU?start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
- -->
 
 
 ### Stacking Convolutions

@@ -210,7 +210,7 @@ plt.show()
 
 
 
-::: {.callout-tip title="🎮 Interactive Exploration" collapse="false"}
+::: {.callout-tip title="🎮 Interactive Exploration" collapse="true"}
 **Try different logit distributions** and see how softmax transforms them into probabilities!
 
 ```{python}
@@ -415,9 +415,13 @@ fig.show()
 
 Now we look at how to define the loss function $L(\m{X}, \vect{y}, \theta)$ for a multi-class classification problem.
 
+::: {.callout-note}
+The loss function for a binary classification problem is identical. If we have a multi-label classification problem we have multiple outputs and thus multiple softmax functions. The principle is identical.
+:::
+
 ### Likelihood
 
-The likelihood of a data point $(\vect{x}^{(i)}, y^{(i)})$ is the probability of observing/realizing a data point, given a model with certain parameters:
+The likelihood of a data point $(\vect{x}^{(i)}, y^{(i)})$ is the **probability of observing a data point, given a specific model**:
 
 $$
 P(Y=y^{(i)}| X = \vect{x}^{(i)}) = f(\theta, \vect{x}^{(i)})
@@ -435,113 +439,8 @@ Since only one entry in $\vect{y}^{(i)}$ is 1, the likelihood is simply the pred
 
 [More Info](http://www.awebb.info/probability/2017/05/18/cross-entropy-and-log-likelihood.html)
 
-```{python}
-#| eval: true
-#| echo: false
-import numpy as np
 
-# Example For Likelihood Calculation
-
-y_true = np.array(
-    [0, 1, 0, 1, 1]
-)
-
-y_pred = np.array(
-    [0.1, 0.8, 0.2, 0.7, 0.9]
-)
-
-# Perfect Prediction
-#y_pred = np.array([0, 1, 0, 1, 1])
-
-# Larger Dataset
-#y_true = np.repeat(y_true, 10, axis=0)
-#y_pred = np.repeat(y_pred, 10, axis=0)
-
-
-def calculate_likelihood(y_true: float, y_pred: float) -> float:
-    return (y_pred ** y_true) * ((1 - y_pred) ** (1 - y_true))
-
-def display_likelihood(y_true, y_pred):
-    sample_likelihoods = [calculate_likelihood(float(yt), float(yp)) for yt, yp in zip(y_true, y_pred)]
-    likelihood = np.prod(sample_likelihoods)
-    print(f"Total Likelihood: {likelihood:.6f}")
-```
-
-::: {.callout-note appearance="simple" title="📝 Quiz: Understanding Likelihood"}
-
-**Scenario**: Given ground truth $\vect{y} = [0, 1, 0, 1, 1]$, we'll explore how different predictions affect the likelihood.
-
-**Question 1**: For predictions $\hat{\vect{y}} = [0.1, 0.8, 0.2, 0.7, 0.9]$, what is the likelihood?
-
-**Think first**: Remember, likelihood is the product of probabilities for the correct classes. Higher is better!
-
-<details>
-<summary>Click for result</summary>
-
-```{python}
-#| eval: true
-#| echo: true
-
-y_pred = np.array([0.1, 0.8, 0.2, 0.7, 0.9])
-display_likelihood(y_true, y_pred)
-```
-
-**Interpretation**: Each correct prediction contributes to the total likelihood. The likelihood is the product of all individual likelihoods.
-
-</details>
-
-**Question 2**: Does likelihood increase for $\hat{\vect{y}} = [0.1, 0.9, 0.2, 0.7, 0.9]$?
-
-**Hint**: Compare this to the previous prediction. What changed?
-
-<details>
-<summary>Click for result</summary>
-
-```{python}
-#| eval: true
-#| echo: true
-
-y_pred = np.array([0.1, 0.9, 0.2, 0.7, 0.9])
-display_likelihood(y_true, y_pred)
-```
-
-**Key Insight**: The second prediction (0.9 vs 0.8) is more confident for the true class, increasing overall likelihood.
-
-</details>
-
-**Question 3**: What happens if we increase the dataset by 10× (copying the vector)?
-
-**Consider**: Likelihood is a product. What happens when you multiply many probabilities < 1?
-
-<details>
-<summary>Click for result and explanation</summary>
-
-```{python}
-#| eval: true
-#| echo: true
-
-y_pred = np.array([0.1, 0.8, 0.2, 0.7, 0.9])
-
-y_true = np.repeat(y_true, 10, axis=0)
-y_pred = np.repeat(y_pred, 10, axis=0)
-
-display_likelihood(y_true, y_pred)
-```
-
-**Critical Observation**: The likelihood becomes extremely small! This is why we use **log-likelihood** in practice:
-
-- Products become sums: $\log(ab) = \log(a) + \log(b)$
-- Avoids numerical underflow
-- Easier to optimize
-- Equivalent for optimization (log is monotonic)
-
-**This motivates the negative log-likelihood loss function!**
-
-</details>
-
-:::
-
-::: {.callout-note appearance="simple" title="📝 Quiz: Cat vs Dog Likelihood"}
+::: {.callout-note appearance="simple" title="📝 Quiz: Cat vs Dog Likelihood" collapse="true"}
 
 **Scenario**: Your CNN model classifies 5 images from our dataset. Let's explore how different prediction confidences affect likelihood!
 
@@ -665,6 +564,47 @@ print(f"Lower is better for loss!")
 
 </details>
 
+
+**Question 4**: What happens if we increase the dataset by ten fold? For example what happens with the likelihood of Model A if $P(\text{Cat}) = [0.9, 0.2, 0.8, 0.3, 0.1]$ is repeated 10 times?
+
+<details>
+<summary>Click for result</summary>
+
+```{python}
+#| eval: true
+#| echo: true
+
+# Repeat the dataset 10 times
+p_cat_repeated = np.tile(p_cat, 10)
+y_true_repeated = np.tile(y_true, 10)
+p_dog_repeated = 1 - p_cat_repeated
+
+p_correct_repeated = np.where(y_true_repeated == 0, p_cat_repeated, p_dog_repeated)
+print(f"Dataset repeated 10x (50 samples total)")
+print(f"P(correct class) for first 5: {p_correct_repeated[:5]}")
+
+likelihood_10x = np.prod(p_correct_repeated)
+print(f"\nLikelihood (10x dataset): {likelihood_10x:.2e}")
+print(f"Original likelihood (1x):  {likelihood:.6f}")
+print(f"\nRatio: {likelihood_10x / likelihood:.2e}")
+
+# The key insight: likelihood shrinks exponentially!
+print(f"\nNumerical underflow risk!")
+print(f"This is why we use LOG-likelihood instead:")
+print(f"Log-likelihood (10x): {np.sum(np.log(p_correct_repeated)):.3f}")
+print(f"Log-likelihood (1x):  {np.sum(np.log(p_correct)):.3f}")
+print(f"The log version just scales linearly (10x) without numerical issues!")
+print(f"Lower is better for loss!")
+```
+
+**Critical Observation**:
+
+- With 10x data, likelihood becomes TINY (underflow risk)
+- But log-likelihood scales linearly → numerically stable!
+
+</details>
+
+
 **Bonus Question**: What's the perfect model's likelihood?
 
 <details>
@@ -711,10 +651,10 @@ Under the Maximum Likelihood approach, we seek the parameters $\theta$ that maxi
 
 With Maximum Likelihood, we aim to choose the parameters $\theta$ such that $p(\vect{y} | \theta, \m{X})$ is maximized. However, this function can be complex to handle, and we can use some mathematical tricks. We take the logarithm of the likelihood so that the product of probabilities becomes a sum. Since the logarithm is a monotonically increasing function, we can maximize its logarithm instead of the function $p(\vect{y} | \theta, \m{X})$. Finally, we take the negative of the function, allowing us to minimize it.
 
-\begin{equation}
-L(\m{X}, \vect{y}, \theta) = - \log \prod_{i=1}^N \prod_{j=1}^K P(Y = j| X = \vect{x}^{(i)})^{y^{(i)}_j} \\
-L(\m{X}, \vect{y}, \theta) = -\sum_{i=1}^N \sum_{j=1}^K y^{(i)}_j \log  P(Y = j| X = \vect{x}^{(i)})
-\end{equation}
+\begin{align}
+L(\m{X}, \vect{y}, \theta) &= - \log \prod_{i=1}^N \prod_{j=1}^K P(Y = j| X = \vect{x}^{(i)})^{y^{(i)}_j} \\
+&= -\sum_{i=1}^N \sum_{j=1}^K y^{(i)}_j \log  P(Y = j| X = \vect{x}^{(i)})
+\end{align}
 
 
 ::: {.callout-tip title="💡 Maximum Likelihood Intuition" collapse="true"}
@@ -917,7 +857,8 @@ CE = - \sum_{i=1}^N \sum_{j=1}^K y_j^{(i)} \log \hat{y}_j^{(i)}
 
 It is evident that cross-entropy is identical to the negative log-likelihood.
 
-::: {.callout-tip title="📊 Cross-Entropy Loss Landscape" collapse="false"}
+::: {.callout-tip title="📊 Cross-Entropy Loss Landscape" collapse="true"}
+
 **Visualize how cross-entropy penalizes predictions**:
 
 ```{python}
@@ -1020,7 +961,7 @@ plt.show()
 
 @fig-classification-cross-entropy shows an example with a cross-entropy value of: `{python} cross_entropy`.
 
-::: {.callout-tip title="🎯 Interactive Multi-Class Cross-Entropy" collapse="false"}
+::: {.callout-tip title="🎯 Interactive Multi-Class Cross-Entropy" collapse="true"}
 **See how different predictions map to loss values on the curve**:
 
 ```{python}
@@ -1243,6 +1184,16 @@ fig.show()
 - Confident wrong (p=0.05) → Dot at right, Loss ≈ 3.0
 :::
 
+
+### Try it out yourself!
+
+::: {.callout-tip}
+## Train a CNN for image classification in your browser!
+
+[CNN Explainer](https://poloclub.github.io/cnn-explainer/)
+:::
+
+
 ## Architectures
 
 Architecture refers to the complete definition of an untrained (deep-learning) model, i.e., the sequence and configuration of layers. The following are some important architectures that have been successfully used for image classification.
@@ -1423,12 +1374,12 @@ Finally, $F_{scale}(\cdot)$ scales the activation maps $\tensor{U}$ with the cha
 
 The operation can be described as follows:
 
-\begin{equation}
-U = F_{tr}(X) \\
-z = F_{sq}(U) = \text{GlobalAvgPool}(U) \\
-s = F_{ex}(z, W) = \sigma(\mathbf{W}_2 g(\mathbf{W}_1 z)) \\
-\hat{X} = F_{scale}(U, s) = U \odot s
-\end{equation}
+\begin{align}
+U &= F_{tr}(X) \\
+z &= F_{sq}(U) = \text{GlobalAvgPool}(U) \\
+s &= F_{ex}(z, W) = \sigma(\mathbf{W}_2 g(\mathbf{W}_1 z)) \\
+\hat{X} &= F_{scale}(U, s) = U \odot s
+\end{align}
 
 where $g()$ represents the ReLU function, and $\sigma$ represents the sigmoid function.
 
@@ -1447,6 +1398,12 @@ $$ {#eq-classification-normalization}
 Source: @qiao_micro-batch_2020.
 :::
 
+
+::: {.callout-note}
+Normalization layers are very common and used in almost any architecture. While batch normalization has traditionally been used in CNNs, newer models rely on layer normalization.
+:::
+
+
 ## Pre-Processing
 
 Typically, images are pre-processed before being processed by the CNN. This is done to make the optimization process converge faster. Common steps include:
@@ -1459,7 +1416,7 @@ In `torchvision`, the following pre-processing steps are used: [Link](https://gi
 
 ## Transfer Learning
 
-Transfer Learning refers to the process of adapting a trained model for Task A to Task B. Adapting pre-trained models often leads to better results and also reduces the number of training iterations. Deep learning frameworks often provide easy access to such models (also known as Model Zoo). For example, from PyTorch: https://pytorch.org/vision/stable/models.html.
+Transfer Learning refers to the process of adapting a trained model for Task A to Task B. Adapting pre-trained models often leads to better results and also reduces the number of training iterations. Deep learning frameworks often provide easy access to such models (also known as Model Zoo). For example, from PyTorch: [Link](https://pytorch.org/vision/stable/models.html).
 
 ```{python}
 #| eval: false
@@ -1517,18 +1474,6 @@ import torch.optim as optim
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 ```
-
-
-
-::: {.callout-tip title="Recap"}
-Key takeaways:
-
-- Softmax + cross-entropy arises naturally from maximum likelihood with a categorical distribution.
-- Logits provide a numerically stable pre-softmax representation (prefer `log_softmax` + `nll_loss` internally).
-- Architecture choice should start from proven baselines (ResNet / ConvNeXt) before experimentation.
-- Transfer learning offers data efficiency; freezing early layers can regularize when data is scarce.
-- Proper preprocessing (resize, normalize) and calibration techniques (label smoothing, temperature) improve robustness.
-:::
 
 ## References
 

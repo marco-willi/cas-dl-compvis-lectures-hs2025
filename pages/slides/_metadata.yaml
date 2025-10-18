@@ -3,7 +3,7 @@ format:
     theme: q-slides-theme.scss
     slide-number: c/t
     show-slide-number: all
-    footer: "[https://marco-willi.github.io/cas-dl-compvis-lectures-hs2024/](https://marco-willi.github.io/cas-dl-compvis-lectures-hs2024)"
+    footer: "[https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025/](https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025)"
     code-copy: true
     center-title-slide: true
     code-link: true

@@ -66,13 +66,16 @@ After this lecture you should be able to:
 
 ## Motivation
 
-Deep learning models have played a transformative role in computer vision over the last decade, significantly enhancing and expanding the capabilities to process visual data.
+Deep Learning models have played a transformative role in _Computer Vision_ over the last decade, significantly enhancing and expanding the capabilities to process visual data.
 
 The integration of deep learning in computer vision has massively improved the accuracy and efficiency of visual recognition, classification, and analysis. This has opened up new possibilities in applications such as automated driving, facial recognition, and medical image analysis. These models are now embedded in a wide variety of products and services.
 
-We now take a look at a few examples:
+Let’s take a look at several applications of deep learning assisted computer vision applications.
 
-Biologists might need to analyze images from camera traps for species identification (see @fig-intro-kora-lynx). Compuer vision can help automate that to a large degree (@Images2018).
+### Applications
+
+To monitor wildlife populations biologists might deploy camera traps to capture images from passing animals (see @fig-intro-kora-lynx). These images need to be analysed, for example, biologists need to know which species can be seen in each image. Deep learning can speed up that process significantly (@Images2018).
+
 
 ::: {#fig-intro-kora-lynx}
 ![Source: @breitenmoser-wursten_projekt_2024]({{< meta params.images_path >}}kora_lynx.png){width=600}
@@ -80,7 +83,7 @@ Biologists might need to analyze images from camera traps for species identifica
 Image from a camera trap.
 :::
 
-Recent advances in generative deep learning enable anyone to create photorealistic synthetic images (see @fig-intro-synthetic-images). While these technologies have many positive applications (art, design, prototyping), they also raise concerns about misinformation and deepfakes, motivating research into synthetic media detection.
+Recent advances in generative deep learning enable anyone to create photorealistic synthetic images (see @fig-intro-synthetic-images for examples). While these technologies have many positive applications (art, design, prototyping), they also raise concerns about misinformation and deepfakes, motivating research into synthetic media detection.
 
 
 ::: {#fig-intro-synthetic-images layout-ncol=2}
@@ -88,24 +91,30 @@ Recent advances in generative deep learning enable anyone to create photorealist
 
 ![[Source](https://x.com/cryptomattk/status/1687908457880367104)]({{< meta params.images_path >}}sid_pope.jpg)
 
-Examples of AI-generated synthetic images that went viral online. These photorealistic images were created by generative models, not cameras.
+Examples of synthetic images.
 :::
 
 
 <!-- ![Camera Trap Image Analysis]({{< meta params.images_path >}}camtrap.jpg){width=400} -->
 
 
-@fig-intro-google-lens shows an application where one can take a photo of an object of interest and let a model identify it, as well as search additional information about it. Photos can also be used for translation tasks whereby models detect letters (optical character recognition) and then translate it (using language models).
+@fig-intro-google-lens shows an application in which a model identifies objects of interest in photographs, as well as searching additional information about it. Photos can also be used for translation tasks whereby models detect letters (optical character recognition - OCR) and then translate it (using language models in conjunction with visual models).
 
-::: {#fig-intro-google-lens layout-ncol=2}
+:::: {.columns #fig-intro-google-lens}
 
+::: {.column width="45%"}
 ![Identification & Search]({{< meta params.images_path >}}google_lens_classification.png
 )
+:::
 
+::: {.column width="45%"}
 ![Translation]({{< meta params.images_path >}}google_lens_ocr.png)
 :::
 
 [Google Lens](https://search.google/ways-to-search/lens/)
+
+::::
+
 
 
 One area with high commercial interest and competition is the development of self-driving capabilities. @fig-intro-self-driving shows a demonstration of the perception system required for autonomous driving, including detecting vehicles, pedestrians, cyclists, and understanding lane markings and traffic signs in real-time.
@@ -131,24 +140,24 @@ Face recognition technology, such as Apple's Face ID (@fig-intro-face-id), has b
 Computer vision has also been very useful in agricultur. @fig-intro-minneapple shows an application where apples can be counted from image data. Furthermore, drones might be used to estimate crop yield, type and health.
 
 
-::: {#fig-intro-minneapple width=400}
+::: {#fig-intro-minneapple}
 
-![Example from @hani_minneapple_2020]({{< meta params.images_path >}}minneapple.png){width=600}
+![ ]({{< meta params.images_path >}}minneapple.png){width=600}
 
+Example from @hani_minneapple_2020
 :::
 
-Deep learning has also been extensively applied in medical imaging. Many imaging modalities such as MRI, CT, X-ray, and ultrasound can be analyzed with computer vision techniques. @fig-intro-sam illustrates a medical segmentation model which can identify organs and anatomical structures at the pixel level, assisting radiologists in diagnosis and treatment planning.
-
+Deep learning has also been applied extensively in the medical area. In particular, many imaging technologies, such as MRI or CT, can be analysed with computer vision techniques.  @fig-intro-sam illustrates a generic segmentation model which can be used to identify organs and other anatomical structures on pixel-level.
 
 
 ::: {#fig-intro-sam width=400}
 
-![Example from @ma_segment_2024.]({{< meta params.images_path >}}medsam.png){width=600}
+![]({{< meta params.images_path >}}medsam.png){width=600}
 
+Example from @ma_segment_2024.
 :::
 
-
-Photo-editing has been brought to new levels of sophistication with AI-based capabilities. @fig-intro-magic shows an impressive example from the Google Magic Editor, which can remove, move, and modify objects in photos while seamlessly filling in background details. The model must understand scene context, object boundaries, and realistic textures.
+Photo-editing has been brought to new levels of sophistication with AI-based capabilities.  @fig-intro-magic shows an impressive example from the Google Magic Editor. Maybe even a bit too good?
 
 
 ::: {#fig-intro-magic}
@@ -201,7 +210,7 @@ In image classification, an image is assigned to a predefined set of classes. In
 ::: {#fig-intro-image_clssifier width=600}
 ![]({{< meta params.images_path >}}image_classification_example.png){width=600}
 
-Multi-Class Image Classification example: a model predicts the most likely class for an image along with confidence scores.
+Multi-Class Image Classification example: a model predicts the most likely class for an image along with confidence scores (@krizhevsky_imagenet_2012).
 :::
 
 
@@ -226,6 +235,8 @@ In segmentation, individual pixels are assigned to specific objects (instance se
 
 Instance Segmentation example (from @he_mask_2018). Each person is individually segmented with pixel-level masks.
 :::
+
+The following video shows an example of semantic segmentation:
 
 ::: {#fig-intro-semantic-segmentation}
 
@@ -260,7 +271,7 @@ Interactive manipulation allows users to modify images by dragging points to res
 ::: {#fig-intro-image-manipulation}
 {{< video https://vcai.mpi-inf.mpg.de/projects/DragGAN/data/DragGAN.mp4 width=800 >}}
 
-[Source](https://vcai.mpi-inf.mpg.de/projects/DragGAN/), DragGAN by @pan_drag_2023
+[DragGAN](https://vcai.mpi-inf.mpg.de/projects/DragGAN/) by @pan_drag_2023
 :::
 
 #### Image Translation
@@ -304,7 +315,7 @@ Norwegian Bride (est late 1890s) from DeOldify: [Link](https://github.com/jantic
 
 #### View Synthesis
 
-In view synthesis, new camera viewpoints of a scene are generated from a 3D model. Neural Radiance Fields (NeRFs) are models that can generate novel views from a set of input images taken from known viewpoints. @fig-intro-nerf shows training data (input images from different angles) and the synthesized novel views the model can generate.
+In view synthesis, new camera viewpoints of a scene are generated from a model. Neural Radiance Fields (NeRFs) are models that can generate novel views from a set of input images taken from known viewpoints. @fig-intro-nerf shows training data (input images from different angles) and the synthesized novel views the model can generate.
 
 ::: {#fig-intro-nerf width=600}
 
@@ -418,7 +429,7 @@ But also object / keypoint tracking:
 
 We will now explore some challenges that must be overcome when analyzing images with machine learning models.
 
-### Semantic Gap
+### Semantic Gap {#sec-intro-challenges-semantic-gap}
 
 The semantic gap refers to the discrepancy between the low-level pixel information that can be directly extracted from an image and the high-level semantic interpretation understood by humans. In simpler terms: an image consists of millions of pixel values, but deriving semantically meaningful concepts like "cat" or "sitting" from these raw numbers is extremely challenging.
 
@@ -517,7 +528,10 @@ In the presence of image degradation a visual system (e.g. humans) heavily use c
 
 
 
-## Machine Learning Basics
+## Machine Learning
+
+
+### Machine Learning Basics
 
 ::: {.callout-note title="📚 Quick ML Refresher"}
 
@@ -551,9 +565,6 @@ def predict(test_images, model):
 - **Model Selection**: Use train/validation/test splits to avoid overfitting
 
 :::
-
-
-## Classical vs. Modern Computer Vision
 
 ### ML with Classical Computer Vision
 
@@ -618,7 +629,7 @@ Depending on the parameterization, HOG descriptors, for example, can be very lar
 CIFAR10 Dataset [Source](https://www.cs.toronto.edu/~kriz/cifar.html)
 :::
 
-### Deep Learning
+## Deep Learning
 
 To accelerate research in computer vision and make progress more measurable, the PASCAL VOC Challenges were introduced @everingham_pascal_2007. These involved various tasks, such as detecting objects in photographs (@fig-intro-pascal).
 
@@ -703,7 +714,7 @@ Deep learning-based approaches have several key advantages over classical machin
 
 We will now explore the most important milestones in deep learning for image analysis.
 
-### Hubel and Wiesel
+#### Hubel and Wiesel
 
 @hubel_receptive_1959 showed in experiments on cats that there are complex cells/neurons in the visual cortex that only respond to certain patterns. In addition to these complex cells, there are also simple cells that only respond to lines at a certain angle.
 
@@ -715,7 +726,7 @@ We will now explore the most important milestones in deep learning for image ana
 Illustration [Source](https://link.springer.com/chapter/10.1007/978-3-030-28954-6_4/figures/1)
 :::
 
-### Neocognitron
+#### Neocognitron
 
 @fukushima_neocognitron_1980 defined a model of a neural network that can recognize visual patterns. It already has the hierarchical structure of a modern convolutional neural network and is inspired by biological neural networks, particularly from the insights of @hubel_receptive_1959.
 
@@ -727,7 +738,7 @@ Illustration [Source](https://link.springer.com/chapter/10.1007/978-3-030-28954-
 The Neocognitron @fukushima_neocognitron_1980.
 :::
 
-### Backpropagation
+#### Backpropagation
 
 @rumelhart_learning_1986 introduced the backpropagation algorithm in the context of neural networks. This algorithm is used to train modern neural networks: it finds the parameters of an artificial neural network (ANN) to solve a specific task. Backpropagation is based on the chain rule from calculus and is also important for other machine learning models.
 
@@ -748,7 +759,7 @@ A good video on backpropagation: [3Blue1Brown Backpropagation Calculus](https://
 
 
 
-### Convolutional Neural Networks (CNNs)
+#### Convolutional Neural Networks (CNNs)
 
 @lecun_gradient-based_1998 implemented convolutional neural networks (CNNs) to recognize handwritten digits. The architecture is specialized for the 2-D structure of image data and trained a model very similar to modern CNNs, as shown in @fig-lecun-cnn.
 
@@ -766,19 +777,13 @@ After AlexNet's breakthrough in 2012 (see previous section), CNNs rapidly evolve
 - **COCO Challenges**: Expanded beyond ImageNet to multi-task benchmarks (detection, segmentation, keypoints)
 - **Mobile architectures**: Efficient CNNs for deployment on phones and embedded devices
 
-### Other Architectures in Computer Vision
+#### Other Architectures in Computer Vision
 
-CNNs are still in use today (2025). Meanwhile, there are alternative architectures, such as transformer-based models (@dosovitskiy_image_2020), which are extremely successful in language modeling, or multilayer perceptron-based architectures (@liu_pay_2021). However, it has been shown that CNNs are still competitive and sometimes superior to alternative architectures (see @woo_convnext_2023). The question of which architecture type will prevail is open. Currently, it seems that CNNs and transformer-based models perform similarly (@smith_convnets_2023).
+CNNs are still in use today (2025). Meanwhile, there are alternative architectures, such as transformer-based models (@dosovitskiy_image_2020), which are extremely successful in language modeling, or multilayer perceptron-based architectures (@liu_pay_2021).
 
-::: {.callout-tip title="Recap"}
-Key takeaways:
+The question of which architecture type will prevail is open. Currently, it seems that both CNNs and transformer-based models have their place, and often perform similarly (@smith_convnets_2023). Furthermore, hybrid-architectures, combining the strengths of CNNs and transformers have been proposed @vasu_fastvit_2023. Some works use both architecture types, depending on whether parameter efficiency (CNNs) or raw performance (transformers) are prioritized @simeoni_dinov3_2025.
 
-- Computer vision tasks differ in output structure (class label, bounding boxes, pixel masks, generated images).
-- Deep learning displaced feature-engineering pipelines through end-to-end optimization and data scaling.
-- Core challenges (illumination, occlusion, intra-class variation, semantic gap) motivate inductive biases in architectures.
-- Historical milestones (Hubel & Wiesel → Neocognitron → Backprop → LeNet → ImageNet/AlexNet) built foundations for modern CNNs.
-- Emerging architectures (Transformers, hybrids) broaden modeling choices; no definitive winner yet.
-:::
+
 
 ## References
 

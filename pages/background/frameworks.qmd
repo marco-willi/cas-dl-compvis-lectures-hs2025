@@ -89,13 +89,16 @@ Key features of such frameworks are:
 
 At the core of neural networks is the _Computational Graph_. It automatically embeds dependent operations in a _directed acyclic graph (DAG)_. Gradients are tracked as needed, allowing variables to be efficiently updated/trained.
 
-The following shows an example in Numpy where we define computations and manually calculate derivatives. The graph is shown in @fig-infrastructure-comp-graph2.
+@fig-infrastructure-comp-graph2 displays a graph, representing @eq-frameworks-graph. An example with numpy is shown in @lst-frameworks-numpy-graph, using random data to evaluate the function including the derivatives.
 
-\begin{equation}
+
+$$
     f(\mathbf{A}, \mathbf{B}, \mathbf{C}) =  \sum_{ij} \big((\mathbf{A} \odot \mathbf{B}) + \mathbf{C}\big)_{ij}
-\end{equation}
+$$ {#eq-frameworks-graph}
+
 
 ::: {#fig-infrastructure-comp-graph2}
+
 ![]({{< meta params.images_path >}}comp-graph2.jpg){width=200}
 
 Computational Graph.
@@ -104,6 +107,8 @@ Computational Graph.
 ```{python}
 #| eval: true
 #| echo: true
+#| lst-label: lst-frameworks-numpy-graph
+#| lst-cap: Manual differentiation with numpy
 import numpy as np
 
 np.random.seed(123)
@@ -134,11 +139,13 @@ print("df/dc=\n", df_dc)
 
 ```
 
-Here's the same example in PyTorch. Using `x.backward()`, gradients with respect to `x` are computed for variables connected to `x`.
+@lst-frameworks-pytorch-graph shows the same example in PyTorch. Using `x.backward()`, gradients with respect to `x` are computed for variables connected to `x`.
 
 ```{python}
 #| eval: true
 #| echo: true
+#| lst-label: lst-frameworks-pytorch-graph
+#| lst-cap: Automatic differentiation with pytorch
 import torch
 
 np.random.seed(123)
@@ -158,23 +165,27 @@ print(a.grad)
 
 ```
 
-Here are the nodes of the computational graph.
+@fig-frameworks-comp-graph shows the nodes of the computational graph.
 
 ::: {.content-hidden unless-format="html"}
 ```{python}
 #| eval: true
 #| echo: true
+#| label: fig-frameworks-comp-graph
+#| fig-cap: "computational graph"
 from torchviz import make_dot
 make_dot(f, params={'a': a, 'b': b, 'c': c, 'f':f , 'd': d, 'e':e })
 ```
 :::
 
 
-To perform the computation on a GPU, a simple instruction is enough:
+To perform the computation on a GPU, a simple instruction (see @lst-frameworks-gpu).
 
 ```{python}
-#| eval: true
-#| echo: true
+# | eval: true
+# | echo: true
+# | lst-label: lst-frameworks-gpu
+# | lst-cap: Move computations to GPU
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using {device} device")
 
@@ -342,11 +353,13 @@ The following is an example using a 1-layer neural network (see @fig-infrastruct
 Source: [PyTorch](https://pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html)
 :::
 
-Here is the definition of the network in PyTorch:
+The network from @fig-infrastructure-comp-graph is defined in PyTorch code in @lst-frameworks-example-network.
 
 ```{python}
 #| eval: true
 #| echo: true
+#| lst-label: lst-frameworks-example-network
+#| lst-cap: Example computational graph.
 import torch
 
 x = torch.ones(5)  # input tensor
@@ -392,11 +405,13 @@ PyTorch provides various building blocks for creating neural networks. These are
 - `nn.MSELoss()`: Regression
 :::
 
-Here is an example:
+@lst-frameworks-example-module depicts an example of a class that inherits from `torch.nn.Module`.
 
 ```{python}
 #| eval: true
 #| echo: true
+#| lst-label: lst-frameworks-example-module
+#| lst-cap: Example nn.Module.
 from torch import nn
 
 class NeuralNetwork(nn.Module):
@@ -449,6 +464,18 @@ make_dot(logits)
 ```
 :::
 
+For more in-depth information about the model you can use the external library  [torchinfo](https://github.com/tyleryep/torchinfo) as seen in @lst-frameworks-example-torchinfo.
+
+```{python}
+#| eval: true
+#| echo: true
+#| lst-label: lst-frameworks-example-torchinfo
+#| lst-cap: Example output of torchinfo.
+from torchinfo import summary
+model = NeuralNetwork()
+summary(model, input_size=(128, 1, 28, 28))
+```
+
 ## torch.optim
 
 To optimize the parameters of a model, you need an optimization algorithm. [`torch.optim`](https://pytorch.org/docs/stable/optim.html) implements various algorithms, such as _Stochastic Gradient Descent_ or the often used _Adam Optimizer_.
@@ -471,11 +498,13 @@ from torch import optim
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 ```
 
-You can then use the optimizer to adjust the parameters, you just need to define a loss function:
+You can then use the optimizer to adjust the parameters by minimizing a loss function. See @lst-frameworks-example-optim for an example.
 
 ```{python}
 #| eval: true
 #| echo: true
+#| lst-label: lst-frameworks-example-optim
+#| lst-cap: Dummy iterations to minimize a loss function using an optimizer.
 loss_fn = torch.nn.CrossEntropyLoss()
 for i in range(0, 3):
     input, target = torch.rand(1, 28, 28), torch.randint(low=0, high=10, size=(1, ))
@@ -540,8 +569,10 @@ model.train()  # Switch back to training mode
 Typically, you put together a training loop to train a model. A training loop iterates over batches of data and optimizes the model parameters with each iteration.
 
 ```{python}
-# | eval: true
-# | echo: true
+#| eval: false
+#| echo: true
+#| lst-label: lst-frameworks-train-loop
+#| lst-cap: Training and test loop.
 def train_loop(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     model.train()  # <-- important!
@@ -602,11 +633,13 @@ High-level APIs such as [Lightning](https://lightning.ai/) and [Keras](https://k
 
 ## Pre-trained models
 
-Since training models can be time-consuming and expensive, pre-trained models are often used. They allow models to be adapted to a specific task more quickly and cost-effectively. In many areas, particularly NLP and computer vision, using pre-trained models is standard. PyTorch provides [`torchvision`](https://pytorch.org/vision/stable/index.html) for computer vision applications. `torchvision` provides functionalities useful for modeling image data. Pre-trained models can also be easily integrated, as shown in the following example:
+Since training models can be time-consuming and expensive, pre-trained models are often used. They allow models to be adapted to a specific task more quickly and cost-effectively. In many areas, particularly NLP and computer vision, using pre-trained models is standard. PyTorch provides [`torchvision`](https://pytorch.org/vision/stable/index.html) for computer vision applications. `torchvision` provides functionalities useful for modeling image data. Pre-trained models can also be easily integrated, as shown in @lst-frameworks-pre-trained-model.
 
 ```{python}
 #| eval: False
 #| echo: true
+#| lst-label: lst-frameworks-pre-trained-model
+#| lst-cap: Example of importing ResNet-50 model with pre-trained weights from ImageNet.
 
 from torchvision.models import resnet50, ResNet50_Weights
 
@@ -629,11 +662,57 @@ In recent years, however, TensorFlow’s low-level API has become less popular i
 [Keras](https://keras.io/) started as an independent high-level deep learning API designed to simplify model creation with a clean and intuitive syntax.
 Since 2017, it has been tightly integrated into TensorFlow as its official front-end (tf.keras), and in 2023, Keras Core was introduced, a framework-agnostic version that can run on multiple backends such as TensorFlow, JAX, and PyTorch.
 
-Keras focuses on ease of use, modularity, and rapid prototyping, making it an excellent choice for teaching, applied machine learning, and fast experimentation, while still being production-ready through TensorFlow’s ecosystem.
+Keras focuses on ease of use, modularity, and rapid prototyping, making it an excellent choice for teaching, applied machine learning, and fast experimentation, while still being production-ready through TensorFlow’s ecosystem.  See @lst-frameworks-example-tf for example code using Keras.
+
+```{python}
+#| eval: false
+#| echo: true
+#| lst-label: lst-frameworks-example-tf
+#| lst-cap: Example with TensorFlow.
+import tensorflow as tf
+
+class NeuralNetwork(tf.keras.Model):
+    def __init__(self):
+        super(NeuralNetwork, self).__init__()
+        self.flatten = tf.keras.layers.Flatten()
+        self.linear_relu_stack = tf.keras.Sequential([
+            tf.keras.layers.Dense(512, activation='relu'),
+            tf.keras.layers.Dense(512, activation='relu'),
+            tf.keras.layers.Dense(10)  # No activation for logits
+        ])
+
+    def call(self, x):
+        x = self.flatten(x)
+        logits = self.linear_relu_stack(x)
+        return logits
+```
 
 ## Jax
 
-[Jax](https://jax.readthedocs.io/en/latest/) has gained significant popularity in recent years. Developed by researchers at Google, it is primarily used in research and foundation-model development. Jax provides a NumPy-like API with automatic differentiation (autodiff) and function transformations such as jit (for compilation) and vmap (for vectorization). It enables high-performance, composable numerical computing, and serves as the foundation for frameworks such as [Flax (Neural Networks)](https://flax.readthedocs.io/en/stable/) and [Haiku (ML Research)](https://dm-haiku.readthedocs.io/en/latest/).
+[Jax](https://jax.readthedocs.io/en/latest/) has gained significant popularity in recent years. Developed by researchers at Google, it is primarily used in research and foundation-model development. Jax provides a NumPy-like API with automatic differentiation (autodiff) and function transformations such as jit (for compilation) and vmap (for vectorization). It enables high-performance, composable numerical computing, and serves as the foundation for frameworks such as [Flax (Neural Networks)](https://flax.readthedocs.io/en/stable/) and [Haiku (ML Research)](https://dm-haiku.readthedocs.io/en/latest/). See @lst-frameworks-example-jax for an example using [Flax](https://flax.readthedocs.io/en/latest/).
+
+
+```{python}
+#| eval: false
+#| echo: true
+#| lst-label: lst-frameworks-example-jax
+#| lst-cap: Example with JAX and flax.
+from flax import linen as nn
+import jax.numpy as jnp
+
+class NeuralNetwork(nn.Module):
+    @nn.compact
+    def __call__(self, x):
+        x = x.reshape((x.shape[0], -1))  # Flatten the input
+        x = nn.Dense(512)(x)
+        x = nn.relu(x)
+        x = nn.Dense(512)(x)
+        x = nn.relu(x)
+        logits = nn.Dense(10)(x)
+        return logits
+
+```
+
 
 
 ## Scikit-Learn
