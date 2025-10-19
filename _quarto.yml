@@ -22,6 +22,7 @@ website:
   page-navigation: true
   title: "CAS Deep Learning - Computer Vision"
   description: "Homepage for CAS Deep Learning - Computer Vision (Part1) with reading materials and exercises"
+  favicon: "/assets/cv_logo_small.png"
 
   site-url: "https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025/"
   repo-url: https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025

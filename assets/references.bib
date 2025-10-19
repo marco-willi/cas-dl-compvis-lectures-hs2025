@@ -125,6 +125,16 @@
 	file = {PDF:D\:\\Literatur\\Zotero\\storage\\F3TUDKC9\\Beery et al. - 2020 - Synthetic examples improve generalization for rare classes.pdf:application/pdf},
 }
 
+@article{Khosla2020,
+	title = {Supervised {Contrastive} {Learning}},
+	url = {http://arxiv.org/abs/2004.11362},
+	abstract = {Cross entropy is the most widely used loss function for supervised training of image classification models. In this paper, we propose a novel training methodology that consistently outperforms cross entropy on supervised learning tasks across different architectures and data augmentations. We modify the batch contrastive loss, which has recently been shown to be very effective at learning powerful representations in the self-supervised setting. We are thus able to leverage label information more effectively than cross entropy. Clusters of points belonging to the same class are pulled together in embedding space, while simultaneously pushing apart clusters of samples from different classes. In addition to this, we leverage key ingredients such as large batch sizes and normalized embeddings, which have been shown to benefit self-supervised learning. On both ResNet-50 and ResNet-200, we outperform cross entropy by over 1\%, setting a new state of the art number of 78.8\% among methods that use AutoAugment data augmentation. The loss also shows clear benefits for robustness to natural corruptions on standard benchmarks on both calibration and accuracy. Compared to cross entropy, our supervised contrastive loss is more stable to hyperparameter settings such as optimizers or data augmentations.},
+	author = {Khosla, Prannay and Teterwak, Piotr and Wang, Chen and Sarna, Aaron and Tian, Yonglong and Isola, Phillip and Maschinot, Aaron and Liu, Ce and Krishnan, Dilip},
+	year = {2020},
+	pages = {1--18},
+	file = {PDF:D\:\\Literatur\\Zotero\\storage\\XRN5ACWI\\Khosla et al. - 2020 - Supervised Contrastive Learning.pdf:application/pdf},
+}
+
 @article{Redmon2016a,
 	title = {You only look once: {Unified}, real-time object detection},
 	volume = {2016-Decem},
@@ -1088,6 +1098,21 @@ ISBN: 9781467388504},
 	file = {arXiv Fulltext PDF:D\:\\Literatur\\Zotero\\storage\\UEBY4T6T\\Smith et al. - 2023 - ConvNets Match Vision Transformers at Scale.pdf:application/pdf},
 }
 
+@misc{grill_bootstrap_2020,
+	title = {Bootstrap your own latent: {A} new approach to self-supervised {Learning}},
+	shorttitle = {Bootstrap your own latent},
+	url = {http://arxiv.org/abs/2006.07733},
+	abstract = {We introduce Bootstrap Your Own Latent (BYOL), a new approach to self-supervised image representation learning. BYOL relies on two neural networks, referred to as online and target networks, that interact and learn from each other. From an augmented view of an image, we train the online network to predict the target network representation of the same image under a different augmented view. At the same time, we update the target network with a slow-moving average of the online network. While state-of-the art methods rely on negative pairs, BYOL achieves a new state of the art without them. BYOL reaches \$74.3{\textbackslash}\%\$ top-1 classification accuracy on ImageNet using a linear evaluation with a ResNet-50 architecture and \$79.6{\textbackslash}\%\$ with a larger ResNet. We show that BYOL performs on par or better than the current state of the art on both transfer and semi-supervised benchmarks. Our implementation and pretrained models are given on GitHub.},
+	urldate = {2023-11-03},
+	publisher = {arXiv},
+	author = {Grill, Jean-Bastien and Strub, Florian and Altché, Florent and Tallec, Corentin and Richemond, Pierre H. and Buchatskaya, Elena and Doersch, Carl and Pires, Bernardo Avila and Guo, Zhaohan Daniel and Azar, Mohammad Gheshlaghi and Piot, Bilal and Kavukcuoglu, Koray and Munos, Rémi and Valko, Michal},
+	month = sep,
+	year = {2020},
+	note = {arXiv:2006.07733 [cs, stat]},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning, Statistics - Machine Learning},
+	file = {arXiv Fulltext PDF:D\:\\Literatur\\Zotero\\storage\\YNJQN2UL\\Grill et al. - 2020 - Bootstrap your own latent A new approach to self-supervised Learning.pdf:application/pdf;arXiv.org Snapshot:D\:\\Literatur\\Zotero\\storage\\7PQTXT3D\\2006.html:text/html},
+}
+
 @article{srivastava_dropout_2014,
 	title = {Dropout: {A} {Simple} {Way} to {Prevent} {Neural} {Networks} from {Overfitting}},
 	volume = {15},
@@ -1634,4 +1659,34 @@ ISBN: 9781467388504},
 	author = {Torralba, A. and Isola, P. and Freeman, W.T.},
 	year = {2024},
 	lccn = {2023024589},
+}
+
+@misc{he_masked_2021,
+	title = {Masked {Autoencoders} {Are} {Scalable} {Vision} {Learners}},
+	url = {http://arxiv.org/abs/2111.06377},
+	doi = {10.48550/arXiv.2111.06377},
+	abstract = {This paper shows that masked autoencoders (MAE) are scalable self-supervised learners for computer vision. Our MAE approach is simple: we mask random patches of the input image and reconstruct the missing pixels. It is based on two core designs. First, we develop an asymmetric encoder-decoder architecture, with an encoder that operates only on the visible subset of patches (without mask tokens), along with a lightweight decoder that reconstructs the original image from the latent representation and mask tokens. Second, we find that masking a high proportion of the input image, e.g., 75\%, yields a nontrivial and meaningful self-supervisory task. Coupling these two designs enables us to train large models efficiently and effectively: we accelerate training (by 3x or more) and improve accuracy. Our scalable approach allows for learning high-capacity models that generalize well: e.g., a vanilla ViT-Huge model achieves the best accuracy (87.8\%) among methods that use only ImageNet-1K data. Transfer performance in downstream tasks outperforms supervised pre-training and shows promising scaling behavior.},
+	urldate = {2025-10-19},
+	publisher = {arXiv},
+	author = {He, Kaiming and Chen, Xinlei and Xie, Saining and Li, Yanghao and Dollár, Piotr and Girshick, Ross},
+	month = dec,
+	year = {2021},
+	note = {arXiv:2111.06377 [cs]},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition},
+	file = {Preprint PDF:D\:\\Literatur\\Zotero\\storage\\LLP6D9IM\\He et al. - 2021 - Masked Autoencoders Are Scalable Vision Learners.pdf:application/pdf;Snapshot:D\:\\Literatur\\Zotero\\storage\\XJT85N9W\\2111.html:text/html},
+}
+
+@misc{chen_simple_2020,
+	title = {A {Simple} {Framework} for {Contrastive} {Learning} of {Visual} {Representations}},
+	url = {http://arxiv.org/abs/2002.05709},
+	doi = {10.48550/arXiv.2002.05709},
+	abstract = {This paper presents SimCLR: a simple framework for contrastive learning of visual representations. We simplify recently proposed contrastive self-supervised learning algorithms without requiring specialized architectures or a memory bank. In order to understand what enables the contrastive prediction tasks to learn useful representations, we systematically study the major components of our framework. We show that (1) composition of data augmentations plays a critical role in defining effective predictive tasks, (2) introducing a learnable nonlinear transformation between the representation and the contrastive loss substantially improves the quality of the learned representations, and (3) contrastive learning benefits from larger batch sizes and more training steps compared to supervised learning. By combining these findings, we are able to considerably outperform previous methods for self-supervised and semi-supervised learning on ImageNet. A linear classifier trained on self-supervised representations learned by SimCLR achieves 76.5\% top-1 accuracy, which is a 7\% relative improvement over previous state-of-the-art, matching the performance of a supervised ResNet-50. When fine-tuned on only 1\% of the labels, we achieve 85.8\% top-5 accuracy, outperforming AlexNet with 100X fewer labels.},
+	urldate = {2025-10-19},
+	publisher = {arXiv},
+	author = {Chen, Ting and Kornblith, Simon and Norouzi, Mohammad and Hinton, Geoffrey},
+	month = jul,
+	year = {2020},
+	note = {arXiv:2002.05709 [cs]},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning, Statistics - Machine Learning},
+	file = {Preprint PDF:D\:\\Literatur\\Zotero\\storage\\4J49K7VD\\Chen et al. - 2020 - A Simple Framework for Contrastive Learning of Visual Representations.pdf:application/pdf;Snapshot:D\:\\Literatur\\Zotero\\storage\\GBSRDBE2\\2002.html:text/html},
 }

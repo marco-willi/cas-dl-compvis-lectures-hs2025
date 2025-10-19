@@ -1217,9 +1217,9 @@ AlexNet @krizhevsky_imagenet_2012.
 
 Since the split across two GPUs is no longer necessary, the architecture is somewhat simplified. Modern implementations are shown in @fig-classification-alexnet2.
 
-::: {#fig-classification-alexnet2 width=400}
+::: {#fig-classification-alexnet2}
 
-![]({{< meta params.images_path >}}alexnet_illustration.jpg)
+![]({{< meta params.images_path >}}alexnet_illustration.jpg){width=400}
 
 AlexNet @prince_understanding_2023
 :::

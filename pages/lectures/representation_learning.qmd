@@ -1,5 +1,5 @@
 ---
-title: "4 - Representation Learning & Foundation Models"
+title: "4 - Representation Learning"
 params:
    images_path: "/assets/images/representation_learning/"
 ---
@@ -53,6 +53,8 @@ The elephant has large tusks and ears and is standing in a flat savannah.
 Is is bright day light with a cloudy sky.
 """
 ```
+
+Of course: **a lot** of information is lost, however, **practically** relevant information is preserved!
 
 ::: {.callout-note title="Information Content: Raw vs Natural Language" collapse="true"}
 
@@ -128,11 +130,23 @@ This is exactly what **Representation Learning** is interested in: How can we fi
 
 The idea is that such compact representations are well suited for down-stream tasks, such as image classification.
 
+One motivation to represent images in a different space than with raw pixels (data space) is the enormous difference between the set of all *possible* images and the set of *natural* (real-world) images. This indicates that representing images in pixel space is not efficient. As illustrated in @fig-rl-set-of-images, the subset of natural images occupies only a tiny fraction of the entire image space.  For instance, for RGB images of size $256 \times 256$ pixels with 255 possible intensity values per channel, the total number of possible images is $255^{256 \times 256 \times 3}$, an astronomically large number, effectively infinite from a practical standpoint. This enables strong compression if we can find a more suitable space or coordinate system to represent images.
+
+
+::: {#fig-rl-set-of-images}
+![]({{< meta params.images_path >}}set_of_images.png){fig-alt="Set of example images illustrating representation learning concepts" width=600}
+
+Illustrated are the set of all possible images and the subset of natural images.
+:::
+
+
 ## What Is Representation Learning?
 
 A representation is the output $\vect{z} = f(\vect{x})$ produced by an encoder $f$ applied to input $\vect{x}$; $\vect{z}$ retains task‑relevant structure while discarding nuisance variation. The encoder $f$ is the mapping; the representation $\vect{z}$ is its result.
 
 Therefore, when we refer to representations we typically mean vector-valued (distributed) representations and not, for example, natural language descriptions.
+
+
 
 ### Intuition
 
@@ -161,6 +175,13 @@ Synthetic images illustrating representation learning challenges.
 :::
 
 Imagine you have to represent those in 2-D: $\vect{z} \in \mathbb{R}^2$. How would you proceed from a human point of view?
+
+
+::: {#fig-representation-space}
+![]({{< meta params.images_path >}}representation_space.png){fig-alt="Empty 2-dimensional representation space" width=50%}
+
+Empty 2-dimensional representation space for mapping image similarity.
+:::
 
 ::: {.callout-note title="Representation Intuition"}
 
@@ -196,49 +217,381 @@ The images demonstrate different types of similarity challenges in representatio
 
 Good representations transform raw data into a format that makes relevant patterns explicit and accessible. They represent a **semantic coordinate systems** where distances $\|\vect{z}_i - \vect{z}_j\|_2$ reflect meaningful relationships.
 
-::: {.callout-note title="Core Properties of Effective Representations"}
+::: {#fig-data-representation-spaces}
+![]({{< meta params.images_path >}}data_and_representation_space.png){fig-alt="Mapping from data space to representation space via encoder" width=80%}
+
+**Data Space vs Representation Space:** The encoder $f$ transforms high-dimensional input samples $\vect{x}_i$ from data space into compact representations $\vect{z}_i$ in representation space, where semantic relationships become explicit through distances and clustering.
+:::
+
 
 **Mathematical Framework:**
 
 Given input $\vect{x} \in \mathcal{X}$ and encoder $f: \mathcal{X} \to \mathcal{Z}$, we want representation $\vect{z} = f(\vect{x})$ such that:
 
-**1. Invariance & Selectivity Balance**
+#### Invariance & Selectivity Balance
 
 - **Invariance:** $\|f(\vect{x}) - f(g(\vect{x}))\|_2 < \epsilon$ for nuisance transform $g$ (lighting, pose)
 - **Selectivity:** $\|f(\vect{x}_i) - f(\vect{x}_j)\|_2 > \delta$ for semantically different $\vect{x}_i, \vect{x}_j$
 - *Trade-off:* Too much invariance → loss of discriminative details
 - *Sweet spot:* Preserve task-relevant variations, discard irrelevant ones
 
-**2. Geometric Structure Preservation**
+#### Geometric Structure Preservation
 
 - **Smooth manifold:** Similar semantic concepts cluster in representation space
 - **Composability:** $f(\vect{x}_1) \oplus f(\vect{x}_2) \approx f(\text{combine}(\vect{x}_1, \vect{x}_2))$ for vector operations
 - **Interpolability:** Linear interpolation $\alpha f(\vect{x}_1) + (1-\alpha) f(\vect{x}_2)$ yields meaningful intermediate concepts
 
-**3. Transfer Efficiency**
+#### Transfer Efficiency
 
 - **Low sample complexity:** Few examples needed for downstream adaptation
 - **Broad applicability:** Same $f(\cdot)$ works across multiple tasks/domains
 - **Graceful degradation:** Performance degrades slowly with domain shift
 
-**4. Computational Practicality**
+#### Computational Practicality
 
 - **Compact dimensionality:** $\text{dim}(\vect{z}) \ll \text{dim}(\vect{x})$ while preserving information
 - **Fast computation:** Forward pass $f(\vect{x})$ efficient for real-time applications
 - **Stable training:** Representation learning converges reliably
 
+
+## Deep Image Representations
+
+There are multiple ways to learn image representations with deep learning, using different learning paradigms and objectives.
+
+
+### Supervised Learning
+
+Supervised pretraining learns $f(\cdot)$ by predicting human labels (e.g., ImageNet classes) with a loss like cross-entropy.
+Deep networks progressively transform pixels into higher-level semantics, and linear probes on the penultimate layer often separate classes.
+
+::: {#fig-supervised-architecture}
+![]({{< meta params.images_path >}}supervised_learning_representations.png){fig-alt="Supervised learning architecture showing encoder and classifier" width=600}
+
+**Supervised Pre-training Architecture:** Input images are processed by an encoder (CNN or ViT) that extracts features, followed by a classification head trained with cross-entropy loss on human-provided labels. The penultimate layer embeddings serve as transferable representations for downstream tasks.
 :::
 
-::: {#fig-representation-quality-spectrum}
-![]({{< meta params.images_path >}}representation_quality_spectrum.png){fig-alt="Spectrum from poor to excellent representations" width=100%}
+### Weakly Supervised Learning
 
-**Representation Quality Spectrum:** From pixel-level chaos (left) through hand-crafted features (SIFT, HOG) to modern learned embeddings (right), showing increasing semantic organization and task performance.
+Weak supervision uses noisy/partial labels at scale—hashtags, alt-text, or image–text pairs.
+A landmark example is **CLIP** (see @radford_learning_2021), trained to align images and their captions via contrastive learning.
+It enables zero-shot recognition by turning text prompts into classifiers (e.g., “a photo of a cat”).
+This reduces annotation cost and yields broadly transferable features. See @fig-clip-contrastive for an illustration.
+
+
+::: {.callout-note title="CLIP Loss" collapse="true"}
+
+**Composite objective.** CLIP jointly trains an **image encoder** $f_\theta$ and a **text encoder** $g_\phi$ to align matched image–text pairs using a **symmetric contrastive (InfoNCE) loss** with a learned temperature (logit scale).
+
+**Setup.** For a batch of $N$ paired samples $\{(x_i, y_i)\}_{i=1}^N$:
+
+- Image features: $\tilde{\mathbf{v}}_i = \frac{f_\theta(x_i)}{\|f_\theta(x_i)\|}$
+- Text features: $\tilde{\mathbf{t}}_i = \frac{g_\phi(y_i)}{\|g_\phi(y_i)\|}$
+- Learned logit scale: $\alpha = \exp(s)$ with parameter $s$ (equivalently temperature $\tau = 1/\alpha$)
+- Similarities (cosine scaled): $s_{ij} = \alpha \, \tilde{\mathbf{v}}_i^\top \tilde{\mathbf{t}}_j$
+
+**Image-to-text loss (with in-batch negatives).**
+\begin{equation}
+\mathcal{L}_{i \to t}
+= \frac{1}{N} \sum_{i=1}^{N}
+-\log \frac{\exp\!\big(s_{ii}\big)}
+{\sum_{j=1}^{N} \exp\!\big(s_{ij}\big)} \, .
+\end{equation}
+
+**Text-to-image loss (symmetric direction).**
+\begin{equation}
+\mathcal{L}_{t \to i}
+= \frac{1}{N} \sum_{j=1}^{N}
+-\log \frac{\exp\!\big(s_{jj}\big)}
+{\sum_{i=1}^{N} \exp\!\big(s_{ij}\big)} \, .
+\end{equation}
+
+**Total objective.**
+\begin{equation}
+\mathcal{L}_{\text{CLIP}}
+= \tfrac{1}{2} \left( \mathcal{L}_{i \to t} + \mathcal{L}_{t \to i} \right) \, .
+\end{equation}
+
+**Components (at a glance).**
+
+- $f_\theta, g_\phi$: image/text encoders (e.g., ViT/CNN and Transformer).
+- $\tilde{\mathbf{v}}_i, \tilde{\mathbf{t}}_i$: $\ell_2$-normalized embeddings (cosine similarity).
+- $\alpha$ (or $1/\tau$): learned scaling controlling softness of the softmax.
+- In-batch negatives: all non-matching pairs in the current batch act as negatives.
+- Optimization: cross-entropy over the similarity matrix in both directions.
+
+*Inference note:* zero-shot classification uses text prompts $y_c =$ “a photo of a $\{class\}$” to form class prototypes $\tilde{\mathbf{t}}_c$ and picks $\arg\max_c \tilde{\mathbf{v}}^\top \tilde{\mathbf{t}}_c$.
+
+:::
+
+::: {#fig-clip-contrastive}
+![]({{< meta params.images_path >}}clip_contrastive_pre_training.png){fig-alt="CLIP dual-encoder architecture with contrastive loss" width=600}
+
+**CLIP Contrastive Pre-training:** Shown are the image and text encoders processing a batch of paired data. The resulting embeddings are compared via a similarity matrix where matching pairs (diagonal) are maximized and non-matching pairs (off-diagonal) are minimized through contrastive learning.
+:::
+
+### Self-Supervised Learning
+
+Self-supervised learning (SSL) creates pretext tasks from raw data (no human labels) to shape $f(\cdot)$.
+Two dominant families are *imputation/masked modeling* and *contrastive/self-distillation*.
+
+#### Imputation
+
+Masked image modeling hides random patches and trains the model to reconstruct them.
+**Masked Autoencoding (MAE)** (see @he_masked_2021) shows that an asymmetric encoder–decoder and high masking ratio (≈75%) scale well and produce strong features for transfer.
+Intuition: to fill in what’s missing, the model must internalize global structure and semantics.
+
+::: {.callout-note title="Masked Autoencoding Loss" collapse="true"}
+
+
+**Setup.** Given an image $x$, MAE patchifies it and **masks** a large subset of patches $\mathcal{M}$ (typically $\sim 75\%$), keeping visible patches $\mathcal{V}$.
+
+- Patchify: $X = \mathrm{Patchify}(x) \in \mathbb{R}^{P \times d}$ with $P$ patches and patch-dimension $d$.
+- Split: $X = \{X_{\mathcal{V}}, X_{\mathcal{M}}\}$.
+- **Encoder** $E_\theta$ processes only visible tokens $X_{\mathcal{V}}$ to produce latents $H = E_\theta(X_{\mathcal{V}})$.
+- **Decoder** $D_\phi$ receives $H$ plus learned mask tokens at masked positions and predicts reconstructions $\hat{X}_{\mathcal{M}} = D_\phi(H, \text{mask tokens})$.
+
+**Reconstruction loss (masked patches only).**
+\begin{equation}
+\mathcal{L}_{\text{MAE}}
+=
+\frac{1}{|\mathcal{M}|} \sum_{p \in \mathcal{M}}
+\left\| \hat{X}_{p} - \tilde{X}_{p} \right\|_2^2 ,
+\end{equation}
+where $\tilde{X}$ are **normalized pixel targets** (e.g., per-channel mean/variance normalization) in patch space.
+
+**Components (at a glance).**
+
+- $X$: patchified image tokens; $\mathcal{V}/\mathcal{M}$: visible/masked index sets.
+- $E_\theta$ (ViT encoder): operates on **visible** tokens only (asymmetric design).
+- $D_\phi$ (lightweight decoder): reconstructs **masked** tokens from encoder latents $+$ mask tokens.
+- $\hat{X}_{\mathcal{M}}$: decoder predictions at masked positions.
+- $\tilde{X}_{\mathcal{M}}$: normalized pixel targets at masked positions.
+- Loss averages **only over masked patches**, encouraging learning of global structure.
+
+**Notes.**
+
+- High mask ratio $+$ asymmetric encoder/decoder yields efficient pretraining and strong transfer.
+- Some variants replace pixel MSE with feature/perceptual losses, but vanilla MAE uses MSE on normalized pixels.
+
+
+:::
+
+::: {#fig-mae-architecture}
+![]({{< meta params.images_path >}}masked_auto_encoder.png){width=800}
+
+**MAE Pre-training Pipeline:** A large fraction of image patches is randomly masked. The encoder processes only visible patches for efficiency. After encoding, lightweight mask tokens are inserted, and a small decoder reconstructs the original image pixels from the full token set. Post-training, the decoder is discarded; the encoder alone extracts features from complete (unmasked) images for downstream tasks.
+
 :::
 
 
-## Representation Learning and Similarities
+#### Contrastive Learning
+
+Contrastive learning is a learning paradigm whereby a model learns to represent data points such that similar points are nearby and disimilar points are far apart.
+The **SimCLR** (@chen_simple_2020) paper demonstrated how such a model can be learned and achieve high-accuracy on down-stream tasks.
+@fig-ssl-contrastive illustrateds the concepts: From a given image create two _views_ (augmented versions) and contrast them with different images in a large batch of images (InfoNCE loss).
+
+::: {.callout-note title="InfoNCE Loss" collapse="true"}
+
+**Core Idea:** InfoNCE maximizes mutual information between positive pairs while contrasting against negative samples.
+
+**Mathematical Form:**
+$$
+\mathcal{L}_{\text{InfoNCE}} = -\mathbb{E}\left[\log \frac{\exp(\text{sim}(z_i, z_i^+)/\tau)}{\exp(\text{sim}(z_i, z_i^+)/\tau) + \sum_{j=1}^{N-1} \exp(\text{sim}(z_i, z_j^-)/\tau)}\right]
+$$
+
+**Components:**
+
+- $z_i$: Anchor embedding (encoded from image $x_i$)
+- $z_i^+$: Positive embedding (different augmentation of same image)
+- $z_j^-$: Negative embeddings (from different images in batch)
+- $\text{sim}(\cdot, \cdot)$: Similarity function (typically cosine similarity)
+- $\tau$: Temperature parameter controlling concentration
+
+**Temperature Effect:**
+
+- Small $\tau$ ($\to 0$): Focuses on hardest negatives, sharper distributions
+- Large $\tau$ ($\to \infty$): Uniform weighting, softer distributions
+- Typical values: $\tau \in [0.07, 0.5]$
+
+**Intuition:** The loss encourages the model to:
+
+1. Pull positive pairs close together in embedding space
+2. Push negative pairs apart
+3. Form tight clusters of semantically similar samples
+
+**Practical Considerations:**
+
+- Requires large batch sizes (e.g., 256-4096) for sufficient negatives
+- Alternative: Memory banks (MoCo) or queue-based negatives
+- Hard negative mining can improve learning efficiency
+
+:::
 
 
+::: {#fig-ssl-contrastive layout-ncol=2}
+
+![]({{< meta params.images_path >}}self_supervised_contrastive1.png){fig-alt="Contrastive learning conceptual view showing similar and dissimilar samples"}
+
+![]({{< meta params.images_path >}}self_supervised_contrastive2.png){fig-alt="Contrastive learning architectural view with encoder and projection head"}
+
+**Left:** Learning representations by contrasting similar inputs (different views of same sample) against other inputs. **Right:** Architectural view showing the encoder and projection head pipeline.
+:::
+
+#### Self-Distillation
+
+Self-distillation is an interesting concept: A **student** model tries to match the outputs of a **teacher** model’s distribution over a given image.
+This principle was introduced in the BYOL paper (see @grill_bootstrap_2020) and led to the DINO-series of models: DINO (@caron_emerging_2021), DINOv2 (@oquab_dinov2_2024), and DINOv3 (@simeoni_dinov3_2025) are non-contrastive: a student matches the teacher’s distribution over crops (multi-crop), using centering and sharpening. This yields strong **global descriptors** and high-quality **local (patch) tokens**.
+
+::: {.callout-note title="DINOv3 Loss" collapse="true"}
+
+**Composite objective.** DINOv3 trains a student ViT against an EMA **teacher** with multi-crop views, combining a **global DINO loss**, a **local iBOT loss**, a **KoLeo uniformity regularizer**, and (in a refinement stage) a **Gram anchoring loss** on patch similarities:
+
+\begin{align}
+\mathcal{L}
+&= \underbrace{\mathcal{L}_{\text{DINO}}}_{\text{global crops}}
++ \lambda_{\text{iBOT}} \underbrace{\mathcal{L}_{\text{iBOT}}}_{\text{masked local tokens}}
++ \lambda_{\text{KoLeo}} \underbrace{\mathcal{L}_{\text{KoLeo}}}_{\text{uniformity on }[\text{CLS}]}
++ \lambda_{\text{Gram}} \underbrace{\mathcal{L}_{\text{Gram}}}_{\text{refinement}}.
+\end{align}
+
+**Global DINO (distribution matching, no negatives).**
+Student probabilities $p_s=\mathrm{softmax}(g_s(z_s)/\tau_s)$; teacher targets
+$q_t=\mathrm{stopgrad}\!\left[\mathrm{softmax}\!\left((g_t(z_t)-c)/\tau_t\right)\right]$ with centering $c$ and temperatures $\tau_s,\tau_t$.
+\begin{equation}
+\mathcal{L}_{\text{DINO}} \;=\; - \sum_{k} q_t^{(k)} \log p_s^{(k)}
+\quad \text{(summed over pairs of student/teacher crops).}
+\end{equation}
+
+**Local iBOT (masked token prediction).**
+For masked student patches $m \in \mathcal{M}$, match teacher patch-level distributions:
+\begin{equation}
+\mathcal{L}_{\text{iBOT}} \;=\; - \frac{1}{|\mathcal{M}|}\sum_{m \in \mathcal{M}}\sum_{k} q_{t,m}^{(k)} \log p_{s,m}^{(k)} .
+\end{equation}
+
+**KoLeo (feature uniformity).**
+Encourages spread (near-uniform) class-token embeddings; implemented as the KoLeo entropy estimator on mini-batches (schematic form):
+\begin{equation}
+\mathcal{L}_{\text{KoLeo}} \;\approx\; -\frac{1}{N}\sum_{i=1}^{N} \log d_i
+\quad \text{with } d_i \text{ the NN distance of } z^{[\text{CLS}]}_i .
+\end{equation}
+
+**Gram anchoring (refinement step).**
+Align student **patch-similarity structure** to a “Gram teacher.”
+Let $\tilde{Z}_s,\tilde{Z}_g \in \mathbb{R}^{P \times D}$ be $\ell_2$-normalized patch features (rows) for student and Gram-teacher on a global crop. With Gram matrices $G(\tilde{Z})=\tilde{Z}\tilde{Z}^\top$:
+\begin{equation}
+\mathcal{L}_{\text{Gram}} \;=\; \big\| G(\tilde{Z}_s) - G(\tilde{Z}_g) \big\|_F^2 .
+\end{equation}
+
+**Notes.**
+- Teacher is an EMA of the student; teachers view only **global crops**, students see **global + local** crops; iBOT masks a subset of student patches.
+- Gram anchoring is applied in a late **refinement** phase to restore **patch-level consistency** without hurting global performance.
+
+:::
+
+::: {#fig-dino-principle}
+
+![]({{< meta params.images_path >}}dino_principle.png){fig-alt="DINO self-distillation principle showing teacher-student architecture with multi-crop strategy" width=600}
+
+The student network processes various crops (global and local views) of the same image, attempting to match the output distribution of the momentum-updated teacher network. The teacher processes only global views and uses centering and sharpening to avoid collapse. No explicit negatives are required; the model learns by aligning predictions across different augmented views.
+:::
+
+
+::: {.callout-note title="DINOv3 Overview Video" collapse="false"}
+Watch Meta's introduction to DINOv3, explaining the key improvements over DINOv2 and the self-distillation approach:
+
+{{< video https://www.youtube.com/watch?v=-eOYWK6m3i8 >}}
+
+:::
+
+
+## Global vs Local Representations
+
+**Global** representations summarize an image into a single embedding (e.g., a [CLS] token or pooled feature) that captures overall semantics.
+
+**CLIP** is a prototypical global model: it aligns an image-wide vector with a text embedding, which is ideal for _zero-shot classification_, _retrieval_, and broad _semantic similarity_ at scale.
+
+In contrast, the DINO family (incl. DINO/DINOv2/DINOv3) produces both strong global descriptors and rich local tokens via self-distillation and multi-crop training. These local features carry spatially resolved cues useful for tasks such as segmentation or obejct detection. The global token remains competitive for classification and retrieval.
+
+
+::: {#fig-dinov3-local-features}
+![]({{< meta params.images_path >}}dinov3_local_cosine_similarity_example.png){fig-alt="DINOv3 local feature similarity visualization showing query points and their cosine similarity maps" width=600}
+
+Shown are the cosine similarities of feature embeddings at different locations across the input image (middle) for different query points (shown as red crosses). The visualization highlights semantic consistency across the image.
+:::
+
+
+## Using Representations
+
+Learned image representations \(z=f(x)\) become versatile building blocks:
+
+- you can **freeze** the encoder and train a light **linear probe** (fast, label-efficient)
+- **fine-tune** the whole model (higher accuracy when you have labels)
+- attach **adapters/LoRA** for parameter-efficient transfer.
+
+ For **classification/retrieval**, global embeddings (e.g., CLIP) enable **zero-/few-shot** by comparing \(z\) to text or prototype vectors
+
+ For **dense tasks** (segmentation, detection, correspondence), **local (patch) tokens** from ViTs (e.g., DINOv3) feed pixel-aligned heads.
+
+ In practice: start with a robust pretrained encoder, evaluate with a **linear probe** and **k-NN**, then choose between full fine-tuning or adapters based on data, compute, and latency constraints (considering distillation, pruning, and quantization for deployment).
+
+
+```{python}
+#| eval: false
+#| echo: true
+import torch
+from torch import nn
+from transformers import AutoModel
+
+model_id = "your-org/dinov3-base"  # TODO: replace with the real HF id (e.g., "facebook/dinov2-base")
+backbone = AutoModel.from_pretrained(model_id)
+
+# Freeze backbone for a linear probe
+for p in backbone.parameters():
+    p.requires_grad = False
+backbone.eval()
+
+# Helper: get a single global vector from token features (CLS or mean over patches)
+class GlobalPool(nn.Module):
+    def __init__(self, use_cls: bool = True):
+        super().__init__()
+        self.use_cls = use_cls
+    def forward(self, last_hidden_state):  # (B, T, D)
+        if self.use_cls:
+            return last_hidden_state[:, 0]          # [CLS]
+        return last_hidden_state.mean(dim=1)        # mean pool over tokens
+
+pool = GlobalPool(use_cls=True)
+
+# 2) Define and attach a linear head ------------------------------------------
+embed_dim = getattr(backbone.config, "hidden_size", 768)  # typical config field
+num_classes = 10                                          # <-- set to your dataset
+head = nn.Linear(embed_dim, num_classes)
+
+# 3) Create the composite "linear probe" model --------------------------------
+class LinearProbe(nn.Module):
+    def __init__(self, backbone, head, pool):
+        super().__init__()
+        self.backbone = backbone
+        self.head = head
+        self.pool = pool
+
+    def forward(self, pixel_inputs):
+        """
+        pixel_inputs: preprocessed image batch as expected by the backbone's feature extractor.
+        For HF ViTs, you'll typically pass pixel_values from a corresponding processor.
+        """
+        with torch.no_grad():  # ensure backbone stays frozen
+            out = self.backbone(pixel_inputs, output_hidden_states=False)
+            # Many HF vision models return .last_hidden_state for ViT-like backbones
+            z = self.pool(out.last_hidden_state)  # (B, D)
+        logits = self.head(z)                    # (B, C)
+        return logits
+
+model = LinearProbe(backbone, head, pool)
+print(f"[info] Linear probe ready: embed_dim={embed_dim}, num_classes={num_classes}")
+
+
+```
 
 Such a representation is much more compact, yet retains the most relevant information.
 
