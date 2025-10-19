@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../..//assets/cv_logo_small.png" rel="icon" type="image/png">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bb1cd4028f63a369ab283e072cb7d572.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Marco Willi">
+  <title>CAS Deep Learning - Computer Vision – Convolutional Neural Networks</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-b593fe19bbc53d5665e08ad100a1fb50.css">
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-97BR3FTSN1"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-97BR3FTSN1', { 'anonymize_ip': true});
+  </script>
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="../../assets/fhnw_bg.png" data-background-opacity="1.0" data-background-size="contain" class="quarto-title-block center">
+  <h1 class="title">Convolutional Neural Networks</h1>
+  <p class="subtitle">CAS Deep Learning - Computer Vision (Part1)</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Marco Willi 
+</div>
+        <p class="quarto-title-affiliation">
+            Institute for Data Science I4DS, FHNW
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<ul>
+<li>Introduction &amp; Motivation</li>
+<li>Convolutional Layers</li>
+<li>Properties</li>
+<li>Variants and Layers</li>
+<li>Visualizations and Architectures</li>
+</ul>
+</section>
+<section>
+<section id="introduction-motivation" class="title-slide slide level1 center">
+<h1>Introduction &amp; Motivation</h1>
+
+</section>
+<section id="properties-of-image-data" class="slide level2">
+<h2>Properties of Image Data</h2>
+<ul>
+<li>High-Dimensional: An RGB image of size <span class="math inline">\(224 \times 224\)</span> (height, width) has = <span class="math inline">\(150'528\)</span> values.</li>
+<li>Locality: Nearby pixels are statistically related</li>
+<li>Stability under transformations: Interpretation of an image does not change under many geomoetric transformations.</li>
+</ul>
+
+<img data-src="../../assets/images/cnns/cows2_small.png" class="r-stretch quarto-figure-center"><p class="caption"><a href="https://unsplash.com/de/fotos/braune-schafe-auf-grunem-grasfeld-tagsuber-olonUwUrmQk">Image Source</a></p></section>
+<section id="multilayer-perceptron-and-images" class="slide level2">
+<h2>Multilayer-Perceptron and Images</h2>
+
+<img data-src="../../assets/images/cnns/mlp_images_example.png" class="r-stretch"><div class="fragment">
+<p>MLPs deal with flat inputs: The spatial structure gets lost.</p>
+</div>
+</section>
+<section id="multilayer-perceptrons-and-high-dimensional-inputs" class="slide level2">
+<h2>Multilayer-Perceptrons and High-Dimensional Inputs</h2>
+
+<img data-src="../../assets/images/cnns/mlp_images_example_weights.png" class="r-stretch"><p>Dimensionality of weight matrix <span class="math inline">\(\mathbf{W}\)</span> scales with input size. <span class="math inline">\(\mathbf{W} \in \mathbb{R}^{d \times k}\)</span>, while <span class="math inline">\(d\)</span> the dimensionality of the inputs, and <span class="math inline">\(k\)</span> the number of neurons in the first hidden layer. The columns of the weight matrix <span class="math inline">\(\mathbf{W}\)</span> (in the first hidden layer) can be visualized to learn what kind pattern a specific neuron has learned.</p>
+<!-- $k$ must be sufficiently large to learn the necessary patterns. This can lead to practical problems regarding memory and compute. -->
+<!-- For each neuron in the first hidden layer, the model must learn as many weights as there are input neurons. For an RGB image of size $224 \times 224$  (height, width) each neuron connects to each input via $150'528$ weights. To learn many and varying patterns a large number of neurons are often required, leading to practical problems (memory and compute) when training an MLP on such inputs. -->
+<!--
+## Multilayer-Perceptrons and Pattern Learning
+
+::: {#fig-cnns-mlp-example3}
+
+![MLP on example image.](/assets/images/cnns/mlp_images_example_weights_as_images.png)
+
+:::
+
+The columns of the weight matrix $\m{W}$ (in the first hidden layer) can be visualized to learn what kind pattern a specific neuron has learned by reshaping them to the dimensionality of the input images $\vect{x} \in \mathbb{R}^{h \times w}$. -->
+<!--
+## Multilayer-Perceptrons and Pattern Learning
+
+::: {#fig-cnns-mlp-example4}
+
+![MLP on example image.](/assets/images/cnns/mlp_images_example_pattern_matching.png)
+
+:::
+
+
+## Multilayer-Perceptrons and Pattern Learning
+
+::: {#fig-cnns-mlp-example-permutation}
+
+![MLP on example image.](/assets/images/cnns/mlp_images_examples_permutation.png)
+
+:::
+
+::: {.fragment .highlight-red}
+Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e. $f(P(\vect{x}))$?
+
+:::
+
+## Multilayer-Perceptrons and Pattern Learning
+
+::: {#fig-cnns-mlp-example-permutation}
+
+![MLP on example image.](/assets/images/cnns/mlp_images_examples_permuted_weights.png)
+
+:::
+
+Yes! An MLP has no notion of distance and treats every connection between every input equally. -->
+</section>
+<section id="multilayer-perceptrons-and-translations" class="slide level2">
+<h2>Multilayer-Perceptrons and Translations</h2>
+
+<img data-src="../../assets/images/cnns/mlp_images_example_pattern_shifts.png" class="r-stretch quarto-figure-center" id="fig-cnns-mlp-example5"><p class="caption">MLP and pattern shifts</p><p>Often the patterns we want to learn are not stationary. Ideally we want to recognize them at all positions, particularly under translations of the inputs, e.g.&nbsp;<span class="math inline">\(g(\mathbf{x})\)</span> where <span class="math inline">\(g()\)</span> is a spatial translation.</p>
+<div class="fragment highlight-red">
+<p><strong>How do MLPs deal with this?</strong></p>
+</div>
+</section>
+<section id="multilayer-perceptrons-and-pattern-learning" class="slide level2">
+<h2>Multilayer-Perceptrons and Pattern Learning</h2>
+
+<img data-src="../../assets/images/cnns/mlp_images_examples_permutation.png" class="r-stretch quarto-figure-center"><p class="caption">MLP on example image.</p><div class="fragment highlight-red">
+<p>Can an MLP successfully learn patterns in images <span class="math inline">\(\mathbf{x}\)</span> that are permuted with a permutation matrix <span class="math inline">\(\mathbf{P}\)</span>, i.e.&nbsp;<span class="math inline">\(f(P(\mathbf{x}))\)</span>?</p>
+</div>
+</section>
+<section id="mlps-and-images" class="slide level2">
+<h2>MLPs and Images</h2>
+<ul>
+<li>High-Dimensional: The size of an MLP scales with the input dimensionality which might blow beyond memory and compute budgets.</li>
+<li>Locality: MLPs have no notion of locality and thus can’t exploit this inherent bias in natural images.</li>
+<li>Stability under transformations: MLPs need to learn position-dependent patterns which is very inefficient.</li>
+</ul>
+<div class="fragment">
+<p>Demonstration: <a href="https://adamharley.com/nn_vis/mlp/2d.html">https://adamharley.com/nn_vis/mlp/2d.html</a></p>
+</div>
+<div class="fragment">
+<p><strong>What do we need?</strong></p>
+</div>
+</section>
+<section id="invariance-and-equivariance" class="slide level2">
+<h2>Invariance and Equivariance</h2>
+<p>For many tasks small variations in the input should either <strong>not</strong> change the model output (invariance) or should change the output <strong>in tandem</strong> with the input changes (equivariance).</p>
+<div class="fragment">
+<p>A function <span class="math inline">\(f(\mathbf{x})\)</span> is <strong>invariant</strong> to a transformation <span class="math inline">\(g(\mathbf{x})\)</span> if:</p>
+<p><span class="math display">\[\begin{align}
+f(g(\mathbf{x})) = f(\mathbf{x})
+\end{align}\]</span></p>
+</div>
+<div class="fragment">
+<p>A function <span class="math inline">\(f(\mathbf{x})\)</span> (such as a layer in a neural network) of an image <span class="math inline">\(\mathbf{x}\)</span> is <strong>equivariant</strong> with respect to a transformation <span class="math inline">\(g(\mathbf{\mathbf{x}})\)</span> if:</p>
+<p><span class="math display">\[\begin{align}
+f(g(\mathbf{x})) = g(f(\mathbf{x}))
+\end{align}\]</span></p>
+</div>
+</section>
+<section id="example-invariance" class="slide level2">
+<h2>Example Invariance</h2>
+<p>Example where invariance is required:</p>
+
+<img data-src="../../assets/images/cnns/cows2_small_invariance_collage.png" class="r-stretch quarto-figure-center" id="fig-cnns-invariance-example"><p class="caption">When objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model <span class="math inline">\(f(\mathbf{x})\)</span> is thus invariant to spatial translations.</p></section>
+<section id="example-equivariance" class="slide level2">
+<h2>Example Equivariance</h2>
+<p>Example where equivariance is required:</p>
+
+<img data-src="../../assets/images/cnns/cows2_small_detection_collage.png" class="r-stretch quarto-figure-center" id="fig-cnns-equivariance-example"><p class="caption">When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model <span class="math inline">\(f(\mathbf{x})\)</span> that produces the bounding boxes is thus equivariant with respect to spatial translations.</p></section></section>
+<section>
+<section id="convolutional-layers" class="title-slide slide level1 center">
+<h1>Convolutional Layers</h1>
+
+</section>
+<section id="history-experiments-on-cats" class="slide level2">
+<h2>History: Experiments on Cats</h2>
+
+<img data-src="../../assets/images/cnns/huber_wiesel_cat_experiment.jpg" class="r-stretch quarto-figure-center" id="fig-cnns-huber-wiesel"><p class="caption">Illustration <a href="https://link.springer.com/chapter/10.1007/978-3-030-28954-6_4/figures/1">Source</a></p></section>
+<section id="visual-cortex" class="slide level2">
+<h2>Visual Cortex</h2>
+
+<img data-src="../../assets/images/cnns/ventralvisualstream_v2.png" class="r-stretch quarto-figure-center" id="fig-cnns-visual-cortex"><p class="caption">Representation of transformations in the visual cortex. Source: <span class="citation" data-cites="kubilius_ventral_2017">Kubilius (<a href="#/references" role="doc-biblioref" onclick="">2017</a>)</span></p></section>
+<section id="convolutional-neural-networks" class="slide level2">
+<h2>Convolutional Neural Networks</h2>
+
+<img data-src="../../assets/images/cnns/convnet.jpeg" class="r-stretch quarto-figure-center" id="fig-cnns-intro-example"><p class="caption">The activations of a ConvNet architecture. The input image is on the left, and the predictions are on the right. Source: <span class="citation" data-cites="li_cs231n_2022">Li (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></p></section>
+<section id="convolution-operation" class="slide level2">
+<h2>Convolution Operation</h2>
+<p>Convolution in Deep Learning is typically implemented as cross-correlation.</p>
+<p><span class="math display">\[\begin{equation}
+S(i, j) = (K * I)(i, j) = b + \sum_m \sum_n I(i + m, j + n) K(m, n)
+\end{equation}\]</span></p>
+<p><span class="math inline">\(I\)</span> is the input (for example an image), <span class="math inline">\(K\)</span> is the kernel (typically smaller than <span class="math inline">\(I\)</span>) and <span class="math inline">\(b\)</span> is a bias term which is being added to the weighted sum.</p>
+<p>If <span class="math inline">\(I\)</span> is an RGB image (in the first layer of a CNN for example), the kernel <span class="math inline">\(K\)</span> would have dimensionality <span class="math inline">\(3 \times K \times K\)</span> (assuming a square kernel). More generally we learn kernels of the dimensionality <span class="math inline">\(C_{in} \times K \times K\)</span>.</p>
+<p>Multiple kernels, let’s say <span class="math inline">\(C_o\)</span> kernels, can be grouped together: <span class="math inline">\(C_o \times C_{in} \times K \times K\)</span>.</p>
+<p>We often refer to such tensors as filters or filter banks.</p>
+</section>
+<section id="convolution-on-rgb-images" class="slide level2">
+<h2>Convolution on RGB Images</h2>
+
+<img data-src="../../assets/images/cnns/convolution_prince_rgb.png" class="r-stretch quarto-figure-center" id="fig-cnns-intro-example"><p class="caption">Source: <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p></section>
+<section id="convolutional-layers-1" class="slide level2">
+<h2>Convolutional Layers</h2>
+
+<img data-src="../../assets/images/cnns/cnn_conv_one_number.jpg" class="r-stretch quarto-figure-center"><p class="caption">Source: <span class="citation" data-cites="johnson_eecs_2019">Johnson (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<section id="convolutional-layers-2" class="slide level2">
+<h2>Convolutional Layers</h2>
+
+<img data-src="../../assets/images/cnns/conv_activation_map.jpg" class="r-stretch quarto-figure-center"><p class="caption">Source: <span class="citation" data-cites="johnson_eecs_2019">Johnson (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<section id="convolutional-layers-3" class="slide level2">
+<h2>Convolutional Layers</h2>
+
+<img data-src="../../assets/images/cnns/conv_activation_map2.jpg" class="r-stretch quarto-figure-center"><p class="caption">Source: <span class="citation" data-cites="johnson_eecs_2019">Johnson (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<section id="convolutional-layers-4" class="slide level2">
+<h2>Convolutional Layers</h2>
+
+<img data-src="../../assets/images/cnns/conv_activation_map3.jpg" class="r-stretch quarto-figure-center"><p class="caption">Source: <span class="citation" data-cites="johnson_eecs_2019">Johnson (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<section id="convolutional-layers-5" class="slide level2">
+<h2>Convolutional Layers</h2>
+
+<!--
+## Convolution on RGB Images
+
+::: {#fig-cnns-intro-example}
+
+![A 2D convolution applied to an image. Illustrated is the element-wise multiplication of the kernel weights $\Omega$ with the corresponding RGB input values at a specific position. Source:  @prince_understanding_2023](/assets/images/cnns/convolution_prince_rgb.png)
+
+::: -->
+<img data-src="../../assets/images/cnns/conv_activation_map4.jpg" class="r-stretch quarto-figure-center"><p class="caption">Source: <span class="citation" data-cites="johnson_eecs_2019">Johnson (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<section id="padding-stride-kernel-size-dilation" class="slide level2">
+<h2>Padding, Stride, Kernel Size, Dilation</h2>
+<p>There are several options to parameterise a convolution.</p>
+<ul>
+<li class="fragment">Padding: How much padding is added to the input?</li>
+<li class="fragment">Stride: What is the step size (stride) of the kernel?</li>
+<li class="fragment">Kernel-Size: What is the kernel size?</li>
+<li class="fragment">Dilation: What is the dilation rate?</li>
+</ul>
+</section>
+<section id="padding" class="slide level2">
+<h2>Padding</h2>
+<p>What is the output dimensionality when convolving a 3x3 kernel?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="fragment">
+<p><img data-src="../../assets/images/cnns/padding_input_activations_5x5.jpg"></p>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<p><img data-src="../../assets/images/cnns/padding_input_activations_5x5_with_zero_padding.jpg"></p>
+</div>
+</div></div>
+<!-- ![Source: @johnson_eecs_2019](/assets/images/cnns/padding_issue.jpg){width=100% height=70%} -->
+</section>
+<section id="padding-1" class="slide level2">
+<h2>Padding</h2>
+
+<img data-src="../../assets/images/cnns/padding_example_result.jpg" class="r-stretch quarto-figure-center"><p class="caption">Left: Input (Yellow) with Zero-Padding (white border), Middle: Filter, Right: Output.</p></section>
+<section id="stride" class="slide level2">
+<h2>Stride</h2>
+
+<img data-src="../../assets/images/cnns/stride1_example.jpg" class="r-stretch quarto-figure-center"><p class="caption">Convolution with stride (1, 1)</p><p>The kernel is shifted by 1 pixel before each new computation.</p>
+</section>
+<section id="stride-1" class="slide level2">
+<h2>Stride</h2>
+
+<img data-src="../../assets/images/cnns/stride2_example.jpg" class="r-stretch quarto-figure-center"><p class="caption">Convolution with stride (1, 1)</p><p>The kernel is shifted by 2 pixel before each new computation.</p>
+</section>
+<section id="kernel-size" class="slide level2">
+<h2>Kernel-Size</h2>
+
+<img data-src="../../assets/images/cnns/kernel_size_example_3x3.jpg" class="r-stretch"></section>
+<section id="kernel-size-1" class="slide level2">
+<h2>Kernel-Size</h2>
+
+<img data-src="../../assets/images/cnns/kernel_size_example_5x5.jpg" class="r-stretch"><div class="fragment">
+<p>What is the difference between using 3x3 vs 5x5 kernels? What is the same?</p>
+</div>
+</section>
+<section id="dilation" class="slide level2">
+<h2>Dilation</h2>
+
+<img data-src="../../assets/images/cnns/dilation_example.jpg" class="r-stretch"><div class="fragment">
+<p>Why would we use dilation <span class="math inline">\(d \gt 1\)</span>?</p>
+</div>
+</section>
+<section id="calculations-spatial-dimensionality-of-activation-maps" class="slide level2">
+<h2>Calculations: Spatial Dimensionality of Activation Maps</h2>
+<p>You can calculate the dimensionality of the activation maps with the following formulas:</p>
+<ul>
+<li><span class="math inline">\(i\)</span>: Side length of the input activations (assumption: square inputs)</li>
+<li><span class="math inline">\(k\)</span>: Kernel size (assumption: square kernel)</li>
+<li><span class="math inline">\(o\)</span>: Side length of the output activation maps</li>
+<li><span class="math inline">\(s\)</span>: Stride (assumption: same stride along spatial dimensions)</li>
+<li><span class="math inline">\(p\)</span>: Number of paddings on each side (assumption: same number of paddings along spatial dimensions)</li>
+<li><span class="math inline">\(d\)</span>: Dilation rate.</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[\begin{equation}
+o = \left\lfloor \frac{i + 2p - k-(k-1)(d-1)}{s} \right\rfloor + 1
+\end{equation}\]</span></p>
+<p>Note: If dilation is 1 <span class="math inline">\((k-1)(d-1)\)</span> equals 0.</p>
+</div>
+</section>
+<section id="calculations-number-of-weights-in-a-convolutional-layer" class="slide level2">
+<h2>Calculations: Number of Weights in a Convolutional Layer</h2>
+<p>You can calculate the total number of weights in a convolutional layer with the following formula:</p>
+<ul>
+<li><span class="math inline">\(k\)</span>: Kernel size (assumption: square kernel, so kernel has dimensions <span class="math inline">\(k \times k\)</span>)</li>
+<li><span class="math inline">\(C_{in}\)</span>: Number of input channels</li>
+<li><span class="math inline">\(C_{out}\)</span>: Number of output channels</li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[\begin{equation}
+\text{Total Weights} = (k \times k) \times C_{in} \times C_{out}
+\end{equation}\]</span></p>
+</div>
+<div class="fragment">
+<p>Each filter has a size of <span class="math inline">\(k \times k \times C_{in}\)</span>, and there are <span class="math inline">\(C_{out}\)</span> filters in total, resulting in <span class="math inline">\((k \times k \times C_{in}) \times C_{out}\)</span> weights.</p>
+</div>
+<div class="fragment">
+<p><strong>Biases:</strong> If each output channel has a bias term, add an additional <span class="math inline">\(C_{out}\)</span> weights for the biases.</p>
+<p><span class="math display">\[\begin{equation}
+\text{Total Parameters} = (k \times k \times C_{in} \times C_{out}) + C_{out}
+\end{equation}\]</span></p>
+</div>
+</section>
+<section id="quiz" class="slide level2">
+<h2>Quiz</h2>
+<p><strong>Scenario:</strong></p>
+<ul>
+<li>Input activations: <span class="math inline">\(3 \times 32 \times 32\)</span> (C, H, W)</li>
+<li>Convolution: 10 filters with <span class="math inline">\(5  \times 5\)</span> kernel size, stride=1, pad=2</li>
+</ul>
+<p><strong>Questions:</strong></p>
+<ol type="1">
+<li><p>What is the size of the activation map?</p></li>
+<li><p>How many weights / parameters defines this operation?</p></li>
+</ol>
+<p><strong>Formulas:</strong></p>
+<div class="fragment">
+<p><span class="math display">\[\begin{equation}
+o = \left\lfloor \frac{i + 2p - k-(k-1)(d-1)}{s} \right\rfloor + 1
+\end{equation}\]</span></p>
+<p><span class="math display">\[\begin{equation}
+\text{Total Parameters} = (k \times k \times C_{in} \times C_{out}) + C_{out}
+\end{equation}\]</span></p>
+</div>
+</section></section>
+<section>
+<section id="properties" class="title-slide slide level1 center">
+<h1>Properties</h1>
+
+</section>
+<section id="sparse-connectivity-and-parameter-sharing" class="slide level2">
+<h2>Sparse Connectivity and Parameter Sharing</h2>
+<p><strong>Local (Sparse) Connectivity</strong>: Neurons are only locally connected.</p>
+<p><strong>Parameter Sharing</strong>: Weights of a neuron are applied locally but are the same across the entire input.</p>
+<ul>
+<li class="fragment">Can we recognize cats with a one-layer CNN?</li>
+<li class="fragment">Can we recognize cats anywhere in an image with a CNN?</li>
+<li class="fragment">Is parameter sharing always useful?</li>
+</ul>
+</section>
+<section id="translation-invariance-equivariance" class="slide level2">
+<h2>Translation Invariance / Equivariance</h2>
+<p>Given a translation <span class="math inline">\(g()\)</span>, which spatially shifts inputs:</p>
+<ul>
+<li>Translation invariance: <span class="math inline">\(f(g(x))=f(x)\)</span></li>
+<li>Translation equivariance: <span class="math inline">\(f(g(x))=g(f(x))\)</span></li>
+</ul>
+<div class="fragment">
+<p>Are convolutions translation invariant, equivariant, or both?</p>
+</div>
+<div class="fragment">
+<iframe data-external="1" src="https://www.youtube.com/embed/qoWAFBYOtoU?start=50" width="800" height="400" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+</section>
+<section id="stacking-convolutions" class="slide level2">
+<h2>Stacking Convolutions</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/cnns/conv_stacking.jpg" style="width:100.0%;height:70.0%"></p>
+<figcaption>Source: <span class="citation" data-cites="johnson_eecs_2019">Johnson (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section id="receptive-field" class="slide level2">
+<h2>Receptive Field</h2>
+
+<img data-src="../../assets/images/cnns/receptive_field1.jpg" class="r-stretch quarto-figure-center"><p class="caption">Using a 5x5 kernel</p></section>
+<section id="receptive-field-1" class="slide level2">
+<h2>Receptive Field</h2>
+
+<img data-src="../../assets/images/cnns/receptive_field2.jpg" class="r-stretch quarto-figure-center"><p class="caption">Using a 5x5 kernel and two layers</p></section>
+<section id="receptive-field-2" class="slide level2">
+<h2>Receptive Field</h2>
+
+<img data-src="../../assets/images/cnns/receptive_field3.jpg" class="r-stretch"></section>
+<section id="receptive-field-3" class="slide level2">
+<h2>Receptive Field</h2>
+
+<img data-src="../../assets/images/cnns/receptive_field4.jpg" class="r-stretch"></section>
+<section id="receptive-field-4" class="slide level2">
+<h2>Receptive Field</h2>
+<p>There is a nice article about how to calculate the receptive field of a CNN by <span class="citation" data-cites="araujo_computing_2019">Araujo, Norris, and Sim (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span> (see also for more details about the notation).</p>
+<p>The receptive field of a CNN <span class="math inline">\(r_0\)</span>:</p>
+<p><span class="math display">\[\begin{equation}
+r_0 = \sum_{l=1}^L \left( (k_l - 1) \prod_{i=1}^{l-1} s_i \right) + 1
+\end{equation}\]</span></p>
+<ul>
+<li><span class="math inline">\(L\)</span>: Total number of layers.</li>
+<li><span class="math inline">\(k_l\)</span>: Kernel size at layer <span class="math inline">\(l\)</span>.</li>
+<li><span class="math inline">\(s_i\)</span>: Stride at layer <span class="math inline">\(i\)</span>, from layer 1 up to <span class="math inline">\(l-1\)</span>.</li>
+</ul>
+<p>If all strides <span class="math inline">\(s_i=1\)</span> the receptive field is the sum <span class="math inline">\(k_l−1\)</span> over all layers plus 1. If all kernels are of size 1, the receptie field will be one.</p>
+</section>
+<section id="architecture" class="slide level2">
+<h2>Architecture</h2>
+<p>Sequence of layers and their hyper-parameters defines an architecture.</p>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/cnns/vgg_illustration.jpg"></p>
+<figcaption>VGG - Source: <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="learned-filters" class="slide level2">
+<h2>Learned Filters</h2>
+
+<img data-src="../../assets/images/cnns/learned_filters.png" class="r-stretch quarto-figure-center"><p class="caption">Source: <span class="citation" data-cites="krizhevsky_imagenet_2012">Krizhevsky, Sutskever, and Hinton (<a href="#/references" role="doc-biblioref" onclick="">2012</a>)</span></p></section>
+<section id="lets-test-it" class="slide level2">
+<h2>Let’s test it!</h2>
+<p>Let’s train a CNN.</p>
+<p>Here is an interesting demo: <a href="https://poloclub.github.io/cnn-explainer/">https://poloclub.github.io/cnn-explainer/</a></p>
+</section></section>
+<section>
+<section id="more-layers-operations" class="title-slide slide level1 center">
+<h1>More Layers &amp; Operations</h1>
+
+</section>
+<section id="downsampling" class="slide level2">
+<h2>Downsampling</h2>
+<p>Spatial downsampling is often a desired property of convolutional layers.</p>
+<p>We can achieve that by choosing a stride <span class="math inline">\(\gt 1\)</span>.</p>
+<p>However, there are other options, such as pooling layers.</p>
+
+<img data-src="../../assets/images/cnns/downsampling_with_pooling.jpg" class="r-stretch quarto-figure-center"><p class="caption">a) Sub-Sampling, b) Max Pooling, c) Average Pooling . Source: <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p></section>
+<section id="upsampling" class="slide level2">
+<h2>Upsampling</h2>
+<p>Sometimes we need to increase the spatial dimensionality of our activation maps.</p>
+<div class="fragment">
+<p>What would be an example when we want to do that?</p>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/cnns/upsampling_options.jpg"></p>
+<figcaption>a) Duplicate, b) Max-Unpooling, c) Bilinear Interpolation . Source: <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="upsampling-with-transposed-convolutions" class="slide level2">
+<h2>Upsampling with Transposed Convolutions</h2>
+
+<img data-src="../../assets/images/cnns/transposed_convolution.jpg" class="r-stretch"><p>More details in image segmentation!</p>
+</section>
+<section id="changing-the-number-of-channels" class="slide level2">
+<h2>Changing the number of channels</h2>
+<p>Sometimes one needs to just change the number of channels without spatial mixing. This can be achieved with 1x1 convolutions. <!-- ::: {#fig-cnn-1x1}
+
+![Source: @johnson_eecs_2019](/assets/images/cnns/1x1_conv.jpg){width=100% height=70%}
+
+::: --></p>
+
+<img data-src="../../assets/images/cnns/1x1_conv_example.jpg" class="r-stretch quarto-figure-center" id="fig-cnn-1x1"><p class="caption">Source: <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p></section>
+<section id="global-average-pooling" class="slide level2">
+<h2>Global Average Pooling</h2>
+<p>Global Average Pooling is often an important component. It computes the average of the activations along the depth dimension, reducing activation maps from (C x H x W) to (C x 1 x 1). This is useful for directly modeling logits in a classification problem with C classes, enabling architectures that completely eliminate fully-connected layers.</p>
+
+<img data-src="../../assets/images/cnns/global_average_pooling.jpg" class="r-stretch quarto-figure-center" id="fig-cnn-global-avg-pooling"><p class="caption">Global Average pooling, input (left) and output (right).</p></section>
+<section id="other-layers" class="slide level2">
+<h2>Other Layers</h2>
+<p>There are many other types of layers, also there are more flavours of convolutional layers.</p>
+<!--
+## MLP vs CNNs: Number of Parameters
+
+::: {#7a3005c9 .cell execution_count=1}
+``` {.python .cell-code}
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchinfo
+
+class MLP(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+        self.flatten = nn.Flatten()
+        self.hidden_layer1 = nn.Linear(3 * 32 * 32, 64)
+        self.hidden_layer2 = nn.Linear(64, 32)
+        self.output_layer = nn.Linear(32, 10)
+
+    def forward(self, x):
+        x = self.flatten(x)
+        x = torch.relu(self.hidden_layer1(x))
+        x = torch.relu(self.hidden_layer2(x))
+        x = self.output_layer(x)
+        return x
+
+net = MLP()
+print(torchinfo.summary(net, input_size=(1, 3, 32, 32)))
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+MLP                                      [1, 10]                   --
+├─Flatten: 1-1                           [1, 3072]                 --
+├─Linear: 1-2                            [1, 64]                   196,672
+├─Linear: 1-3                            [1, 32]                   2,080
+├─Linear: 1-4                            [1, 10]                   330
+==========================================================================================
+Total params: 199,082
+Trainable params: 199,082
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.20
+==========================================================================================
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.00
+Params size (MB): 0.80
+Estimated Total Size (MB): 0.81
+==========================================================================================
+```
+:::
+:::
+
+
+## MLP vs CNNs: Number of Parameters
+
+::: {#2b6ac46b .cell execution_count=2}
+``` {.python .cell-code}
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torchinfo
+
+class CNN(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(3, 16, 7, stride=2, padding=3)
+        self.conv2 = nn.Conv2d(16, 16, 3, stride=2, padding=1)
+        self.flatten = nn.Flatten()
+        self.output_layer = nn.Linear(16 * 8 * 8, 10)
+
+    def forward(self, x):
+        x = torch.relu(self.conv1(x))
+        x = torch.relu(self.conv2(x))
+        x = self.flatten(x)
+        x = self.output_layer(x)
+        return x
+
+cnn = CNN()
+print(torchinfo.summary(cnn, input_size=(1, 3, 32, 32)))
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+CNN                                      [1, 10]                   --
+├─Conv2d: 1-1                            [1, 16, 16, 16]           2,368
+├─Conv2d: 1-2                            [1, 16, 8, 8]             2,320
+├─Flatten: 1-3                           [1, 1024]                 --
+├─Linear: 1-4                            [1, 10]                   10,250
+==========================================================================================
+Total params: 14,938
+Trainable params: 14,938
+Non-trainable params: 0
+Total mult-adds (Units.MEGABYTES): 0.76
+==========================================================================================
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.04
+Params size (MB): 0.06
+Estimated Total Size (MB): 0.11
+==========================================================================================
+```
+:::
+:::
+
+
+ -->
+<!-- ## Quiz: Linear Transformation vs Convolution
+
+![Input in 2-D (top left), the flat version (bottom left), expected output (right), and unknown transformation (center).](/assets/images/cnns/linear_transf.png){width=100% height=70%}
+ -->
+<!-- ## Depthwise Separable Convolutions
+
+::: {#fig-cnn-depthwise-separable}
+![Source: [https://paperswithcode.com/method/depthwise-convolution](/assets/images/cnns/https://paperswithcode.com/method/depthwise-convolution)](/assets/images/cnns/depthwise.png){width=100% height=70%}
+
+:::
+
+## Depthwise Separable Convolutions
+
+![Source: @yu_multi-scale_2016](/assets/images/cnns/depthwise_separabel.png){width=100% height=70%}
+ -->
+<!--
+## Pooling Layers
+
+![Source: @li_cs231n_2022](/assets/images/cnns/pool.jpeg){width=300px}
+
+
+## Max Pooling
+
+::: {#fig-cnn-max-pooling}
+
+![Max pooling, input (left) and output (right).](/assets/images/cnns/max_pooling.png)
+:::
+
+## Average Pooling
+
+::: {#fig-cnn-avg-pooling}
+
+![Average pooling, input (left) and output (right).](/assets/images/cnns/average_pooling.png){width=100% height=70%}
+
+::: -->
+<!-- ## Other Pooling Layers
+
+**Global Average Pooling** is often an important component. It computes the average of the activations along the depth dimension, reducing activation maps from (C x H x W) to (C x 1 x 1). This is useful for directly modeling logits in a classification problem with C classes, enabling architectures that completely eliminate fully-connected layers. -->
+</section></section>
+<section id="references" class="title-slide slide level1 smaller scrollable">
+<h1>References</h1>
+<div style="font-size: 50%;">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-araujo_computing_2019" class="csl-entry" role="listitem">
+Araujo, Andr&amp;eacute;, Wade Norris, and Jack Sim. 2019. <span>“Computing <span>Receptive</span> <span>Fields</span> of <span>Convolutional</span> <span>Neural</span> <span>Networks</span>.”</span> <em>Distill</em> 4 (11): 10.23915/distill.00021. <a href="https://doi.org/10.23915/distill.00021">https://doi.org/10.23915/distill.00021</a>.
+</div>
+<div id="ref-johnson_eecs_2019" class="csl-entry" role="listitem">
+Johnson, Justin. 2019. <span>“<span>EECS</span> 498-007 / 598-005: <span>Deep</span> <span>Learning</span> for <span>Computer</span> <span>Vision</span>.”</span> Lecture {Notes} / {Slides}. <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/FA2019/">https://web.eecs.umich.edu/~justincj/teaching/eecs498/FA2019/</a>.
+</div>
+<div id="ref-krizhevsky_imagenet_2012" class="csl-entry" role="listitem">
+Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“<span>ImageNet</span> <span>Classification</span> with <span>Deep</span> <span>Convolutional</span> <span>Neural</span> <span>Networks</span>.”</span> In <em>Advances in <span>Neural</span> <span>Information</span> <span>Processing</span> <span>Systems</span></em>, edited by F. Pereira, C. J. Burges, L. Bottou, and K. Q. Weinberger. Vol. 25. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf</a>.
+</div>
+<div id="ref-kubilius_ventral_2017" class="csl-entry" role="listitem">
+Kubilius, Jonas. 2017. <span>“Ventral Visual Stream.”</span> <a href="https://figshare.com/articles/figure/Ventral_visual_stream/106794">https://figshare.com/articles/figure/Ventral_visual_stream/106794</a>.
+</div>
+<div id="ref-li_cs231n_2022" class="csl-entry" role="listitem">
+Li, Fei-Fei. 2022. <span>“<span>CS231n</span> <span>Convolutional</span> <span>Neural</span> <span>Networks</span> for <span>Visual</span> <span>Recognition</span>.”</span> Lecture {Notes}. <a href="https://cs231n.github.io">https://cs231n.github.io</a>.
+</div>
+<div id="ref-prince_understanding_2023" class="csl-entry" role="listitem">
+Prince, Simon J. D. 2023. <em>Understanding <span>Deep</span> <span>Learning</span></em>. MIT Press. <a href="https://udlbook.github.io/udlbook/">https://udlbook.github.io/udlbook/</a>.
+</div>
+</div>
+</div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../../assets/fhnw_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025">https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025/</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/marco-willi\.github\.io\/cas-dl-compvis-lectures-hs2025\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
