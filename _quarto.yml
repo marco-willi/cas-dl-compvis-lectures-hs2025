@@ -6,6 +6,7 @@ project:
     - pages/lectures/*.qmd
     - pages/background/*.qmd
     - pages/misc/*.qmd
+    - pages/slides/*.qmd
     - "index.qmd"
     - "!NOTES.md"
     - "!demos/*"
@@ -67,9 +68,9 @@ website:
           - pages/lectures/practical.qmd
           # - pages/lectures/recent_advances.qmd
       # ------ SLIDES ---------------------------- #
-      # - section: Slides
-      #   contents:
-      #     - pages/slides/intro.qmd
+      - section: Slides
+        contents:
+          - pages/slides/intro.qmd
       #     - pages/slides/cnns.qmd
       #     - pages/slides/image_classification.qmd
       #     - pages/slides/representation_learning.qmd

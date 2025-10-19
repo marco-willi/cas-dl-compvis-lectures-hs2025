@@ -56,7 +56,7 @@ echo "✓ Installed packages: $PACKAGE_COUNT"
 # Setup Jupyter kernel
 echo ""
 echo "🪐 Setting up Jupyter kernel..."
-python -m ipykernel install --user --name=cas-dl-cv --display-name="Python (CAS DL CV)"
+python -m ipykernel=="6.30.1" install --user --name=cas-dl-cv --display-name="Python (CAS DL CV)"
 echo "✓ Jupyter kernel installed"
 
 # Install pre-commit hooks if .pre-commit-config.yaml exists

@@ -7,22 +7,25 @@ params:
 ::: {.callout-tip title="Learning Objectives" collapse="true"}
 By the end of this lecture you should be able to:
 
-- Explain what a representation is and why invariance & selectivity matter.
-- Distinguish supervised, self-supervised (contrastive, masked, distillation), and multimodal representation objectives.
-- Describe how layer depth changes semantic abstraction in CNNs & ViTs.
-- Evaluate representations with linear probes, k-NN, clustering metrics, and retrieval.
-- Choose a transfer strategy (feature extraction vs fine-tune vs adapters) for a new dataset.
-- Justify when to favor DINOv3 vs CLIP vs supervised ViT for a downstream task.
+- **Define** representation learning and explain why transforming raw pixels into semantic embeddings enables efficient downstream task performance.
+- **Understand** the balance between invariance (robustness to nuisance factors) and selectivity (discriminating semantically distinct inputs) in learned representations.
+- **Know** supervised, self-supervised (contrastive, masked autoencoding, self-distillation), and weakly supervised (vision-language) learning paradigms.
+- **Distinguish** between global representations (single embedding per image) and local representations (spatially-resolved patch tokens) and identify appropriate use cases for each.
+- **Select** appropriate adaptation strategies (k-NN → linear probe → adapters/LoRA → partial fine-tuning → full fine-tuning) based on dataset size, computational resources, and task requirements.
+- **Justify** model selection between DINOv3, CLIP, MAE, and supervised models for specific downstream tasks considering training objectives, data modalities, and few-shot vs zero-shot requirements.
+- **Apply** practical transfer learning workflows using Hugging Face Transformers and timm libraries for real-world computer vision tasks.
 :::
 
 
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
 Short summary:
 
-- Foundation models deliver reusable semantic embeddings that dramatically lower labeled data requirements.
-- DINOv3 refines self-distillation to yield robust, high-fidelity patch & global representations.
-- Adaptation path: k-NN → Linear Probe → Adapters/LoRA → (optional) Full Fine-Tune.
-- Objective choice influences invariances, spatial detail retention, and zero-shot capabilities.
+- **Representation learning** transforms high-dimensional raw data into compact, semantically meaningful embeddings where distances reflect task-relevant similarities, enabling efficient transfer to downstream tasks.
+- **Three learning paradigms** yield distinct representations: (1) **Supervised** learning on labeled data (e.g., ImageNet ResNet) produces category-aligned features, (2) **Self-supervised** methods (SimCLR, MAE, DINO/v2/v3) learn without labels via contrastive learning, masked reconstruction, or self-distillation, (3) **Weakly supervised** approaches (CLIP) align vision and language for zero-shot capabilities.
+- **Global vs local representations**: Global embeddings (e.g., [CLS] token) capture image-level semantics ideal for classification/retrieval; local patch tokens preserve spatial structure essential for dense prediction tasks like segmentation and detection.
+- **Practical adaptation hierarchy**: Start simple and add complexity only when needed: (1) k-NN baseline (no training), (2) Linear probe (freeze encoder), (3) LoRA/Adapters (parameter-efficient), (4) Partial fine-tuning (unfreeze top layers), (5) Full fine-tuning (last resort for large datasets).
+- **Model selection heuristics**: Use **DINOv3** for discriminative vision tasks and few-shot learning, **CLIP** for zero-shot classification and vision-language alignment, **MAE** when reconstruction pretraining aligns with your task, and **supervised CNNs** when computational efficiency is critical.
+- **Task-relevant invariance** is crucial: Representations must preserve information necessary for downstream tasks (e.g., color for flower classification, orientation for medical imaging) while discarding true nuisance factors.
 :::
 
 ::: {.content-hidden}
@@ -504,7 +507,7 @@ Watch Meta's introduction to DINOv3, explaining the key improvements over DINOv2
 :::
 
 
-## Global vs Local Representations
+### Global vs Local Representations
 
 **Global** representations summarize an image into a single embedding (e.g., a [CLS] token or pooled feature) that captures overall semantics.
 
@@ -519,709 +522,430 @@ In contrast, the DINO family (incl. DINO/DINOv2/DINOv3) produces both strong glo
 Shown are the cosine similarities of feature embeddings at different locations across the input image (middle) for different query points (shown as red crosses). The visualization highlights semantic consistency across the image.
 :::
 
+## Comparing Representations
 
-## Using Representations
+The following illustrates different representations for the images in @fig-images-overview.
 
-Learned image representations \(z=f(x)\) become versatile building blocks:
+::: {#fig-images-overview}
+![]({{< meta params.images_path >}}images_overview.png){fig-alt="Example images to compare different representations" width=100%}
 
-- you can **freeze** the encoder and train a light **linear probe** (fast, label-efficient)
-- **fine-tune** the whole model (higher accuracy when you have labels)
-- attach **adapters/LoRA** for parameter-efficient transfer.
+Example images to compare different representations.
+:::
 
- For **classification/retrieval**, global embeddings (e.g., CLIP) enable **zero-/few-shot** by comparing \(z\) to text or prototype vectors
 
- For **dense tasks** (segmentation, detection, correspondence), **local (patch) tokens** from ViTs (e.g., DINOv3) feed pixel-aligned heads.
+In @fig-rl-similarity-resnet, @fig-rl-similarity-clip, and @fig-rl-similarity-dinov2 we show cosine similarities between normalized representations and compare to pixel-space similarity (@fig-rl-similarity-pixel-space).
 
- In practice: start with a robust pretrained encoder, evaluate with a **linear probe** and **k-NN**, then choose between full fine-tuning or adapters based on data, compute, and latency constraints (considering distillation, pruning, and quantization for deployment).
+**Similarity Metrics:**
+
+For images represented as vectors $\vect{z}_i, \vect{z}_j \in \mathbb{R}^d$:
+
+- **Euclidean Distance (Pixel Space):**
+    $$d_{\text{L2}}(\vect{z}_i, \vect{z}_j) = \|\vect{z}_i - \vect{z}_j\|_2 = \sqrt{\sum_{k=1}^d (z_i^{(k)} - z_j^{(k)})^2}$$
+
+- **Cosine Similarity:**
+    $$\text{sim}_{\cos}(\vect{z}_i, \vect{z}_j) = \frac{\vect{z}_i^\top \vect{z}_j}{\|\vect{z}_i\|_2 \|\vect{z}_j\|_2} = \frac{\sum_{k=1}^d z_i^{(k)} z_j^{(k)}}{\sqrt{\sum_{k=1}^d (z_i^{(k)})^2} \sqrt{\sum_{k=1}^d (z_j^{(k)})^2}}$$
+
+where $\text{sim}_{\cos} \in [-1, 1]$ with 1 indicating perfect alignment, 0 indicating orthogonality, and -1 indicating opposite directions.
+
+::: {.panel-tabset #fig-similarity-comparison-models}
+
+### Pixel Space
+
+::: {#fig-rl-similarity-pixel-space}
+
+![]({{< meta params.images_path >}}similarity_pixel_space.png){fig-alt="Pixel-space similarity matrix" width=600}
+
+Raw pixel-level similarity fails to capture semantic relationships.
+:::
+
+### ResNet-50
+
+::: {#fig-rl-similarity-resnet}
+
+![]({{< meta params.images_path >}}similarity_resnet50.png){fig-alt="ResNet-50 supervised representation similarity" width=600}
+
+Supervised CNN representations group semantically similar images.
+:::
+
+### CLIP
+
+::: {#fig-rl-similarity-clip}
+
+![]({{< meta params.images_path >}}similarity_clip.png){fig-alt="CLIP multimodal representation similarity" width=600}
+
+Language-aligned embeddings from CLIP show text-driven semantic structure.
+:::
+
+### DINOv2
+
+::: {#fig-rl-similarity-dinov2}
+
+![]({{< meta params.images_path >}}similarity_dinov2.png){fig-alt="DINOv2 self-supervised representation similarity" width=600}
+
+Self-distilled DINOv2 features reveal fine-grained semantic clusters.
+:::
+
+:::
+
+
+::: {.callout-note title="Question: Which Representations Do You Favour? And Why?" collapse="false"}
+
+Looking at the similarity matrices, which representation do you prefer and why?
+
+<details>
+<summary>Click for Discussion</summary>
+
+**Pixel Space (@fig-rl-similarity-pixel-space):**
+
+- Not suitable for any semantic task
+- Captures low-level appearance variations (lighting, pose, exact pixel alignment)
+- Cannot distinguish semantic categories from superficial similarities
+
+**ResNet-50 Supervised (@fig-rl-similarity-resnet):**
+
+- Much better than pixel space but still limited
+- Shows semantic grouping (elephants cluster)
+- Trained on ImageNet classes, may not transfer optimally to fine-grained tasks
+- Some sensitivity to lightning (elephant night vs day)
+
+**CLIP Multimodal (@fig-rl-similarity-clip):**
+
+- Good semantic structure aligned with natural language concepts
+- Clear separation between major categories (animals vs. vehicles)
+- Limitation: Lower differentiation within categories
+- Best for: Broad semantic retrieval and zero-shot open-vocabulary tasks
+- Trade-off: Language alignment may sacrifice fine-grained visual distinctions
+
+**DINOv2 Self-Supervised (@fig-rl-similarity-dinov2):**
+
+- Sharp discrimination between semantic classes (Elephant vs Giraffe)
+- Strong within-category structure (elephant day variants)
+- Clear night/day distinctions while preserving identity
+- Best for: Few-shot learning, fine-grained classification, dense prediction tasks
+- Pure vision objective without language bias preserves visual details
+
+**Recommendation hierarchy:**
+
+1. **DINOv2/v3**: Default choice for vision-centric tasks requiring discriminative power
+2. **CLIP**: When zero-shot capabilities or text-image alignment is critical
+3. **Supervised CNN**: When computation is limited and broad categories suffice
+4. **Pixel space**: Never for semantic tasks (only for exact duplicate detection)
+
+</details>
+
+:::
+
+
+::: {.callout-warning title="Task-Relevant Invariance"}
+**Critical consideration:** Invariance to task-relevant attributes can render representations useless.
+
+**Examples of harmful invariance:**
+
+- **Color-invariant features for flower classification:** If representations discard color information, distinguishing between red and yellow tulips becomes impossible.
+- **Rotation-invariant features for orientation tasks:** Medical imaging often requires preserving anatomical orientation; rotation invariance destroys critical diagnostic information.
+- **Scale-invariant features for size estimation:** Object measurement tasks require preserving absolute or relative size cues.
+- **Texture-invariant features for material classification:** Distinguishing wood from metal requires texture sensitivity.
+
+**Design principle:** Match your representation's invariances to your task requirements. When in doubt, preserve information and let the downstream model learn to ignore irrelevant variations.
+:::
+
+
+## Using Representations: A Practical Guide
+
+Always begin with the simplest approach and only add complexity when performance gaps justify it.  For **classification/retrieval**, global embeddings (e.g., CLIP) enable **zero-/few-shot** learning. For **dense tasks** (segmentation, object detection), **local (patch) tokens** from ViTs (e.g., DINOv3) feed pixel-aligned heads.
+
+Typical progression:
+
+1. **k-NN baseline (no training)**
+   Think of this as “find the most similar examples.” We store the embeddings of labeled images and, for a new image, look up the *k* most similar ones; the majority label wins. It’s fast to set up, needs **no training**, and gives a quick reality check on representation quality. See @fig-rl-practical-knn for illustrative code.
+
+2. **Linear probe (freeze encoder, train head)**
+   Keep the powerful pretrained encoder fixed and train a tiny linear layer on top. If this small layer reaches good accuracy, it means the embeddings already separate classes well. It’s **cheap, stable**, and a great first serious baseline. See @fig-rl-practical-linear for illustrative code.
+
+3. **LoRA/Adapters (efficient parameter tuning)**
+   Instead of updating all model weights, add small “adapter” modules (or low-rank updates) and train **only those**. You keep most of the original knowledge while adapting to your task with far fewer trainable parameters—**faster, lighter, and less prone to overfitting** than full fine-tuning. See @fig-rl-practical-adapter for illustrative code.
+
+4. **Partial fine-tune (unfreeze top layers)**
+   Unfreeze just the **last few layers** of the encoder and train them (plus the head). This lets the model adjust higher-level features to your data while keeping the earlier, general features intact. It’s a good **middle ground** between speed and task fit. See @fig-rl-practical-fine-tune for illustrative code.
+
+5. **Full fine-tune (last resort)**
+   Train **all** the model’s weights on your dataset. This can yield the best alignment to your task but is **computationally expensive** and risks overfitting—especially with limited data. Use it when you have enough data/compute and simpler options plateau. See @fig-rl-practical-full-fine-tune for illustrative code.
 
 
 ```{python}
 #| eval: false
 #| echo: true
+#| label: fig-rl-practical-knn
+#| lst-cap: "k-NN baseline (no training) — Hugging Face2"
+#| fig-cap: "k-NN baseline (no training) — Hugging Face"
+
+import torch, sklearn.neighbors as sk
+from transformers import AutoModel, AutoImageProcessor
+
+model_id = "google/vit-base-patch16-224"
+enc = AutoModel.from_pretrained(model_id).eval()
+proc = AutoImageProcessor.from_pretrained(model_id)
+
+def feats(imgs):  # imgs: list of PIL images
+    px = proc(imgs, return_tensors="pt")["pixel_values"]
+    with torch.no_grad():
+        z = enc(pixel_values=px).last_hidden_state[:,0]  # [CLS]
+    return z.cpu().numpy()
+
+Xtr = feats(train_images); Ytr = train_labels
+Xte = feats(test_images)
+knn = sk.KNeighborsClassifier(n_neighbors=5).fit(Xtr, Ytr)
+pred = knn.predict(Xte)
+```
+
+```{python}
+#| eval: false
+#| echo: true
+#| label: fig-rl-practical-linear
+#| fig-cap:
+#|   - "Linear probe (freeze encoder, train head) — timm"
+
 import torch
-from torch import nn
-from transformers import AutoModel
+from torch import nn, optim
+import timm
 
-model_id = "your-org/dinov3-base"  # TODO: replace with the real HF id (e.g., "facebook/dinov2-base")
-backbone = AutoModel.from_pretrained(model_id)
-
-# Freeze backbone for a linear probe
+backbone = timm.create_model("vit_base_patch16_224", pretrained=True)
 for p in backbone.parameters():
     p.requires_grad = False
-backbone.eval()
-
-# Helper: get a single global vector from token features (CLS or mean over patches)
-class GlobalPool(nn.Module):
-    def __init__(self, use_cls: bool = True):
-        super().__init__()
-        self.use_cls = use_cls
-    def forward(self, last_hidden_state):  # (B, T, D)
-        if self.use_cls:
-            return last_hidden_state[:, 0]          # [CLS]
-        return last_hidden_state.mean(dim=1)        # mean pool over tokens
-
-pool = GlobalPool(use_cls=True)
-
-# 2) Define and attach a linear head ------------------------------------------
-embed_dim = getattr(backbone.config, "hidden_size", 768)  # typical config field
-num_classes = 10                                          # <-- set to your dataset
+embed_dim = backbone.num_features
 head = nn.Linear(embed_dim, num_classes)
 
-# 3) Create the composite "linear probe" model --------------------------------
-class LinearProbe(nn.Module):
-    def __init__(self, backbone, head, pool):
-        super().__init__()
-        self.backbone = backbone
-        self.head = head
-        self.pool = pool
+def forward(images):
+    with torch.no_grad():
+        z = backbone.forward_features(images)[:,0]  # [CLS]
+    return head(z)
 
-    def forward(self, pixel_inputs):
-        """
-        pixel_inputs: preprocessed image batch as expected by the backbone's feature extractor.
-        For HF ViTs, you'll typically pass pixel_values from a corresponding processor.
-        """
-        with torch.no_grad():  # ensure backbone stays frozen
-            out = self.backbone(pixel_inputs, output_hidden_states=False)
-            # Many HF vision models return .last_hidden_state for ViT-like backbones
-            z = self.pool(out.last_hidden_state)  # (B, D)
-        logits = self.head(z)                    # (B, C)
-        return logits
-
-model = LinearProbe(backbone, head, pool)
-print(f"[info] Linear probe ready: embed_dim={embed_dim}, num_classes={num_classes}")
-
-
+opt = optim.AdamW(head.parameters(), lr=5e-4)
+# training loop: logits = forward(images); loss = CE(logits, y); loss.backward(); opt.step()
 ```
-
-Such a representation is much more compact, yet retains the most relevant information.
-
-This begs the question:
-
-
-A raw image is a 3D tensor of pixel intensities. Before any encoder is applied, it already contains structure (spatial locality, color correlations) but no task-specific abstractions. Inspecting its dimensionality highlights why learning compact representations matters.
-
-
-:::: {.columns}
-
-::: {.column width="50%"}
 
 ```{python}
-#| eval: true
-#| echo: false
-#| label: tbl-rl-example-raw-dim
-#| tbl-cap: "Raw elephant image dimensionality summary"
-#| tbl-subtitle: "Single 224×224 crop used as running example"
-#| tbl-colwidths: [30,30]
-from pathlib import Path
-from PIL import Image
-import numpy as np
-import pandas as pd
-from IPython.display import HTML
+#| eval: false
+#| echo: true
+#| label: fig-rl-practical-adapter
+#| fig-cap:
+#|   - "LoRA / Adapters (parameter-efficient tuning) — Hugging Face + PEFT"
 
-img_path = Path("/workspace/assets/images/representation_learning/elephant.jpg")
-with Image.open(img_path) as img:
-    width, height = img.size
-    channels = len(img.getbands())
-    pixels = width * height
-    values = pixels * channels
-    arr_dtype = np.array(img).dtype
+import torch
+from transformers import AutoModel
+from peft import LoraConfig, get_peft_model
 
-raw_stats = pd.DataFrame(
-    {
-        "Statistic": ["Width (px)", "Height (px)", "Channels", "Total Pixels", "Total Values", "Array dtype"],
-        "Value": [width, height, channels, f"{pixels:,}", f"{values:,}", str(arr_dtype)],
-    }
+model_id = "google/vit-base-patch16-224"
+model = AutoModel.from_pretrained(model_id)
+
+config = LoraConfig(
+    r=16, lora_alpha=32, lora_dropout=0.05,
+    target_modules=["query","key","value","fc"],  # adjust to module names
+    bias="none", task_type="FEATURE_EXTRACTION"
 )
+model = get_peft_model(model, config)
 
-table_html = raw_stats.to_html(
-    index=False,
-    border=0,
-    classes="table table-sm table-striped align-middle caption-top"
-)
+head = torch.nn.Linear(model.config.hidden_size, num_classes)
 
-HTML(table_html)
+def forward(pixel_values):
+    z = model(pixel_values=pixel_values).last_hidden_state[:,0]
+    return head(z)
+# Optimizer over LoRA params + head params only
 ```
-
-:::
-
-::::
-
-Modalities differ vastly in raw state-space size:
 
 ```{python}
-#| label: tbl-repr-modalities
-#| echo: false
-#| fig-cap: "Representative raw modality characteristics"
-#| tbl-colwidths: [0.12, 0.22, 0.30, 0.36]
-#| tbl-subtitle: "Interactive view with quick export"
-#| layout-nrow: 1
-import pandas as pd
-from IPython.display import Markdown
+#| eval: false
+#| echo: true
+#| label: fig-rl-practical-fine-tune
+#| fig-cap:
+#|   - "Partial fine-tune (unfreeze top layers) — timm"
 
-data = [
-    ("Images", "224×224 RGB", "≈150K pixels", "Local correlations, spatial invariance"),
-    ("Text", "Tokens (512 seq)", "Variable (subword vocab ≈50K)", "Long-range dependencies"),
-    ("Genomics", "Nucleotides (10K)", "4-letter alphabet", "Long-range, hierarchical motifs"),
-    ("Graphs", "Nodes / Edges", "Irregular structure", "Permutation invariance"),
-    ("Multimodal", "Image + Text", "Combined modalities", "Alignment & grounding"),
-]
+import timm, torch
+from torch import nn
 
-df_modalities = pd.DataFrame(data, columns=[
-    "Modality",
-    "Example Unit",
-    "Typical Raw Dimensionality (Sample)",
-    "Challenges",
-])
+model = timm.create_model("vit_base_patch16_224", pretrained=True)
+# Freeze everything
+for p in model.parameters():
+    p.requires_grad = False
+# Unfreeze top transformer block(s)
+for p in model.blocks[-2:].parameters():
+    p.requires_grad = True  # last 2 blocks
+# Replace / add classification head
+model.head = nn.Linear(model.num_features, num_classes)
+# Optimizer over unfrozen blocks + head
+trainable = [p for p in model.parameters() if p.requires_grad]
+opt = torch.optim.AdamW(trainable, lr=1e-4)
+```
 
-try:
-    from itables import show, options
+```{python}
+#| eval: false
+#| echo: true
+#| label: fig-rl-practical-full-fine-tune
+#| fig-cap:
+#|   - "Full fine-tuning, unfreeze all layers."
 
-    options.classes = "display nowrap compact stripe hover order-column"
-    options.dom = "Bfrtip"
-    options.buttons = ["copy", "csv", "excel"]
-    options.searching = False
-    options.lengthMenu = False
-    show(df_modalities, index=False)
-except Exception:
-    Markdown(df_modalities.to_markdown(index=False))
+import torch
+from transformers import AutoModelForImageClassification
+
+model_id = "google/vit-base-patch16-224"
+model = AutoModelForImageClassification.from_pretrained(
+    model_id, num_labels=num_classes, ignore_mismatched_sizes=True
+)
+for p in model.parameters():
+    p.requires_grad = True  # unfreeze all
+opt = torch.optim.AdamW(model.parameters(), lr=5e-5)
+# Standard supervised loop with processor(...)-> pixel_values -> model(pixel_values, labels=y)
 ```
 
 
-### Pixel-Level vs Learned Similarities
+## Quiz
 
-Before diving into learning objectives, let's examine how different similarity measures organize the same images:
+::: {.callout-note title="Question 1: Understanding Representation Learning"}
+**Question:** Why do representations learned from raw pixels (pixel-space similarity) fail to capture semantic relationships between images?
 
-::: {#fig-similarity-comparison}
-![]({{< meta params.images_path >}}rl_example_comprehensive_pixel_similarity.png){fig-alt="Comparison of pixel-level similarity measures" width=100%}
+<details>
+<summary>Click for Answer</summary>
 
-**Left:** Euclidean pixel distance creates sharp distinctions. **Middle:** Cosine pixel similarity shows high values across all images. **Right:** Difference map reveals how the metrics diverge.
-:::
+**Answer:** Pixel-space representations measure low-level appearance differences (exact color values, lighting conditions, spatial alignment) rather than high-level semantic content. Two images of the same object under different lighting or poses will have large pixel-level distances despite being semantically identical. For example, in @fig-rl-similarity-pixel-space, pixel distances cannot distinguish between "different elephants in similar lighting" vs "same elephant in different lighting": both create similar pixel-level differences. Good representations compress the enormous space of possible images ($255^{H \times W \times C}$ combinations) into a semantic coordinate system where distances reflect meaning.
 
-**Key Observation:** Both pixel-level measures fail to group semantically similar images (the two elephants), regardless of distance metric choice.
-
-::: {#fig-mds-representations}
-![]({{< meta params.images_path >}}rl_example_mds_comparison_complete.png){fig-alt="MDS projections comparing pixel and CNN representations" width=100%}
-
-2D MDS projections reveal fundamental differences: **Left:** Scattered pixel-Euclidean layout (high stress). **Middle:** Tight pixel-cosine clustering but no semantic structure. **Right:** CNN embeddings create meaningful semantic neighborhoods with clear class separation.
-:::
-
-This motivates why we need **learned representations** that capture semantic similarity rather than superficial pixel patterns.
-
-### The Invariance-Equivariance Spectrum
-
-Rather than binary categories, think of a **continuum** of spatial sensitivity:
-
-::: {#fig-invariance-equivariance-spectrum}
-```{mermaid}
-graph LR
-    A["Full Invariance<br/>f(Tx) = f(x)<br/>📊 Classification"] --> B["Partial Invariance<br/>Small changes OK<br/>🔍 Retrieval"]
-    B --> C["Local Equivariance<br/>f(Tx) ≈ T'f(x)<br/>🎯 Detection"]
-    C --> D["Strict Equivariance<br/>f(Tx) = T'f(x)<br/>🎨 Segmentation"]
-
-    style A fill:#FFE4E1
-    style B fill:#F0F8FF
-    style C fill:#F0FFF0
-    style D fill:#FFF8DC
-```
-
-**Task-Representation Alignment:** Different tasks require different levels of spatial sensitivity. The key is matching representation properties to downstream requirements.
-:::
-
-::: {.callout-tip title="Interactive Demonstration" collapse="false"}
-**Hands-on Exploration:** Create `demos/representation_quality_demo.ipynb` to:
-
-1. **Invariance Visualization:** Apply increasing augmentation strength, plot embedding distances
-2. **Semantic Interpolation:** Show smooth transitions between different object classes
-3. **Transfer Efficiency:** Compare few-shot performance across different representation qualities
-4. **Dimensionality Analysis:** Plot task performance vs representation dimension
-
-**Key Questions to Explore:**
-- At what augmentation strength do embeddings become invariant?
-- Can you find semantic directions in the representation space?
-- Which representations transfer best to new domains?
-:::
-
-
-::: {#fig-rl-augmentations}
-![]({{< meta params.images_path >}}rl_example_augmentations.png){fig-alt="Semantic-preserving augmentations applied to an elephant image" width=100%}
-
-Collage of semantic-preserving augmentations (crop, jitter, blur, noise) used to motivate invariance: each view retains the elephant identity despite appearance changes.
-:::
-
-::: {.callout-tip title="Try It Yourself!" collapse="false"}
-**Interactive Demo:** Run the `demos/augmentation_collage.ipynb` notebook to:
-- Generate your own augmentation collage
-- Compare pixel-level vs CNN embedding similarities
-- Visualize representation spaces with MDS projections
-
-**Key Insight:** Notice how pixel-level similarity fails to capture semantic relationships, while learned CNN embeddings cluster augmented variants together and separate different object classes.
-:::
-
-
-**Why learn representations (vs hand-crafting)?**
-
-The evolution from manual to learned features reflects three key limitations of hand-crafted approaches:
-
-| Era | Approach | Examples | Limitations | Performance Ceiling |
-|-----|----------|----------|-------------|-------------------|
-| 1980s-2000s | Hand-crafted Features | SIFT, HOG, SURF, LBP | Domain-specific, brittle to variations | ~70% ImageNet |
-| 2000s-2010s | Learned Shallow | Bag of Words, Fisher Vectors | Limited representational capacity | ~80% ImageNet |
-| 2010s-Present | Deep Learning | CNNs, ViTs, Foundation Models | Requires large data, compute | >95% ImageNet |
-
-: Evolution of visual representations {.striped .hover #tbl-repr-evolution}
-
-**The Scale-Generalization Trade-off:** Manual engineering doesn't scale to the diversity of real-world data and tasks. Learned representations automatically discover relevant patterns from data, enabling generalization to unseen scenarios.
-
-::: {.callout-warning title="Representation Pitfalls"}
-**Common failure modes to avoid:**
-
-1. **Over-invariance:** Aggressive augmentation removes task-critical information (e.g., color for flower classification)
-2. **Under-selectivity:** Representations collapse, making different classes indistinguishable
-3. **Brittleness:** High performance on training domain, catastrophic failure on test shifts
-4. **Interpretability loss:** Complex embeddings become black boxes, hindering debugging
-5. **Computational bloat:** Representations grow unnecessarily large without performance gains
-
-**Mitigation strategies:** Balanced augmentation policies, regularization techniques, domain adaptation methods, and systematic evaluation protocols.
-:::
-
-### Advanced Representation Properties
-
-Beyond basic invariance, modern representations exhibit sophisticated geometric and semantic structures:
-
-::: {.callout-note title="Emergent Properties in Foundation Models"}
-**Geometric Structure:**
-- **Semantic directions:** Linear subspaces correspond to interpretable concepts (e.g., "style" vectors in image generation)
-- **Compositional algebra:** $f(\text{king}) - f(\text{man}) + f(\text{woman}) \approx f(\text{queen})$ in language models
-- **Hierarchical clustering:** Representations naturally organize into taxonomic structures
-
-**Transfer Mechanisms:**
-- **Feature reuse:** Early layers transfer across domains (edges → textures → parts)
-- **Task-specific adaptation:** Late layers specialize while preserving general features
-- **Few-shot emergence:** Quality representations enable learning from minimal examples
-
-**Robustness Properties:**
-- **Adversarial stability:** Embeddings remain consistent under small perturbations
-- **Distributional shift tolerance:** Performance degrades gracefully with domain changes
-- **Continual learning capability:** New tasks learned without catastrophic forgetting
-:::
-
-### Invariance vs Equivariance
-
-- *Invariance:* $f(Tx) = f(x)$ (classification robustness).
-- *Equivariance:* $f(Tx) = T' f(x)$ (segmentation, detection require spatial structure).
-Convolutions approximate translation equivariance; self-attention is *structurally agnostic* and must learn inductive biases via data.
-
-### Hierarchical Abstraction
-
-Lower layers: edges, colors, local patterns → mid-layers: motifs/parts → deeper layers: object & global scene semantics.
-
-::: {.panel-tabset #fig-zeiler-hierarchy}
-### Layer 1
-![]({{< meta params.images_path >}}zeiler_layer1.png){fig-alt="Layer 1: Gabor-like edges and color blobs" width=95%}
-
-Edges, color opponency, and Gabor-like filters emerge first.
-
-### Layer 2
-![]({{< meta params.images_path >}}zeiler_layer2.png){fig-alt="Layer 2: Corners and simple textures" width=95%}
-
-Edges combine into corners, contours, and early texture motifs.
-
-### Layer 3
-![]({{< meta params.images_path >}}zeiler_layer3.png){fig-alt="Layer 3: Texture motifs and repeated patterns" width=95%}
-
-Mid-level texture repetitions (fur, mesh) and shape fragments appear.
-
-### Layer 4
-![]({{< meta params.images_path >}}zeiler_layer4.png){fig-alt="Layer 4: Object parts such as faces and wheels" width=95%}
-
-Semantically meaningful object parts (faces, limbs, wheels) are isolated.
-
-### Layer 5
-![]({{< meta params.images_path >}}zeiler_layer5.png){fig-alt="Layer 5: Full object templates" width=95%}
-
-Full object templates activate, providing category-level abstraction.
-:::
-
-Activation maximization reconstructions from Zeiler & Fergus (2014) illustrate how deeper CNN layers capture increasingly abstract concepts.
-
-* Layer 1 focuses on oriented edges and color opponency — the digital analogue of Gabor filters.
-* Layer 2 composes edges into corners, gradients, and early texture motifs.
-* Layer 3 aggregates motifs into mid-level textures (fur, mesh) and shape fragments.
-* Layer 4 responds to semantically meaningful parts (faces, limbs, wheels) aggregated across spatial context.
-* Layer 5 fires on entire object templates, providing category-level abstraction that feeds classifier heads.
-
-## Deep Image Representations
-
-::: {#fig-representation-trajectory}
-![]({{< meta params.images_path >}}representation_trajectory.png){fig-alt="Evolution from raw pixels to semantic representations" width=100%}
-
-Representation evolution: **Raw RGB** → **Edge detection** (early CNN features) → **ResNet Grad-CAM** (mid-level semantic focus) → **ViT Attention** (global semantic relationships). Each stage reveals different aspects of visual understanding.
-:::
-
-::: {.callout-tip title="Try It Yourself!" collapse="false"}
-**Interactive Demo:** Run the `demos/rl_examples.ipynb` notebook to:
-- Generate your own representation trajectory visualization
-- Compare Grad-CAM vs Vision Transformer attention patterns
-- See how different architectures focus on different image regions
-
-**Key Insight:** CNNs build local-to-global hierarchies, while ViTs can attend globally from the start, creating different semantic emphasis patterns.
-:::
-
-CNNs encode locality and translation inductive biases; Vision Transformers (ViTs) rely on larger data + patch embedding + positional encodings.
-
-| Aspect | CNN | ViT |
-|--------|-----|-----|
-| Inductive Bias | Strong (locality, weight sharing) | Minimal (global token mixing) |
-| Data Efficiency | Higher for small data | Needs large-scale pretraining |
-| Receptive Field Growth | Layer stacking / dilation | Immediate global attention |
-| Positional Handling | Implicit via convolution structure | Explicit positional embeddings |
-| Adaptation (small data) | Often fine-tune later layers | Prefer frozen features + probe / adapters |
-
-: CNN vs ViT representation properties {.striped .hover #tbl-repr-cnn-vit}
-
-**Story:** Inductive bias trades off with flexibility. ViTs + massive self-supervised training (e.g., DINOv2/v3) *recover* desirable invariances without manual architectural constraints.
-
-## 3. Transfer Learning
-
-::: {#fig-transfer-strategy-flow}
-```{mermaid}
-flowchart TD
-    A["New Dataset<br/>Size Assessment"] --> B{"< 1K samples?"}
-    B -->|Yes| C["Linear Probe<br/>(Frozen Features)"]
-    B -->|No| D{"< 10K samples?"}
-    D -->|Yes| E["LoRA/Adapters<br/>(1-10% params)"]
-    D -->|No| F{"Domain Shift?"}
-    F -->|High| G["Partial Fine-tune<br/>(Top layers)"]
-    F -->|Low| H["Full Fine-tune<br/>(All parameters)"]
-
-    C --> I["Evaluate Gap"]
-    I --> J{"Gap > 10%?"}
-    J -->|Yes| E
-    J -->|No| K["✓ Ship Linear Probe"]
-
-    E --> L["Monitor Forgetting"]
-    L --> M{"Performance Drop?"}
-    M -->|Yes| N["Reduce LR/<br/>Add Regularization"]
-    M -->|No| O["✓ Ship Adapter"]
-
-    style K fill:#90EE90
-    style O fill:#90EE90
-    style G fill:#FFE4B5
-    style H fill:#FFB6C1
-```
-
-Transfer learning decision flowchart: Start simple and escalate complexity only when performance gaps justify additional computational cost.
-:::
-
-Reusing a source representation $f_{\theta}$ trained on large dataset $D_s$ for target dataset $D_t$ (possibly small / domain shifted):
-
-| Strategy | Frozen? | Trainable Params | When to Use | Risk |
-|----------|---------|------------------|-------------|------|
-| Feature Extraction + Linear Probe | Yes | ~Head only | Very small target | Underfitting complex tasks |
-| Partial Fine-Tune (top blocks) | Partially | 10–40% | Medium data | Forgetting lower-level invariances |
-| Full Fine-Tune | No | 100% | Large labeled target | Overfitting / compute |
-| LoRA / Adapters | Base frozen | 1–10% | Medium data / resource-bound | Adapter configuration tuning |
-| Prompt / Text Prompt (CLIP) | Base frozen | 0–Few tokens | Zero/Few-shot | Prompt sensitivity |
-
-: Transfer strategy comparison {.striped .hover #tbl-repr-transfer}
-
-::: {.callout-tip title="Heuristic"}
-Start simple: Linear probe → If performance gap > X% vs baseline, move to LoRA/adapters → escalate to partial fine-tune → only full fine-tune when data & compute justify.
-:::
-
-### 3.1 Diagnostic Signals
-
-- Linear probe saturates early + large gap to supervised SOTA ⇒ consider partial fine-tune.
-- Training loss ↓ but validation plateaus ⇒ representation mismatch (try LoRA).
-- Large domain color/style shift ⇒ consider small color-specific adapter or augment recipe adjustment.
-
-<!-- TODO: Visual: Flowchart of decision path for adaptation strategy. -->
-
-## 4. Self-Supervised Learning (SSL)
-
-::: {#fig-ssl-paradigms}
-```{mermaid}
-graph TB
-    subgraph "Contrastive Learning"
-        A1["Image"] --> A2["Augment"]
-        A2 --> A3["Encode"]
-        A3 --> A4["Positive: Same image<br/>Negative: Different images"]
-        A4 --> A5["InfoNCE Loss"]
-    end
-
-    subgraph "Self-Distillation (DINO)"
-        B1["Image"] --> B2["Multi-crop<br/>Augmentation"]
-        B2 --> B3["Student<br/>Encoder"]
-        B2 --> B4["Teacher<br/>Encoder (EMA)"]
-        B3 --> B5["Cross-entropy<br/>Distillation"]
-        B4 --> B5
-    end
-
-    subgraph "Masked Modeling (MAE)"
-        C1["Image"] --> C2["Random<br/>Masking (75%)"]
-        C2 --> C3["Encoder<br/>(visible patches)"]
-        C3 --> C4["Decoder<br/>Reconstruction"]
-        C4 --> C5["Pixel/Token<br/>Loss"]
-    end
-
-    subgraph "Multimodal (CLIP)"
-        D1["Image"] --> D3["Image<br/>Encoder"]
-        D2["Text"] --> D4["Text<br/>Encoder"]
-        D3 --> D5["Contrastive<br/>Alignment"]
-        D4 --> D5
-    end
-
-    style A5 fill:#FFE4E1
-    style B5 fill:#E0E6FF
-    style C5 fill:#E6FFE6
-    style D5 fill:#FFF8DC
-```
-
-Four major self-supervised learning paradigms with their core mechanisms and loss functions.
-:::
-
-Goal: Learn $f(x)$ without manual labels; leverage structure in data via pretext tasks.
-
-| Paradigm | Core Idea | Positive Pair Definition | Example Models | Notable Strength | Typical Weakness |
-|----------|-----------|--------------------------|----------------|------------------|------------------|
-| Contrastive | Pull positives, push negatives | Augmented views of same image | SimCLR, MoCo | Strong invariance | Needs large batch / memory bank |
-| Self-Distillation | Match teacher & student views | Teacher EMA vs student features | DINO v1/v2/v3 | Rich semantics w/o negatives | Augmentation sensitivity |
-| Masked Modeling | Reconstruct masked content | Original vs masked patches | MAE, iBOT | Structural detail retention | Slower convergence |
-| Multi-Modal Align | Align cross-modal embeddings | Paired image-text | CLIP, BLIP-2 | Zero / few-shot via text | Text bias & leakage |
-| Predictive Coding | Predict future / context | Temporal or spatial neighbors | CPC variants | Sequential structure | Complexity of objectives |
-
-: Major self-supervised paradigms {.striped .hover #tbl-repr-ssl}
-
-### 4.1 Contrastive (InfoNCE)
-Objective: maximize similarity of positive pair while minimizing others:
-$$\mathcal{L}_{\text{InfoNCE}} = - \log \frac{\exp(\text{sim}(z_i, z_i^+)/\tau)}{\sum_{j=1}^N \exp(\text{sim}(z_i, z_j)/\tau)}$$
-Temperature $\tau$ tunes concentration; similarity often cosine.
-
-::: {.callout-note title="Quiz" collapse="true"}
-**Question:** What happens if $\tau$ is extremely small?
-**Answer (click to reveal):** <details><summary>Answer</summary>The loss focuses on the single hardest negative; training can become unstable.</details>
-:::
-
-### 4.2 Self-Distillation (DINO Family)
-Teacher network (EMA of student) provides soft targets for multi-crop student views. Avoids explicit negatives; emergent clustering.
-
-### 4.3 Masked Image Modeling (MAE / iBOT)
-Randomly mask patches (40–75%), reconstruct pixel space or latent tokens; forces holistic context modeling.
-
-### 4.4 Multimodal Alignment (CLIP)
-Image encoder + text encoder; contrastive loss aligns matching pairs enabling text-driven zero-shot transfer.
-
-<!-- TODO: Visual: Side-by-side small schematics of each SSL paradigm (contrastive, distillation, masked, multimodal). -->
-
-## 5. Evaluating Representations
-
-::: {.callout-note title="Interactive Evaluation Exercise" collapse="false"}
-**Hands-on Challenge:** Load a pretrained model (ResNet-50, DINOv3) and evaluate it on a small dataset using multiple probes:
-
-1. **k-NN baseline** (k=5): No training required
-2. **Linear probe**: Train only a classifier head
-3. **Clustering quality**: Measure NMI/ARI on embeddings
-4. **Retrieval performance**: Query-gallery similarity ranking
-
-**Discussion Points:**
-- Which probe reveals representation quality best?
-- When do you see large gaps between k-NN and linear probe?
-- How does feature dimensionality affect each metric?
-
-Try this with both ImageNet-supervised and self-supervised models to compare representation quality.
-:::
-
-No single metric suffices—use *battery* of probes.
-
-| Method | Procedure | Signals | Pros | Cons |
-|--------|-----------|---------|------|------|
-| k-NN | Compare feature similarity | Local neighborhood structure | No training | Slow for large N |
-| Linear Probe | Train logistic/regression on frozen features | Linear separability | Fast, comparable | Ignores non-linear capacity |
-| Clustering (k-means) | Cluster embeddings, measure NMI/ARI | Unsupervised grouping quality | Label-free diagnostic | Sensitive to feature scaling |
-| Retrieval mAP | Query vs gallery similarity ranking | Ranking robustness | Task-agnostic | Needs curated gallery |
-| Few-shot Episodes | N-way K-shot average accuracy | Data efficiency | Mirrors target tasks | Variance with small K |
-
-: Representation evaluation toolbox {.striped .hover #tbl-repr-eval}
-
-::: {.callout-note title="Exercise Idea"}
-Compute k-NN (k=5) accuracy, then a linear probe. Report relative improvement. Reflect: does larger gap imply under-expressive head or insufficient representation invariance?
-:::
-
-### 5.1 Failure Diagnostics
-
-- High linear probe, poor retrieval ⇒ representation collapses fine-grained similarity.
-- Good k-NN, poor clustering NMI ⇒ global structure fragmented; consider whitening or normalization.
-- Poor few-shot but good full-data accuracy ⇒ representation needs adaptation (try LoRA).
-
-## 6. Foundation Models (Bridge)
-
-Full deep-dive in `lectures/foundation_models.qmd`. Here we contextualize *representations* origin:
-
-| Model | Objective Category | Emergent Property | Transfer Sweet Spot |
-|-------|--------------------|-------------------|---------------------|
-| DINOv3 | Self-distillation | Semantic clusters & patch semantics | Few-shot classification, anomaly |
-| CLIP | Contrastive multimodal | Language-aligned embeddings | Zero-shot, prompt-based tasks |
-| MAE | Masked modeling | Fine structural detail | Dense prediction fine-tune |
-| SAM Encoder | Promptable segmentation | High-resolution region semantics | Zero-shot segmentation |
-
-: Selected foundation models & representation characteristics {.striped .hover #tbl-repr-foundation-overview}
-
-### 6.1 Choosing Among DINOv3 vs CLIP
-
-| Scenario | Recommended | Rationale |
-|----------|------------|-----------|
-| Few labeled images, no text prompts | DINOv3 | Strong linear probe performance |
-| Need zero-shot open vocabulary | CLIP | Text prompts act as classifier |
-| Downstream segmentation with prompts | SAM Encoder | Mask generalization |
-| Style-rich generation/editing | Stable Diffusion (latent) | Generative prior |
-
-: Scenario-based model selection {.striped .hover #tbl-repr-scenarios}
-
-## 7. A Practical Recipe
-
-::: {#fig-practical-recipe}
-```{mermaid}
-flowchart TD
-    A["1. Select Backbone<br/>(DINOv3 ViT-B/L)"] --> B["2. Extract Embeddings<br/>(Normalize + Optional PCA)"]
-    B --> C["3. k-NN Baseline<br/>(k=5, cosine distance)"]
-    C --> D["4. Linear Probe<br/>(Early stopping)"]
-    D --> E["5. Evaluate Clustering<br/>(NMI/ARI metrics)"]
-    E --> F{"Gap > Target?"}
-    F -->|No| G["✓ Deploy Linear Probe"]
-    F -->|Yes| H["6. Add LoRA Adapters<br/>(r=8, attn matrices)"]
-    H --> I["7. Monitor Forgetting<br/>(Cosine sim drift)"]
-    I --> J["8. Document Cost<br/>(GPU hrs vs accuracy)"]
-    J --> K["✓ Deploy Adapted Model"]
-
-    style G fill:#90EE90
-    style K fill:#90EE90
-
-    classDef evaluation fill:#FFF8DC
-    class C,D,E evaluation
-
-    classDef adaptation fill:#E6FFE6
-    class H,I adaptation
-```
-
-Systematic adaptation workflow: Start simple, escalate only when justified, and always monitor for catastrophic forgetting.
-:::
-
-::: {.callout-tip title="Implementation Checklist"}
-**Before you start:**
-- [ ] Baseline established (random features, ImageNet supervised)
-- [ ] Validation split held out for hyperparameter tuning
-- [ ] Compute budget allocated (linear probe: minutes, LoRA: hours, full fine-tune: days)
-
-**During adaptation:**
-- [ ] Learning curves monitored (train/val gap)
-- [ ] Feature drift measured (cosine similarity pre/post)
-- [ ] Multiple runs for statistical confidence
-
-**After deployment:**
-- [ ] Performance documented with confidence intervals
-- [ ] Failure cases analyzed (where does the model struggle?)
-- [ ] Computational cost vs accuracy trade-off quantified
-:::
-
-The systematic approach reduces trial-and-error and prevents over-engineering solutions.
-
-### 7.1 Minimal PyTorch Sketch (Probe)
-
-```python
-# pseudo-code: linear probe on frozen backbone features
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
-
-# Assume we precomputed (X_train, y_train), (X_val, y_val) via DINOv3 extractor
-clf = LogisticRegression(max_iter=1000, n_jobs=-1)
-clf.fit(X_train, y_train)
-val_acc = accuracy_score(y_val, clf.predict(X_val))
-print(f"Linear probe val accuracy: {val_acc:.3f}")
-```
-
-## 8. Interactive Learning & Reflection
-
-::: {.callout-note title="Hands-On Exercise: Representation Comparison"}
-**Setup:** Use the provided notebooks to compare different representation approaches:
-
-1. **Run `demos/augmentation_collage.ipynb`:**
-   - Generate augmentation matrices for semantic similarity
-   - Compare ResNet-18 vs DINOv3 embeddings
-   - Analyze MDS projections of representation spaces
-
-2. **Run `demos/rl_examples.ipynb`:**
-   - Visualize representation trajectories from pixels to semantics
-   - Compare CNN Grad-CAM vs ViT attention patterns
-   - Generate figures for your own dataset
-
-**Discussion Questions:**
-- Why do pixel-level similarities fail to capture semantic relationships?
-- How do different SSL objectives (contrastive vs self-distillation) affect representation geometry?
-- What trade-offs do you observe between CNN and ViT representations?
-:::
-
-::: {.callout-note title="Quiz 1: Invariance vs Equivariance"}
-**Question:** Give one example where too much invariance harms performance.
-<details><summary>Answer</summary>Face recognition losing fine-grained identity cues if heavy blurring / color jitter removes distinguishing patterns.</details>
-:::
-
-::: {.callout-note title="Quiz 2: Probing"}
-**Question:** Why is k-NN often a stronger baseline than expected on high-quality representations?
-<details><summary>Answer</summary>Because semantic neighborhoods are already well-formed; a parametric head adds little beyond nearest neighbor majority vote.</details>
-:::
-
-::: {.callout-note title="Quiz 3: SSL Paradigms"}
-**Question:** What's the key advantage of self-distillation (DINO) over contrastive methods (SimCLR)?
-<details><summary>Answer</summary>No need for explicit negatives or large batch sizes; emergent clustering arises from teacher-student dynamics.</details>
-:::
-
-::: {.callout-note title="Critical Thinking: Model Selection"}
-**Scenario:** You have 500 labeled images of rare birds, no text descriptions, and need to classify 50 species. You can choose between:
-- CLIP ViT-B/32 (trained on image-text pairs)
-- DINOv3 ViT-B/14 (trained on images only)
-- MAE ViT-B/16 (trained with masked reconstruction)
-
-**Discussion:** Which would you choose and why? Consider:
-- Training objective alignment with your task
-- Data efficiency for few-shot scenarios
-- Expected transfer performance for fine-grained classification
-
-<details><summary>Reasoning</summary>
-**Likely best: DINOv3** - Self-supervised on images, strong few-shot performance, good for fine-grained tasks.
-**CLIP** might struggle without text descriptions and may have learned text-biased features.
-**MAE** could work but typically needs more fine-tuning to reach peak performance.
 </details>
 :::
 
-::: {.callout-tip title="Extension Project Ideas"}
-**For deeper exploration:**
+::: {.callout-note title="Question 2: Invariance and Selectivity Trade-off"}
+**Question:** Explain the invariance-selectivity trade-off in representation learning. Provide one concrete example where too much invariance would harm performance on a specific task.
 
-1. **Representation Geometry Analysis:**
-   - Compute representation rank and effective dimensionality
-   - Measure invariance to specific augmentation types
-   - Analyze layer-wise semantic emergence
+<details>
+<summary>Click for Answer</summary>
 
-2. **Cross-Domain Transfer Study:**
-   - Compare transfer from ImageNet → Medical images
-   - Evaluate domain adaptation techniques (DANN, CORAL)
-   - Measure forgetting during continual learning scenarios
+**Answer:**
 
-3. **Efficiency vs Performance Trade-offs:**
-   - Profile LoRA rank vs accuracy curves
-   - Compare knowledge distillation to direct transfer
-   - Analyze pruning effects on representation quality
+**The Trade-off:** Good representations must balance two competing goals:
+
+- **Invariance:** $\|f(\vect{x}) - f(g(\vect{x}))\|_2 < \epsilon$ for nuisance transforms $g$ (lighting, pose changes)
+- **Selectivity:** $\|f(\vect{x}_i) - f(\vect{x}_j)\|_2 > \delta$ for semantically different inputs
+
+**Concrete Example - Flower Classification:**
+If representations are completely **color-invariant** (treating all colors as identical), distinguishing between red roses and yellow roses becomes impossible, even though color is the primary discriminative feature. The model would collapse all flower images to similar embeddings regardless of color, destroying task-critical information.
+
+**Other Examples:**
+
+- **Medical imaging:** Rotation invariance destroys anatomical orientation information needed for diagnosis
+- **Object size estimation:** Scale invariance removes absolute/relative size cues
+- **Material classification:** Texture invariance prevents distinguishing wood from metal
+
+**Design Principle:** Match invariances to task requirements — preserve information the downstream task needs, discard only true nuisance factors.
+
+</details>
 :::
 
-## 9. Recap
+::: {.callout-note title="Question 3: Comparing SSL Objectives"}
+**Question:** What is the key advantage of self-distillation methods (DINO/DINOv2/DINOv3) over contrastive learning methods (SimCLR)?
 
-::: {.callout-tip title="Recap"}
-- Representations trade off invariance, equivariance, and detail retention.
-- Self-supervised objectives sculpt semantic geometry without labels.
-- Evaluation requires multiple probes (k-NN + linear + few-shot) to avoid false confidence.
-- DINOv3 & CLIP illustrate specialization (label-efficient vs open-vocabulary).
-- Systematic adaptation flow reduces unnecessary fine-tuning cost.
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:**
+
+**Key Advantage:** Self-distillation does **not require explicit negative samples** or large batch sizes.
+
+**Contrastive Learning (SimCLR):**
+
+- Requires large batches (256-4096) to provide sufficient negative pairs
+- InfoNCE loss: $\mathcal{L} = -\log \frac{\exp(\text{sim}(z_i, z_i^+)/\tau)}{\exp(\text{sim}(z_i, z_i^+)/\tau) + \sum_{j=1}^{N-1} \exp(\text{sim}(z_i, z_j^-)/\tau)}$
+- Computational cost and memory scale with batch size
+- Needs careful negative mining strategies
+
+**Self-Distillation (DINO):**
+
+- Student network matches teacher's probability distribution over crops
+- Teacher is EMA of student weights (no separate training)
+- Emergent clustering arises from teacher-student dynamics and centering/sharpening
+- Works with smaller batches, more memory-efficient
+- **Bonus:** Produces both strong global descriptors AND high-quality local (patch) tokens
+
+**Result:** DINO-family models achieve state-of-the-art transfer performance with simpler training dynamics and lower computational requirements.
+
+</details>
 :::
 
+::: {.callout-note title="Question 4: Global vs Local Representations"}
+**Question:** When should you use global representations versus local representations? Give one specific task example for each.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:**
+
+**Global Representations** (single embedding per image, e.g., [CLS] token):
+
+- **Use when:** Task requires image-level understanding without spatial localization
+- **Examples:**
+  - **Image classification:** "Is this a cat or dog?" — only need overall category
+  - **Image retrieval:** "Find similar vacation photos" — semantic similarity at image level
+  - **Zero-shot classification (CLIP):** "Does this image contain a beach?" — image-text alignment
+
+**Local Representations** (spatially-resolved patch tokens, e.g., DINOv3 patch features):
+
+- **Use when:** Task requires pixel-level or region-level understanding
+- **Examples:**
+  - **Semantic segmentation:** "Label every pixel as road/car/pedestrian" — need spatial structure
+  - **Object detection:** "Find all bounding boxes containing cars" — need localization
+  - **Dense prediction:** "Generate depth map for each pixel" — requires preserved spatial information
+
+**Key Difference:** Global embeddings through pooling (e.g., Global Average Pooling: $\text{GAP}(X) = \frac{1}{H \times W}\sum_{i,j} X_{i,j}$) discard spatial structure for efficiency, while local features maintain the spatial grid of patch embeddings.
+
+**Practical Tip:** Many modern architectures (DINOv3, ViTs) provide **both** — use the [CLS] token for global tasks and patch tokens for dense tasks.
+
+</details>
+:::
+
+::: {.callout-note title="Question 5: Adaptation Strategy Selection"}
+**Question:** You have a dataset of 1,000 labeled medical images for a specialized classification task. Describe the recommended progression of adaptation strategies and explain why you should start with the simplest approach.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:**
+
+**Recommended Progression (from simplest to most complex):**
+
+1. **k-NN Baseline (0 training):**
+   - Extract features with frozen pretrained model
+   - Classify by finding k nearest neighbors in feature space
+   - **Why first:** Instant results, no hyperparameters, reveals representation quality
+   - **Code:** Just `sklearn.KNeighborsClassifier(n_neighbors=5).fit(features, labels)`
+
+2. **Linear Probe (~1-10K parameters):**
+   - Freeze encoder, train only linear classification head
+   - **Why next:** If this works well, embeddings already separate classes
+   - **Benefit:** Fast, stable, minimal overfitting risk with 1K samples
+
+3. **LoRA/Adapters (~100K-1M parameters):**
+   - Add small adapter modules, train only those
+   - **Why:** Allows task-specific adaptation without full fine-tuning
+   - **Trade-off:** Better fit than linear probe, much cheaper than full fine-tuning
+
+4. **Partial Fine-tune (last 2-3 layers):**
+   - Unfreeze top transformer blocks + head
+   - **Why:** Adjust high-level features while keeping general low-level features
+   - **Risk:** Need careful learning rate tuning to avoid catastrophic forgetting
+
+5. **Full Fine-tune (all parameters) — Last Resort:**
+   - **Only if:** Previous methods plateau AND you have sufficient data
+   - **Risk:** With only 1K samples, high overfitting risk
+   - **Mitigation:** Strong regularization, small learning rates (1e-5), early stopping
+
+**Why Start Simple:**
+
+- **Diagnostic value:** If k-NN works, you know the representation is good
+- **Resource efficiency:** Avoid wasting compute on complex methods when simple ones suffice
+- **Overfitting prevention:** With limited data (1K samples), simpler models generalize better
+- **Baseline establishment:** Each step provides a performance ceiling to beat
+
+**Medical Imaging Specific:** Consider domain shift — medical images may differ significantly from natural images (ImageNet). If k-NN/linear probe fail, the pretrained features may not transfer well, suggesting need for more adaptation or domain-specific pretraining.
+
+</details>
+:::
 
 
 ::: {#refs}

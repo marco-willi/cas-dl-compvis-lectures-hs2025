@@ -217,57 +217,127 @@ params:
 List is not exhaustive!
 
 
+# What About Videos?
+
+## Video Tasks
+
+Many image-level tasks extend naturally to videos - after all, videos are sequences of images.
+
+**Video-Specific Challenges:**
+
+- Temporal consistency across frames
+- Motion patterns and dynamics
+- Computational efficiency for real-time processing
+
+
+## Video Generation
+
+::: {#fig-intro-sora2}
+
+{{< video https://openaiassets.blob.core.windows.net/$web/nf2/blog-final2/20250929_0337_New%20Video_simple_compose_01k6agr8ctey29mze208t29w38%20(1).mp4 width=1200 >}}
+
+[OpenAI Sora 2](https://openai.com/index/sora-2/) - Text-to-video generation
+:::
+
+
+## Object & Keypoint Tracking
+
+::: {#fig-intro-cotracker}
+
+{{< video https://co-tracker.github.io/videos/teaser/rollerblade.mp4 width=1200 >}}
+
+[CoTracker](https://co-tracker.github.io/) - Tracking points across video frames (@karaev_cotracker_2024)
+:::
+
+
 # Challenges
 
 
 ## Semantic Gap
 
-![Illustration des semantic gap.]({{< meta params.images_path >}}semantic_gap.jpg){width=600}
+::: {#fig-cat-number-grid}
+
+![]({{< meta params.images_path >}}semantic_gap_comparison.png){width=600}
+
+Illustration of the semantic gap: computers see numbers, humans see meaning.
+:::
 
 
-## Point of View
+## Viewpoint
 
-![[Source](http://cs231n.stanford.edu/)]({{< meta params.images_path >}}viewpoint.png){width=600}
+::: {#fig-intro-challenge-viewpoint}
+
+![]({{< meta params.images_path >}}viewpoint_challenge.png){width=600}
+
+The same cat from different viewpoints looks completely different at the pixel level.
+:::
 
 ## Deformation
 
-![[Source](http://cs231n.stanford.edu/)]({{< meta params.images_path >}}challenge_deformation.png){width=600}
+::: {#fig-challenge-deformation}
 
-## Lighting
+![]({{< meta params.images_path >}}challenge_deformation.png){width=600}
 
-![[Source](http://cs231n.stanford.edu/)]({{< meta params.images_path >}}challenge_illumination.png){width=600}
+Cats exhibit significant shape variation due to pose changes. [Source](http://cs231n.stanford.edu/)
+:::
+
+## Illumination
+
+::: {#fig-challenge-illumination}
+
+![]({{< meta params.images_path >}}challenge_illumination.png){width=600}
+
+The same scene under different lighting conditions. [Source](http://cs231n.stanford.edu/)
+:::
 
 
-## Background
+## Background Clutter
 
-![[Source](http://cs231n.stanford.edu/)]({{< meta params.images_path >}}challenge_background.png){width=600}
+::: {#fig-challenge-background}
+
+![]({{< meta params.images_path >}}challenge_background.png){width=600}
+
+Cat camouflaged against a similarly-textured background. [Source](http://cs231n.stanford.edu/)
+:::
 
 
 ## Occlusion
 
-![[Source](http://cs231n.stanford.edu/)]({{< meta params.images_path >}}challenge_occlusion.png){width=600}
+::: {#fig-challenge-occlusion}
 
+![]({{< meta params.images_path >}}challenge_occlusion.png){width=600}
 
-## Intraclass Variation
-
-![[Source](https://www.maxpixel.net/Cat-Kittens-Free-Float-Kitten-Rush-Cat-Puppy-555822)]({{< meta params.images_path >}}challenge_intra_class_variation.jpg){width=600}
-
-
-## Context Relevance
-
-<!-- ![Kontext [Source](https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&utm_medium=member_desktop_web)]({{< meta params.images_path >}}tiger_context.jpg){width=600} -->
-
-
-::: {layout-ncol=2}
-
-::: {.fragment}
-![Kontext [Source](https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&utm_medium=member_desktop_web)]({{< meta params.images_path >}}context1.png)
+Partially occluded cat - only part of the object is visible. [Source](http://cs231n.stanford.edu/)
 :::
 
-::: {.fragment}
-![]({{< meta params.images_path >}}context2.png)
+
+## Intra-Class Variation
+
+::: {#fig-challenge-intra-class}
+
+![]({{< meta params.images_path >}}challenge_intra_class_variation.jpg){width=600}
+
+High intra-class variation: all are cats but with vastly different appearances. [Source](https://www.maxpixel.net/Cat-Kittens-Free-Float-Kitten-Rush-Cat-Puppy-555822)
 :::
 
+
+## Context Dependence
+
+::: {#fig-tiger-context}
+
+![]({{< meta params.images_path >}}tiger_context.jpg){width=600}
+
+Is this a tiger? Context clues help determine the answer. [Source](https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&utm_medium=member_desktop_web)
+:::
+
+
+## Context Dependence - Blurred Objects
+
+::: {#fig-blop-context}
+
+![]({{< meta params.images_path >}}challenges_context_blop.png){width=600}
+
+Even though the circled blobs are identical, we interpret them as different objects based on context. Source @torralba_using_2010
 :::
 
 
