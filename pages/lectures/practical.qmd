@@ -1,5 +1,5 @@
 ---
-title: "6 - Practical"
+title: "5 - Practical"
 params:
    images_path: "/assets/images/practical/"
 ---
