@@ -13,7 +13,7 @@
   <meta name="generator" content="quarto-1.8.25">
 
   <meta name="author" content="Marco Willi">
-  <title>CAS Deep Learning - Computer Vision – Einführung Computer Vision mit Deep Learning</title>
+  <title>CAS Deep Learning - Computer Vision – Introduction</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -227,7 +227,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="../../assets/fhnw_bg.png" data-background-opacity="1.0" data-background-size="contain" class="quarto-title-block center">
-  <h1 class="title">Einführung Computer Vision mit Deep Learning</h1>
+  <h1 class="title">Introduction</h1>
   <p class="subtitle">CAS Deep Learning - Computer Vision (Part1)</p>
 
 <div class="quarto-title-authors">
@@ -426,24 +426,9 @@ Marco Willi
 </ul>
 </div></div>
 <p>List is not exhaustive!</p>
-</section></section>
-<section>
-<section id="what-about-videos" class="title-slide slide level1 center">
-<h1>What About Videos?</h1>
-
 </section>
-<section id="video-tasks" class="slide level2">
-<h2>Video Tasks</h2>
-<p>Many image-level tasks extend naturally to videos - after all, videos are sequences of images.</p>
-<p><strong>Video-Specific Challenges:</strong></p>
-<ul>
-<li>Temporal consistency across frames</li>
-<li>Motion patterns and dynamics</li>
-<li>Computational efficiency for real-time processing</li>
-</ul>
-</section>
-<section id="video-generation" class="slide level2">
-<h2>Video Generation</h2>
+<section id="what-about-videos" class="slide level2">
+<h2>What About Videos?</h2>
 <div id="fig-intro-sora2" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-intro-sora2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -455,8 +440,8 @@ Figure&nbsp;4: <a href="https://openai.com/index/sora-2/">OpenAI Sora 2</a> - Te
 </figure>
 </div>
 </section>
-<section id="object-keypoint-tracking" class="slide level2">
-<h2>Object &amp; Keypoint Tracking</h2>
+<section id="what-about-videos-1" class="slide level2">
+<h2>What About Videos?</h2>
 <div id="fig-intro-cotracker" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-intro-cotracker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -512,20 +497,23 @@ Figure&nbsp;11: Partially occluded cat - only part of the object is visible. <a 
 <section id="intra-class-variation" class="slide level2">
 <h2>Intra-Class Variation</h2>
 
+<!--
+## Context Dependence
+
+::: {#fig-tiger-context}
+
+![](/assets/images/intro/tiger_context.jpg){width=600}
+
+Is this a tiger? Context clues help determine the answer. [Source](https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&utm_medium=member_desktop_web)
+::: -->
 <img data-src="../../assets/images/intro/challenge_intra_class_variation.jpg" width="600" class="r-stretch quarto-figure-center" id="fig-challenge-intra-class"><p class="caption">
 Figure&nbsp;12: High intra-class variation: all are cats but with vastly different appearances. <a href="https://www.maxpixel.net/Cat-Kittens-Free-Float-Kitten-Rush-Cat-Puppy-555822">Source</a>
-</p></section>
-<section id="context-dependence" class="slide level2">
-<h2>Context Dependence</h2>
-
-<img data-src="../../assets/images/intro/tiger_context.jpg" width="600" class="r-stretch quarto-figure-center" id="fig-tiger-context"><p class="caption">
-Figure&nbsp;13: Is this a tiger? Context clues help determine the answer. <a href="https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&amp;utm_medium=member_desktop_web">Source</a>
 </p></section>
 <section id="context-dependence---blurred-objects" class="slide level2">
 <h2>Context Dependence - Blurred Objects</h2>
 
 <img data-src="../../assets/images/intro/challenges_context_blop.png" width="600" class="r-stretch quarto-figure-center" id="fig-blop-context"><p class="caption">
-Figure&nbsp;14: Even though the circled blobs are identical, we interpret them as different objects based on context. Source <span class="citation" data-cites="torralba_using_2010">Torralba, Murphy, and Freeman (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>
+Figure&nbsp;13: Source <span class="citation" data-cites="torralba_using_2010">Torralba, Murphy, and Freeman (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>
 </p></section></section>
 <section>
 <section id="machine-learning" class="title-slide slide level1 center">
