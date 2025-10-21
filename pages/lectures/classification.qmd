@@ -83,10 +83,10 @@ $$\vect{x}_{l+1} = \vect{x}_l + F(\vect{x}_l)$$
 
 **Architecture Selection Strategy**
 
-✅ **Don't be a hero**: Use proven architectures first
-✅ **ResNet-50/101**: Excellent baseline for most tasks
-✅ **EfficientNet**: When model size/speed matters
-✅ **ConvNeXt**: State-of-the-art CNN performance
+- ✅ **Don't be a hero**: Use proven architectures first
+- ✅ **ResNet-50/101**: Excellent baseline for most tasks
+- ✅ **EfficientNet**: When model size/speed matters
+- ✅ **ConvNeXt**: State-of-the-art CNN performance
 
 **Consider**:
 - Accuracy requirements
@@ -110,12 +110,12 @@ $$\vect{x}_{l+1} = \vect{x}_l + F(\vect{x}_l)$$
 
 **Best Practices**
 
-✅ Start with pre-trained models (transfer learning)
-✅ Use proven architectures (ResNet, ConvNeXt)
-✅ Apply proper preprocessing (resize, normalize)
-✅ Use cross-entropy loss for classification
-✅ Monitor both training and validation metrics
-✅ Consider calibration (temperature scaling, label smoothing)
+- ✅ Start with pre-trained models (transfer learning)
+- ✅ Use proven architectures (ResNet, ConvNeXt)
+- ✅ Apply proper preprocessing (resize, normalize)
+- ✅ Use cross-entropy loss for classification
+- ✅ Monitor both training and validation metrics
+- ✅ Consider calibration (temperature scaling, label smoothing)
 
 **Key Takeaway**: Classification success comes from combining strong architectures (ResNets), probabilistic foundations (softmax + cross-entropy), transfer learning, and proper training practices.
 

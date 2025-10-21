@@ -186,7 +186,7 @@ Imagine you have to represent those in 2-D: $\vect{z} \in \mathbb{R}^2$. How wou
 Empty 2-dimensional representation space for mapping image similarity.
 :::
 
-::: {.callout-note title="Representation Intuition"}
+::: {.callout-note title="Question: Representing Images" collapse="false"}
 
 How would you represent the images of @fig-rl-examples in 2 dimensions? Why?
 
@@ -486,6 +486,7 @@ Let $\tilde{Z}_s,\tilde{Z}_g \in \mathbb{R}^{P \times D}$ be $\ell_2$-normalized
 \end{equation}
 
 **Notes.**
+
 - Teacher is an EMA of the student; teachers view only **global crops**, students see **global + local** crops; iBOT masks a subset of student patches.
 - Gram anchoring is applied in a late **refinement** phase to restore **patch-level consistency** without hurting global performance.
 

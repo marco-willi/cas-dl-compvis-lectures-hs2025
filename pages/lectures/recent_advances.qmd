@@ -4,6 +4,57 @@ params:
    images_path: "/assets/images/recent_advances/"
 ---
 
+::: {.callout-tip title="Learning Objectives" collapse="true"}
+By the end of this lecture you should be able to:
+
+- **Define** foundation models and explain how large-scale pre-training enables transfer learning across diverse downstream tasks with minimal task-specific data.
+- **Describe** CLIP's contrastive learning approach for joint vision-language understanding and apply it to zero-shot image classification and retrieval tasks.
+- **Understand** multi-modal models (VQA, BLIP2, Flamingo) that process visual and textual data simultaneously for tasks like visual question answering and accessibility applications.
+- **Explain** Vision Transformer (ViT) architecture, including how images are split into patches, linearly embedded, and processed with self-attention mechanisms.
+- **Compare** architectural differences between CNNs and Vision Transformers regarding inductive biases, receptive fields, and weight sharing patterns.
+- **Evaluate** trade-offs between CNNs and ViTs in terms of data efficiency, scalability, robustness to corruptions, and computational requirements.
+- **Apply** appropriate architecture selection strategies based on dataset size, computational resources, and task requirements (local vs global context).
+- **Recognize** that hybrid architectures combining convolutional and transformer layers leverage benefits of both inductive biases and global attention mechanisms.
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**Foundation Models:** Large-scale pre-trained models on vast datasets, fine-tunable for diverse tasks with small data; can be multimodal (text + images)
+
+**CLIP (Contrastive Language-Image Pre-training):**
+
+- Contrastive learning: maximize similarity for correct image-text pairs, minimize for incorrect
+- **Zero-shot classification** via language understanding, image search, duplicate detection
+- Fine-tunable when zero-shot insufficient
+
+**Multi-Modal Models (VQA):** Combine vision + language (BLIP2, Flamingo) for visual question answering, accessibility, chat systems with visual understanding
+
+**Vision Transformers (ViT):**
+
+- Split image into patches → linear embedding + positional encoding → transformer with self-attention
+- Global receptive field from first layer (all patches attend to each other)
+- Applications: classification, detection (DETR), segmentation, multimodal tasks
+
+**CNNs vs ViTs:**
+
+| Aspect | CNNs | ViTs |
+|--------|------|------|
+| **Inductive Biases** | Strong (local, translation equivariance) | Minimal (learn from data) |
+| **Receptive Field** | Local → hierarchical | Global from layer 1 |
+| **Data Efficiency** | ✅ Small datasets | ❌ Need 10M+ images |
+| **Scalability** | Limited | ✅ Scales well |
+| **Compute** | ✅ Efficient | ❌ Quadratic self-attention |
+| **Long-Range** | ❌ Need depth | ✅ Natural via attention |
+| **Best For** | Limited data/compute | Large datasets, global context |
+
+**Current State:** Similar performance when pre-trained on massive datasets; no clear winner.
+
+**Hybrid architectures** combine CNN (local biases) + transformers (global attention).
+
+Choose based on: limited data/compute → CNNs; large datasets/global context → ViTs.
+
+:::
 
 ::: {.content-hidden}
 $$

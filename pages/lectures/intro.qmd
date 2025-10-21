@@ -16,6 +16,12 @@ After this lecture you should be able to:
 
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
 
+**Applications:**
+
+- Autonomous driving, medical imaging, facial recognition
+- Photo editing, image generation, agricultural monitoring
+- Embedded systems (mobile chips for on-device inference)
+
 **Computer Vision Tasks:**
 
 - **Classification**: Assign images to predefined classes
@@ -55,18 +61,11 @@ After this lecture you should be able to:
 - Better architectures (CNNs exploit 2D structure)
 - End-to-end optimization (learn features + classifier together)
 
-**Applications:**
-
-- Autonomous driving, medical imaging, facial recognition
-- Photo editing, image generation, agricultural monitoring
-- Embedded systems (mobile chips for on-device inference)
-
-
 :::
 
 ## Motivation
 
-Deep Learning models have played a transformative role in _Computer Vision_ over the last decade, significantly enhancing and expanding the capabilities to process visual data.
+_Deep Learning_ models have played a transformative role in _Computer Vision_ over the last decade, significantly enhancing and expanding the capabilities to process visual data.
 
 The integration of deep learning in computer vision has massively improved the accuracy and efficiency of visual recognition, classification, and analysis. This has opened up new possibilities in applications such as automated driving, facial recognition, and medical image analysis. These models are now embedded in a wide variety of products and services.
 
@@ -83,22 +82,39 @@ To monitor wildlife populations biologists might deploy camera traps to capture 
 Image from a camera trap.
 :::
 
-Recent advances in generative deep learning enable anyone to create photorealistic synthetic images (see @fig-intro-synthetic-images for examples). While these technologies have many positive applications (art, design, prototyping), they also raise concerns about misinformation and deepfakes, motivating research into synthetic media detection.
+
+
+
+Recent advances in generative deep learning enable anyone to create photorealistic synthetic images (see @fig-intro-synthetic-images for examples). While these technologies have many positive applications (art, design, prototyping), they also raise concerns about misinformation and deepfakes, motivating research into synthetic media detection (@mathys_synthetic_2024-1).
 
 
 ::: {#fig-intro-synthetic-images layout-ncol=2}
-![[Source](https://x.com/TheInfiniteDude/status/1637211568692932608)]({{< meta params.images_path >}}sid_trump.jpg)
 
-![[Source](https://x.com/cryptomattk/status/1687908457880367104)]({{< meta params.images_path >}}sid_pope.jpg)
+![]({{< meta params.images_path >}}application_synthetic_images_grta.png)
 
-Examples of synthetic images.
+
+![]({{< meta params.images_path >}}sid_trump.jpg)
+
+<!--
+![[Source](https://x.com/cryptomattk/status/1687908457880367104)]({{< meta params.images_path >}}sid_pope.jpg) -->
+
+Examples of synthetic images: left from @mathys_synthetic_2024, right from [Source](https://x.com/TheInfiniteDude/status/1637211568692932608).
 :::
 
 
 <!-- ![Camera Trap Image Analysis]({{< meta params.images_path >}}camtrap.jpg){width=400} -->
 
+Apple's photo library uses deep learning to automatically classify and search through your photos. The system can recognize scenes (beach, mountain), objects (dog, car), and even activities (birthday, wedding). Additionally, sophisticated safety systems scan for problematic content while preserving privacy through on-device processing (@fig-intro-apple-safety).
 
-@fig-intro-google-lens shows an application in which a model identifies objects of interest in photographs, as well as searching additional information about it. Photos can also be used for translation tasks whereby models detect letters (optical character recognition - OCR) and then translate it (using language models in conjunction with visual models).
+::: {#fig-intro-apple-safety}
+![]({{< meta params.images_path >}}apple_nude_safety.png){width=600}
+
+Apple's on-device safety features detect sensitive content while maintaining user privacy. [Source](https://www.apple.com/child-safety/)
+:::
+
+
+Deep learning can be used to identify objects, to find similar images (image search / retrieval), ro to find (near-)duplicates (perceptual hashing), see @fig-intro-google-lens (left). Increasingly, models can cross modalities and, for example, process visual data and produce textual outputs. An interesting example is image captioning or the detection and translation of text in images  (optical character recognition - OCR), see @fig-intro-google-lens (right).
+
 
 :::: {.columns #fig-intro-google-lens}
 
@@ -421,6 +437,58 @@ But also object / keypoint tracking:
 {{< video https://co-tracker.github.io/videos/teaser/rollerblade.mp4 width=800 >}}
 
 [CoTracker](https://co-tracker.github.io/) - Tracking points across video frames for motion analysis (@karaev_cotracker_2024)
+::::
+
+
+::: {.callout-note title="Quiz: Which Application belongs to which task?" collapse="true"}
+
+Match each application to the most appropriate computer vision task:
+
+**Applications:**
+
+1. **Analyzing camera trap images** - Identifying which animals appear in wildlife monitoring photos
+2. **Apple's on-device image categorization and safety filters** - Classifying photos into categories or detecting inappropriate content
+3. **Image search** - Finding visually similar images in a large database
+4. **Finding tumors in medical images** - Precisely localizing and delineating abnormal tissue in CT or MRI scans
+5. **Counting apples in an orchard** - Detecting and tallying individual fruits on trees
+
+**Available Tasks:**
+
+- Image Classification
+- Object Detection
+- Image Segmentation
+- Image Retrieval/Embedding
+
+<details>
+<summary>Click for result</summary>
+
+1. **Analyzing camera trap images** → **Image Classification or Object Detection**
+   - *Image Classification* if you only need to know which species are present (one or more labels per image)
+   - *Object Detection* if you need to count individuals or localize where each animal appears in the frame
+   - The choice depends on the specific analysis requirements
+
+2. **Apple's on-device image categorization and safety filters** → **Image Classification**
+   - This involves assigning images to predefined categories (e.g., "food", "people", "landscape") or detecting inappropriate content
+   - Multi-label classification is used when an image can belong to multiple categories
+
+3. **Image search** → **Tricky - Not directly a standard task**
+   - This doesn't fit neatly into classification, detection, or segmentation
+   - Closest to *Image Classification* conceptually, as it relies on learned image representations/embeddings
+   - In practice, uses feature extraction (embedding) to compute similarity between images
+   - Often leverages classification networks trained on large datasets, but applied for retrieval rather than classification
+
+4. **Finding tumors in medical images** → **Image Segmentation**
+   - Requires pixel-level precision to delineate tumor boundaries
+   - *Semantic Segmentation* if identifying tumor vs. non-tumor tissue
+   - *Instance Segmentation* if distinguishing between multiple separate tumors
+
+5. **Counting apples in an orchard** → **Object Detection**
+   - Need to localize and count individual apples
+   - Each apple gets a bounding box, and counting is straightforward from detection results
+   - Could also use instance segmentation for more precise boundaries, but detection is typically sufficient
+
+</details>
+
 :::
 
 

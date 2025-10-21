@@ -4,6 +4,48 @@ params:
    images_path: "/assets/images/practical/"
 ---
 
+::: {.callout-tip title="Learning Objectives" collapse="true"}
+By the end of this lecture you should be able to:
+
+- **Apply** a systematic step-by-step recipe for training neural networks, from data exploration through hyperparameter tuning to final optimization.
+- **Diagnose** common training failures by understanding leaky abstractions and silent failure modes in deep learning frameworks.
+- **Establish** robust evaluation pipelines with appropriate metrics, train/validation/test splits, and baseline models before scaling to complex architectures.
+- **Implement** regularization strategies including data augmentation, early stopping, weight decay, and transfer learning to improve generalization performance.
+- **Select** appropriate data augmentation techniques (AugLy, Albumentations, Kornia) and understand when synthetic data can enhance training.
+- **Recognize** dataset characteristics (class imbalance, label quality, image resolution requirements) that impact modeling decisions and expected performance.
+- **Configure** reproducible experiments with proper random seeding, experiment tracking (Weights & Biases, Neptune), and structured project organization.
+- **Optimize** model performance through systematic hyperparameter tuning (grid search, random search, Ray Tune) and understand advanced phenomena like double descent and grokking.
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+**6-Step Training Recipe (Karpathy):**
+
+1. **Know your data** - Inspect distributions, corrupted images, class imbalance, resolution needs
+2. **Baselines** - Simple models, fix random seeds, define metrics, train/val/test splits
+3. **Overfit first** - Use established architectures (ResNet-50), conservative optimizers (Adam)
+4. **Regularize** - More data, augmentation, early stopping, weight decay, transfer learning
+5. **Tune hyperparameters** - Random search preferred (Ray Tune, Optuna)
+6. **Final optimization** - Ensembling, extended training, AdamW, Mixup/Cutmix, label smoothing
+
+**Key Insights:**
+
+- **Leaky abstractions & silent failures** - ML frameworks hide complexity; bad hyperparameters don't error
+- **Human baselines** - Annotator agreement sets performance upper bounds (96.6% in Snapshot Serengeti)
+- **Data issues** - Handle corrupted images, class imbalance (65% deer), ambiguous labels, resolution requirements
+- **Principle: "Don't be a hero"** - Use established architectures, not novel inventions
+
+**Regularization:** More data (best), augmentation (AugLy/Albumentations/Kornia), synthetic data, early stopping, weight decay: $\theta_{t+1} = \theta_t (1 - \lambda) - \eta \nabla J(\theta)$, transfer learning
+
+**Debugging:** Fix seeds, start simple, input-independent baseline (learns class distribution), overfit single batch, visualize inputs before `y_hat = model(x)`, track fixed samples
+
+**Advanced:** Double descent (test error ↓ again after overfitting), grokking (improvement after plateau)
+
+**Tools:** Hugging Face, timm, Weights & Biases, Neptune AI, Hydra, DVC
+
+:::
+
 ::: {.content-hidden}
 $$
 {{< include /assets/_macros.tex >}}
@@ -119,6 +161,23 @@ A challenging image to classify from a camera trap dataset. In the _Snapshot Ser
 
 **Train an input-independent baseline**, setting all pixel values to the same value, such as zero. This helps determine if a simple model is learning anything at all.
 
+::: {.callout-note title="Quiz: What would you expect?" collapse="true"}
+
+What kind of output would you expect for an input-independent baseline?
+
+<details>
+<summary>Click for result</summary>
+
+Since the model receives no information from the input (all pixels are the same), it cannot distinguish between individual samples. The optimal strategy is to minimize the average loss across all training samples.
+
+For classification with cross-entropy loss, this means the model will learn to predict the **class distribution** of the training set. For example, if 30% of training images are cats and 70% are dogs, the model will output approximately P(cat) ≈ 0.3 and P(dog) ≈ 0.7 for every input, regardless of what it actually contains.
+
+This serves as a sanity check: if your model performs *worse* than this baseline, something is fundamentally wrong with your training pipeline.
+
+</details>
+
+:::
+
 Another option is to **overfit the model on a batch of data**. If everything is functioning correctly, one should achieve perfect train metrics/losses.
 
 It is also helpful to **visualize what goes into the model**. This can help detect errors in _data augmentation_ or _data preprocessing_. This should be done just before executing this line of code:
@@ -196,6 +255,12 @@ Kornia
 Data augmentation example.
 :::
 
+**Modern Augmentation Strategies:**
+
+- **For fine-tuning foundation models**: Use minimal augmentation (crops, flips only)
+- **For training from scratch**: Heavy augmentation (RandAugment, MixUp, CutMix)
+- **Self-supervised models** (DINO, MAE) are already robust to augmentations
+
 Synthetic data can also be added to the training process, which can be successful. @fig-practical-synthetic-examples shows an example where 3D models of animals were created using a game engine and placed either in synthetic landscapes or spliced into real camera trap images.
 
 ::: {#fig-practical-synthetic-examples}
@@ -252,7 +317,21 @@ Transfer learning also has a regularizing effect and can reduce model training t
 Source: @johnson_eecs_2021
 :::
 
-The following example code [(PyTorch-Link)](https://pytorch.org/tutorials/beginner/finetuning_torchvision_models_tutorial.html) shows how to freeze the parameters of a pre-trained model by setting `requires_grad = False`.
+**Modern Pre-trained Model Options:**
+
+For **general-purpose vision features**, prefer:
+
+- **DINOv3** (self-supervised): Best for fine-grained tasks, robust to distribution shifts
+- **CLIP** (vision-language): Excellent for semantic tasks, zero-shot capabilities
+- **ResNet-50/EfficientNet** (supervised): Good baseline, efficient
+
+For **domain-specific** tasks:
+
+- Start with foundation models, then fine-tune
+- Use `timm` library: `timm.create_model('vit_base_patch14_dinov2.lvd142m', pretrained=True)`
+- Use Hugging Face: `transformers.CLIPModel.from_pretrained("openai/clip-vit-base-patch32")`
+
+The following example code shows how to freeze the parameters of a pre-trained model by setting `requires_grad = False`.
 
 ```{python}
 #| eval: false
@@ -263,6 +342,19 @@ def set_parameter_requires_grad(model, feature_extracting):
         for param in model.parameters():
             param.requires_grad = False
 ```
+
+**Adaptation Strategy Hierarchy:**
+
+When fine-tuning pre-trained models, follow this progression:
+
+1. **k-NN baseline**: Freeze backbone, classify with nearest neighbors (fastest validation)
+2. **Linear probe**: Freeze backbone, train only classification head
+3. **Partial fine-tune**: Unfreeze last few layers + head
+4. **Full fine-tune**: Unfreeze all layers (only if data >> 10k samples)
+
+::: {.callout-tip}
+**Rule of thumb**: Start with linear probing. Only move to full fine-tuning if you have >10k labeled samples per class and computational budget allows. k-NN is even simpler, however, might be slow for inference if the training dataset is large.
+:::
 
 ### 5) Hyper-Parameter Tuning
 

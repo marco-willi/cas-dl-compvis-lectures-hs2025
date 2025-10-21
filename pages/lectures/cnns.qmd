@@ -118,9 +118,7 @@ Images have unique properties that make them challenging for standard neural net
 A high-resolution photograph. [Image Source](https://unsplash.com/de/fotos/braune-schafe-auf-grunem-grasfeld-tagsuber-olonUwUrmQk)
 :::
 
-::: {.callout-note appearance="simple"}
-
-**Question**
+::: {.callout-note title="Question: How are nearby pixels related?" appearance="simple"}
 
 Looking at @fig-cnn-example-rgb-image, can you explain how nearby pixels are related?
 
@@ -140,7 +138,9 @@ Looking at @fig-cnn-example-rgb-image, can you explain how nearby pixels are rel
 
 :::
 
-We will see that Convolutional Neural Networks (CNNs) are much better suited to model images than MLPs. Unlike MLPs, CNNs explicitly assume that inputs (e.g., pixels) that are close together need to be considered together and that information is locally correlated. Certain properties are thus directly embedded in the architecture of CNNs (inductive biases), enabling them to exploit these properties efficiently (for example, with fewer model parameters).
+Even though we will soon see that Convolutional Neural Networks (CNNs) are much better suited to model images as compared to Multi-Layer Pereptrons (MLPs), we start by investigating the properties and difficulties to model images with MLPs. This will help understand how properties embedded in the architecture of CNNs (inductive biases) make them much more suitable to model computer vision tasks.
+
+
 
 ### MLPs and Images
 
@@ -199,9 +199,9 @@ Often the patterns we want to learn are not stationary. Ideally we want to recog
 Illustration of different inputs with the same pattern but shifted spatially. Illustrated are the weights of the first neuron. Green cells represent high weight values and yellow cells represent low values.
 :::
 
-::: {.callout-note appearance="simple"}
+::: {.callout-note title="Question: Patterns at different locations" appearance="simple"}
 
-**Question**: Can an MLP learn to detect the same pattern at different spatial locations? If yes, how? See @fig-cnns-mlp-pattern-shift.
+Can an MLP learn to detect the same pattern at different spatial locations? If yes, how? See @fig-cnns-mlp-pattern-shift.
 
 **Think about it:** If an MLP learns to detect a cat in the center of an image, what happens when the same cat appears in the corner?
 
@@ -229,9 +229,7 @@ Notice how CNNs reuse the same filter across all positions!
 ::: -->
 
 
-::: {.callout-note appearance="simple"}
-
-**Question**
+::: {.callout-note title="Question: MLPs and permutations." appearance="simple"}
 
 Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e., $f(P(\vect{x}))$? See @fig-cnns-mlp-pattern-shift.
 
@@ -288,7 +286,7 @@ Try to draw the same digit at different positions and observe what happens!
 
 :::
 
-### Invariance and Equivariance
+### Invariance and Equivariance {#sec-cnn-invariance}
 
 
 For many tasks involving image data, small variations in the input should either **not** change the model output (_invariance_) or should change the output **in tandem** with the input changes (_equivariance_).
@@ -310,9 +308,8 @@ $$f(g(\vect{x})) = g(f(\vect{x}))$$
 @fig-cnns-invariance-example shows an example of image classification. In this case, a model needs to be invariant to spatial translations of objects (if these do not change the image's class).
 
 
-::: {.callout-note appearance="simple"}
+::: {.callout-note title="Question: Inivariance for Image Classification" appearance="simple"}
 
-**Question**
 
 What type of transformations $g()$ does an image classification model as in @fig-cnns-invariance-example need to be invariant to?
 
@@ -629,9 +626,7 @@ What is the difference between using 3×3 vs 5×5 kernels? What is the same?
 Illustration of how a kernel with dilation=2 (middle) is applied to the input activations (left) to produce activations (right). Note the reduced spatial dimensionality of the output activations.
 :::
 
-::: {.callout-note appearance="simple"}
-
-**Question**
+::: {.callout-note title="Questoin: Dilation?" appearance="simple"}
 
 Why would we use dilation $d > 1$?
 
@@ -705,7 +700,7 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 \end{equation}
 
 <!-- TODO: hide Answer part of the followig questions  -->
-::: {.callout-note title="📝 Quiz: Output Shape Calculation" collapse="true"}
+::: {.callout-note title="🧮 Quiz: Output Shape Calculation" collapse="true"}
 
 **Problem**: You're designing a CNN layer with the following parameters:
 
@@ -734,7 +729,6 @@ o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 </details>
 :::
 
-Note: If dilation is 1 $d(k-1) - 1$ equals 0.
 
 
 ### Calculations: Number of Weights in a Convolutional Layer
@@ -761,7 +755,7 @@ If each output channel has a bias term, add an additional $C_{out}$ weights for 
 \text{Total Parameters} = (k \times k \times C_{in} \times C_{out}) + C_{out}
 \end{equation}
 
-::: {.callout-note title="🧮 Practice Quiz: Parameter Counting" collapse="true"}
+::: {.callout-note title="🧮 Quiz: Parameter Counting" collapse="true"}
 
 **Scenario**: Design a convolutional layer with:
 
@@ -965,6 +959,7 @@ Yes, but it would produce a different output size:
 $$o = \left\lfloor \frac{32 + 0 - 6 - 1}{2} + 1 \right\rfloor = \left\lfloor \frac{25}{2} + 1 \right\rfloor = 13$$
 
 **Why `padding=3` is preferred here:**
+
 - Maintains a "nice" output dimension ($16 \times 16$) that's easy to work with in subsequent layers
 - Preserves more spatial information from the edges of the input
 - Common practice: use padding to keep output size as $\lfloor \frac{i}{s} \rfloor$ when possible
@@ -989,9 +984,7 @@ Illustration of linear layer in an MLP (left column), including graph (top) and 
 
 
 
-::: {.callout-note appearance="simple"}
-
-**Question**
+::: {.callout-note title="Question: Linear Transformation" appearance="simple" collapse="true"}
 
 How should the linear transformation be defined to obtain the desired result in @fig-cnn-linear-transf-calc? How many parameters are needed? How could this be done with a convolution?
 
@@ -1017,11 +1010,7 @@ Convolutions are translation equivariant, as illustrated well in the following e
 Illustration of translation equivariance in convolutional layers.
 :::
 
-Translation equivariant is a function that produces the same value under translations $g()$ of the input $x$, provided that it is also shifted by $g()$:
-
-\begin{equation}
-f(g(x))=g(f(x))
-\end{equation}
+See @sec-cnn-invariance for more information.
 
 
 
@@ -1141,9 +1130,7 @@ $$r_0 = \sum_{l=1}^3 \left( (k_l - 1) \prod_{i=1}^{l-1} s_i \right) + 1$$
 
 Now that we understand how CNNs work, let's compare them systematically to MLPs:
 
-:::{.callout-note appearance="simple"}
-
-**Question**
+:::{.callout-note title="Question: MLP vs CNNs" appearance="simple"}
 
 How do MLPs and CNNs differ in their approach to processing images?
 

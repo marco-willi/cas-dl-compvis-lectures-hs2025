@@ -75,7 +75,7 @@ website:
           - pages/slides/image_classification.qmd
           - pages/slides/representation_learning.qmd
           - pages/slides/practical.qmd
-          #- pages/slides/recent_advances.qmd
+          - pages/slides/recent_advances.qmd
       # ------ Exercises ---------------------------- #
       - text: "Exercises"
         href: pages/misc/exercises.qmd
@@ -89,6 +89,7 @@ website:
           - pages/misc/literature.qmd
           - pages/misc/links.qmd
           - pages/misc/notation.qmd
+          - pages/misc/student_projects.qmd
 
 bibliography: assets/references.bib
 
