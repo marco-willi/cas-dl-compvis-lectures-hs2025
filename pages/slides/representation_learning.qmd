@@ -4,25 +4,6 @@ params:
    images_path: "/assets/images/representation_learning/"
 ---
 
-<!--
-NOTE: For Quarto Reveal.js syntax and advanced slide features,
-refer to QUARTO.md in the project root.
-Key features used in this file:
-- Fragments (.fragment) for incremental reveals
-- Incremental lists (.incremental)
-- Columns layout (.columns)
-- Tabsets for comparisons
-See QUARTO.md sections:
-- "Creating Reveal.js Slides" for basics
-- "Advanced Reveal.js Features" for fragments, animations, layouts
--->
-
-::: {.content-hidden}
-$$
-{{< include /assets/_macros.tex >}}
-$$
-:::
-
 ## Overview
 
 - Motivation & Introduction
@@ -30,51 +11,110 @@ $$
 - Deep Image Representations
 - Comparing Representations
 - Practical Applications
-- Summary
+
+
+::: {.content-hidden}
+$$
+{{< include /assets/_macros.tex >}}
+$$
+:::
 
 
 # Motivation
 
-## The Challenge
+## The Information Overkill
 
-![Example Image [Source](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick)]({{< meta params.images_path >}}elephant.jpg){width=70%}
+![Example Image [Source](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick)]({{< meta params.images_path >}}elephant.jpg)
 
 ::: {.fragment}
-**Human description**: "An elephant facing the camera with large tusks, standing in a savannah, bright daylight, cloudy sky"
+How would you describe the photograph?
 :::
+
+## The Information Overkill
+
+![Example Image [Source](https://unsplash.com/de/fotos/elefantenwanderung-tagsuber-QJbyG6O0ick)]({{< meta params.images_path >}}elephant.jpg)
+
+
+::: {.fragment}
+> A photograph of an elephant facing the camera.
+The elephant has large tusks and ears and is standing in a flat savannah.
+Is is bright day light with a cloudy sky.
+:::
+
+::: {.fragment}
+```{python}
+# | eval: true
+# | echo: false
+import pandas as pd
+from IPython.display import HTML
+
+# Natural language description
+description = """
+A photograph of an elephant facing the camera.
+The elephant has large tusks and ears and is standing in a flat savannah.
+Is is bright day light with a cloudy sky.
+"""
+
+# Calculate bits for natural language
+char_count = len(description)
+bits_utf8 = char_count * 8  # UTF-8 uses 8 bits per character
+bits_ascii = char_count * 7  # ASCII uses 7 bits per character
+
+# Raw image stats (from earlier calculation)
+width, height, channels = 640, 360, 3
+raw_bits = width * height * channels * 8
+
+# Compression ratio
+compression_ratio = raw_bits / bits_utf8
+
+# Create comparison table
+comparison_data = pd.DataFrame(
+    {
+        "Representation": [
+            "Raw RGB Image",
+            "Natural Language (UTF-8)",
+            "Natural Language (ASCII)",
+        ],
+        "Size (bits)": [f"{raw_bits:,}", f"{bits_utf8:,}", f"{bits_ascii:,}"],
+        "Size (KB)": [
+            f"{raw_bits / 8 / 1024:.1f}",
+            f"{bits_utf8 / 8 / 1024:.2f}",
+            f"{bits_ascii / 8 / 1024:.2f}",
+        ],
+        "Compression Factor": [
+            "1×",
+            f"{compression_ratio:.0f}×",
+            f"{raw_bits / bits_ascii:.0f}×",
+        ],
+    }
+)
+
+table_html = comparison_data.to_html(
+    index=False,
+    border=0,
+    classes="table table-sm table-striped align-middle caption-top",
+)
+
+HTML(table_html)
+```
+:::
+
 
 ::: {.fragment}
 **Key insight**: Massive compression while preserving semantically relevant information!
 :::
 
-## Information Content Comparison
 
-::: {.fragment}
-**Raw RGB Image**: $640 \times 360 \times 3 \times 8 = 5{,}529{,}600$ bits ≈ **675 KB**
-:::
+## The Vastness of Image Space
 
-::: {.fragment}
-**Natural Language**: ~1,400 bits ≈ **0.17 KB**
-:::
-
-::: {.fragment}
-**Compression Factor**: ~3,950×!
-:::
-
-::: {.fragment}
-But: Much relevant information preserved for practical tasks
-:::
-
-## The Image Space Problem
-
-![Illustrated are the set of all possible images and the subset of natural images]({{< meta params.images_path >}}set_of_images.png){width=60%}
+![Illustrated are the set of all possible images and the subset of natural images]({{< meta params.images_path >}}set_of_images.png){.r-stretch}
 
 ::: {.fragment}
 Total possible $256\times256$ RGB images: $255^{256 \times 256 \times 3}$ ≈ **infinite**
 :::
 
 ::: {.fragment}
-Natural images: **tiny subset** of this space
+Natural images: (_relatively_) **tiny subset** of this space
 :::
 
 ::: {.fragment}
@@ -91,16 +131,17 @@ A **representation** is the output $\vect{z} = f(\vect{x})$ produced by an encod
 :::
 
 ::: {.fragment}
-- $\vect{z}$ retains **task-relevant structure**
-- Discards **nuisance variation**
-- Encoder $f$ is the mapping, $\vect{z}$ is the result
+![]({{< meta params.images_path >}}data_and_representation_space.png){width=80%}
+
+
+**Semantic Coordindate System** where distances $\|\vect{z}_i - \vect{z}_j\|_2$ reflect meaningful relationships.
 :::
 
 ::: {.fragment}
 We focus on **vector-valued** (distributed) representations, not symbolic descriptions
 :::
 
-## Intuition: Synthetic Examples
+## Intuition
 
 ::: {layout-nrow=2}
 
@@ -136,61 +177,113 @@ We focus on **vector-valued** (distributed) representations, not symbolic descri
 **Hint**: Similar images should be close, dissimilar far apart
 :::
 
-## Data Space → Representation Space
+::: {.fragment}
+::: {layout-nrow=1}
 
-![**Data Space vs Representation Space**: The encoder $f$ transforms high-dimensional input samples $\vect{x}_i$ into compact representations $\vect{z}_i$ where semantic relationships become explicit]({{< meta params.images_path >}}data_and_representation_space.png){width=80%}
+
+![]({{< meta params.images_path >}}examples/elephant_day_01.png){fig-alt="Elephant in daylight savanna"}
+
+![]({{< meta params.images_path >}}augmented/elephant_flip_horizontal.png){fig-alt="Elephant in daylight savanna"}
+
+![]({{< meta params.images_path >}}augmented/elephant_brightness_1.8x.png){fig-alt="Elephant in daylight savanna"}
+
+![]({{< meta params.images_path >}}examples/elephant_day_02.png){fig-alt="Elephant by watering hole in daylight"}
+
+![]({{< meta params.images_path >}}examples/giraffe_day_01.png){fig-alt="Giraffe in daylight grassland"}
+
+![]({{< meta params.images_path >}}examples/rhino_night_01.png){fig-alt="Rhinoceros at nighttime"}
+
+![]({{< meta params.images_path >}}examples/elephant_night_01.png){fig-alt="Elephant at night with moonlight"}
+
+![]({{< meta params.images_path >}}examples/car_day_01.png){fig-alt="Modern car in bright daylight"}
+
+:::
+
+:::
+
 
 ## What Makes Good Representations?
 
-::: {.fragment}
-**1. Invariance & Selectivity Balance**
+### Invariance & Selectivity Balance
 
-- Invariant to nuisance transforms (lighting, pose)
-- Selective for semantic differences
+::: {.incremental}
+- **Invariance:** $\|f(\vect{x}) - f(g(\vect{x}))\|_2 < \epsilon$ for nuisance transform $g$ (lighting, pose)
+
+- **Selectivity:** $\|f(\vect{x}_i) - f(\vect{x}_j)\|_2 > \delta$ for semantically different $\vect{x}_i, \vect{x}_j$
+
+- *Trade-off:* Too much invariance → loss of discriminative details
+
+- *Sweet spot:* Preserve task-relevant variations, discard irrelevant ones
 :::
 
-::: {.fragment}
-**2. Geometric Structure Preservation**
 
-- Similar concepts cluster together
-- Smooth manifold structure
+
+## What Makes Good Representations?
+
+### Geometric Structure Preservation
+
+::: {.incremental}
+- **Smooth manifold:** Similar semantic concepts cluster in representation space
+- **Composability:** $f(\vect{x}_1) \oplus f(\vect{x}_2) \approx f(\text{combine}(\vect{x}_1, \vect{x}_2))$ for vector operations
+- **Interpolability:** Linear interpolation $\alpha f(\vect{x}_1) + (1-\alpha) f(\vect{x}_2)$ yields meaningful intermediate concepts
 :::
 
-::: {.fragment}
-**3. Transfer Efficiency**
 
-- Few examples needed for new tasks
-- Broad applicability across domains
+## What Makes Good Representations?
+
+### Transfer Efficiency
+
+::: {.incremental}
+
+- **Low sample complexity:** Few examples needed for downstream adaptation
+
+- **Broad applicability:** Same $f(\cdot)$ works across multiple tasks/domains
+
+- **Graceful degradation:** Performance degrades slowly with domain shift
 :::
 
-::: {.fragment}
-**4. Computational Practicality**
 
-- Compact dimensionality: $\dim(\vect{z}) \ll \dim(\vect{x})$
-- Fast forward pass
+## What Makes Good Representations?
+
+### Computational Practicality
+
+::: {.incremental}
+
+- **Compact dimensionality:** $\text{dim}(\vect{z}) \ll \text{dim}(\vect{x})$ while preserving information
+
+- **Fast computation:** Forward pass $f(\vect{x})$ efficient for real-time applications
+
+- **Stable training:** Representation learning converges reliably
 :::
+
 
 ## The Invariance-Selectivity Trade-off
 
-::: {.fragment}
-**Invariance**: $\|f(\vect{x}) - f(g(\vect{x}))\|_2 < \epsilon$
+::: {.incremental}
+- **Invariance**: $\|f(\vect{x}) - f(g(\vect{x}))\|_2 < \epsilon$ (Similar output for nuisance transforms)
 
-(Similar output for nuisance transforms)
+- **Selectivity**: $\|f(\vect{x}_i) - f(\vect{x}_j)\|_2 > \delta$ (Different outputs for semantic differences)
+
+- **Challenge**: Too much invariance → loss of discriminative details!
+
+- **Sweet spot**: Preserve task-relevant variations, discard nuisance factors
 :::
 
-::: {.fragment}
-**Selectivity**: $\|f(\vect{x}_i) - f(\vect{x}_j)\|_2 > \delta$
 
-(Different outputs for semantic differences)
+## The Invariance-Selectivity Trade-off {.center}
+
+
+::: {.r-fit-text}
+
+
+- What function has maximal invariance?
+
+- What function has maximal selectivity?
+
+
 :::
 
-::: {.fragment}
-**Challenge**: Too much invariance → loss of discriminative details!
-:::
 
-::: {.fragment}
-**Sweet spot**: Preserve task-relevant variations, discard nuisance factors
-:::
 
 
 # Deep Image Representations
@@ -205,9 +298,10 @@ We focus on **vector-valued** (distributed) representations, not symbolic descri
 
 ## Supervised Learning
 
-![**Supervised Pre-training**: Encoder + classifier trained with labeled data]({{< meta params.images_path >}}supervised_learning_representations.png){width=70%}
+![]({{< meta params.images_path >}}supervised_learning_representations.png)
 
 ::: {.fragment}
+- Encoder + classifier trained with labeled data
 - Train on labeled data (e.g., ImageNet 1000 classes)
 - Cross-entropy loss on human-provided labels
 - Penultimate layer embeddings = transferable features
@@ -215,17 +309,15 @@ We focus on **vector-valued** (distributed) representations, not symbolic descri
 
 ## Weakly Supervised: CLIP
 
-![**CLIP Contrastive Pre-training**: Dual encoders align images with text captions]({{< meta params.images_path >}}clip_contrastive_pre_training.png){width=70%}
+![From @radford_learning_2021]({{< meta params.images_path >}}clip_contrastive_pre_training.png)
 
 ::: {.fragment}
-Uses image-text pairs (web-scale data)
+- Dual encoders align images with text captions
+- Uses image-text pairs (web-scale data)
+- Contrastive loss: maximize diagonal, minimize off-diagonal
 :::
 
-::: {.fragment}
-Contrastive loss: maximize diagonal, minimize off-diagonal
-:::
-
-## CLIP: Key Properties
+<!-- ## CLIP: Key Properties
 
 ::: {.fragment}
 **Zero-shot Classification**
@@ -243,81 +335,77 @@ Learns from billions of noisy web pairs
 **Vision-Language Alignment**
 
 Shared embedding space for images and text
-:::
+::: -->
 
-## Self-Supervised Learning
+## Self-Supervised Learning: Masked Autoencoding (MAE)
 
-::: {.fragment}
-**Create pretext tasks from raw data** (no human labels!)
-:::
 
-::: {.fragment}
-Two dominant families:
-
-1. **Imputation/Masked Modeling** (MAE)
-2. **Contrastive/Self-Distillation** (SimCLR, DINO)
-:::
-
-## Masked Autoencoding (MAE)
-
-![**MAE Pipeline**: Mask patches → Encode visible → Decode all → Reconstruct masked]({{< meta params.images_path >}}masked_auto_encoder.png){width=90%}
-
-## MAE: How It Works
+![From @he_masked_2021]({{< meta params.images_path >}}masked_auto_encoder.png)
 
 ::: {.fragment}
-1. **Mask** 75% of image patches randomly
-:::
-
-::: {.fragment}
-2. **Encode** only visible patches (efficient!)
-:::
-
-::: {.fragment}
-3. **Decode** with mask tokens inserted
-:::
-
-::: {.fragment}
-4. **Reconstruct** original pixels at masked positions
+- Mask 75% of image patches random
+- Encode only visible patches (efficient!)
+- Decode with mask tokens inserted and reconstruct original pixels
 :::
 
 ::: {.fragment}
 **Key insight**: To fill in gaps, model must learn global structure
 :::
 
-## Contrastive Learning: SimCLR
+## Self-Supervised Learning: Contrastive Learning
 
 ::: {layout-ncol=2}
 
-![]({{< meta params.images_path >}}self_supervised_contrastive1.png)
+![From @chen_simple_2020]({{< meta params.images_path >}}self_supervised_contrastive1.png){width="60%"}
 
-![]({{< meta params.images_path >}}self_supervised_contrastive2.png)
+![From @chen_simple_2020]({{< meta params.images_path >}}self_supervised_contrastive2.png){width="60%"}
 
 :::
 
+::: {.fragment}
+- Pull positive pairs close together in embedding space
+- Push negative pairs apart
+- Form tight clusters of semantically similar samples
+:::
 
-## Self-Distillation: DINO
+##  Self-Supervised Learning: Self-Distillation {.smaller}
 
-![]({{< meta params.images_path >}}dino_principle.png)
+![From @@caron_emerging_2021]({{< meta params.images_path >}}dino_principle.png)
 
-## DINO: Key Advantages
-
-::: {.incremental}
-- **No explicit negatives** needed (unlike SimCLR)
-- Works with **smaller batches**
+::: {.fragment}
+- No explicit negatives needed
+- Works with smaller batches
 - Emergent semantic clustering
-- Produces high-quality **local features** (patch tokens)
+- Produces high-quality local features (patch tokens)
 :::
 
-::: {.fragment}
-**Result**: State-of-the-art transfer performance with simpler training
+##  Self-Supervised Learning: Self-Distillation
+
+::: {.r-fit-text}
+
+::: {.r-stack}
+
+What are the consequences if model training uses random left-right flips?
+
 :::
 
-## DINOv3: Local Features
+:::
 
-![**DINOv3 Patch Features**: Spatially-resolved embeddings preserve structure]({{< meta params.images_path >}}dinov3_local_features_grid.png){width=80%}
+
+
+## DINOv3
+
+{{< video https://www.youtube.com/watch?v=-eOYWK6m3i8 width="100%" height="85%" >}}
+
+
+## Global vs Local Representations
+
+**Global** representations summarize an image into a single embedding
+
+**Local** representations preserve spatially discriminative aspects
 
 ::: {.fragment}
-Each patch = semantic feature vector (unlike global pooling)
+![]({{< meta params.images_path >}}dinov3_local_cosine_similarity_example.png){height="60%"}
 :::
 
 
@@ -325,7 +413,27 @@ Each patch = semantic feature vector (unlike global pooling)
 
 ## Test Images Overview
 
-![]({{< meta params.images_path >}}images_overview.png){.r-stretch}
+::: {layout-nrow=2}
+
+![car]({{< meta params.images_path >}}examples/car_day_01.png)
+
+![eleph_d1]({{< meta params.images_path >}}examples/elephant_day_01.png)
+
+![eleph_d2]({{< meta params.images_path >}}examples/elephant_day_02.png)
+
+![eleph_n]({{< meta params.images_path >}}examples/elephant_night_01.png)
+
+![giraffe]({{< meta params.images_path >}}examples/giraffe_day_01.png)
+
+![rhino]({{< meta params.images_path >}}examples/rhino_night_01.png)
+
+![eleph_brt]({{< meta params.images_path >}}augmented/elephant_brightness_1.8x.png)
+
+![eleph_flip]({{< meta params.images_path >}}augmented/elephant_flip_horizontal.png)
+
+
+:::
+
 
 ## Comparisons
 
@@ -370,7 +478,7 @@ Self-distilled DINOv2 features reveal fine-grained semantic clusters.
 :::
 
 :::
-
+<!--
 ## Pixel Space Similarity
 
 ![]({{< meta params.images_path >}}similarity_pixel_space.png)
@@ -401,7 +509,7 @@ Strong vision-language alignment, robust to appearance changes
 
 ::: {.fragment}
 Best semantic discrimination, excellent invariance to nuisance factors
-:::
+::: -->
 
 ## Comparison Summary
 
@@ -415,7 +523,7 @@ Best semantic discrimination, excellent invariance to nuisance factors
 :::
 
 
-# Practical Applications
+# Practical Considerations
 
 ## Best Practices
 
@@ -430,17 +538,12 @@ Best semantic discrimination, excellent invariance to nuisance factors
 
 ## Model Selection Guide
 
-::: {.fragment}
-**DINOv3**: Best for discriminative vision tasks, few-shot learning
+::: {.incremental}
+- **DINOv3**: Best for discriminative vision tasks, few-shot learning
+- **CLIP**: Zero-shot classification, vision-language tasks
+- **Supervised CNNs**: When computational efficiency is critical (however, small DINOv3 variants exist..)
 :::
 
-::: {.fragment}
-**CLIP**: Zero-shot classification, vision-language tasks
-:::
-
-::: {.fragment}
-**Supervised CNNs**: When computational efficiency is critical
-:::
 
 ## Global vs Local Representations
 
@@ -581,31 +684,6 @@ optimizer = AdamW(model.parameters(), lr=5e-5)
 ::: {.fragment .highlight-red}
 ⚠️ Risk: Overfitting with limited data, expensive compute
 :::
-
-
-
-# Summary
-
-## Key Takeaways
-
-::: {.incremental}
-1. **Representation learning** transforms raw pixels into semantic embeddings
-2. **Three paradigms**: Supervised, weakly supervised, self-supervised
-3. **Trade-off**: Balance invariance (robustness) with selectivity (discrimination)
-4. **Model selection**: DINOv3 for vision, CLIP for V+L, MAE for reconstruction
-5. **Start simple**: k-NN → Linear → Adapters → Fine-tune
-:::
-
-## Best Practices
-
-::: {.incremental}
-- ✅ Start with k-NN baseline (diagnostic value)
-- ✅ Use linear probe before fine-tuning
-- ✅ Match invariances to task requirements
-- ✅ Choose global/local features based on task
-- ✅ Full fine-tuning is often overkill
-:::
-
 
 
 

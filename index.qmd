@@ -24,10 +24,7 @@ Hier finden Sie Unterlagen und aktuelle Informationen zum Modul.
 
 ## Inhalte
 
-Folgendes Programm ist noch provisorisch.
-
-
-### Tag 1 -  Grundlagen Convolutional Neural Networks
+### Tag 1 -  Grundlagen CNNs und Bildklassifikation
 
 | Zeit | Thema |
 |------|--------|
@@ -41,7 +38,7 @@ Folgendes Programm ist noch provisorisch.
 |15:15 - 16:30	| Übung: Bildklassifikation
 
 
-### Tag 2 -  Bildklassifikation und Anwendungen
+### Tag 2 -  Foundation Models und Praktische Tipps
 
 | Zeit | Thema |
 |------|--------|

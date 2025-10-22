@@ -51,7 +51,7 @@ It is easy for humans to describe the image. For example:
 # | eval: false
 # | echo: true
 """
-An photograph of an elephant facing the camera.
+A photograph of an elephant facing the camera.
 The elephant has large tusks and ears and is standing in a flat savannah.
 Is is bright day light with a cloudy sky.
 """
@@ -77,7 +77,7 @@ from IPython.display import HTML
 
 # Natural language description
 description = """
-An photograph of an elephant facing the camera.
+A photograph of an elephant facing the camera.
 The elephant has large tusks and ears and is standing in a flat savannah.
 Is is bright day light with a cloudy sky.
 """

@@ -5,18 +5,6 @@ params:
    images_path: "/assets/images/cnns/"
 ---
 
-<!--
-NOTE: For Quarto Reveal.js syntax and advanced slide features,
-refer to QUARTO.md in the project root.
-Key features used in this file:
-- Fragments (.fragment) for incremental reveals
-- Incremental lists (.incremental)
-- Columns layout (.columns)
-- Auto-animate for transitions
-See QUARTO.md sections:
-- "Creating Reveal.js Slides" for basics
-- "Advanced Reveal.js Features" for fragments, animations, layouts
--->
 
 ::: {.content-hidden}
 $$
@@ -412,10 +400,8 @@ You can calculate the dimensionality of the activation maps with the following f
 
 ::: {.fragment}
 \begin{equation}
-o = \left\lfloor \frac{i + 2p - k-(k-1)(d-1)}{s} \right\rfloor + 1
+o = \left\lfloor \frac{i + 2p - d\cdot(k-1) - 1}{s} + 1 \right\rfloor
 \end{equation}
-
-Note: If dilation is 1 $(k-1)(d-1)$ equals 0.
 :::
 
 
