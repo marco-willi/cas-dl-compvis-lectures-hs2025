@@ -24,7 +24,7 @@
     "href": "index.html#inhalte",
     "title": "Willkommen zum Modul Computer Vision mit Deep Learning",
     "section": "Inhalte",
-    "text": "Inhalte\nFolgendes Programm ist noch provisorisch.\n\nTag 1 - Grundlagen Convolutional Neural Networks\n\n\n\nZeit\nThema\n\n\n\n\n8:45 - 9:30\nEinführung Computer Vision mit Deep Learning\n\n\n9:30 - 10:30\nÜbung: Deep Learning mit PyTorch und Bildern\n\n\n10:30 - 10:45\nPause\n\n\n10:45 - 12:00\nConvolutional Neural Networks\n\n\n12:00 - 13:00\nMittagspause\n\n\n13:00 - 14:00\nÜbung: CNNs vs MLPs\n\n\n14:15 - 15:00\nTheorie: Bildklassifikation\n\n\n15:15 - 16:30\nÜbung: Bildklassifikation\n\n\n\n\n\nTag 2 - Bildklassifikation und Anwendungen\n\n\n\nZeit\nThema\n\n\n\n\n8:45 - 10:00\nTheorie: Foundation Models & Representation Learning\n\n\n10:15 - 11:15\nÜbung: Foundation Models\n\n\n11:30 - 12:00\nTheorie: Praktische Tipps\n\n\n12:00 - 13:00\nMittagspause\n\n\n13:00 - 15:30\nÜbung: End-To-End Beispiel\n\n\n15:30 - 15:45\nPause\n\n\n15:45 - 16:30\nQ&A / Buffer",
+    "text": "Inhalte\n\nTag 1 - Grundlagen CNNs und Bildklassifikation\n\n\n\nZeit\nThema\n\n\n\n\n8:45 - 9:30\nEinführung Computer Vision mit Deep Learning\n\n\n9:30 - 10:30\nÜbung: Deep Learning mit PyTorch und Bildern\n\n\n10:30 - 10:45\nPause\n\n\n10:45 - 12:00\nConvolutional Neural Networks\n\n\n12:00 - 13:00\nMittagspause\n\n\n13:00 - 14:00\nÜbung: CNNs vs MLPs\n\n\n14:15 - 15:00\nTheorie: Bildklassifikation\n\n\n15:15 - 16:30\nÜbung: Bildklassifikation\n\n\n\n\n\nTag 2 - Foundation Models und Praktische Tipps\n\n\n\nZeit\nThema\n\n\n\n\n8:45 - 10:00\nTheorie: Foundation Models & Representation Learning\n\n\n10:15 - 11:15\nÜbung: Foundation Models\n\n\n11:30 - 12:00\nTheorie: Praktische Tipps\n\n\n12:00 - 13:00\nMittagspause\n\n\n13:00 - 15:30\nÜbung: End-To-End Beispiel\n\n\n15:30 - 15:45\nPause\n\n\n15:45 - 16:30\nQ&A / Buffer",
     "crumbs": [
       "Home"
     ]
@@ -928,7 +928,7 @@
     "href": "pages/background/frameworks.html#tensors",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.2 Tensors",
-    "text": "2.2 Tensors\ntorch.Tensor is the central data structure in PyTorch. Essentially very similar to numpy.array, it can be easily loaded onto GPUs.\nTensors can be created in various ways. For example, from lists:\n\ndata = [[1, 2],[3, 4]]\nx_data = torch.tensor(data)\nprint(x_data)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from numpy.ndarray:\n\nnp_array = np.array(data)\nx_np = torch.from_numpy(np_array)\nprint(x_np)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from other tensors:\n\nx_ones = torch.ones_like(x_data) # retains the properties of x_data\nprint(f\"Ones Tensor: \\n {x_ones} \\n\")\n\nx_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data\nprint(f\"Random Tensor: \\n {x_rand} \\n\")\n\nOnes Tensor: \n tensor([[1, 1],\n        [1, 1]]) \n\nRandom Tensor: \n tensor([[0.1585, 0.0172],\n        [0.9491, 0.8969]]) \n\n\n\nOr with randomly generated numbers or constants:\n\nshape = (2,3,)\nrand_tensor = torch.rand(shape)\nones_tensor = torch.ones(shape)\nzeros_tensor = torch.zeros(shape)\n\nprint(f\"Random Tensor: \\n {rand_tensor} \\n\")\nprint(f\"Ones Tensor: \\n {ones_tensor} \\n\")\nprint(f\"Zeros Tensor: \\n {zeros_tensor}\")\n\nRandom Tensor: \n tensor([[0.6398, 0.5138, 0.3997],\n        [0.5927, 0.7882, 0.5404]]) \n\nOnes Tensor: \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n\nZeros Tensor: \n tensor([[0., 0., 0.],\n        [0., 0., 0.]])\n\n\nTensor attributes:\n\ntensor = torch.rand(3,4)\n\nprint(f\"Shape of tensor: {tensor.shape}\")\nprint(f\"Datatype of tensor: {tensor.dtype}\")\nprint(f\"Device tensor is stored on: {tensor.device}\")\n\nShape of tensor: torch.Size([3, 4])\nDatatype of tensor: torch.float32\nDevice tensor is stored on: cpu\n\n\nThere are over 100 operations that can be performed on a tensor. The full list is available here.\nIndexing and Slicing:\n\ntensor = torch.ones(4, 4)\nprint(f\"First row: {tensor[0]}\")\nprint(f\"First column: {tensor[:, 0]}\")\nprint(f\"Last column: {tensor[:, -1]}\")\ntensor[:,1] = 0\nprint(tensor)\n\nFirst row: tensor([1., 1., 1., 1.])\nFirst column: tensor([1., 1., 1., 1.])\nLast column: tensor([1., 1., 1., 1.])\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])\n\n\nJoining tensors:\n\nt1 = torch.cat([tensor, tensor, tensor], dim=1)\nprint(t1)\n\ntensor([[1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.]])\n\n\nArithmetic operations:\n\n# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value\ny1 = tensor @ tensor.T\ny2 = tensor.matmul(tensor.T)\n\ny3 = torch.rand_like(y1)\ntorch.matmul(tensor, tensor.T, out=y3)\n\n\n# This computes the element-wise product. z1, z2, z3 will have the same value\nz1 = tensor * tensor\nz2 = tensor.mul(tensor)\n\nz3 = torch.rand_like(tensor)\ntorch.mul(tensor, tensor, out=z3)\n\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])",
+    "text": "2.2 Tensors\ntorch.Tensor is the central data structure in PyTorch. Essentially very similar to numpy.array, it can be easily loaded onto GPUs.\nTensors can be created in various ways. For example, from lists:\n\ndata = [[1, 2],[3, 4]]\nx_data = torch.tensor(data)\nprint(x_data)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from numpy.ndarray:\n\nnp_array = np.array(data)\nx_np = torch.from_numpy(np_array)\nprint(x_np)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from other tensors:\n\nx_ones = torch.ones_like(x_data) # retains the properties of x_data\nprint(f\"Ones Tensor: \\n {x_ones} \\n\")\n\nx_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data\nprint(f\"Random Tensor: \\n {x_rand} \\n\")\n\nOnes Tensor: \n tensor([[1, 1],\n        [1, 1]]) \n\nRandom Tensor: \n tensor([[0.5693, 0.1311],\n        [0.5135, 0.8947]]) \n\n\n\nOr with randomly generated numbers or constants:\n\nshape = (2,3,)\nrand_tensor = torch.rand(shape)\nones_tensor = torch.ones(shape)\nzeros_tensor = torch.zeros(shape)\n\nprint(f\"Random Tensor: \\n {rand_tensor} \\n\")\nprint(f\"Ones Tensor: \\n {ones_tensor} \\n\")\nprint(f\"Zeros Tensor: \\n {zeros_tensor}\")\n\nRandom Tensor: \n tensor([[0.8125, 0.7230, 0.3602],\n        [0.9850, 0.7342, 0.5373]]) \n\nOnes Tensor: \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n\nZeros Tensor: \n tensor([[0., 0., 0.],\n        [0., 0., 0.]])\n\n\nTensor attributes:\n\ntensor = torch.rand(3,4)\n\nprint(f\"Shape of tensor: {tensor.shape}\")\nprint(f\"Datatype of tensor: {tensor.dtype}\")\nprint(f\"Device tensor is stored on: {tensor.device}\")\n\nShape of tensor: torch.Size([3, 4])\nDatatype of tensor: torch.float32\nDevice tensor is stored on: cpu\n\n\nThere are over 100 operations that can be performed on a tensor. The full list is available here.\nIndexing and Slicing:\n\ntensor = torch.ones(4, 4)\nprint(f\"First row: {tensor[0]}\")\nprint(f\"First column: {tensor[:, 0]}\")\nprint(f\"Last column: {tensor[:, -1]}\")\ntensor[:,1] = 0\nprint(tensor)\n\nFirst row: tensor([1., 1., 1., 1.])\nFirst column: tensor([1., 1., 1., 1.])\nLast column: tensor([1., 1., 1., 1.])\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])\n\n\nJoining tensors:\n\nt1 = torch.cat([tensor, tensor, tensor], dim=1)\nprint(t1)\n\ntensor([[1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.]])\n\n\nArithmetic operations:\n\n# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value\ny1 = tensor @ tensor.T\ny2 = tensor.matmul(tensor.T)\n\ny3 = torch.rand_like(y1)\ntorch.matmul(tensor, tensor.T, out=y3)\n\n\n# This computes the element-wise product. z1, z2, z3 will have the same value\nz1 = tensor * tensor\nz2 = tensor.mul(tensor)\n\nz3 = torch.rand_like(tensor)\ntorch.mul(tensor, tensor, out=z3)\n\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -939,7 +939,7 @@
     "href": "pages/background/frameworks.html#autograd",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.3 Autograd",
-    "text": "2.3 Autograd\nTo train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an auto-diff functionality: torch.autograd. This can automatically compute gradients for a computational graph.\n\n\n\n\n\n\nTipAutograd Key Points\n\n\n\n\nSet requires_grad=True on tensors you want to track for gradient computation\nCall .backward() on a scalar loss to compute all gradients\nAccess gradients via .grad attribute of tensors\nUse torch.no_grad() context for inference to save memory and speed up computation\n\n\n\nThe following is an example using a 1-layer neural network (see Figure 4 ):\n\n\n\n\n\n\nFigure 4: Source: PyTorch\n\n\n\nThe network from Figure 4 is defined in PyTorch code in Listing 4.\n\n\n\n\nListing 4: Example computational graph.\n\n\nimport torch\n\nx = torch.ones(5)  # input tensor\ny = torch.zeros(3)  # expected output\nw = torch.randn(5, 3, requires_grad=True)\nb = torch.randn(3, requires_grad=True)\nz = torch.matmul(x, w)+b\nloss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)\n\n\n\n\nWe can now use Autograd to compute the gradient:\n\nloss.backward()\nprint(w.grad)\nprint(b.grad)\n\ntensor([[0.0903, 0.1494, 0.1759],\n        [0.0903, 0.1494, 0.1759],\n        [0.0903, 0.1494, 0.1759],\n        [0.0903, 0.1494, 0.1759],\n        [0.0903, 0.1494, 0.1759]])\ntensor([0.0903, 0.1494, 0.1759])",
+    "text": "2.3 Autograd\nTo train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an auto-diff functionality: torch.autograd. This can automatically compute gradients for a computational graph.\n\n\n\n\n\n\nTipAutograd Key Points\n\n\n\n\nSet requires_grad=True on tensors you want to track for gradient computation\nCall .backward() on a scalar loss to compute all gradients\nAccess gradients via .grad attribute of tensors\nUse torch.no_grad() context for inference to save memory and speed up computation\n\n\n\nThe following is an example using a 1-layer neural network (see Figure 4 ):\n\n\n\n\n\n\nFigure 4: Source: PyTorch\n\n\n\nThe network from Figure 4 is defined in PyTorch code in Listing 4.\n\n\n\n\nListing 4: Example computational graph.\n\n\nimport torch\n\nx = torch.ones(5)  # input tensor\ny = torch.zeros(3)  # expected output\nw = torch.randn(5, 3, requires_grad=True)\nb = torch.randn(3, requires_grad=True)\nz = torch.matmul(x, w)+b\nloss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)\n\n\n\n\nWe can now use Autograd to compute the gradient:\n\nloss.backward()\nprint(w.grad)\nprint(b.grad)\n\ntensor([[0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068]])\ntensor([0.1172, 0.3256, 0.3068])",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -950,7 +950,7 @@
     "href": "pages/background/frameworks.html#torch.nn",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.4 torch.nn",
-    "text": "2.4 torch.nn\nPyTorch provides various building blocks for creating neural networks. These are available in torch.nn. Additionally, you can define any compositions of such building blocks that inherit from torch.nn.Module. A neural network is typically a torch.nn.Module. Each module implements the forward() method to define how data is processed.\n\n\n\n\n\n\nTipBuilding Blocks in torch.nn\n\n\n\nCommon layers:\n\nnn.Linear: Fully connected layer\nnn.Conv2d: 2D convolutional layer\nnn.MaxPool2d: Max pooling layer\nnn.Dropout: Regularization via random dropout\nnn.BatchNorm2d: Batch normalization\n\nCommon activations:\n\nnn.ReLU(), nn.LeakyReLU(), nn.GELU()\nnn.Sigmoid(), nn.Softmax()\n\nLoss functions:\n\nnn.CrossEntropyLoss(): Classification\nnn.BCEWithLogitsLoss(): Binary classification\nnn.MSELoss(): Regression\n\n\n\nListing 5 depicts an example of a class that inherits from torch.nn.Module.\n\n\n\n\nListing 5: Example nn.Module.\n\n\nfrom torch import nn\n\nclass NeuralNetwork(nn.Module):\n    def __init__(self):\n        super(NeuralNetwork, self).__init__()\n        self.flatten = nn.Flatten()\n        self.linear_relu_stack = nn.Sequential(\n            nn.Linear(28*28, 512),\n            nn.ReLU(),\n            nn.Linear(512, 512),\n            nn.ReLU(),\n            nn.Linear(512, 10),\n        )\n\n    def forward(self, x):\n        x = self.flatten(x)\n        logits = self.linear_relu_stack(x)\n        return logits\n\n\n\n\nYou can also visualize the model:\n\nmodel = NeuralNetwork()\nprint(model)\n\nNeuralNetwork(\n  (flatten): Flatten(start_dim=1, end_dim=-1)\n  (linear_relu_stack): Sequential(\n    (0): Linear(in_features=784, out_features=512, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=512, out_features=512, bias=True)\n    (3): ReLU()\n    (4): Linear(in_features=512, out_features=10, bias=True)\n  )\n)\n\n\nTo use the model, you can pass input data. This will execute the forward() method, along with background operations.\n\nX = torch.rand(1, 28, 28)\nlogits = model(X)\npred_probab = nn.Softmax(dim=1)(logits)\ny_pred = pred_probab.argmax(1)\nprint(f\"Predicted class: {y_pred}\")\n\nPredicted class: tensor([4])\n\n\nThe executed operations will look like this:\n\nfrom torchviz import make_dot\nmake_dot(logits)\n\n\n\n\n\n\n\n\nFor more in-depth information about the model you can use the external library torchinfo as seen in Listing 6.\n\n\n\n\nListing 6: Example output of torchinfo.\n\n\nfrom torchinfo import summary\nmodel = NeuralNetwork()\nsummary(model, input_size=(128, 1, 28, 28))\n\n\n\n\n==========================================================================================\nLayer (type:depth-idx)                   Output Shape              Param #\n==========================================================================================\nNeuralNetwork                            [128, 10]                 --\n├─Flatten: 1-1                           [128, 784]                --\n├─Sequential: 1-2                        [128, 10]                 --\n│    └─Linear: 2-1                       [128, 512]                401,920\n│    └─ReLU: 2-2                         [128, 512]                --\n│    └─Linear: 2-3                       [128, 512]                262,656\n│    └─ReLU: 2-4                         [128, 512]                --\n│    └─Linear: 2-5                       [128, 10]                 5,130\n==========================================================================================\nTotal params: 669,706\nTrainable params: 669,706\nNon-trainable params: 0\nTotal mult-adds (Units.MEGABYTES): 85.72\n==========================================================================================\nInput size (MB): 0.40\nForward/backward pass size (MB): 1.06\nParams size (MB): 2.68\nEstimated Total Size (MB): 4.14\n==========================================================================================",
+    "text": "2.4 torch.nn\nPyTorch provides various building blocks for creating neural networks. These are available in torch.nn. Additionally, you can define any compositions of such building blocks that inherit from torch.nn.Module. A neural network is typically a torch.nn.Module. Each module implements the forward() method to define how data is processed.\n\n\n\n\n\n\nTipBuilding Blocks in torch.nn\n\n\n\nCommon layers:\n\nnn.Linear: Fully connected layer\nnn.Conv2d: 2D convolutional layer\nnn.MaxPool2d: Max pooling layer\nnn.Dropout: Regularization via random dropout\nnn.BatchNorm2d: Batch normalization\n\nCommon activations:\n\nnn.ReLU(), nn.LeakyReLU(), nn.GELU()\nnn.Sigmoid(), nn.Softmax()\n\nLoss functions:\n\nnn.CrossEntropyLoss(): Classification\nnn.BCEWithLogitsLoss(): Binary classification\nnn.MSELoss(): Regression\n\n\n\nListing 5 depicts an example of a class that inherits from torch.nn.Module.\n\n\n\n\nListing 5: Example nn.Module.\n\n\nfrom torch import nn\n\nclass NeuralNetwork(nn.Module):\n    def __init__(self):\n        super(NeuralNetwork, self).__init__()\n        self.flatten = nn.Flatten()\n        self.linear_relu_stack = nn.Sequential(\n            nn.Linear(28*28, 512),\n            nn.ReLU(),\n            nn.Linear(512, 512),\n            nn.ReLU(),\n            nn.Linear(512, 10),\n        )\n\n    def forward(self, x):\n        x = self.flatten(x)\n        logits = self.linear_relu_stack(x)\n        return logits\n\n\n\n\nYou can also visualize the model:\n\nmodel = NeuralNetwork()\nprint(model)\n\nNeuralNetwork(\n  (flatten): Flatten(start_dim=1, end_dim=-1)\n  (linear_relu_stack): Sequential(\n    (0): Linear(in_features=784, out_features=512, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=512, out_features=512, bias=True)\n    (3): ReLU()\n    (4): Linear(in_features=512, out_features=10, bias=True)\n  )\n)\n\n\nTo use the model, you can pass input data. This will execute the forward() method, along with background operations.\n\nX = torch.rand(1, 28, 28)\nlogits = model(X)\npred_probab = nn.Softmax(dim=1)(logits)\ny_pred = pred_probab.argmax(1)\nprint(f\"Predicted class: {y_pred}\")\n\nPredicted class: tensor([1])\n\n\nThe executed operations will look like this:\n\nfrom torchviz import make_dot\nmake_dot(logits)\n\n\n\n\n\n\n\n\nFor more in-depth information about the model you can use the external library torchinfo as seen in Listing 6.\n\n\n\n\nListing 6: Example output of torchinfo.\n\n\nfrom torchinfo import summary\nmodel = NeuralNetwork()\nsummary(model, input_size=(128, 1, 28, 28))\n\n\n\n\n==========================================================================================\nLayer (type:depth-idx)                   Output Shape              Param #\n==========================================================================================\nNeuralNetwork                            [128, 10]                 --\n├─Flatten: 1-1                           [128, 784]                --\n├─Sequential: 1-2                        [128, 10]                 --\n│    └─Linear: 2-1                       [128, 512]                401,920\n│    └─ReLU: 2-2                         [128, 512]                --\n│    └─Linear: 2-3                       [128, 512]                262,656\n│    └─ReLU: 2-4                         [128, 512]                --\n│    └─Linear: 2-5                       [128, 10]                 5,130\n==========================================================================================\nTotal params: 669,706\nTrainable params: 669,706\nNon-trainable params: 0\nTotal mult-adds (Units.MEGABYTES): 85.72\n==========================================================================================\nInput size (MB): 0.40\nForward/backward pass size (MB): 1.06\nParams size (MB): 2.68\nEstimated Total Size (MB): 4.14\n==========================================================================================",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -1500,7 +1500,7 @@
     "href": "pages/lectures/representation_learning.html#motivation",
     "title": "4 - Representation Learning",
     "section": "1 Motivation",
-    "text": "1 Motivation\nDifferent properties and challenges, such as the semantic gap, are reasons modelling images is difficult. In particular extracting generic, semantically meaningful information is hard. Humans, however, excel at this task and can easily and comprehensively describe images with relatively few bits of information. A good example is Figure 1:\n\n\n\n\n\n\n\n\n\n\nFigure 1: Example Image Source.\n\n\n\nIt is easy for humans to describe the image. For example:\n\n\"\"\"\nAn photograph of an elephant facing the camera.\nThe elephant has large tusks and ears and is standing in a flat savannah.\nIs is bright day light with a cloudy sky.\n\"\"\"\n\nOf course: a lot of information is lost, however, practically relevant information is preserved!\n\n\n\n\n\n\nNoteInformation Content: Raw vs Natural Language\n\n\n\n\n\nLet’s quantify the dramatic compression achieved by semantic description:\nRaw Image (Pixel Representation):\n\nResolution: 640 × 360 pixels\nChannels: 3 (RGB)\nBits per pixel: 8 bits per channel\n\n\n\n\n\n\nRepresentation\nSize (bits)\nSize (KB)\nCompression Factor\n\n\n\n\nRaw RGB Image\n5,529,600\n675.0\n1×\n\n\nNatural Language (UTF-8)\n1,320\n0.16\n4189×\n\n\nNatural Language (ASCII)\n1,155\n0.14\n4788×\n\n\n\n\n\n\n\n\nWe can also say: By describing the image we represent the image with natural language, instead of the raw pixels.\nThis is exactly what Representation Learning is interested in: How can we find compact representations wich are significantly smaller than the raw, original representations while retaining relevant information?\nThe idea is that such compact representations are well suited for down-stream tasks, such as image classification.\nOne motivation to represent images in a different space than with raw pixels (data space) is the enormous difference between the set of all possible images and the set of natural (real-world) images. This indicates that representing images in pixel space is not efficient. As illustrated in Figure 2, the subset of natural images occupies only a tiny fraction of the entire image space. For instance, for RGB images of size \\(256 \\times 256\\) pixels with 255 possible intensity values per channel, the total number of possible images is \\(255^{256 \\times 256 \\times 3}\\), an astronomically large number, effectively infinite from a practical standpoint. This enables strong compression if we can find a more suitable space or coordinate system to represent images.\n\n\n\n\n\n\nFigure 2: Illustrated are the set of all possible images and the subset of natural images.",
+    "text": "1 Motivation\nDifferent properties and challenges, such as the semantic gap, are reasons modelling images is difficult. In particular extracting generic, semantically meaningful information is hard. Humans, however, excel at this task and can easily and comprehensively describe images with relatively few bits of information. A good example is Figure 1:\n\n\n\n\n\n\n\n\n\n\nFigure 1: Example Image Source.\n\n\n\nIt is easy for humans to describe the image. For example:\n\n\"\"\"\nA photograph of an elephant facing the camera.\nThe elephant has large tusks and ears and is standing in a flat savannah.\nIs is bright day light with a cloudy sky.\n\"\"\"\n\nOf course: a lot of information is lost, however, practically relevant information is preserved!\n\n\n\n\n\n\nNoteInformation Content: Raw vs Natural Language\n\n\n\n\n\nLet’s quantify the dramatic compression achieved by semantic description:\nRaw Image (Pixel Representation):\n\nResolution: 640 × 360 pixels\nChannels: 3 (RGB)\nBits per pixel: 8 bits per channel\n\n\n\n\n\n\nRepresentation\nSize (bits)\nSize (KB)\nCompression Factor\n\n\n\n\nRaw RGB Image\n5,529,600\n675.0\n1×\n\n\nNatural Language (UTF-8)\n1,312\n0.16\n4215×\n\n\nNatural Language (ASCII)\n1,148\n0.14\n4817×\n\n\n\n\n\n\n\n\nWe can also say: By describing the image we represent the image with natural language, instead of the raw pixels.\nThis is exactly what Representation Learning is interested in: How can we find compact representations wich are significantly smaller than the raw, original representations while retaining relevant information?\nThe idea is that such compact representations are well suited for down-stream tasks, such as image classification.\nOne motivation to represent images in a different space than with raw pixels (data space) is the enormous difference between the set of all possible images and the set of natural (real-world) images. This indicates that representing images in pixel space is not efficient. As illustrated in Figure 2, the subset of natural images occupies only a tiny fraction of the entire image space. For instance, for RGB images of size \\(256 \\times 256\\) pixels with 255 possible intensity values per channel, the total number of possible images is \\(255^{256 \\times 256 \\times 3}\\), an astronomically large number, effectively infinite from a practical standpoint. This enables strong compression if we can find a more suitable space or coordinate system to represent images.\n\n\n\n\n\n\nFigure 2: Illustrated are the set of all possible images and the subset of natural images.",
     "crumbs": [
       "Lectures",
       "4 - Representation Learning"
@@ -2058,7 +2058,7 @@
     "href": "pages/slides/cnns.html#calculations-spatial-dimensionality-of-activation-maps",
     "title": "Convolutional Neural Networks",
     "section": "Calculations: Spatial Dimensionality of Activation Maps",
-    "text": "Calculations: Spatial Dimensionality of Activation Maps\nYou can calculate the dimensionality of the activation maps with the following formulas:\n\n\\(i\\): Side length of the input activations (assumption: square inputs)\n\\(k\\): Kernel size (assumption: square kernel)\n\\(o\\): Side length of the output activation maps\n\\(s\\): Stride (assumption: same stride along spatial dimensions)\n\\(p\\): Number of paddings on each side (assumption: same number of paddings along spatial dimensions)\n\\(d\\): Dilation rate.\n\n\n\\[\\begin{equation}\no = \\left\\lfloor \\frac{i + 2p - k-(k-1)(d-1)}{s} \\right\\rfloor + 1\n\\end{equation}\\]\nNote: If dilation is 1 \\((k-1)(d-1)\\) equals 0.",
+    "text": "Calculations: Spatial Dimensionality of Activation Maps\nYou can calculate the dimensionality of the activation maps with the following formulas:\n\n\\(i\\): Side length of the input activations (assumption: square inputs)\n\\(k\\): Kernel size (assumption: square kernel)\n\\(o\\): Side length of the output activation maps\n\\(s\\): Stride (assumption: same stride along spatial dimensions)\n\\(p\\): Number of paddings on each side (assumption: same number of paddings along spatial dimensions)\n\\(d\\): Dilation rate.\n\n\n\\[\\begin{equation}\no = \\left\\lfloor \\frac{i + 2p - d\\cdot(k-1) - 1}{s} + 1 \\right\\rfloor\n\\end{equation}\\]",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"
@@ -3235,40 +3235,40 @@
     "href": "pages/slides/representation_learning.html#overview",
     "title": "Representation Learning",
     "section": "Overview",
-    "text": "Overview\n\nMotivation & Introduction\nWhat is Representation Learning?\nDeep Image Representations\nComparing Representations\nPractical Applications\nSummary",
+    "text": "Overview\n\nMotivation & Introduction\nWhat is Representation Learning?\nDeep Image Representations\nComparing Representations\nPractical Applications",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#the-challenge",
-    "href": "pages/slides/representation_learning.html#the-challenge",
+    "objectID": "pages/slides/representation_learning.html#the-information-overkill",
+    "href": "pages/slides/representation_learning.html#the-information-overkill",
     "title": "Representation Learning",
-    "section": "The Challenge",
-    "text": "The Challenge\n\nExample Image Source\nHuman description: “An elephant facing the camera with large tusks, standing in a savannah, bright daylight, cloudy sky”\n\n\nKey insight: Massive compression while preserving semantically relevant information!",
+    "section": "The Information Overkill",
+    "text": "The Information Overkill\n\nExample Image Source\nHow would you describe the photograph?",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#information-content-comparison",
-    "href": "pages/slides/representation_learning.html#information-content-comparison",
+    "objectID": "pages/slides/representation_learning.html#the-information-overkill-1",
+    "href": "pages/slides/representation_learning.html#the-information-overkill-1",
     "title": "Representation Learning",
-    "section": "Information Content Comparison",
-    "text": "Information Content Comparison\n\nRaw RGB Image: \\(640 \\times 360 \\times 3 \\times 8 = 5{,}529{,}600\\) bits ≈ 675 KB\n\n\nNatural Language: ~1,400 bits ≈ 0.17 KB\n\n\nCompression Factor: ~3,950×!\n\n\nBut: Much relevant information preserved for practical tasks",
+    "section": "The Information Overkill",
+    "text": "The Information Overkill\n\nExample Image Source\n\nA photograph of an elephant facing the camera. The elephant has large tusks and ears and is standing in a flat savannah. Is is bright day light with a cloudy sky.\n\n\n\n\n\n\n\n\nRepresentation\nSize (bits)\nSize (KB)\nCompression Factor\n\n\n\n\nRaw RGB Image\n5,529,600\n675.0\n1×\n\n\nNatural Language (UTF-8)\n1,312\n0.16\n4215×\n\n\nNatural Language (ASCII)\n1,148\n0.14\n4817×\n\n\n\n\n\n\n\nKey insight: Massive compression while preserving semantically relevant information!",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#the-image-space-problem",
-    "href": "pages/slides/representation_learning.html#the-image-space-problem",
+    "objectID": "pages/slides/representation_learning.html#the-vastness-of-image-space",
+    "href": "pages/slides/representation_learning.html#the-vastness-of-image-space",
     "title": "Representation Learning",
-    "section": "The Image Space Problem",
-    "text": "The Image Space Problem\n\nIllustrated are the set of all possible images and the subset of natural images\nTotal possible \\(256\\times256\\) RGB images: \\(255^{256 \\times 256 \\times 3}\\) ≈ infinite\n\n\nNatural images: tiny subset of this space\n\n\nImplication: Pixel space is extremely inefficient for representing real images!",
+    "section": "The Vastness of Image Space",
+    "text": "The Vastness of Image Space\n\nIllustrated are the set of all possible images and the subset of natural images\nTotal possible \\(256\\times256\\) RGB images: \\(255^{256 \\times 256 \\times 3}\\) ≈ infinite\n\n\nNatural images: (relatively) tiny subset of this space\n\n\nImplication: Pixel space is extremely inefficient for representing real images!",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3279,18 +3279,18 @@
     "href": "pages/slides/representation_learning.html#definition",
     "title": "Representation Learning",
     "section": "Definition",
-    "text": "Definition\n\nA representation is the output \\(\\mathbf{z} = f(\\mathbf{x})\\) produced by an encoder \\(f\\) applied to input \\(\\mathbf{x}\\)\n\n\n\n\\(\\mathbf{z}\\) retains task-relevant structure\nDiscards nuisance variation\nEncoder \\(f\\) is the mapping, \\(\\mathbf{z}\\) is the result\n\n\n\nWe focus on vector-valued (distributed) representations, not symbolic descriptions",
+    "text": "Definition\n\nA representation is the output \\(\\mathbf{z} = f(\\mathbf{x})\\) produced by an encoder \\(f\\) applied to input \\(\\mathbf{x}\\)\n\n\n\nSemantic Coordindate System where distances \\(\\|\\mathbf{z}_i - \\mathbf{z}_j\\|_2\\) reflect meaningful relationships.\n\n\nWe focus on vector-valued (distributed) representations, not symbolic descriptions",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#intuition-synthetic-examples",
-    "href": "pages/slides/representation_learning.html#intuition-synthetic-examples",
+    "objectID": "pages/slides/representation_learning.html#intuition",
+    "href": "pages/slides/representation_learning.html#intuition",
     "title": "Representation Learning",
-    "section": "Intuition: Synthetic Examples",
-    "text": "Intuition: Synthetic Examples\n\n\n\n\n\n\nElephant - Day 1\n\n\n\n\n\n\n\nElephant - Day 1\n\n\n\n\n\n\n\nElephant - Day 1\n\n\n\n\n\n\n\nElephant - Day 2\n\n\n\n\n\n\n\n\n\nGiraffe - Day\n\n\n\n\n\n\n\nRhino - Night\n\n\n\n\n\n\n\nElephant - Night\n\n\n\n\n\n\n\nCar - Day",
+    "section": "Intuition",
+    "text": "Intuition\n\n\n\n\n\n\nElephant - Day 1\n\n\n\n\n\n\n\nElephant - Day 1\n\n\n\n\n\n\n\nElephant - Day 1\n\n\n\n\n\n\n\nElephant - Day 2\n\n\n\n\n\n\n\n\n\nGiraffe - Day\n\n\n\n\n\n\n\nRhino - Night\n\n\n\n\n\n\n\nElephant - Night\n\n\n\n\n\n\n\nCar - Day",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3301,18 +3301,7 @@
     "href": "pages/slides/representation_learning.html#exercise-2d-representation",
     "title": "Representation Learning",
     "section": "Exercise: 2D Representation",
-    "text": "Exercise: 2D Representation\n\nEmpty 2-dimensional representation space for mapping image similarity\nYour task: How would you map these images to 2D space?\n\n\nHint: Similar images should be close, dissimilar far apart",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#data-space-representation-space",
-    "href": "pages/slides/representation_learning.html#data-space-representation-space",
-    "title": "Representation Learning",
-    "section": "Data Space → Representation Space",
-    "text": "Data Space → Representation Space\n\nData Space vs Representation Space: The encoder \\(f\\) transforms high-dimensional input samples \\(\\mathbf{x}_i\\) into compact representations \\(\\mathbf{z}_i\\) where semantic relationships become explicit",
+    "text": "Exercise: 2D Representation\n\n\n\nEmpty 2-dimensional representation space for mapping image similarity\n\n\n\nYour task: How would you map these images to 2D space?\n\n\nHint: Similar images should be close, dissimilar far apart",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3323,7 +3312,40 @@
     "href": "pages/slides/representation_learning.html#what-makes-good-representations",
     "title": "Representation Learning",
     "section": "What Makes Good Representations?",
-    "text": "What Makes Good Representations?\n\n1. Invariance & Selectivity Balance\n\nInvariant to nuisance transforms (lighting, pose)\nSelective for semantic differences\n\n\n\n2. Geometric Structure Preservation\n\nSimilar concepts cluster together\nSmooth manifold structure\n\n\n\n3. Transfer Efficiency\n\nFew examples needed for new tasks\nBroad applicability across domains\n\n\n\n4. Computational Practicality\n\nCompact dimensionality: \\(\\dim(\\mathbf{z}) \\ll \\dim(\\mathbf{x})\\)\nFast forward pass",
+    "text": "What Makes Good Representations?\nInvariance & Selectivity Balance\n\nInvariance: \\(\\|f(\\mathbf{x}) - f(g(\\mathbf{x}))\\|_2 &lt; \\epsilon\\) for nuisance transform \\(g\\) (lighting, pose)\nSelectivity: \\(\\|f(\\mathbf{x}_i) - f(\\mathbf{x}_j)\\|_2 &gt; \\delta\\) for semantically different \\(\\mathbf{x}_i, \\mathbf{x}_j\\)\nTrade-off: Too much invariance → loss of discriminative details\nSweet spot: Preserve task-relevant variations, discard irrelevant ones",
+    "crumbs": [
+      "Slides",
+      "Representation Learning"
+    ]
+  },
+  {
+    "objectID": "pages/slides/representation_learning.html#what-makes-good-representations-1",
+    "href": "pages/slides/representation_learning.html#what-makes-good-representations-1",
+    "title": "Representation Learning",
+    "section": "What Makes Good Representations?",
+    "text": "What Makes Good Representations?\nGeometric Structure Preservation\n\nSmooth manifold: Similar semantic concepts cluster in representation space\nComposability: \\(f(\\mathbf{x}_1) \\oplus f(\\mathbf{x}_2) \\approx f(\\text{combine}(\\mathbf{x}_1, \\mathbf{x}_2))\\) for vector operations\nInterpolability: Linear interpolation \\(\\alpha f(\\mathbf{x}_1) + (1-\\alpha) f(\\mathbf{x}_2)\\) yields meaningful intermediate concepts",
+    "crumbs": [
+      "Slides",
+      "Representation Learning"
+    ]
+  },
+  {
+    "objectID": "pages/slides/representation_learning.html#what-makes-good-representations-2",
+    "href": "pages/slides/representation_learning.html#what-makes-good-representations-2",
+    "title": "Representation Learning",
+    "section": "What Makes Good Representations?",
+    "text": "What Makes Good Representations?\nTransfer Efficiency\n\nLow sample complexity: Few examples needed for downstream adaptation\nBroad applicability: Same \\(f(\\cdot)\\) works across multiple tasks/domains\nGraceful degradation: Performance degrades slowly with domain shift",
+    "crumbs": [
+      "Slides",
+      "Representation Learning"
+    ]
+  },
+  {
+    "objectID": "pages/slides/representation_learning.html#what-makes-good-representations-3",
+    "href": "pages/slides/representation_learning.html#what-makes-good-representations-3",
+    "title": "Representation Learning",
+    "section": "What Makes Good Representations?",
+    "text": "What Makes Good Representations?\nComputational Practicality\n\nCompact dimensionality: \\(\\text{dim}(\\mathbf{z}) \\ll \\text{dim}(\\mathbf{x})\\) while preserving information\nFast computation: Forward pass \\(f(\\mathbf{x})\\) efficient for real-time applications\nStable training: Representation learning converges reliably",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3334,7 +3356,18 @@
     "href": "pages/slides/representation_learning.html#the-invariance-selectivity-trade-off",
     "title": "Representation Learning",
     "section": "The Invariance-Selectivity Trade-off",
-    "text": "The Invariance-Selectivity Trade-off\n\nInvariance: \\(\\|f(\\mathbf{x}) - f(g(\\mathbf{x}))\\|_2 &lt; \\epsilon\\)\n(Similar output for nuisance transforms)\n\n\nSelectivity: \\(\\|f(\\mathbf{x}_i) - f(\\mathbf{x}_j)\\|_2 &gt; \\delta\\)\n(Different outputs for semantic differences)\n\n\nChallenge: Too much invariance → loss of discriminative details!\n\n\nSweet spot: Preserve task-relevant variations, discard nuisance factors",
+    "text": "The Invariance-Selectivity Trade-off\n\nInvariance: \\(\\|f(\\mathbf{x}) - f(g(\\mathbf{x}))\\|_2 &lt; \\epsilon\\) (Similar output for nuisance transforms)\nSelectivity: \\(\\|f(\\mathbf{x}_i) - f(\\mathbf{x}_j)\\|_2 &gt; \\delta\\) (Different outputs for semantic differences)\nChallenge: Too much invariance → loss of discriminative details!\nSweet spot: Preserve task-relevant variations, discard nuisance factors",
+    "crumbs": [
+      "Slides",
+      "Representation Learning"
+    ]
+  },
+  {
+    "objectID": "pages/slides/representation_learning.html#the-invariance-selectivity-trade-off-1",
+    "href": "pages/slides/representation_learning.html#the-invariance-selectivity-trade-off-1",
+    "title": "Representation Learning",
+    "section": "The Invariance-Selectivity Trade-off",
+    "text": "The Invariance-Selectivity Trade-off\n\n\nWhat function has maximal invariance?\nWhat function has maximal selectivity?",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3356,7 +3389,7 @@
     "href": "pages/slides/representation_learning.html#supervised-learning",
     "title": "Representation Learning",
     "section": "Supervised Learning",
-    "text": "Supervised Learning\n\nSupervised Pre-training: Encoder + classifier trained with labeled data\n\nTrain on labeled data (e.g., ImageNet 1000 classes)\nCross-entropy loss on human-provided labels\nPenultimate layer embeddings = transferable features",
+    "text": "Supervised Learning\n\n\n\nEncoder + classifier trained with labeled data\nTrain on labeled data (e.g., ImageNet 1000 classes)\nCross-entropy loss on human-provided labels\nPenultimate layer embeddings = transferable features",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3367,95 +3400,73 @@
     "href": "pages/slides/representation_learning.html#weakly-supervised-clip",
     "title": "Representation Learning",
     "section": "Weakly Supervised: CLIP",
-    "text": "Weakly Supervised: CLIP\n\nCLIP Contrastive Pre-training: Dual encoders align images with text captions\nUses image-text pairs (web-scale data)\n\n\nContrastive loss: maximize diagonal, minimize off-diagonal",
+    "text": "Weakly Supervised: CLIP\n\nFrom Radford et al. (2021)\n\nDual encoders align images with text captions\nUses image-text pairs (web-scale data)\nContrastive loss: maximize diagonal, minimize off-diagonal",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#clip-key-properties",
-    "href": "pages/slides/representation_learning.html#clip-key-properties",
+    "objectID": "pages/slides/representation_learning.html#self-supervised-learning-masked-autoencoding-mae",
+    "href": "pages/slides/representation_learning.html#self-supervised-learning-masked-autoencoding-mae",
     "title": "Representation Learning",
-    "section": "CLIP: Key Properties",
-    "text": "CLIP: Key Properties\n\nZero-shot Classification\nText prompt: “a photo of a {class}” → class prototype\n\n\nScalability\nLearns from billions of noisy web pairs\n\n\nVision-Language Alignment\nShared embedding space for images and text",
+    "section": "Self-Supervised Learning: Masked Autoencoding (MAE)",
+    "text": "Self-Supervised Learning: Masked Autoencoding (MAE)\n\nFrom He et al. (2021)\n\nMask 75% of image patches random\nEncode only visible patches (efficient!)\nDecode with mask tokens inserted and reconstruct original pixels\n\n\n\nKey insight: To fill in gaps, model must learn global structure",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#self-supervised-learning",
-    "href": "pages/slides/representation_learning.html#self-supervised-learning",
+    "objectID": "pages/slides/representation_learning.html#self-supervised-learning-contrastive-learning",
+    "href": "pages/slides/representation_learning.html#self-supervised-learning-contrastive-learning",
     "title": "Representation Learning",
-    "section": "Self-Supervised Learning",
-    "text": "Self-Supervised Learning\n\nCreate pretext tasks from raw data (no human labels!)\n\n\nTwo dominant families:\n\nImputation/Masked Modeling (MAE)\nContrastive/Self-Distillation (SimCLR, DINO)",
+    "section": "Self-Supervised Learning: Contrastive Learning",
+    "text": "Self-Supervised Learning: Contrastive Learning\n\n\n\n\n\n\nFrom Chen et al. (2020)\n\n\n\n\n\n\n\nFrom Chen et al. (2020)\n\n\n\n\n\n\n\nPull positive pairs close together in embedding space\nPush negative pairs apart\nForm tight clusters of semantically similar samples",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#masked-autoencoding-mae",
-    "href": "pages/slides/representation_learning.html#masked-autoencoding-mae",
+    "objectID": "pages/slides/representation_learning.html#self-supervised-learning-self-distillation",
+    "href": "pages/slides/representation_learning.html#self-supervised-learning-self-distillation",
     "title": "Representation Learning",
-    "section": "Masked Autoencoding (MAE)",
-    "text": "Masked Autoencoding (MAE)\n\nMAE Pipeline: Mask patches → Encode visible → Decode all → Reconstruct masked",
+    "section": "Self-Supervised Learning: Self-Distillation",
+    "text": "Self-Supervised Learning: Self-Distillation\n\nFrom @Caron et al. (2021)\n\nNo explicit negatives needed\nWorks with smaller batches\nEmergent semantic clustering\nProduces high-quality local features (patch tokens)",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#mae-how-it-works",
-    "href": "pages/slides/representation_learning.html#mae-how-it-works",
+    "objectID": "pages/slides/representation_learning.html#self-supervised-learning-self-distillation-1",
+    "href": "pages/slides/representation_learning.html#self-supervised-learning-self-distillation-1",
     "title": "Representation Learning",
-    "section": "MAE: How It Works",
-    "text": "MAE: How It Works\n\n\nMask 75% of image patches randomly\n\n\n\n\nEncode only visible patches (efficient!)\n\n\n\n\nDecode with mask tokens inserted\n\n\n\n\nReconstruct original pixels at masked positions\n\n\n\nKey insight: To fill in gaps, model must learn global structure",
+    "section": "Self-Supervised Learning: Self-Distillation",
+    "text": "Self-Supervised Learning: Self-Distillation\n\n\nWhat are the consequences if model training uses random left-right flips?",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#contrastive-learning-simclr",
-    "href": "pages/slides/representation_learning.html#contrastive-learning-simclr",
+    "objectID": "pages/slides/representation_learning.html#dinov3",
+    "href": "pages/slides/representation_learning.html#dinov3",
     "title": "Representation Learning",
-    "section": "Contrastive Learning: SimCLR",
-    "text": "Contrastive Learning: SimCLR",
+    "section": "DINOv3",
+    "text": "DINOv3",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#self-distillation-dino",
-    "href": "pages/slides/representation_learning.html#self-distillation-dino",
+    "objectID": "pages/slides/representation_learning.html#global-vs-local-representations",
+    "href": "pages/slides/representation_learning.html#global-vs-local-representations",
     "title": "Representation Learning",
-    "section": "Self-Distillation: DINO",
-    "text": "Self-Distillation: DINO",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#dino-key-advantages",
-    "href": "pages/slides/representation_learning.html#dino-key-advantages",
-    "title": "Representation Learning",
-    "section": "DINO: Key Advantages",
-    "text": "DINO: Key Advantages\n\nNo explicit negatives needed (unlike SimCLR)\nWorks with smaller batches\nEmergent semantic clustering\nProduces high-quality local features (patch tokens)\n\n\nResult: State-of-the-art transfer performance with simpler training",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#dinov3-local-features",
-    "href": "pages/slides/representation_learning.html#dinov3-local-features",
-    "title": "Representation Learning",
-    "section": "DINOv3: Local Features",
-    "text": "DINOv3: Local Features\n\nDINOv3 Patch Features: Spatially-resolved embeddings preserve structure\nEach patch = semantic feature vector (unlike global pooling)",
+    "section": "Global vs Local Representations",
+    "text": "Global vs Local Representations\nGlobal representations summarize an image into a single embedding\nLocal representations preserve spatially discriminative aspects",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3466,7 +3477,7 @@
     "href": "pages/slides/representation_learning.html#test-images-overview",
     "title": "Representation Learning",
     "section": "Test Images Overview",
-    "text": "Test Images Overview",
+    "text": "Test Images Overview\n\n\n\n\n\n\ncar\n\n\n\n\n\n\n\neleph_d1\n\n\n\n\n\n\n\neleph_d2\n\n\n\n\n\n\n\neleph_n\n\n\n\n\n\n\n\n\n\ngiraffe\n\n\n\n\n\n\n\nrhino\n\n\n\n\n\n\n\neleph_brt\n\n\n\n\n\n\n\neleph_flip",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3478,50 +3489,6 @@
     "title": "Representation Learning",
     "section": "Comparisons",
     "text": "Comparisons\n\n\nPixel SpaceResNet-50CLIPDINOv2\n\n\n\n\n\n\n\n\nFigure 1: Raw pixel-level similarity fails to capture semantic relationships.\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Supervised CNN representations group semantically similar images.\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: Language-aligned embeddings from CLIP show text-driven semantic structure.\n\n\n\n\n\n\n\n\n\n\n\nFigure 4: Self-distilled DINOv2 features reveal fine-grained semantic clusters.",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#pixel-space-similarity",
-    "href": "pages/slides/representation_learning.html#pixel-space-similarity",
-    "title": "Representation Learning",
-    "section": "Pixel Space Similarity",
-    "text": "Pixel Space Similarity\n\n\nProblem: Lighting variations dominate, semantic relationships hidden!",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#resnet-supervised-similarity",
-    "href": "pages/slides/representation_learning.html#resnet-supervised-similarity",
-    "title": "Representation Learning",
-    "section": "ResNet (Supervised) Similarity",
-    "text": "ResNet (Supervised) Similarity\n\n\nBetter semantic grouping, but still affected by brightness",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#clip-similarity",
-    "href": "pages/slides/representation_learning.html#clip-similarity",
-    "title": "Representation Learning",
-    "section": "CLIP Similarity",
-    "text": "CLIP Similarity\n\n\nStrong vision-language alignment, robust to appearance changes",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#dinov2-similarity",
-    "href": "pages/slides/representation_learning.html#dinov2-similarity",
-    "title": "Representation Learning",
-    "section": "DINOv2 Similarity",
-    "text": "DINOv2 Similarity\n\n\nBest semantic discrimination, excellent invariance to nuisance factors",
     "crumbs": [
       "Slides",
       "Representation Learning"
@@ -3554,15 +3521,15 @@
     "href": "pages/slides/representation_learning.html#model-selection-guide",
     "title": "Representation Learning",
     "section": "Model Selection Guide",
-    "text": "Model Selection Guide\n\nDINOv3: Best for discriminative vision tasks, few-shot learning\n\n\nCLIP: Zero-shot classification, vision-language tasks\n\n\nSupervised CNNs: When computational efficiency is critical",
+    "text": "Model Selection Guide\n\nDINOv3: Best for discriminative vision tasks, few-shot learning\nCLIP: Zero-shot classification, vision-language tasks\nSupervised CNNs: When computational efficiency is critical (however, small DINOv3 variants exist..)",
     "crumbs": [
       "Slides",
       "Representation Learning"
     ]
   },
   {
-    "objectID": "pages/slides/representation_learning.html#global-vs-local-representations",
-    "href": "pages/slides/representation_learning.html#global-vs-local-representations",
+    "objectID": "pages/slides/representation_learning.html#global-vs-local-representations-1",
+    "href": "pages/slides/representation_learning.html#global-vs-local-representations-1",
     "title": "Representation Learning",
     "section": "Global vs Local Representations",
     "text": "Global vs Local Representations\n\nGlobal Embeddings (e.g., [CLS] token)\n\nSingle vector per image\nUse for: Classification, retrieval, zero-shot\n\n\n\nLocal Embeddings (patch tokens)\n\nGrid of spatially-resolved features\nUse for: Segmentation, detection, dense prediction\n\n\n\nModern models provide both!",
@@ -3632,28 +3599,6 @@
     "title": "Representation Learning",
     "section": "Strategy 5: Full Fine-tune",
     "text": "Strategy 5: Full Fine-tune\n\nTrain all model weights - use as last resort!\n\n# Unfreeze everything\nfor param in model.parameters():\n    param.requires_grad = True\n\n# Use small learning rate to avoid catastrophic forgetting\noptimizer = AdamW(model.parameters(), lr=5e-5)\n\n⚠️ Risk: Overfitting with limited data, expensive compute",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#key-takeaways",
-    "href": "pages/slides/representation_learning.html#key-takeaways",
-    "title": "Representation Learning",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nRepresentation learning transforms raw pixels into semantic embeddings\nThree paradigms: Supervised, weakly supervised, self-supervised\nTrade-off: Balance invariance (robustness) with selectivity (discrimination)\nModel selection: DINOv3 for vision, CLIP for V+L, MAE for reconstruction\nStart simple: k-NN → Linear → Adapters → Fine-tune",
-    "crumbs": [
-      "Slides",
-      "Representation Learning"
-    ]
-  },
-  {
-    "objectID": "pages/slides/representation_learning.html#best-practices-1",
-    "href": "pages/slides/representation_learning.html#best-practices-1",
-    "title": "Representation Learning",
-    "section": "Best Practices",
-    "text": "Best Practices\n\n✅ Start with k-NN baseline (diagnostic value)\n✅ Use linear probe before fine-tuning\n✅ Match invariances to task requirements\n✅ Choose global/local features based on task\n✅ Full fine-tuning is often overkill",
     "crumbs": [
       "Slides",
       "Representation Learning"
