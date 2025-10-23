@@ -243,18 +243,29 @@
     "href": "pages/slides/intro.html#synthetic-image-detection",
     "title": "Introduction",
     "section": "Synthetic Image Detection",
-    "text": "Synthetic Image Detection\n\n\n\n\n\n\nSource\n\n\n\n\n\n\n\nSource",
+    "text": "Synthetic Image Detection\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Examples of synthetic images: left from Mathys et al. (2024), right from X.",
     "crumbs": [
       "Slides",
       "Introduction"
     ]
   },
   {
-    "objectID": "pages/slides/intro.html#object-identification-and-translation",
-    "href": "pages/slides/intro.html#object-identification-and-translation",
+    "objectID": "pages/slides/intro.html#communication-safety-apples-on-device-ai",
+    "href": "pages/slides/intro.html#communication-safety-apples-on-device-ai",
     "title": "Introduction",
-    "section": "Object Identification and Translation",
-    "text": "Object Identification and Translation\n\n\n\n\n\n\nIdentification & Search\n\n\n\n\n\n\n\nTranslation\n\n\n\n\n\nGoogle Lens",
+    "section": "Communication Safety: Apple’s on Device AI",
+    "text": "Communication Safety: Apple’s on Device AI\n\n\nFigure 3: Apple’s on-device safety features detect sensitive content while maintaining user privacy. Source",
+    "crumbs": [
+      "Slides",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pages/slides/intro.html#image-search-and-understanding",
+    "href": "pages/slides/intro.html#image-search-and-understanding",
+    "title": "Introduction",
+    "section": "Image Search and Understanding",
+    "text": "Image Search and Understanding\n\n\n\n\n\n\nIdentification & Search\n\n\n\n\n\n\nTranslation\n\n\n\n\n\nGoogle Lens",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -309,7 +320,7 @@
     "href": "pages/slides/intro.html#photo-enhancement",
     "title": "Introduction",
     "section": "Photo Enhancement",
-    "text": "Photo Enhancement\n\nExample from Google Magic Editor",
+    "text": "Photo Enhancement\n\nExample from Google Magic Editor\n\nWhat computer vision tasks do you think the model must perform to enable this editing capability?",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -342,7 +353,7 @@
     "href": "pages/slides/intro.html#object-detection",
     "title": "Introduction",
     "section": "Object Detection",
-    "text": "Object Detection\n\nObject Detection Beispiel (aus (redmon_you_2016?)). Bounding boxes lokalisieren die Objekte, wobei für jedes Objekt die wahrscheinlichste Klasse, sowie deren Konfidenz angegeben ist.",
+    "text": "Object Detection\n\nObject detection involves locating and recognizing multiple objects in an image (from Redmon et al. (2016)).",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -353,7 +364,7 @@
     "href": "pages/slides/intro.html#segmentation",
     "title": "Introduction",
     "section": "Segmentation",
-    "text": "Segmentation\n\n\n\n\n\nObject Segmentation Beispiel (aus He et al. (2018)).",
+    "text": "Segmentation\n\nIn segmentation, individual pixels are assigned to specific objects (instance segmentation) or classes (semantic segmentation). From He et al. (2018).",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -375,7 +386,7 @@
     "href": "pages/slides/intro.html#image-generation---translation",
     "title": "Introduction",
     "section": "Image Generation - Translation",
-    "text": "Image Generation - Translation\n\nImage Generation Beispiel (aus Isola et al. (2018)).",
+    "text": "Image Generation - Translation\n\nTranslation examples from Isola et al. (2018).",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -397,7 +408,7 @@
     "href": "pages/slides/intro.html#image-generation---colorization",
     "title": "Introduction",
     "section": "Image Generation - Colorization",
-    "text": "Image Generation - Colorization\n\nNorwegian Bride (est late 1890s) aus DeOldify: Link",
+    "text": "Image Generation - Colorization\n\nNorwegian Bride (est late 1890s) from DeOldify: Link",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -419,7 +430,7 @@
     "href": "pages/slides/intro.html#what-about-videos",
     "title": "Introduction",
     "section": "What About Videos?",
-    "text": "What About Videos?\n\n\n\n\n\n\nFigure 4: OpenAI Sora 2 - Text-to-video generation",
+    "text": "What About Videos?\n\n\n\n\n\n\nFigure 6\n\n\n\nOpenAI Sora 2 - Text-to-video generation",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -430,7 +441,18 @@
     "href": "pages/slides/intro.html#what-about-videos-1",
     "title": "Introduction",
     "section": "What About Videos?",
-    "text": "What About Videos?\n\n\n\n\n\n\nFigure 5: CoTracker - Tracking points across video frames (Karaev et al. (2024))",
+    "text": "What About Videos?\n\n\n\n\n\n\nFigure 7\n\n\n\nCoTracker - Tracking points across video frames (Karaev et al. (2024))",
+    "crumbs": [
+      "Slides",
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "pages/slides/intro.html#what-about-videos-2",
+    "href": "pages/slides/intro.html#what-about-videos-2",
+    "title": "Introduction",
+    "section": "What About Videos?",
+    "text": "What About Videos?\nMany of the image-level tasks can be extended to videos.\nAfter all, videos are nothing but a sequence of images.",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -441,7 +463,7 @@
     "href": "pages/slides/intro.html#semantic-gap",
     "title": "Introduction",
     "section": "Semantic Gap",
-    "text": "Semantic Gap\n\n\nFigure 6: Illustration of the semantic gap: computers see numbers, humans see meaning.",
+    "text": "Semantic Gap\n\n\nFigure 8: Illustration of the semantic gap: computers see numbers, humans see meaning.",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -452,7 +474,7 @@
     "href": "pages/slides/intro.html#viewpoint",
     "title": "Introduction",
     "section": "Viewpoint",
-    "text": "Viewpoint\n\n\nFigure 7: The same cat from different viewpoints looks completely different at the pixel level.",
+    "text": "Viewpoint\n\n\nFigure 9: The same cat from different viewpoints looks completely different at the pixel level.",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -463,7 +485,7 @@
     "href": "pages/slides/intro.html#deformation",
     "title": "Introduction",
     "section": "Deformation",
-    "text": "Deformation\n\n\nFigure 8: Cats exhibit significant shape variation due to pose changes. Source",
+    "text": "Deformation\n\n\nFigure 10: Cats exhibit significant shape variation due to pose changes. Source",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -474,7 +496,7 @@
     "href": "pages/slides/intro.html#illumination",
     "title": "Introduction",
     "section": "Illumination",
-    "text": "Illumination\n\n\nFigure 9: The same scene under different lighting conditions. Source",
+    "text": "Illumination\n\n\nFigure 11: The same scene under different lighting conditions. Source",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -485,7 +507,7 @@
     "href": "pages/slides/intro.html#background-clutter",
     "title": "Introduction",
     "section": "Background Clutter",
-    "text": "Background Clutter\n\n\nFigure 10: Cat camouflaged against a similarly-textured background. Source",
+    "text": "Background Clutter\n\n\nFigure 12: Cat camouflaged against a similarly-textured background. Source",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -496,7 +518,7 @@
     "href": "pages/slides/intro.html#occlusion",
     "title": "Introduction",
     "section": "Occlusion",
-    "text": "Occlusion\n\n\nFigure 11: Partially occluded cat - only part of the object is visible. Source",
+    "text": "Occlusion\n\n\nFigure 13: Partially occluded cat - only part of the object is visible. Source",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -507,7 +529,7 @@
     "href": "pages/slides/intro.html#intra-class-variation",
     "title": "Introduction",
     "section": "Intra-Class Variation",
-    "text": "Intra-Class Variation\n\n\n\nFigure 12: High intra-class variation: all are cats but with vastly different appearances. Source",
+    "text": "Intra-Class Variation\n\n\n\nFigure 14: High intra-class variation: all are cats but with vastly different appearances. Source",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -518,7 +540,7 @@
     "href": "pages/slides/intro.html#context-dependence---blurred-objects",
     "title": "Introduction",
     "section": "Context Dependence - Blurred Objects",
-    "text": "Context Dependence - Blurred Objects\n\n\nFigure 13: Source Torralba, Murphy, and Freeman (2010)",
+    "text": "Context Dependence - Blurred Objects\n\n\nFigure 15: Source Torralba, Murphy, and Freeman (2010)\n\nQuestion: What kind of objects are marked in these images?",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -536,11 +558,11 @@
     ]
   },
   {
-    "objectID": "pages/slides/intro.html#question",
-    "href": "pages/slides/intro.html#question",
+    "objectID": "pages/slides/intro.html#quiz-image-super-resolution",
+    "href": "pages/slides/intro.html#quiz-image-super-resolution",
     "title": "Introduction",
-    "section": "Question",
-    "text": "Question\nImage Super Resolution\nHow would you train a model for image super resolution?\nThe task of the model would be to scale low-resolution images to high-resolution images with the best possible quality.",
+    "section": "Quiz: Image Super Resolution",
+    "text": "Quiz: Image Super Resolution\n\nHow would you train a model for image super resolution?\nThe task of the model would be to scale low-resolution images to high-resolution images with the best possible quality.",
     "crumbs": [
       "Slides",
       "Introduction"
@@ -928,7 +950,7 @@
     "href": "pages/background/frameworks.html#tensors",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.2 Tensors",
-    "text": "2.2 Tensors\ntorch.Tensor is the central data structure in PyTorch. Essentially very similar to numpy.array, it can be easily loaded onto GPUs.\nTensors can be created in various ways. For example, from lists:\n\ndata = [[1, 2],[3, 4]]\nx_data = torch.tensor(data)\nprint(x_data)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from numpy.ndarray:\n\nnp_array = np.array(data)\nx_np = torch.from_numpy(np_array)\nprint(x_np)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from other tensors:\n\nx_ones = torch.ones_like(x_data) # retains the properties of x_data\nprint(f\"Ones Tensor: \\n {x_ones} \\n\")\n\nx_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data\nprint(f\"Random Tensor: \\n {x_rand} \\n\")\n\nOnes Tensor: \n tensor([[1, 1],\n        [1, 1]]) \n\nRandom Tensor: \n tensor([[0.5693, 0.1311],\n        [0.5135, 0.8947]]) \n\n\n\nOr with randomly generated numbers or constants:\n\nshape = (2,3,)\nrand_tensor = torch.rand(shape)\nones_tensor = torch.ones(shape)\nzeros_tensor = torch.zeros(shape)\n\nprint(f\"Random Tensor: \\n {rand_tensor} \\n\")\nprint(f\"Ones Tensor: \\n {ones_tensor} \\n\")\nprint(f\"Zeros Tensor: \\n {zeros_tensor}\")\n\nRandom Tensor: \n tensor([[0.8125, 0.7230, 0.3602],\n        [0.9850, 0.7342, 0.5373]]) \n\nOnes Tensor: \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n\nZeros Tensor: \n tensor([[0., 0., 0.],\n        [0., 0., 0.]])\n\n\nTensor attributes:\n\ntensor = torch.rand(3,4)\n\nprint(f\"Shape of tensor: {tensor.shape}\")\nprint(f\"Datatype of tensor: {tensor.dtype}\")\nprint(f\"Device tensor is stored on: {tensor.device}\")\n\nShape of tensor: torch.Size([3, 4])\nDatatype of tensor: torch.float32\nDevice tensor is stored on: cpu\n\n\nThere are over 100 operations that can be performed on a tensor. The full list is available here.\nIndexing and Slicing:\n\ntensor = torch.ones(4, 4)\nprint(f\"First row: {tensor[0]}\")\nprint(f\"First column: {tensor[:, 0]}\")\nprint(f\"Last column: {tensor[:, -1]}\")\ntensor[:,1] = 0\nprint(tensor)\n\nFirst row: tensor([1., 1., 1., 1.])\nFirst column: tensor([1., 1., 1., 1.])\nLast column: tensor([1., 1., 1., 1.])\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])\n\n\nJoining tensors:\n\nt1 = torch.cat([tensor, tensor, tensor], dim=1)\nprint(t1)\n\ntensor([[1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.]])\n\n\nArithmetic operations:\n\n# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value\ny1 = tensor @ tensor.T\ny2 = tensor.matmul(tensor.T)\n\ny3 = torch.rand_like(y1)\ntorch.matmul(tensor, tensor.T, out=y3)\n\n\n# This computes the element-wise product. z1, z2, z3 will have the same value\nz1 = tensor * tensor\nz2 = tensor.mul(tensor)\n\nz3 = torch.rand_like(tensor)\ntorch.mul(tensor, tensor, out=z3)\n\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])",
+    "text": "2.2 Tensors\ntorch.Tensor is the central data structure in PyTorch. Essentially very similar to numpy.array, it can be easily loaded onto GPUs.\nTensors can be created in various ways. For example, from lists:\n\ndata = [[1, 2],[3, 4]]\nx_data = torch.tensor(data)\nprint(x_data)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from numpy.ndarray:\n\nnp_array = np.array(data)\nx_np = torch.from_numpy(np_array)\nprint(x_np)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from other tensors:\n\nx_ones = torch.ones_like(x_data) # retains the properties of x_data\nprint(f\"Ones Tensor: \\n {x_ones} \\n\")\n\nx_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data\nprint(f\"Random Tensor: \\n {x_rand} \\n\")\n\nOnes Tensor: \n tensor([[1, 1],\n        [1, 1]]) \n\nRandom Tensor: \n tensor([[0.5684, 0.2176],\n        [0.0617, 0.3119]]) \n\n\n\nOr with randomly generated numbers or constants:\n\nshape = (2,3,)\nrand_tensor = torch.rand(shape)\nones_tensor = torch.ones(shape)\nzeros_tensor = torch.zeros(shape)\n\nprint(f\"Random Tensor: \\n {rand_tensor} \\n\")\nprint(f\"Ones Tensor: \\n {ones_tensor} \\n\")\nprint(f\"Zeros Tensor: \\n {zeros_tensor}\")\n\nRandom Tensor: \n tensor([[0.7902, 0.3926, 0.0115],\n        [0.5093, 0.5612, 0.9498]]) \n\nOnes Tensor: \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n\nZeros Tensor: \n tensor([[0., 0., 0.],\n        [0., 0., 0.]])\n\n\nTensor attributes:\n\ntensor = torch.rand(3,4)\n\nprint(f\"Shape of tensor: {tensor.shape}\")\nprint(f\"Datatype of tensor: {tensor.dtype}\")\nprint(f\"Device tensor is stored on: {tensor.device}\")\n\nShape of tensor: torch.Size([3, 4])\nDatatype of tensor: torch.float32\nDevice tensor is stored on: cpu\n\n\nThere are over 100 operations that can be performed on a tensor. The full list is available here.\nIndexing and Slicing:\n\ntensor = torch.ones(4, 4)\nprint(f\"First row: {tensor[0]}\")\nprint(f\"First column: {tensor[:, 0]}\")\nprint(f\"Last column: {tensor[:, -1]}\")\ntensor[:,1] = 0\nprint(tensor)\n\nFirst row: tensor([1., 1., 1., 1.])\nFirst column: tensor([1., 1., 1., 1.])\nLast column: tensor([1., 1., 1., 1.])\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])\n\n\nJoining tensors:\n\nt1 = torch.cat([tensor, tensor, tensor], dim=1)\nprint(t1)\n\ntensor([[1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.]])\n\n\nArithmetic operations:\n\n# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value\ny1 = tensor @ tensor.T\ny2 = tensor.matmul(tensor.T)\n\ny3 = torch.rand_like(y1)\ntorch.matmul(tensor, tensor.T, out=y3)\n\n\n# This computes the element-wise product. z1, z2, z3 will have the same value\nz1 = tensor * tensor\nz2 = tensor.mul(tensor)\n\nz3 = torch.rand_like(tensor)\ntorch.mul(tensor, tensor, out=z3)\n\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -939,7 +961,7 @@
     "href": "pages/background/frameworks.html#autograd",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.3 Autograd",
-    "text": "2.3 Autograd\nTo train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an auto-diff functionality: torch.autograd. This can automatically compute gradients for a computational graph.\n\n\n\n\n\n\nTipAutograd Key Points\n\n\n\n\nSet requires_grad=True on tensors you want to track for gradient computation\nCall .backward() on a scalar loss to compute all gradients\nAccess gradients via .grad attribute of tensors\nUse torch.no_grad() context for inference to save memory and speed up computation\n\n\n\nThe following is an example using a 1-layer neural network (see Figure 4 ):\n\n\n\n\n\n\nFigure 4: Source: PyTorch\n\n\n\nThe network from Figure 4 is defined in PyTorch code in Listing 4.\n\n\n\n\nListing 4: Example computational graph.\n\n\nimport torch\n\nx = torch.ones(5)  # input tensor\ny = torch.zeros(3)  # expected output\nw = torch.randn(5, 3, requires_grad=True)\nb = torch.randn(3, requires_grad=True)\nz = torch.matmul(x, w)+b\nloss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)\n\n\n\n\nWe can now use Autograd to compute the gradient:\n\nloss.backward()\nprint(w.grad)\nprint(b.grad)\n\ntensor([[0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068],\n        [0.1172, 0.3256, 0.3068]])\ntensor([0.1172, 0.3256, 0.3068])",
+    "text": "2.3 Autograd\nTo train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an auto-diff functionality: torch.autograd. This can automatically compute gradients for a computational graph.\n\n\n\n\n\n\nTipAutograd Key Points\n\n\n\n\nSet requires_grad=True on tensors you want to track for gradient computation\nCall .backward() on a scalar loss to compute all gradients\nAccess gradients via .grad attribute of tensors\nUse torch.no_grad() context for inference to save memory and speed up computation\n\n\n\nThe following is an example using a 1-layer neural network (see Figure 4 ):\n\n\n\n\n\n\nFigure 4: Source: PyTorch\n\n\n\nThe network from Figure 4 is defined in PyTorch code in Listing 4.\n\n\n\n\nListing 4: Example computational graph.\n\n\nimport torch\n\nx = torch.ones(5)  # input tensor\ny = torch.zeros(3)  # expected output\nw = torch.randn(5, 3, requires_grad=True)\nb = torch.randn(3, requires_grad=True)\nz = torch.matmul(x, w)+b\nloss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)\n\n\n\n\nWe can now use Autograd to compute the gradient:\n\nloss.backward()\nprint(w.grad)\nprint(b.grad)\n\ntensor([[0.2067, 0.2007, 0.3247],\n        [0.2067, 0.2007, 0.3247],\n        [0.2067, 0.2007, 0.3247],\n        [0.2067, 0.2007, 0.3247],\n        [0.2067, 0.2007, 0.3247]])\ntensor([0.2067, 0.2007, 0.3247])",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -950,7 +972,7 @@
     "href": "pages/background/frameworks.html#torch.nn",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.4 torch.nn",
-    "text": "2.4 torch.nn\nPyTorch provides various building blocks for creating neural networks. These are available in torch.nn. Additionally, you can define any compositions of such building blocks that inherit from torch.nn.Module. A neural network is typically a torch.nn.Module. Each module implements the forward() method to define how data is processed.\n\n\n\n\n\n\nTipBuilding Blocks in torch.nn\n\n\n\nCommon layers:\n\nnn.Linear: Fully connected layer\nnn.Conv2d: 2D convolutional layer\nnn.MaxPool2d: Max pooling layer\nnn.Dropout: Regularization via random dropout\nnn.BatchNorm2d: Batch normalization\n\nCommon activations:\n\nnn.ReLU(), nn.LeakyReLU(), nn.GELU()\nnn.Sigmoid(), nn.Softmax()\n\nLoss functions:\n\nnn.CrossEntropyLoss(): Classification\nnn.BCEWithLogitsLoss(): Binary classification\nnn.MSELoss(): Regression\n\n\n\nListing 5 depicts an example of a class that inherits from torch.nn.Module.\n\n\n\n\nListing 5: Example nn.Module.\n\n\nfrom torch import nn\n\nclass NeuralNetwork(nn.Module):\n    def __init__(self):\n        super(NeuralNetwork, self).__init__()\n        self.flatten = nn.Flatten()\n        self.linear_relu_stack = nn.Sequential(\n            nn.Linear(28*28, 512),\n            nn.ReLU(),\n            nn.Linear(512, 512),\n            nn.ReLU(),\n            nn.Linear(512, 10),\n        )\n\n    def forward(self, x):\n        x = self.flatten(x)\n        logits = self.linear_relu_stack(x)\n        return logits\n\n\n\n\nYou can also visualize the model:\n\nmodel = NeuralNetwork()\nprint(model)\n\nNeuralNetwork(\n  (flatten): Flatten(start_dim=1, end_dim=-1)\n  (linear_relu_stack): Sequential(\n    (0): Linear(in_features=784, out_features=512, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=512, out_features=512, bias=True)\n    (3): ReLU()\n    (4): Linear(in_features=512, out_features=10, bias=True)\n  )\n)\n\n\nTo use the model, you can pass input data. This will execute the forward() method, along with background operations.\n\nX = torch.rand(1, 28, 28)\nlogits = model(X)\npred_probab = nn.Softmax(dim=1)(logits)\ny_pred = pred_probab.argmax(1)\nprint(f\"Predicted class: {y_pred}\")\n\nPredicted class: tensor([1])\n\n\nThe executed operations will look like this:\n\nfrom torchviz import make_dot\nmake_dot(logits)\n\n\n\n\n\n\n\n\nFor more in-depth information about the model you can use the external library torchinfo as seen in Listing 6.\n\n\n\n\nListing 6: Example output of torchinfo.\n\n\nfrom torchinfo import summary\nmodel = NeuralNetwork()\nsummary(model, input_size=(128, 1, 28, 28))\n\n\n\n\n==========================================================================================\nLayer (type:depth-idx)                   Output Shape              Param #\n==========================================================================================\nNeuralNetwork                            [128, 10]                 --\n├─Flatten: 1-1                           [128, 784]                --\n├─Sequential: 1-2                        [128, 10]                 --\n│    └─Linear: 2-1                       [128, 512]                401,920\n│    └─ReLU: 2-2                         [128, 512]                --\n│    └─Linear: 2-3                       [128, 512]                262,656\n│    └─ReLU: 2-4                         [128, 512]                --\n│    └─Linear: 2-5                       [128, 10]                 5,130\n==========================================================================================\nTotal params: 669,706\nTrainable params: 669,706\nNon-trainable params: 0\nTotal mult-adds (Units.MEGABYTES): 85.72\n==========================================================================================\nInput size (MB): 0.40\nForward/backward pass size (MB): 1.06\nParams size (MB): 2.68\nEstimated Total Size (MB): 4.14\n==========================================================================================",
+    "text": "2.4 torch.nn\nPyTorch provides various building blocks for creating neural networks. These are available in torch.nn. Additionally, you can define any compositions of such building blocks that inherit from torch.nn.Module. A neural network is typically a torch.nn.Module. Each module implements the forward() method to define how data is processed.\n\n\n\n\n\n\nTipBuilding Blocks in torch.nn\n\n\n\nCommon layers:\n\nnn.Linear: Fully connected layer\nnn.Conv2d: 2D convolutional layer\nnn.MaxPool2d: Max pooling layer\nnn.Dropout: Regularization via random dropout\nnn.BatchNorm2d: Batch normalization\n\nCommon activations:\n\nnn.ReLU(), nn.LeakyReLU(), nn.GELU()\nnn.Sigmoid(), nn.Softmax()\n\nLoss functions:\n\nnn.CrossEntropyLoss(): Classification\nnn.BCEWithLogitsLoss(): Binary classification\nnn.MSELoss(): Regression\n\n\n\nListing 5 depicts an example of a class that inherits from torch.nn.Module.\n\n\n\n\nListing 5: Example nn.Module.\n\n\nfrom torch import nn\n\nclass NeuralNetwork(nn.Module):\n    def __init__(self):\n        super(NeuralNetwork, self).__init__()\n        self.flatten = nn.Flatten()\n        self.linear_relu_stack = nn.Sequential(\n            nn.Linear(28*28, 512),\n            nn.ReLU(),\n            nn.Linear(512, 512),\n            nn.ReLU(),\n            nn.Linear(512, 10),\n        )\n\n    def forward(self, x):\n        x = self.flatten(x)\n        logits = self.linear_relu_stack(x)\n        return logits\n\n\n\n\nYou can also visualize the model:\n\nmodel = NeuralNetwork()\nprint(model)\n\nNeuralNetwork(\n  (flatten): Flatten(start_dim=1, end_dim=-1)\n  (linear_relu_stack): Sequential(\n    (0): Linear(in_features=784, out_features=512, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=512, out_features=512, bias=True)\n    (3): ReLU()\n    (4): Linear(in_features=512, out_features=10, bias=True)\n  )\n)\n\n\nTo use the model, you can pass input data. This will execute the forward() method, along with background operations.\n\nX = torch.rand(1, 28, 28)\nlogits = model(X)\npred_probab = nn.Softmax(dim=1)(logits)\ny_pred = pred_probab.argmax(1)\nprint(f\"Predicted class: {y_pred}\")\n\nPredicted class: tensor([5])\n\n\nThe executed operations will look like this:\n\nfrom torchviz import make_dot\nmake_dot(logits)\n\n\n\n\n\n\n\n\nFor more in-depth information about the model you can use the external library torchinfo as seen in Listing 6.\n\n\n\n\nListing 6: Example output of torchinfo.\n\n\nfrom torchinfo import summary\nmodel = NeuralNetwork()\nsummary(model, input_size=(128, 1, 28, 28))\n\n\n\n\n==========================================================================================\nLayer (type:depth-idx)                   Output Shape              Param #\n==========================================================================================\nNeuralNetwork                            [128, 10]                 --\n├─Flatten: 1-1                           [128, 784]                --\n├─Sequential: 1-2                        [128, 10]                 --\n│    └─Linear: 2-1                       [128, 512]                401,920\n│    └─ReLU: 2-2                         [128, 512]                --\n│    └─Linear: 2-3                       [128, 512]                262,656\n│    └─ReLU: 2-4                         [128, 512]                --\n│    └─Linear: 2-5                       [128, 10]                 5,130\n==========================================================================================\nTotal params: 669,706\nTrainable params: 669,706\nNon-trainable params: 0\nTotal mult-adds (Units.MEGABYTES): 85.72\n==========================================================================================\nInput size (MB): 0.40\nForward/backward pass size (MB): 1.06\nParams size (MB): 2.68\nEstimated Total Size (MB): 4.14\n==========================================================================================",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -1805,29 +1827,29 @@
     "href": "pages/slides/cnns.html#mlps-and-translations",
     "title": "Convolutional Neural Networks",
     "section": "MLPs and Translations",
-    "text": "MLPs and Translations\n\nMLP and pattern shifts\nOften patterns appear at different positions (not stationary)\n\n\nIdeally we want to recognize them under translations: \\(g(\\mathbf{x})\\) where \\(g()\\) is a spatial translation\n\n\n\nHow do MLPs deal with this?",
+    "text": "MLPs and Translations\n\n\nPatterns or objects often occur at different positions -&gt; need to recognize them everywhere!\n\n\nHow do MLPs deal with this?",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"
     ]
   },
   {
-    "objectID": "pages/slides/cnns.html#multilayer-perceptrons-and-pattern-learning",
-    "href": "pages/slides/cnns.html#multilayer-perceptrons-and-pattern-learning",
+    "objectID": "pages/slides/cnns.html#mlps-and-how-they-learn",
+    "href": "pages/slides/cnns.html#mlps-and-how-they-learn",
     "title": "Convolutional Neural Networks",
-    "section": "Multilayer-Perceptrons and Pattern Learning",
-    "text": "Multilayer-Perceptrons and Pattern Learning\n\nMLP on example image.\nCan an MLP successfully learn patterns in images \\(\\mathbf{x}\\) that are permuted with a permutation matrix \\(\\mathbf{P}\\), i.e. \\(f(P(\\mathbf{x}))\\)?",
+    "section": "MLPs and How they Learn",
+    "text": "MLPs and How they Learn\n\n\nQuestion: Can an MLP successfully learn patterns in images \\(\\mathbf{x}\\) that are permuted with a fixed permutation matrix \\(\\mathbf{P}\\), i.e. \\(f(P(\\mathbf{x}))\\)?",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"
     ]
   },
   {
-    "objectID": "pages/slides/cnns.html#problems-mlps-and-images",
-    "href": "pages/slides/cnns.html#problems-mlps-and-images",
+    "objectID": "pages/slides/cnns.html#mlps-and-images-often-not-the-best-choice",
+    "href": "pages/slides/cnns.html#mlps-and-images-often-not-the-best-choice",
     "title": "Convolutional Neural Networks",
-    "section": "Problems: MLPs and Images",
-    "text": "Problems: MLPs and Images\n\nHigh-Dimensional: MLP size scales with input dimensionality → memory/compute issues\nNo Locality: MLPs can’t exploit spatial relationships in images\nInefficient Translation Handling: Must learn position-dependent patterns separately\n\n\nInteractive Demo: https://adamharley.com/nn_vis/mlp/2d.html\n\n\nSolution? → Need architecture with inductive biases for images!",
+    "section": "MLPs and Images: Often Not the Best Choice",
+    "text": "MLPs and Images: Often Not the Best Choice\n\nHigh-Dimensional: MLP size scales with input dimensionality → memory/compute issues\nNo Locality: MLPs can’t exploit spatial relationships in images\nInefficient Translation Handling: Must learn position-dependent patterns separately\n\n\nInteractive Demo: https://adamharley.com/nn_vis/mlp/2d.html\n-&gt; explore for yourself!\n\n\nSolution? → Need architecture with inductive biases for images!",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"
@@ -1845,22 +1867,22 @@
     ]
   },
   {
-    "objectID": "pages/slides/cnns.html#example-invariance",
-    "href": "pages/slides/cnns.html#example-invariance",
+    "objectID": "pages/slides/cnns.html#invariance-an-example",
+    "href": "pages/slides/cnns.html#invariance-an-example",
     "title": "Convolutional Neural Networks",
-    "section": "Example Invariance",
-    "text": "Example Invariance\nExample where invariance is required:\n\nWhen objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model \\(f(\\mathbf{x})\\) is thus invariant to spatial translations.",
+    "section": "Invariance: An Example",
+    "text": "Invariance: An Example\n\nWhen objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model \\(f(\\mathbf{x})\\) is thus invariant to spatial translations.",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"
     ]
   },
   {
-    "objectID": "pages/slides/cnns.html#example-equivariance",
-    "href": "pages/slides/cnns.html#example-equivariance",
+    "objectID": "pages/slides/cnns.html#equivariance-an-example",
+    "href": "pages/slides/cnns.html#equivariance-an-example",
     "title": "Convolutional Neural Networks",
-    "section": "Example Equivariance",
-    "text": "Example Equivariance\nExample where equivariance is required:\n\nWhen objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model \\(f(\\mathbf{x})\\) that produces the bounding boxes is thus equivariant with respect to spatial translations.",
+    "section": "Equivariance: An Example",
+    "text": "Equivariance: An Example\n\nWhen objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model \\(f(\\mathbf{x})\\) that produces the bounding boxes is thus equivariant with respect to spatial translations.",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"
@@ -1904,7 +1926,7 @@
     "href": "pages/slides/cnns.html#convolution-on-rgb-images",
     "title": "Convolutional Neural Networks",
     "section": "Convolution on RGB Images",
-    "text": "Convolution on RGB Images\n\nSource: Prince (2023)\n\\[\\begin{equation}\nS(i, j) = (K * I)(i, j) = \\sum_m \\sum_n I(i + m, j + n) K(m, n)\n\\end{equation}\\]\n\n\\(I\\): Input (e.g., image)\n\\(K\\): Kernel (typically smaller than \\(I\\))\nBias term \\(b\\) added to weighted sum",
+    "text": "Convolution on RGB Images\n\nSource: Prince (2023)\n\\[\\begin{equation}\nS(i, j) = (K * I)(i, j) = \\sum_m \\sum_n I(i + m, j + n) K(m, n) + b\n\\end{equation}\\]\n\n\\(I\\): Input (e.g., image)\n\\(K\\): Kernel (typically smaller than \\(I\\))\nBias term \\(b\\) added to weighted sum",
     "crumbs": [
       "Slides",
       "Convolutional Neural Networks"

@@ -253,51 +253,61 @@ Marco Willi
 <img data-src="../../assets/images/intro/kora_lynx.png" class="r-stretch quarto-figure-center" id="fig-intro-kora-lynx"><p class="caption">Source: <span class="citation" data-cites="breitenmoser-wursten_projekt_2024">Breitenmoser-Würsten et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span></p></section>
 <section id="synthetic-image-detection" class="slide level2">
 <h2>Synthetic Image Detection</h2>
-<div class="quarto-layout-panel" data-layout-ncol="2">
+<div id="fig-intro-synthetic-images" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-intro-synthetic-images-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="../../assets/images/intro/application_synthetic_images_grta.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <p><img data-src="../../assets/images/intro/sid_trump.jpg"></p>
-<figcaption><a href="https://x.com/TheInfiniteDude/status/1637211568692932608">Source</a></figcaption>
-</figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="../../assets/images/intro/sid_pope.jpg"></p>
-<figcaption><a href="https://x.com/cryptomattk/status/1687908457880367104">Source</a></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<!-- ![Camera Trap Image Analysis](/assets/images/intro/camtrap.jpg){width=400} -->
-</section>
-<section id="object-identification-and-translation" class="slide level2">
-<h2>Object Identification and Translation</h2>
-<div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<!--
+![[Source](https://x.com/cryptomattk/status/1687908457880367104)](/assets/images/intro/sid_pope.jpg) -->
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-intro-synthetic-images-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Examples of synthetic images: left from <span class="citation" data-cites="mathys_synthetic_2024">Mathys et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span>, right from <a href="https://x.com/TheInfiniteDude/status/1637211568692932608">X</a>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="communication-safety-apples-on-device-ai" class="slide level2">
+<h2>Communication Safety: Apple’s on Device AI</h2>
+
+<img data-src="../../assets/images/intro/apple_nude_safety.png" width="600" class="r-stretch quarto-figure-center" id="fig-intro-apple-safety"><p class="caption">
+Figure&nbsp;3: Apple’s on-device safety features detect sensitive content while maintaining user privacy. <a href="https://www.apple.com/child-safety/">Source</a>
+</p></section>
+<section id="image-search-and-understanding" class="slide level2">
+<h2>Image Search and Understanding</h2>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="column quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/intro/google_lens_classification.png"></p>
 <figcaption>Identification &amp; Search</figcaption>
 </figure>
 </div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/intro/google_lens_ocr.png"></p>
 <figcaption>Translation</figcaption>
 </figure>
 </div>
-</div>
-</div>
-</div>
+</div></div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><a href="https://search.google/ways-to-search/lens/">Google Lens</a></p>
+</div>
+</div>
+</div>
 </section>
 <section id="self-driving" class="slide level2">
 <h2>Self-Driving</h2>
@@ -322,6 +332,9 @@ Marco Willi
 <h2>Photo Enhancement</h2>
 <video id="video_shortcode_videojs_video2" width="1600" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4"></video>
 <p><a href="https://www.google.com/intl/en/photos/editing/">Example from Google Magic Editor</a></p>
+<div class="fragment">
+<p>What computer vision tasks do you think the model must perform to enable this editing capability?</p>
+</div>
 <!-- ## Photograph Deblurring
 
 
@@ -351,10 +364,12 @@ Marco Willi
 <section id="object-detection" class="slide level2">
 <h2>Object Detection</h2>
 
-<img data-src="../../assets/images/intro/yolo_object_detection_example.png" width="600" class="r-stretch quarto-figure-center"><p class="caption">Object Detection Beispiel (aus <span class="citation" data-cites="redmon_you_2016">(<a href="#/references" role="doc-biblioref" onclick=""><strong>redmon_you_2016?</strong></a>)</span>). Bounding boxes lokalisieren die Objekte, wobei für jedes Objekt die wahrscheinlichste Klasse, sowie deren Konfidenz angegeben ist.</p></section>
+<img data-src="../../assets/images/intro/yolo_object_detection_example.png" width="600" class="r-stretch"><p>Object detection involves locating and recognizing multiple objects in an image (from <span class="citation" data-cites="Redmon2016a">Redmon et al. (<a href="#/references" role="doc-biblioref" onclick="">2016</a>)</span>).</p>
+</section>
 <section id="segmentation" class="slide level2">
 <h2>Segmentation</h2>
 
+<img data-src="../../assets/images/intro/mask_rcnn_object_segmentation_example.png" width="600" class="r-stretch"><p>In segmentation, individual pixels are assigned to specific objects (instance segmentation) or classes (semantic segmentation). From <span class="citation" data-cites="he_mask_2018">He et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span>.</p>
 <!-- ## Segmentierung 2
 
  -->
@@ -376,7 +391,7 @@ Marco Willi
 ![Image Generation Beispiel (aus @image_to_image_isola2018).](/assets/images/intro/pix2pix_examples.png){width=600,#fig-pix2pix-example}
 
 ::: -->
-<img data-src="../../assets/images/intro/mask_rcnn_object_segmentation_example.png" width="600" class="r-stretch quarto-figure-center"><p class="caption">Object Segmentation Beispiel (aus <span class="citation" data-cites="he_mask_2018">He et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span>).</p></section>
+</section>
 <section id="image-generation---manipulation" class="slide level2">
 <h2>Image Generation - Manipulation</h2>
 <video id="video_shortcode_videojs_video3" width="1200" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="https://vcai.mpi-inf.mpg.de/projects/DragGAN/data/DragGAN.mp4"></video>
@@ -385,7 +400,8 @@ Marco Willi
 <section id="image-generation---translation" class="slide level2">
 <h2>Image Generation - Translation</h2>
 
-<img data-src="../../assets/images/intro/pix2pix_examples.png" class="r-stretch quarto-figure-center"><p class="caption">Image Generation Beispiel (aus <span class="citation" data-cites="image_to_image_isola2018">Isola et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span>).</p></section>
+<img data-src="../../assets/images/intro/pix2pix_examples.png" class="r-stretch"><p>Translation examples from <span class="citation" data-cites="image_to_image_isola2018">Isola et al. (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span>.</p>
+</section>
 <section id="image-generation---super-resolution" class="slide level2">
 <h2>Image Generation - Super Resolution</h2>
 
@@ -393,7 +409,7 @@ Marco Willi
 <section id="image-generation---colorization" class="slide level2">
 <h2>Image Generation - Colorization</h2>
 
-<img data-src="../../assets/images/intro/colorization_example.png" class="r-stretch quarto-figure-center"><p class="caption">Norwegian Bride (est late 1890s) aus DeOldify: <a href="https://github.com/jantic/DeOldify">Link</a></p></section>
+<img data-src="../../assets/images/intro/colorization_example.png" width="600" class="r-stretch quarto-figure-center"><p class="caption">Norwegian Bride (est late 1890s) from DeOldify: <a href="https://github.com/jantic/DeOldify">Link</a></p></section>
 <section id="many-tasks" class="slide level2">
 <h2>Many tasks</h2>
 <div class="columns">
@@ -434,11 +450,12 @@ Marco Willi
 <div aria-describedby="fig-intro-sora2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <video id="video_shortcode_videojs_video4" width="1200" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="https://openaiassets.blob.core.windows.net/$web/nf2/blog-final2/20250929_0337_New%20Video_simple_compose_01k6agr8ctey29mze208t29w38%20(1).mp4"></video>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-intro-sora2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: <a href="https://openai.com/index/sora-2/">OpenAI Sora 2</a> - Text-to-video generation
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-intro-sora2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6
 </figcaption>
 </figure>
 </div>
+<p><a href="https://openai.com/index/sora-2/">OpenAI Sora 2</a> - Text-to-video generation</p>
 </section>
 <section id="what-about-videos-1" class="slide level2">
 <h2>What About Videos?</h2>
@@ -447,11 +464,17 @@ Figure&nbsp;4: <a href="https://openai.com/index/sora-2/">OpenAI Sora 2</a> - Te
 <div aria-describedby="fig-intro-cotracker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <video id="video_shortcode_videojs_video5" width="1200" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="https://co-tracker.github.io/videos/teaser/rollerblade.mp4"></video>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-intro-cotracker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: <a href="https://co-tracker.github.io/">CoTracker</a> - Tracking points across video frames (<span class="citation" data-cites="karaev_cotracker_2024">Karaev et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span>)
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-intro-cotracker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7
 </figcaption>
 </figure>
 </div>
+<p><a href="https://co-tracker.github.io/">CoTracker</a> - Tracking points across video frames (<span class="citation" data-cites="karaev_cotracker_2024">Karaev et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span>)</p>
+</section>
+<section id="what-about-videos-2" class="slide level2 center">
+<h2>What About Videos?</h2>
+<p>Many of the image-level tasks can be extended to videos.</p>
+<p>After all, videos are nothing but a sequence of images.</p>
 </section></section>
 <section>
 <section id="challenges" class="title-slide slide level1 center">
@@ -462,37 +485,37 @@ Figure&nbsp;5: <a href="https://co-tracker.github.io/">CoTracker</a> - Tracking 
 <h2>Semantic Gap</h2>
 
 <img data-src="../../assets/images/intro/semantic_gap_comparison.png" width="600" class="r-stretch quarto-figure-center" id="fig-cat-number-grid"><p class="caption">
-Figure&nbsp;6: Illustration of the semantic gap: computers see numbers, humans see meaning.
+Figure&nbsp;8: Illustration of the semantic gap: computers see numbers, humans see meaning.
 </p></section>
 <section id="viewpoint" class="slide level2">
 <h2>Viewpoint</h2>
 
 <img data-src="../../assets/images/intro/viewpoint_challenge.png" width="600" class="r-stretch quarto-figure-center" id="fig-intro-challenge-viewpoint"><p class="caption">
-Figure&nbsp;7: The same cat from different viewpoints looks completely different at the pixel level.
+Figure&nbsp;9: The same cat from different viewpoints looks completely different at the pixel level.
 </p></section>
 <section id="deformation" class="slide level2">
 <h2>Deformation</h2>
 
 <img data-src="../../assets/images/intro/challenge_deformation.png" width="600" class="r-stretch quarto-figure-center" id="fig-challenge-deformation"><p class="caption">
-Figure&nbsp;8: Cats exhibit significant shape variation due to pose changes. <a href="http://cs231n.stanford.edu/">Source</a>
+Figure&nbsp;10: Cats exhibit significant shape variation due to pose changes. <a href="http://cs231n.stanford.edu/">Source</a>
 </p></section>
 <section id="illumination" class="slide level2">
 <h2>Illumination</h2>
 
 <img data-src="../../assets/images/intro/challenge_illumination.png" width="600" class="r-stretch quarto-figure-center" id="fig-challenge-illumination"><p class="caption">
-Figure&nbsp;9: The same scene under different lighting conditions. <a href="http://cs231n.stanford.edu/">Source</a>
+Figure&nbsp;11: The same scene under different lighting conditions. <a href="http://cs231n.stanford.edu/">Source</a>
 </p></section>
 <section id="background-clutter" class="slide level2">
 <h2>Background Clutter</h2>
 
 <img data-src="../../assets/images/intro/challenge_background.png" width="600" class="r-stretch quarto-figure-center" id="fig-challenge-background"><p class="caption">
-Figure&nbsp;10: Cat camouflaged against a similarly-textured background. <a href="http://cs231n.stanford.edu/">Source</a>
+Figure&nbsp;12: Cat camouflaged against a similarly-textured background. <a href="http://cs231n.stanford.edu/">Source</a>
 </p></section>
 <section id="occlusion" class="slide level2">
 <h2>Occlusion</h2>
 
 <img data-src="../../assets/images/intro/challenge_occlusion.png" width="600" class="r-stretch quarto-figure-center" id="fig-challenge-occlusion"><p class="caption">
-Figure&nbsp;11: Partially occluded cat - only part of the object is visible. <a href="http://cs231n.stanford.edu/">Source</a>
+Figure&nbsp;13: Partially occluded cat - only part of the object is visible. <a href="http://cs231n.stanford.edu/">Source</a>
 </p></section>
 <section id="intra-class-variation" class="slide level2">
 <h2>Intra-Class Variation</h2>
@@ -507,14 +530,17 @@ Figure&nbsp;11: Partially occluded cat - only part of the object is visible. <a 
 Is this a tiger? Context clues help determine the answer. [Source](https://www.linkedin.com/posts/ralph-aboujaoude-diaz-40838313_technology-artificialintelligence-computervision-activity-6912446088364875776-h-Iq?utm_source=linkedin_share&utm_medium=member_desktop_web)
 ::: -->
 <img data-src="../../assets/images/intro/challenge_intra_class_variation.jpg" width="600" class="r-stretch quarto-figure-center" id="fig-challenge-intra-class"><p class="caption">
-Figure&nbsp;12: High intra-class variation: all are cats but with vastly different appearances. <a href="https://www.maxpixel.net/Cat-Kittens-Free-Float-Kitten-Rush-Cat-Puppy-555822">Source</a>
+Figure&nbsp;14: High intra-class variation: all are cats but with vastly different appearances. <a href="https://www.maxpixel.net/Cat-Kittens-Free-Float-Kitten-Rush-Cat-Puppy-555822">Source</a>
 </p></section>
 <section id="context-dependence---blurred-objects" class="slide level2">
 <h2>Context Dependence - Blurred Objects</h2>
 
 <img data-src="../../assets/images/intro/challenges_context_blop.png" width="600" class="r-stretch quarto-figure-center" id="fig-blop-context"><p class="caption">
-Figure&nbsp;13: Source <span class="citation" data-cites="torralba_using_2010">Torralba, Murphy, and Freeman (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>
-</p></section></section>
+Figure&nbsp;15: Source <span class="citation" data-cites="torralba_using_2010">Torralba, Murphy, and Freeman (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>
+</p><div class="fragment">
+<p><strong>Question</strong>: What kind of objects are marked in these images?</p>
+</div>
+</section></section>
 <section>
 <section id="machine-learning" class="title-slide slide level1 center">
 <h1>Machine Learning</h1>
@@ -540,9 +566,9 @@ Figure&nbsp;13: Source <span class="citation" data-cites="torralba_using_2010">T
 <span id="cb1-9"><a></a>    <span class="cf">return</span> predictions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="question" class="slide level2">
-<h2>Question</h2>
-<p><strong>Image Super Resolution</strong></p>
+<section id="quiz-image-super-resolution" class="slide level2">
+<h2>Quiz: Image Super Resolution</h2>
+<p><img data-src="../../assets/images/intro/super_resolution_demo_simple.png" height="400"></p>
 <p>How would you train a model for image super resolution?</p>
 <p>The task of the model would be to scale low-resolution images to high-resolution images with the best possible quality.</p>
 <!-- ## Machine Learning Pipeline
@@ -594,8 +620,14 @@ Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“<span>Im
 <div id="ref-ma_segment_2024" class="csl-entry" role="listitem">
 Ma, Jun, Yuting He, Feifei Li, Lin Han, Chenyu You, and Bo Wang. 2024. <span>“Segment Anything in Medical Images.”</span> <em>Nature Communications</em> 15 (1): 654. <a href="https://doi.org/10.1038/s41467-024-44824-z">https://doi.org/10.1038/s41467-024-44824-z</a>.
 </div>
+<div id="ref-mathys_synthetic_2024" class="csl-entry" role="listitem">
+Mathys, Melanie, Marco Willi, Michael Graber, and Raphael Meier. 2024. <span>“Synthetic <span>Image</span> <span>Generation</span> in <span>Cyber</span> <span>Influence</span> <span>Operations</span>: <span>An</span> <span>Emergent</span> <span>Threat</span>?”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.2403.12207">https://doi.org/10.48550/arXiv.2403.12207</a>.
+</div>
 <div id="ref-pan_drag_2023" class="csl-entry" role="listitem">
 Pan, Xingang, Ayush Tewari, Thomas Leimkühler, Lingjie Liu, Abhimitra Meka, and Christian Theobalt. 2023. <span>“Drag <span>Your</span> <span>GAN</span>: <span>Interactive</span> <span>Point</span>-Based <span>Manipulation</span> on the <span>Generative</span> <span>Image</span> <span>Manifold</span>.”</span> arXiv. <a href="http://arxiv.org/abs/2305.10973">http://arxiv.org/abs/2305.10973</a>.
+</div>
+<div id="ref-Redmon2016a" class="csl-entry" role="listitem">
+Redmon, Joseph, Santosh Divvala, Ross Girshick, and Ali Farhadi. 2016. <span>“You Only Look Once: <span>Unified</span>, Real-Time Object Detection.”</span> <em>Proceedings of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition</em> 2016-Decem: 779–88. <a href="https://doi.org/10.1109/CVPR.2016.91">https://doi.org/10.1109/CVPR.2016.91</a>.
 </div>
 <div id="ref-torralba_using_2010" class="csl-entry" role="listitem">
 Torralba, Antonio, Kevin P Murphy, and William T Freeman. 2010. <span>“Using the Forest to See the Trees: Exploiting Context for Visual Object Detection and Localization.”</span> <em>Communications of the ACM</em> 53 (3): 107–14.

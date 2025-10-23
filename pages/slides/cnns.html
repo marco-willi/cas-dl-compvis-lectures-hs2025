@@ -209,7 +209,7 @@ Marco Willi
 <section id="mlps-and-high-dimensional-inputs" class="slide level2">
 <h2>MLPs and High-Dimensional Inputs</h2>
 
-<img data-src="../../assets/images/cnns/mlp_images_example_weights.png" class="r-stretch"><div class="fragment">
+<img data-src="../../assets/images/cnns/mlp_images_example_weights.png" class="quarto-figure quarto-figure-center r-stretch"><div class="fragment">
 <p>Weight matrix <span class="math inline">\(\mathbf{W} \in \mathbb{R}^{d \times k}\)</span> scales with input size (<span class="math inline">\(d\)</span> = input dimensionality, <span class="math inline">\(k\)</span> = number of neurons)</p>
 </div>
 <div class="fragment">
@@ -263,27 +263,22 @@ Yes! An MLP has no notion of distance and treats every connection between every 
 <section id="mlps-and-translations" class="slide level2">
 <h2>MLPs and Translations</h2>
 
-<img data-src="../../assets/images/cnns/mlp_images_example_pattern_shifts.png" class="r-stretch quarto-figure-center"><p class="caption">MLP and pattern shifts</p><div class="fragment">
-<p>Often patterns appear at different positions (not stationary)</p>
+<img data-src="../../assets/images/cnns/mlp_images_example_pattern_shifts.png" class="quarto-figure quarto-figure-center r-stretch"><div class="fragment">
+<p>Patterns or objects often occur at different positions -&gt; need to recognize them everywhere!</p>
 </div>
 <div class="fragment">
-<p>Ideally we want to recognize them under translations: <span class="math inline">\(g(\mathbf{x})\)</span> where <span class="math inline">\(g()\)</span> is a spatial translation</p>
-</div>
-<div class="fragment">
-<div class="fragment highlight-red">
 <p><strong>How do MLPs deal with this?</strong></p>
 </div>
-</div>
 </section>
-<section id="multilayer-perceptrons-and-pattern-learning" class="slide level2">
-<h2>Multilayer-Perceptrons and Pattern Learning</h2>
+<section id="mlps-and-how-they-learn" class="slide level2">
+<h2>MLPs and How they Learn</h2>
 
-<img data-src="../../assets/images/cnns/mlp_images_examples_permutation.png" class="r-stretch quarto-figure-center"><p class="caption">MLP on example image.</p><div class="fragment highlight-red">
-<p>Can an MLP successfully learn patterns in images <span class="math inline">\(\mathbf{x}\)</span> that are permuted with a permutation matrix <span class="math inline">\(\mathbf{P}\)</span>, i.e.&nbsp;<span class="math inline">\(f(P(\mathbf{x}))\)</span>?</p>
+<img data-src="../../assets/images/cnns/mlp_images_examples_permutation.png" class="quarto-figure quarto-figure-center r-stretch"><div class="fragment">
+<p><strong>Question</strong>: Can an MLP successfully learn patterns in images <span class="math inline">\(\mathbf{x}\)</span> that are permuted with a fixed permutation matrix <span class="math inline">\(\mathbf{P}\)</span>, i.e.&nbsp;<span class="math inline">\(f(P(\mathbf{x}))\)</span>?</p>
 </div>
 </section>
-<section id="problems-mlps-and-images" class="slide level2">
-<h2>Problems: MLPs and Images</h2>
+<section id="mlps-and-images-often-not-the-best-choice" class="slide level2">
+<h2>MLPs and Images: Often Not the Best Choice</h2>
 <ul>
 <li class="fragment"><strong>High-Dimensional</strong>: MLP size scales with input dimensionality → memory/compute issues</li>
 <li class="fragment"><strong>No Locality</strong>: MLPs can’t exploit spatial relationships in images</li>
@@ -291,6 +286,7 @@ Yes! An MLP has no notion of distance and treats every connection between every 
 </ul>
 <div class="fragment">
 <p><strong>Interactive Demo</strong>: <a href="https://adamharley.com/nn_vis/mlp/2d.html">https://adamharley.com/nn_vis/mlp/2d.html</a></p>
+<p>-&gt; explore for yourself!</p>
 </div>
 <div class="fragment">
 <p><strong>Solution?</strong> → Need architecture with <strong>inductive biases</strong> for images!</p>
@@ -312,16 +308,16 @@ f(g(\mathbf{x})) = g(f(\mathbf{x}))
 \end{align}\]</span></p>
 </div>
 </section>
-<section id="example-invariance" class="slide level2">
-<h2>Example Invariance</h2>
-<p>Example where invariance is required:</p>
+<section id="invariance-an-example" class="slide level2">
+<h2>Invariance: An Example</h2>
 
-<img data-src="../../assets/images/cnns/cows2_small_invariance_collage.png" class="r-stretch quarto-figure-center" id="fig-cnns-invariance-example"><p class="caption">When objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model <span class="math inline">\(f(\mathbf{x})\)</span> is thus invariant to spatial translations.</p></section>
-<section id="example-equivariance" class="slide level2">
-<h2>Example Equivariance</h2>
-<p>Example where equivariance is required:</p>
+<img data-src="../../assets/images/cnns/cows2_small_invariance_collage.png" class="r-stretch"><p>When objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model <span class="math inline">\(f(\mathbf{x})\)</span> is thus invariant to spatial translations.</p>
+</section>
+<section id="equivariance-an-example" class="slide level2">
+<h2>Equivariance: An Example</h2>
 
-<img data-src="../../assets/images/cnns/cows2_small_detection_collage.png" class="r-stretch quarto-figure-center" id="fig-cnns-equivariance-example"><p class="caption">When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model <span class="math inline">\(f(\mathbf{x})\)</span> that produces the bounding boxes is thus equivariant with respect to spatial translations.</p></section></section>
+<img data-src="../../assets/images/cnns/cows2_small_detection_collage.png" class="r-stretch"><p>When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model <span class="math inline">\(f(\mathbf{x})\)</span> that produces the bounding boxes is thus equivariant with respect to spatial translations.</p>
+</section></section>
 <section>
 <section id="convolutional-layers" class="title-slide slide level1 center">
 <h1>Convolutional Layers</h1>
@@ -344,7 +340,7 @@ f(g(\mathbf{x})) = g(f(\mathbf{x}))
 
 <img data-src="../../assets/images/cnns/convolution_prince_rgb.png" class="r-stretch quarto-figure-center" id="fig-cnns-intro-example"><p class="caption">Source: <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#/references" role="doc-biblioref" onclick="">2023</a>)</span></p><div class="fragment">
 <p><span class="math display">\[\begin{equation}
-S(i, j) = (K * I)(i, j) = \sum_m \sum_n I(i + m, j + n) K(m, n)
+S(i, j) = (K * I)(i, j) = \sum_m \sum_n I(i + m, j + n) K(m, n) + b
 \end{equation}\]</span></p>
 <ul>
 <li><span class="math inline">\(I\)</span>: Input (e.g., image)</li>
