@@ -17,31 +17,47 @@ params:
 
 :::
 
-
 ## Synthetic Image Detection
 
-::: {layout-ncol=2}
-![[Source](https://x.com/TheInfiniteDude/status/1637211568692932608)]({{< meta params.images_path >}}sid_trump.jpg)
+::: {#fig-intro-synthetic-images layout-ncol=2}
 
-![[Source](https://x.com/cryptomattk/status/1687908457880367104)]({{< meta params.images_path >}}sid_pope.jpg)
+![]({{< meta params.images_path >}}application_synthetic_images_grta.png)
+
+
+![]({{< meta params.images_path >}}sid_trump.jpg)
+
+<!--
+![[Source](https://x.com/cryptomattk/status/1687908457880367104)]({{< meta params.images_path >}}sid_pope.jpg) -->
+
+Examples of synthetic images: left from @mathys_synthetic_2024, right from [X](https://x.com/TheInfiniteDude/status/1637211568692932608).
+:::
+
+## Communication Safety: Apple's on Device AI
+
+::: {#fig-intro-apple-safety}
+![]({{< meta params.images_path >}}apple_nude_safety.png){width=600}
+
+Apple's on-device safety features detect sensitive content while maintaining user privacy. [Source](https://www.apple.com/child-safety/)
 :::
 
 
-<!-- ![Camera Trap Image Analysis]({{< meta params.images_path >}}camtrap.jpg){width=400} -->
 
-
-
-## Object Identification and Translation
+## Image Search and Understanding
 
 ::: {layout-ncol=2}
 
+::: {.column width="45%"}
 ![Identification & Search]({{< meta params.images_path >}}google_lens_classification.png
 )
+:::
 
+::: {.column width="45%"}
 ![Translation]({{< meta params.images_path >}}google_lens_ocr.png)
 :::
 
 [Google Lens](https://search.google/ways-to-search/lens/)
+
+::::
 
 
 ## Self-Driving
@@ -88,7 +104,11 @@ params:
 [Example from Google Magic Editor](https://www.google.com/intl/en/photos/editing/)
 
 
+::: {.fragment}
 
+What computer vision tasks do you think the model must perform to enable this editing capability?
+
+:::
 
 
 <!-- ## Photograph Deblurring
@@ -123,14 +143,16 @@ params:
 ## Object Detection
 
 
-![Object Detection Beispiel (aus @redmon_you_2016). Bounding boxes lokalisieren die Objekte, wobei für jedes Objekt die wahrscheinlichste Klasse, sowie deren Konfidenz angegeben ist.]({{< meta params.images_path >}}yolo_object_detection_example.png){width=600}
+![]({{< meta params.images_path >}}yolo_object_detection_example.png){width=600}
 
+Object detection involves locating and recognizing multiple objects in an image (from @Redmon2016a).
 
 ## Segmentation
 
 
-![Object Segmentation Beispiel (aus @he_mask_2018).]({{< meta params.images_path >}}mask_rcnn_object_segmentation_example.png){width=600}
+![]({{< meta params.images_path >}}mask_rcnn_object_segmentation_example.png){width=600}
 
+In segmentation, individual pixels are assigned to specific objects (instance segmentation) or classes (semantic segmentation). From @he_mask_2018.
 
 <!-- ## Segmentierung 2
 
@@ -158,6 +180,7 @@ params:
 ![Image Generation Beispiel (aus @image_to_image_isola2018).]({{< meta params.images_path >}}pix2pix_examples.png){width=600,#fig-pix2pix-example}
 
 ::: -->
+
 ## Image Generation - Manipulation
 
 
@@ -169,8 +192,9 @@ params:
 ## Image Generation - Translation
 
 
-![Image Generation Beispiel (aus @image_to_image_isola2018).]({{< meta params.images_path >}}pix2pix_examples.png){width=600,#fig-pix2pix-example}
+![]({{< meta params.images_path >}}pix2pix_examples.png){width=600,#fig-pix2pix-example}
 
+Translation examples from @image_to_image_isola2018.
 
 
 ## Image Generation - Super Resolution
@@ -180,7 +204,7 @@ params:
 
 ## Image Generation - Colorization
 
-![Norwegian Bride (est late 1890s) aus DeOldify: [Link](https://github.com/jantic/DeOldify)]({{< meta params.images_path >}}colorization_example.png){width=600,#fig-intro-colorization-example}
+![Norwegian Bride (est late 1890s) from DeOldify: [Link](https://github.com/jantic/DeOldify)]({{< meta params.images_path >}}colorization_example.png){width=600}
 
 ## Many tasks
 
@@ -223,9 +247,9 @@ List is not exhaustive!
 
 {{< video https://openaiassets.blob.core.windows.net/$web/nf2/blog-final2/20250929_0337_New%20Video_simple_compose_01k6agr8ctey29mze208t29w38%20(1).mp4 width=1200 >}}
 
-[OpenAI Sora 2](https://openai.com/index/sora-2/) - Text-to-video generation
 :::
 
+[OpenAI Sora 2](https://openai.com/index/sora-2/) - Text-to-video generation
 
 ## What About Videos?
 
@@ -233,8 +257,19 @@ List is not exhaustive!
 
 {{< video https://co-tracker.github.io/videos/teaser/rollerblade.mp4 width=1200 >}}
 
-[CoTracker](https://co-tracker.github.io/) - Tracking points across video frames (@karaev_cotracker_2024)
 :::
+
+[CoTracker](https://co-tracker.github.io/) - Tracking points across video frames (@karaev_cotracker_2024)
+
+
+## What About Videos? {.center}
+
+
+Many of the image-level tasks can be extended to videos.
+
+After all, videos are nothing but a sequence of images.
+
+
 
 
 # Challenges
@@ -328,6 +363,10 @@ Source @torralba_using_2010
 :::
 
 
+::: {.fragment}
+**Question**: What kind of objects are marked in these images?
+:::
+
 
 # Machine Learning
 
@@ -355,13 +394,15 @@ def predict(test_images, model):
 :::
 
 
-## Question
+## Quiz: Image Super Resolution
 
-**Image Super Resolution**
+![]({{< meta params.images_path >}}super_resolution_demo_simple.png){height=400}
 
 How would you train a model for image super resolution?
 
 The task of the model would be to scale low-resolution images to high-resolution images with the best possible quality.
+
+
 
 <!-- ## Machine Learning Pipeline
 

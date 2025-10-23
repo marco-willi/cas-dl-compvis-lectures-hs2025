@@ -51,7 +51,7 @@ MLPs deal with flat inputs: The spatial structure gets lost.
 
 ## MLPs and High-Dimensional Inputs
 
-![ ]({{< meta params.images_path >}}mlp_images_example_weights.png)
+![ ]({{< meta params.images_path >}}mlp_images_example_weights.png){fig-align="center"}
 
 ::: {.fragment}
 Weight matrix $\m{W} \in \mathbb{R}^{d \times k}$ scales with input size ($d$ = input dimensionality, $k$ = number of neurons)
@@ -114,35 +114,26 @@ Yes! An MLP has no notion of distance and treats every connection between every 
 
 ## MLPs and Translations
 
-![MLP and pattern shifts]({{< meta params.images_path >}}mlp_images_example_pattern_shifts.png)
+![]({{< meta params.images_path >}}mlp_images_example_pattern_shifts.png){fig-align="center"}
 
 ::: {.fragment}
-Often patterns appear at different positions (not stationary)
+Patterns or objects often occur at different positions -> need to recognize them everywhere!
 :::
 
 ::: {.fragment}
-Ideally we want to recognize them under translations: $g(\vect{x})$ where $g()$ is a spatial translation
-:::
-
-::: {.fragment}
-
-::: {.fragment .highlight-red}
 **How do MLPs deal with this?**
 :::
 
-:::
+## MLPs and How they Learn
 
-## Multilayer-Perceptrons and Pattern Learning
+![]({{< meta params.images_path >}}mlp_images_examples_permutation.png){fig-align="center"}
 
-
-![MLP on example image.]({{< meta params.images_path >}}mlp_images_examples_permutation.png)
-
-::: {.fragment .highlight-red}
-Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a permutation matrix $\m{P}$, i.e. $f(P(\vect{x}))$?
+::: {.fragment}
+**Question**: Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted with a fixed permutation matrix $\m{P}$, i.e. $f(P(\vect{x}))$?
 :::
 
 
-## Problems: MLPs and Images
+## MLPs and Images: Often Not the Best Choice
 
 ::: {.incremental}
 - **High-Dimensional**: MLP size scales with input dimensionality → memory/compute issues
@@ -152,6 +143,8 @@ Can an MLP successfully learn patterns in images $\vect{x}$ that are permuted wi
 
 ::: {.fragment}
 **Interactive Demo**: [https://adamharley.com/nn_vis/mlp/2d.html](https://adamharley.com/nn_vis/mlp/2d.html)
+
+-> explore for yourself!
 :::
 
 ::: {.fragment}
@@ -181,29 +174,20 @@ f(g(\vect{x})) = g(f(\vect{x}))
 \end{align}
 :::
 
+## Invariance: An Example
 
 
-## Example Invariance
+![]({{< meta params.images_path >}}cows2_small_invariance_collage.png)
 
-Example where invariance is required:
-
-
-::: {#fig-cnns-invariance-example}
-
-![When objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model  $f(\vect{x})$ is thus invariant to spatial translations. ]({{< meta params.images_path >}}cows2_small_invariance_collage.png)
-
-:::
+When objects in the input translate spatially, the output (in this case the classification of the images) does not change. The model  $f(\vect{x})$ is thus invariant to spatial translations.
 
 
-## Example Equivariance
 
-Example where equivariance is required:
+## Equivariance: An Example
 
-::: {#fig-cnns-equivariance-example}
+![]({{< meta params.images_path >}}cows2_small_detection_collage.png)
 
-![When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model  $f(\vect{x})$ that produces the bounding boxes is thus equivariant with respect to spatial translations.]({{< meta params.images_path >}}cows2_small_detection_collage.png)
-
-:::
+When objects in the input (first row) translate spatially, the detections (bounding boxes) change accordingly (bottom row). The model  $f(\vect{x})$ that produces the bounding boxes is thus equivariant with respect to spatial translations.
 
 
 # Convolutional Layers
@@ -247,7 +231,7 @@ Example where equivariance is required:
 
 ::: {.fragment}
 \begin{equation}
-S(i, j) = (K * I)(i, j) = \sum_m \sum_n I(i + m, j + n) K(m, n)
+S(i, j) = (K * I)(i, j) = \sum_m \sum_n I(i + m, j + n) K(m, n) + b
 \end{equation}
 
 - $I$: Input (e.g., image)
