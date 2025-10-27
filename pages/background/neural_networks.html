@@ -343,6 +343,12 @@ window.Quarto = {
  <span class="menu-text">Exercises</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../pages/misc/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz &amp; Exam Prep</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -702,7 +708,7 @@ Tip
 <section id="implementation-in-pytorch" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="implementation-in-pytorch"><span class="header-section-number">5</span> Implementation in PyTorch</h2>
 <p>The following code shows how we can implement a configurable neural network.</p>
-<div id="81832abd" class="cell" data-execution_count="2">
+<div id="6599d02d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
@@ -747,7 +753,7 @@ Tip
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> model(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can easily display the architecture details with <code>torchinfo</code></p>
-<div id="39218a92" class="cell" data-execution_count="3">
+<div id="ead36d5a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the model architecture</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchinfo <span class="im">import</span> summary</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>summary(model, input_size<span class="op">=</span>(<span class="dv">32</span>, <span class="dv">784</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

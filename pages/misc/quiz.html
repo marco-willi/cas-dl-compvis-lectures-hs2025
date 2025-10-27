@@ -65,6 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../pages/misc/literature.html" rel="next">
+<link href="../../pages/misc/exercises.html" rel="prev">
 <link href="../..//assets/cv_logo_small.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -156,7 +158,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Quiz</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../pages/misc/quiz.html">Quiz &amp; Exam Prep</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -321,6 +323,12 @@ window.Quarto = {
  <span class="menu-text">Exercises</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../pages/misc/quiz.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Quiz &amp; Exam Prep</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -369,7 +377,8 @@ window.Quarto = {
   <li><a href="#convolutions" id="toc-convolutions" class="nav-link active" data-scroll-target="#convolutions"><span class="header-section-number">1</span> Convolutions</a></li>
   <li><a href="#cnns" id="toc-cnns" class="nav-link" data-scroll-target="#cnns"><span class="header-section-number">2</span> CNNs</a></li>
   <li><a href="#image-classification" id="toc-image-classification" class="nav-link" data-scroll-target="#image-classification"><span class="header-section-number">3</span> Image Classification</a></li>
-  <li><a href="#foundation-models" id="toc-foundation-models" class="nav-link" data-scroll-target="#foundation-models"><span class="header-section-number">4</span> Foundation Models</a></li>
+  <li><a href="#representation-learning" id="toc-representation-learning" class="nav-link" data-scroll-target="#representation-learning"><span class="header-section-number">4</span> Representation Learning</a></li>
+  <li><a href="#practical" id="toc-practical" class="nav-link" data-scroll-target="#practical"><span class="header-section-number">5</span> Practical</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/marco-willi/cas-dl-compvis-lectures-hs2025/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -436,19 +445,20 @@ window.Quarto = {
 <section id="image-classification" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="image-classification"><span class="header-section-number">3</span> Image Classification</h2>
 <ol type="1">
-<li>You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verificaiton by an expert. Which do you choose? Justify your answer.</li>
+<li>You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verification by an expert. Which do you choose? Justify your answer.</li>
 </ol>
 </section>
-<section id="foundation-models" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="foundation-models"><span class="header-section-number">4</span> Foundation Models</h2>
+<section id="representation-learning" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="representation-learning"><span class="header-section-number">4</span> Representation Learning</h2>
 <ol type="1">
-<li>You applied CLIP on a dataset to identify synthetic / fake images and used the following prompts:</li>
+<li>You want to build an app which can classify images in either “Screenshots” or “Photos”, however, should also provide the option for further classes to be added by an user. Which model do you choose and why?</li>
 </ol>
-<ul>
-<li>“A synthetic image”.</li>
-<li>“A real image”.</li>
-</ul>
-<p>When you compare to the ground truth labels that you have collected you see that the model does not perform well. What options do you have to improve the model?</p>
+</section>
+<section id="practical" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="practical"><span class="header-section-number">5</span> Practical</h2>
+<ol type="1">
+<li>You want to classify images from camera traps in forests. These camera traps are triggered by movement and contain a lot of false positives (no animal in the image). In a first step you want to identify empty (no animal) from non-empty images (has animal). You notive some species (squirrels!) are very small. What do you need to consider?</li>
+</ol>
 
 
 <!-- -->
@@ -906,7 +916,19 @@ window.Quarto = {
       }
     }
   });
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../pages/misc/exercises.html" class="pagination-link" aria-label="Exercises">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Exercises</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../pages/misc/literature.html" class="pagination-link" aria-label="Books">
+        <span class="nav-page-text">Books</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Quiz"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">params:</span></span>
@@ -947,18 +969,17 @@ window.Quarto = {
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Image Classification</span></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verificaiton by an expert. Which do you choose? Justify your answer.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verification by an expert. Which do you choose? Justify your answer.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Foundation Models</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Representation Learning</span></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You applied CLIP on a dataset to identify synthetic / fake images and used the following prompts:</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You want to build an app which can classify images in either "Screenshots" or "Photos", however, should also provide the option for further classes to be added by an user. Which model do you choose and why?</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"A synthetic image".</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"A real image".</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>When you compare to the ground truth labels that you have collected you see that the model does not perform well. What options do you have to improve the model?</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practical</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>You want to classify images from camera traps in forests. These camera traps are triggered by movement and contain a lot of false positives (no animal in the image). In a first step you want to identify empty (no animal) from non-empty images (has animal). You notive some species (squirrels!) are very small. What do you need to consider?</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
