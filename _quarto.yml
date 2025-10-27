@@ -80,8 +80,8 @@ website:
       - text: "Exercises"
         href: pages/misc/exercises.qmd
       # ------ Quiz & Exam Prep---------------------------- #
-      # - text: "Quiz & Exam Prep"
-      #   href: pages/misc/quiz.qmd
+      - text: "Quiz & Exam Prep"
+        href: pages/misc/quiz.qmd
 
       # ------ Misc ---------------------------- #
       - section: Resources

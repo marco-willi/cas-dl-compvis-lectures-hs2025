@@ -38,15 +38,14 @@ The following questions could be exam questions.
 ## Image Classification
 
 
-1. You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verificaiton by an expert. Which do you choose? Justify your answer.
+1. You trained a model to identify synthetic (fake) images. The model is quite good but not perfect. When deploying the model you have the option to send some images for manual verification by an expert. Which do you choose? Justify your answer.
 
 
-## Foundation Models
+## Representation Learning
+
+1. You want to build an app which can classify images in either "Screenshots" or "Photos", however, should also provide the option for further classes to be added by an user. Which model do you choose and why?
 
 
-1. You applied CLIP on a dataset to identify synthetic / fake images and used the following prompts:
+## Practical
 
-- "A synthetic image".
-- "A real image".
-
-When you compare to the ground truth labels that you have collected you see that the model does not perform well. What options do you have to improve the model?
+1. You want to classify images from camera traps in forests. These camera traps are triggered by movement and contain a lot of false positives (no animal in the image). In a first step you want to identify empty (no animal) from non-empty images (has animal). You notive some species (squirrels!) are very small. What do you need to consider?

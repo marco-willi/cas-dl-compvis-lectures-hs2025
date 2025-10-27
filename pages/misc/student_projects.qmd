@@ -28,13 +28,13 @@ Alternatively, feel free to pick one of the following topics.
 
 **Dataset**: The two datasets can be found here: [https://github.com/phelber/eurosat](https://github.com/phelber/eurosat). There is a dataset in RGB format and a dataset with 13 spectral bands.
 
-:::{#fig-mp-eurosat}
+:::{#fig-sp-eurosat}
 ![]({{< meta params.images_path >}}eurosat.png){width=600}
 
 Source: [Link](https://github.com/phelber/eurosat)
 :::
 
-**Difficulty/Effort**: Small - Medium
+**Difficulty/Effort**: Medium
 
 
 
@@ -48,59 +48,35 @@ Source: [Link](https://github.com/phelber/eurosat)
 
 **Dataset**: The dataset can be found here: [https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/), see @bossard_food-101_2014. It is 5 GB.
 
-:::{#fig-mp-eurosat}
+:::{#fig-sp-food}
 ![]({{< meta params.images_path >}}food101.png){width=600}
 
 Source: [Link](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/)
 :::
 
-**Difficulty/Effort**: Small - Medium
+**Difficulty/Effort**: Medium
 
 
+### Age Estimation from Faces
 
-### Image Classification: Synthetic Image Detection with Foundation Models
+**Goal**: Predict _apparent_ age from images of faces.
 
-**Goal**: Develop a model to classify images into either synthetic or not (binary classification). You have to use pre-trained CLIP (@radford_learning_2021) models and fine-tune them for this task.
+**Approach**: Train a CNN as a 101-class classifier (ages 0 to 100) and convert class probabilities to a numeric prediction via the softmax expected value (see paper, @rothe_dex_2015). Compare against direct regression (single output).
 
-**Approach**: Choose a CLIP model (for example from here:  [HuggingFace](https://huggingface.co/models)). Understand how it works, and how the outputs of this model are organized. Use the pre-trained image encoder as a feature extractor and learn a small model on top of these features. Carefully split the dataset to train and evaluate it (image id, datasets, generative models).
+**Focus**: Compare at least two variants: a CNN defined and trained from scratch and a pre-trained model with fine-tuning / as feature-extractor. Analyse the errors.
 
-**Focus**: Focus on making the model work (establish a working baseline). Train your model on a train-split of the Synthbuster/RAISE1-K dataset and evaluate on a validation-split. Test your model on SynthwildX. Report overall and model-specific performances.
+**Dataset**: The dataset can be found here [Link](https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/). Use a small dataset with cropped faces, e.g. [Link](https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/static/wiki_crop.tar).
 
-**Dataset**: There are three ready-made datasets (Synthbuster, SynthWildX and [RAISE-1K](http://loki.disi.unitn.it/RAISE/index.php)) in the [dataset](https://huggingface.co/docs/datasets/en/index) format. It is important to read the documentation to efficiently use this format. The datasets consist of real images (RAISE-1K) and synthetic images (SynthwildX and Synthbuster) from different generative models. The Synthbuster dataset was created to match the RAISE-1K dataset: each real image was used to create a corresponding synthetic image (see @fig-mp-synthbuster). The SynthwildX dataset was scraped from social media and is thus a good independent test set.
+:::{#fig-sp-age}
+![]({{< meta params.images_path >}}age_gender_prediction.jpg){width=600}
 
-- [SynthwildX - 450 MB](https://drive.google.com/file/d/1v3224djuHqMX2zbxoqPd6CDxA4Ali9qc/view?usp=drive_link)
-- [Synthbuster and RAISE-1K - 2.3 GB](https://drive.google.com/file/d/1deG5gRNsHvnAA4nJzzIjL_iGpjHQqBY7/view?usp=drive_link)
-- [(original link) Synthbuster](https://zenodo.org/records/10066460)
-- [(original link) RAISE-1k](http://loki.disi.unitn.it/RAISE/index.php)
-
-
-:::{#fig-mp-synthbuster width=800}
-![]({{< meta params.images_path >}}synth_detection.png)
-
-Images from @bammey_synthbuster_2023 and @dang-nguyen_raise_2015. The first row are real photographs that represent templates to generate synthetic images from (see second row onward).
+Source: [Link](https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/)
 :::
-
-**Difficulty/Effort**: HIGH!
-
-
-### Counting Sea Turtles from Drone Images
-
-**Goal**: Develop a model to process high-resolution images taken from drones to count sea turtles. The  results can be used to survey marine turtles. The dataset includes approximately 1'000 images of high resolution (4,048 × 3,048 pixels).
-
-**Approach**: Read the paper @gray_convolutional_2019 as inspiration. It contains an easy way to break the problem down to an image classification task (see @fig-mp-turtle). Implement your own CNN architecture and train a model. Use the train/validation splits as described in the paper. Compare different architectures and compare to the results reported in the paper. You can test different variations and techniques: CNN architectures, window-size, data augmentation and regularization.
-
-
-**Dataset**: Available here: [https://zenodo.org/records/5004596#.ZChnr3ZBxD8](https://zenodo.org/records/5004596#.ZChnr3ZBxD8).
-
-
-:::{#fig-mp-turtle}
-![]({{< meta params.images_path >}}sea_turtles.png){width=600}
-
-Source @gray_convolutional_2019
-:::
-
 
 **Difficulty/Effort**: Medium - High
+
+
+<!--
 
 
 ### Semantic Segmentation: Underwater Imagery
@@ -117,10 +93,10 @@ Source @gray_convolutional_2019
 Source: [Link](https://github.com/phelber/eurosat)
 :::
 
-**Difficulty/Effort**: Medium
+**Difficulty/Effort**: Medium -->
 
 
-### Semantic Segmentation: Pothole and Crack Detection
+<!-- ### Semantic Segmentation: Pothole and Crack Detection
 
 **Goal**: Segment images from street surfaces to detect regions with potholes and cracks. Classify each pixel into either normal, pothole or crack. The dataset consists of 4'340 images and masks.
 
@@ -134,10 +110,10 @@ Source: [Link](https://github.com/phelber/eurosat)
 ![]({{< meta params.images_path >}}potholes_n_cracks.png){width=600}
 
 Examples from different datasets. Red are cracks, blue potholes. From @thompson_shrec_2022.
-:::
+::: -->
 
 
-
+<!--
 ### Object Detection: Polyp Detection
 
 
@@ -154,7 +130,7 @@ Examples from different datasets. Red are cracks, blue potholes. From @thompson_
 Input image (left), semantic segmentation (middle) and object detection (right). From @ro_kvasir-seg_2020.
 :::
 
-**Difficulty/Effort**: High
+**Difficulty/Effort**: High -->
 
 <!--
 
