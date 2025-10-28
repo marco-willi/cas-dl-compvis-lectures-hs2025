@@ -7,6 +7,7 @@ project:
     - pages/background/*.qmd
     - pages/misc/*.qmd
     - pages/slides/*.qmd
+    - pages/genai/*.qmd
     - "index.qmd"
     - "!NOTES.md"
     - "!demos/*"
@@ -90,6 +91,11 @@ website:
           - pages/misc/links.qmd
           - pages/misc/notation.qmd
           - pages/misc/student_projects.qmd
+      # ------ Lecture ---------------------------- #
+      - section: Generative AI
+        contents:
+          - pages/genai/intro.qmd
+          - pages/genai/basics.qmd
 
 bibliography: assets/references.bib
 

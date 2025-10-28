@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "cas-dl-cv"
-version = "0.1.0"
+version = "0.1.1"
 description = "CAS Deep Learning - Computer Vision HS2025"
 authors = ["Marco Willi <marco.willi@fhnw.ch>"]
 readme = "README.md"
@@ -41,6 +41,13 @@ kornia = "*"
 # --- generative ai--- #
 openai = "^2.1.0"
 replicate = "^1.0.7"
+diffusers = "*"
+accelerate = "*"
+bitsandbytes = "*"
+#xformers = "*"
+datasets = "*"
+sentencepiece = "*"
+
 
 # --- experiment tracking --- #
 tensorboard = "*"

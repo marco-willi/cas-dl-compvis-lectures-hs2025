@@ -1,0 +1,76 @@
+---
+title: "2 - Basic Theory"
+params:
+   images_path: "/assets/images/genai/"
+---
+
+::: {.callout-tip title="Learning Objectives"  collapse="true"}
+
+TODO
+
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+TODO
+
+:::
+
+## What is generative modelling?
+
+
+Generative modeling is the process of learning the underlying distribution of a dataset so that we can generate new, realistic samples from it.
+
+
+::: {#fig-genai-basics-types}
+
+![]({{< meta params.images_path >}}types_of_genai.png)
+
+Types of generative AI models, from @prince_understanding_2023.
+:::
+
+
+::: {#fig-genai-basics-latent-intuition}
+
+![]({{< meta params.images_path >}}latent_variables_intuition1.png)
+
+Intuition about latent variables in generative models.
+:::
+
+
+::: {#fig-genai-basics-latent-intuition2}
+
+![]({{< meta params.images_path >}}latent_variables_intuition2.png)
+
+Intuition about latent variables in generative models.
+:::
+
+::: {#fig-genai-basics-latent}
+
+![]({{< meta params.images_path >}}latent_variable_gen_example.png)
+
+Example of latent variable generative model, from @prince_understanding_2023.
+:::
+
+## Desirable Properties of Generative Models
+
+Efficient Sampling
+High-Quality Sampling
+Coverage
+Well-behaved latent space
+Disentangled latent space
+Efficient likelihood computation
+
+
+
+::: {#fig-genai-basics-evaluating}
+
+![]({{< meta params.images_path >}}evaluating_genai.png)
+
+Evaluating generative AI models.
+:::
+## References
+
+::: {#refs}
+:::

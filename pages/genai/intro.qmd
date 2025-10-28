@@ -1,0 +1,125 @@
+---
+title: "1 - Introduction"
+params:
+   images_path: "/assets/images/genai/"
+---
+
+::: {.callout-tip title="Learning Objectives"  collapse="true"}
+
+TODO
+
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+TODO
+
+:::
+
+## Motivation
+
+::: {#fig-genai-intro-receipt}
+
+![]({{< meta params.images_path >}}intro_receipt.jpg){height=300}
+
+[Source](https://x.com/deedydas/status/1905909215308447874)
+:::
+
+
+::: {#fig-genai-intro-midjourney}
+
+![]({{< meta params.images_path >}}intro_midjourney_images.png)
+
+[Source](https://www.midjourney.com)
+:::
+
+
+<!-- ::: {#fig-genai-intro-midjourney-video}
+
+{{< video {{< meta params.images_path >}}intro_midjourney_videos.mp4 >}}
+
+[Source](https://www.midjourney.com)
+::: -->
+
+
+::: {#fig-genai-intro-midjourney-video}
+
+{{< video https://docs.midjourney.com/hc/article_attachments/37460844248077 >}}
+
+[Source](https://www.midjourney.com)
+:::
+
+
+
+::: {#fig-genai-intro-openai layout-ncol=2}
+
+![]({{< meta params.images_path >}}intro_openai_1.webp)
+
+![]({{< meta params.images_path >}}intro_openai_2.webp)
+
+Examples from OpenAI image generation. [Source](https://openai.com/index/introducing-4o-image-generation/)
+:::
+
+
+::: {#fig-intro-magic}
+
+{{< video https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4 width=800 >}}
+
+[Example from Google Magic Editor](https://www.google.com/intl/en/photos/editing/)
+
+:::
+
+
+::: {#fig-genai-intro-superres}
+
+![]({{< meta params.images_path >}}intro_superres_images.png)
+
+Super-resolution example
+:::
+
+
+::: {#fig-genai-intro-nvidia-dlss}
+
+{{< video https://youtu.be/K8DddlREHEE?si=TvQIpHQUaLBf_M7Z&t=4 >}}
+
+NVIDIA generative AI models for gaming ([Link](https://www.nvidia.com/en-us/geforce/technologies/dlss/)).
+:::
+
+
+::: {#fig-genai-intro-nvidia-rt}
+
+{{< video https://youtu.be/bTJYvtPRRcM?si=Cc_9T87nnNeOO3pH >}}
+
+NVIDIA DLSS Ray Reconstruction for improved graphics  ([Link](https://www.nvidia.com/en-us/geforce/technologies/dlss/)).
+:::
+
+::: {#fig-genai-intro-mri-to-ct}
+
+![]({{< meta params.images_path >}}mri_to_ct.png)
+
+MRI to CT conversion example, from @scharer_improved_2023
+:::
+
+::: {#fig-genai-intro-evolution}
+
+![]({{< meta params.images_path >}}genai_evolution.png)
+
+Evolution of generative AI. From left to righ, top to bottom: @goodfellow_generative_2014, @liu_coupled_2016,@radford_unsupervised_2016, @karras_progressive_2018, @karras_style-based_2019, @karras_analyzing_2020, @ho_denoising_2020, @rombach_high-resolution_2022, @saharia_photorealistic_2022, @betker_improving_2023
+:::
+
+
+::: {#fig-genai-intro-virtual-staging layout-ncol=2}
+
+![]({{< meta params.images_path >}}virtual_staging1.jpg)
+
+![]({{< meta params.images_path >}}virtual_staging3.png)
+
+Virtual staging examples from [Link](https://www.spacely.ai/tools/ai-virtual-staging)
+:::
+
+
+## References
+
+::: {#refs}
+:::

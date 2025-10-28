@@ -1,0 +1,42 @@
+---
+title: "3 - Generative Adversarial Networks "
+params:
+   images_path: "/assets/images/genai/"
+---
+
+::: {.callout-tip title="Learning Objectives"  collapse="true"}
+
+TODO
+
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+TODO
+
+:::
+
+## Idea
+
+
+
+::: {#fig-genai-gan-idea}
+
+![]({{< meta params.images_path >}}gan-architecture.jpg)
+
+GAN idea, from [Link](https://microsoft.github.io/GenStudio/)
+:::
+
+
+::: {#fig-genai-gan-learning}
+
+![]({{< meta params.images_path >}}gan_learning.png)
+
+GAN learning process, from @foster_generative_2023
+:::
+
+## References
+
+::: {#refs}
+:::
