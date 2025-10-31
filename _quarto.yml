@@ -96,6 +96,7 @@ website:
         contents:
           - pages/genai/intro.qmd
           - pages/genai/basics.qmd
+          - pages/genai/models.qmd
 
 bibliography: assets/references.bib
 

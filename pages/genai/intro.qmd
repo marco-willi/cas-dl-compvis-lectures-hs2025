@@ -119,6 +119,55 @@ Virtual staging examples from [Link](https://www.spacely.ai/tools/ai-virtual-sta
 :::
 
 
+
+::: {#tbl-genai-providers}
+
+| Provider | Product | Key Features |
+|----------|---------|--------------|
+| [OpenAI](https://platform.openai.com/docs/guides/images) | DALL·E 3 / Image API | API/ChatGPT integration, editing |
+| [Midjourney](https://www.midjourney.com) | Midjourney | High-quality, style-driven, Discord/app |
+| [Adobe](https://www.adobe.com/products/firefly.html) | Firefly | Creative Cloud integration, commercial-safe |
+| [Google Cloud](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview) | Imagen 3 | Enterprise API, safety controls |
+| [Stability AI](https://stability.ai) | Stable Diffusion SDXL | Open-source models, SDKs |
+| [AWS](https://aws.amazon.com/bedrock/titan/) | Titan Image | Managed service, editing, inpainting |
+| [Microsoft](https://azure.microsoft.com/products/ai-services/openai-service/) | Azure OpenAI | Enterprise governance, Designer |
+| [Leonardo AI](https://leonardo.ai) | Leonardo Platform | Web + API, styles, upscaling |
+| [Recraft](https://www.recraft.ai) | Recraft V3 | Raster & vector (SVG), brand styles |
+| [Canva](https://www.canva.com/ai-image-generator/) | Magic Media | Built-in design workflows |
+| [Getty Images](https://www.gettyimages.com/generativeai) | Generative AI | Stock-safe, clear licensing |
+| [Shutterstock](https://www.shutterstock.com/ai/image-generator) | AI Generator | Tied to licensing ecosystem |
+
+Major image generation providers and their offerings.
+
+:::
+
+
+## Definition
+
+
+::: {#fig-genai-intro-basics-classifier}
+
+![]({{< meta params.images_path >}}basics_classifier.png)
+
+Basics of a classifier
+:::
+
+
+::: {#fig-genai-intro-basics-elephant}
+
+![]({{< meta params.images_path >}}basics_elephant.png)
+
+Caption for elephant figure
+:::
+
+
+::: {#fig-genai-intro-basics-elephant-prob}
+
+![]({{< meta params.images_path >}}basics_elephants_probabilistic.png)
+
+Caption for probabilistic elephant figure
+:::
+
 ## References
 
 ::: {#refs}
