@@ -13,6 +13,8 @@ $$
 
 Die folgenden Fragen helfen das gelernte nochmal zu überprüfen und könnten Prüfungsfragen sein.
 
+Beachten Sie auch die Quiz-Fragen in den Unerrichtsunterlagen.
+
 ## Intro
 
 1. Inwiefern definiert das _Semantic Gap_ eine grundsätzliche Herausforderung in Computer Vision?
@@ -538,6 +540,22 @@ todo
 </details>
 
 
+12. Können CNNs verwendet werden um Objekte zu zählen? Schauen Sie sich @fig-quiz-cnn-counting an. Sie möchten zählen in wie vielen Quadranten ein Objekt vorkommt. Begründen Sie Ihre Antwort.
+
+
+::: {#fig-quiz-cnn-counting}
+![]({{< meta params.images_path >}}counting.jpg){width=300}
+:::
+
+
+<details>
+<summary>Antwort anzeigen</summary>
+
+Ja, CNNs können zum Zählen verwendet werden. Die Aktivation-Maps werden je nach Anzahl Objekten an verschiedenen Orten aktiv. Diese Aktivierung kann mit z.B. einer Regression (Output ist Anzahl Objekte) modelliert werden.
+
+
+</details>
+
 ## Image Classification
 
 
@@ -695,7 +713,36 @@ Geschwindigkeit ist zentral. Die Architektur muss also wohl eher klein sein um d
 
 ## Representation Learning
 
-1. Sie möchten eine App entwickeln, welche Bilder in "Screenshots" oder "Fotos" klassifiziert. Allerdings sollte es die Option geben, dass der Anwender zusätzliche Klassen hinzufügen kann. Welches Modell wählen Sie und warum?
+
+1. Warum ist die Darstellung von Bildern als Pixel-Werte ineffizient? Wie hilft Representation Learning?
+
+<details>
+<summary>Antwort anzeigen</summary>
+
+**Problem der Pixel-Repräsentation:**
+
+- Der Raum aller möglichen Bilder ist astronomisch gross
+- Für RGB-Bilder mit $224 \times 224$ Pixeln und 255 Intensitätswerten: $255^{224 \times 224 \times 3} \approx 255^{150{,}528}$ mögliche Bilder
+- Natürliche (reale) Bilder machen nur einen winzigen Bruchteil dieses Raums aus
+- Pixel-Repräsentation ist daher extrem ineffizient
+
+**Lösung durch Representation Learning:**
+
+- Findet **kompakte Repräsentationen**, die viel kleiner sind als Raw-Pixel
+- Behält dabei **relevante Information** für praktische Aufgaben
+
+**Vorteile:**
+
+- Effizienter für Downstream-Tasks (z.B. Klassifikation)
+- Reduziert Dimensionalität drastisch
+- Konzentriert sich auf semantisch bedeutsame Merkmale
+- Ermöglicht bessere Generalisierung
+
+**Intuition:** Natürliche Bilder haben Struktur und Regularität - Representation Learning nutzt dies aus, um einen besser geeigneten "Koordinatenraum" zu finden.
+
+</details>
+
+2. Sie möchten eine App entwickeln, welche Bilder in "Screenshots" oder "Fotos" klassifiziert. Allerdings sollte es die Option geben, dass der Anwender zusätzliche Klassen hinzufügen kann. Welches Modell wählen Sie und warum?
 
 <details>
 <summary>Antwort anzeigen</summary>
