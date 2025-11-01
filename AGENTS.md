@@ -46,6 +46,22 @@ The project follows a well-organized structure optimized for educational content
 
 - **`index.qmd`**: Landing page for the GitPage
 
+### Documentation
+
+- **`QUARTO.md`**: Comprehensive Quarto reference guide
+
+  - Syntax reference for creating lectures and slides
+  - Document formatting (callouts, figures, tables, code blocks)
+  - Reveal.js presentation features (basic and advanced)
+  - Cross-referencing, citations, and mathematical notation
+  - Code execution options and best practices
+  - Project-specific patterns and examples
+  - **Use this as your primary reference for Quarto syntax and features**
+
+- **`AGENTS.md`**: This file - project structure and workflow guidelines
+
+- **`NOTES.md`**: Development notes and project history
+
 ## Creating Demonstration Notebooks
 
 ### Notebook Organization
@@ -184,6 +200,14 @@ The project uses Quarto for rendering. Key configuration details:
 - Page metadata: Set `params.images_path` for consistent image references
 - Building: Use `make render` or `quarto render`
 - Development: Use `quarto preview` for live reload
+
+**For comprehensive Quarto syntax and usage, refer to `QUARTO.md`**, which includes:
+
+- Complete syntax reference for lectures and Reveal.js slides
+- Document formatting (callouts, figures, tables, math, code)
+- Advanced presentation features (transitions, animations, fragments)
+- Cross-references, citations, and bibliography
+- Execution management and best practices
 
 ## Development Workflow
 
