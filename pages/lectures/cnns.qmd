@@ -6,13 +6,14 @@ params:
 
 ::: {.callout-tip title="Learning Objectives" collapse="true"}
 
-After this lecture you should be able to:
-
+- Understand why MLPs are not ideal to model images.
 - Explain why CNN inductive biases improve efficiency on images over MLPs.
-- Compute output shapes and parameter counts for convolutional layers.
-- Distinguish invariance vs equivariance and relate them to layer design.
-- Describe receptive field growth through stacking and dilation.
-- Compare alternative convolution variants (depthwise separable, 1x1, transposed) and their use cases.
+- Understand how convolutions operate and how they can be parameterized.
+- Compute output shape and the number of parameters for convolutions.
+- Understand how different layers make up a CNN and what their role is.
+- Distinguish invariance vs equivariance and relate them to layer design and applications.
+- Describe receptive field growth through stacking.
+- On a high-level: know layers / variants such as 1x1 convolutions and global average pooling.
 :::
 
 ::: {.callout-tip title="TLDR Recap" collapse="true"}
