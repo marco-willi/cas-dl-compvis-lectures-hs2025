@@ -14,12 +14,11 @@ $$
 :::
 
 ::: {.callout-tip title="Learning Objectives" collapse="true"}
-After this lecture you should be able to:
 
-- Define multi-class vs multi-label classification and their output encodings.
-- Derive the softmax and cross-entropy from a maximum likelihood perspective.
-- Interpret logits, probabilities, and calibration (temperature, label smoothing high-level).
-- Compare classic CNN architectures (AlexNet→VGG→ResNet→ConvNeXt) and choose a baseline.
+- Define and recognize classification problems.
+- Interpret logits, probabilities and the role of the softmax function.
+- Explain cross-entropy and maximum likelihood on a high-level.
+- Compare classic CNN architectures (AlexNet→VGG→ResNet→ConvNeXt).
 - Apply transfer learning and explain when to freeze vs fine-tune layers.
 :::
 

@@ -8,13 +8,12 @@ params:
 By the end of this lecture you should be able to:
 
 - **Apply** a systematic step-by-step recipe for training neural networks, from data exploration through hyperparameter tuning to final optimization.
-- **Diagnose** common training failures by understanding leaky abstractions and silent failure modes in deep learning frameworks.
 - **Establish** robust evaluation pipelines with appropriate metrics, train/validation/test splits, and baseline models before scaling to complex architectures.
 - **Implement** regularization strategies including data augmentation, early stopping, weight decay, and transfer learning to improve generalization performance.
-- **Select** appropriate data augmentation techniques (AugLy, Albumentations, Kornia) and understand when synthetic data can enhance training.
+- **Select** appropriate data augmentation techniques.
 - **Recognize** dataset characteristics (class imbalance, label quality, image resolution requirements) that impact modeling decisions and expected performance.
 - **Configure** reproducible experiments with proper random seeding, experiment tracking (Weights & Biases, Neptune), and structured project organization.
-- **Optimize** model performance through systematic hyperparameter tuning (grid search, random search, Ray Tune) and understand advanced phenomena like double descent and grokking.
+- **Optimize** model performance through systematic hyperparameter tuning (grid search).
 :::
 
 
