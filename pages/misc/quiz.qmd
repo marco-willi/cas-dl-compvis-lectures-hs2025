@@ -39,11 +39,12 @@ torch.nn.ConvTranspose2d(
 	groups=1, bias=True, dilation=1,
 	padding_mode='zeros')
 ```
-Falls nichts anderes erwähnt ist als Tensor-Format folgendes anzunehmen $N \times C \times H \times W$, oder $C \times H \times W$. $N$ ist die Batch-Size, $C$ die Anzahl Channels, $H$ die Höhe und $W$ die Breite.
+Falls nichts anderes erwähnt, ist als Tensor-Format folgendes anzunehmen: $N \times C \times H \times W$, oder $C \times H \times W$. $N$ ist die Batch-Size, $C$ die Anzahl Channels, $H$ die Höhe und $W$ die Breite.
 
 ## Quiz & Prüfungsfragen
 
 ### Intro
+
 
 1. Inwiefern definiert das _Semantic Gap_ eine grundsätzliche Herausforderung in Computer Vision?
 
@@ -53,6 +54,8 @@ Das Semantic Gap beschreibt die Diskrepanz oder enorme kognitive Leistung um die
 
 Diese fundamentale Herausforderung macht Computer Vision grundsätzlich schwierig. Deep Learning hilft, diese Lücke zu überbrücken, indem es hierarchische Repräsentationen lernt, die schrittweise von lokalen Features (Kanten, Farben) zu hochdimensionalen semantischen Konzepten (Objekte, Szenen) zusammengeführt werden.
 :::
+
+---
 
 2. Sie möchten ein Objekt in einem Bild klassifizieren: Ist es besser das ganze Bild zur Verfügung zu haben oder nur einen Ausschnitt vom Objekt? Begründen Sie.
 
@@ -92,6 +95,8 @@ Lösungen:
 
 :::
 
+---
+
 2. Sie möchten ein MLP auf Bildern mit einer Input Dimensionalität von $3 \times 16 \times 16$ (CHW) trainieren. Der erste Hidden Layer hat 4 Neuronen, der Output Layer 2. Wie viele Gewichte hat Ihr Modell? Wie viele, wenn sich die räumliche Auflösung auf $32 \times 32$ verdoppelt?
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -119,6 +124,8 @@ Die Anzahl der Parameter vervierfacht sich! Dies zeigt, warum MLPs nicht gut fü
 
 :::
 
+---
+
 3. Sie möchten ein neuronales Netzwerk lernen, das alle Bilder mit einem vertikalen Balken mit vier Pixeln (wobei jeder dieser vier Pixel einen hohe, identischen Wert hat), siehe erste zwei Bilder in @fig-quiz-nn. Es muss in der Lage sein, zwischen Bildern zu unterscheiden, die ein anderes Muster haben (z.B. drittes und viertes Bild in @fig-quiz-nn). Wie viele Neuronen benötigen Sie mindestens in einem Netzwerk mit einem Hidden Layer?
 
 ::: {#fig-quiz-nn}
@@ -140,7 +147,7 @@ Alternativ: Mit geschickter Gewichtswahl könnten allenfalls auch weniger Neuron
 
 :::
 
-
+---
 
 4. Ihr Kollege ist am verzweifeln. Sein MLP funktioniert nicht sehr gut. Das kann natürlich viele Gründe haben. Nachdem Sie jedoch seinen Code angeschaut haben, haben Sie einen Verdacht. Welcher?
 
@@ -221,6 +228,9 @@ nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=2, padding=1)
 
 :::
 
+---
+
+
 2. Sie möchten ein CNN auf Bildern mit einer Input Dimensionalität von $3 \times 16 \times 16$ (CHW) trainieren. Sie verwenden 3 Convolutional Layer mit je 8 Filtern und Kernel-Size 3. Wie viele Gewichte haben ihre Convolutional Layers ingesamt? Wie viele, wenn sich die räumliche Auflösung der Bilder auf $32 \times 32$ verdoppelt?
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -241,6 +251,8 @@ nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, stride=2, padding=1)
 Dies ist ein Hauptvorteil von CNNs: Parameter Sharing macht sie unabhängig von der Bildgrösse (im Gegensatz zu MLPs).
 
 :::
+
+---
 
 3. Sie haben sehr grosse Bilder ($8000 \times 8000$ Pixel). Ihr Modell stürzt ständig mit Out-Of-Memory Fehlern ab. Warum könnte das so sein? Welche Optionen haben Sie bei der Parametrisierung Ihrer Convolutions um die Out-Of-Memory Fehler zu umgehen?
 
@@ -272,6 +284,8 @@ Dies ist ein Hauptvorteil von CNNs: Parameter Sharing macht sie unabhängig von 
 
 :::
 
+---
+
 4. Können CNNs verwendet werden, um Inputs wie z.B. Satellitendaten zu modellieren, die keine RGB-Bilder sind, d.h. mehr als 3 Channels haben? Begründen Sie Ihre Antwort.
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -302,6 +316,8 @@ nn.Conv2d(in_channels=12, out_channels=64, kernel_size=3, padding=1)
 
 :::
 
+---
+
 5. Sie möchten Bilder modellieren, die nicht quadratisch sind. Sie haben eine räumliche Auflösung von 800x400. Was ist bei einem CNN anders wenn es mit nicht quadratischen Bildern trainiert wird (im Vergleich zu quadratischen Bildern)?
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -329,6 +345,8 @@ Nichts Fundamentales! CNNs funktionieren auch mit nicht-quadratischen Bildern.
 - Training-Algorithmus ist gleich
 
 :::
+
+---
 
 6. Im obigen Beispiel mit Bildern mit einer räumlichen Auflösung von 800x400. Wenn Sie wirklich quadratische Activation Maps in Ihrem Modell haben wollten, wie könnten Sie dies mit dem ersten Convolutional Layer erreichen? Wie müssten Sie diesen parametrisieren? Konsultieren Sie bei Bedarf die PyTorch Dokumentation [torch.nn.Conv2d](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html).
 
@@ -363,6 +381,9 @@ pool = nn.MaxPool2d(kernel_size=(2, 1), stride=(2, 1))
 
 :::
 
+---
+
+
 7. Wenn die Pixel Ihrer Input Bilder mit einer fixen Permutationsmatrix zufällig neu sortiert werden (jedes Bild wird identisch neu sortiert), bevorzugen Sie ein CNN oder ein MLP? Begründen Sie Ihre Antwort.
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -386,7 +407,31 @@ MLPs behandeln alle Positionen gleich:
 
 :::
 
+---
+
 8.  Schauen Sie sich das folgende CNN an. Können Sie die räumliche Auflösung der Bilder ableiten? Wenn ja, berechnen Sie diese. Wenn nein, begründen Sie.
+
+```{python}
+#| eval: false
+#| echo: true
+class CNN1(nn.Module):
+    def __init__(self):
+        super(CNN1, self).__init__()
+        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
+        self.relu = nn.ReLU()
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+        self.fc = nn.Linear(32 * 8 * 8, 10)
+
+    def forward(self, x):
+        x = self.relu(self.conv1(x))
+        x = self.pool(x)
+        x = self.relu(self.conv2(x))
+        x = self.pool(x)
+        x = x.view(x.size(0), -1)
+        x = self.fc(x)
+        return x
+```
 
 ::: {.callout-note collapse="true" title="Antwort"}
 
@@ -411,27 +456,7 @@ Antwort: Die Input-Bilder haben eine räumliche Auflösung von $32 \times 32$
 
 :::
 
-```{python}
-#| eval: false
-#| echo: true
-class CNN1(nn.Module):
-    def __init__(self):
-        super(CNN1, self).__init__()
-        self.conv1 = nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-        self.relu = nn.ReLU()
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
-        self.fc = nn.Linear(32 * 8 * 8, 10)
-
-    def forward(self, x):
-        x = self.relu(self.conv1(x))
-        x = self.pool(x)
-        x = self.relu(self.conv2(x))
-        x = self.pool(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
-        return x
-```
+---
 
 
 9. Schauen Sie sich die folgenden beiden CNNs an. Was sind die wichtigsten praktischen Unterschiede?
@@ -509,6 +534,7 @@ Empfehlung: CNN2 (Global Average Pooling) ist besser.
 
 :::
 
+---
 
 10. Zeichnen Sie das Receptive Field vom mittleren Wert der Activation map ganz rechts (grau) in @fig-quiz-cnn-receptive-field bezüglich der Input Activation ganz links ein. Die Convs sind folgendermasen parametrisiert:
 
@@ -545,6 +571,7 @@ Receptive Field = $7 \times 7$ um das zentrale Input-Pixel.
 
 :::
 
+---
 
 11. Ist Global Average Pooling ein guter Ersatz für MaxPooling Layers in CNNs? Begründen Sie Ihre Antwort.
 
@@ -586,6 +613,7 @@ FC Layer     # Klassifikation
 
 :::
 
+---
 
 12. Berechnen Sie den fehlenden Wert in der Activation Map von @fig-quiz-cnn-calc-act.
 
@@ -612,6 +640,7 @@ bias=False
 3. Wir addiern die Werte und erhalten das Resultat: $2.2$
 :::
 
+---
 
 13. Können CNNs verwendet werden um Objekte zu zählen? Schauen Sie sich @fig-quiz-cnn-counting an. Sie möchten zählen in wie vielen Quadranten ein Objekt vorkommt. Begründen Sie Ihre Antwort.
 
@@ -641,6 +670,8 @@ Ja, CNNs können zum Zählen verwendet werden. Die Aktivation-Maps werden je nac
 - Die Summe ist immer 1.0 nach Softmax!
 
 :::
+
+---
 
 2. Beschreiben Sie wie Image pre-processing das Training eines CNNs beeinflusst. Auf was muss man bezüglich Pre-Processing achten, wenn man ein vortrainiertes Modell verwenden möchte (Transfer-Learning)?
 
@@ -673,6 +704,8 @@ Tipp: Verwenden Sie die offiziellen Preprocessing-Pipelines des Modells (z.B. vo
 
 :::
 
+---
+
 3. Sie haben ein Modell trainiert um synthetische (fake) Bilder zu identifizieren. Das Modell ist ziemlich gut aber nicht perfekt. Wenn Sie das Modell deployen haben Sie die Möglichkeit einige der Bilder von einem Experten überprüfen zu lassen. Welche Bilder wählen Sie aus? Begründen Sie die Antwort.
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -698,6 +731,8 @@ Strategie: Bilder mit unsicheren Vorhersagen auswählen:
 Auch extreme Misclassifications (sehr sichere aber falsche) anschauen, um systematische Fehler zu finden.
 
 :::
+
+---
 
 4. Sie möchten ein Modell trainieren um Bilder von Kamerafallen zu klassifizieren. Die Biologen möchten ein Modell, welches für ein Bild aussagt welche Spezies zu sehen ist (immer nur jeweils eine) und was die Tiere machen (jweils eine von 5 Aktivitäten, wie z.B. Essen, Ruhen, etc.) ist möglich. Was ist das für eine Problemstellung? Wie würden Sie diese modellieren?
 
@@ -743,6 +778,8 @@ loss = lambda_species * CE_loss(
 
 :::
 
+---
+
 5. Sie möchten Bilder von Kamerafallen klassifizieren. Insbesondere wollen Sie ein Modell, welches die Spezies bestimmt, welche in einem Bild sichtbar ist. Sie haben Bilder, die am Tag aufgenommen worden sind und solche die bei Nacht aufgenommen worden sind. Die Tagbilder sind RGB, die Nachtbilder sind graustufen Bilder. Wie gehen Sie damit um, dass Sie zwei inkompatible Bilder haben (1 Channel vs 3 Channel)? Begründen Sie.
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -753,6 +790,8 @@ Vortrainierte Modelle erwarten RGB!
 
 :::
 
+---
+
 6. Sind tiefere Netzwerke in der Regel besser als weniger tiefe? Auf was muss man achten? Begründe die Antwort.
 
 ::: {.callout-note collapse="true" title="Antwort"}
@@ -760,6 +799,9 @@ Vortrainierte Modelle erwarten RGB!
 Ja. Siehe Arbeit von @He2016 an ResNet. Overfitting und schlechte Konvergenz könnten jedoch Probleme bereiten, sind aber in der Praxis gut lösbar.
 
 :::
+
+
+---
 
 7. Sie werden beauftragt ein Modell zu entwickeln mit dem man in Echtzeit Bilder von einem Kamerasystem klassifizieren kann. Was für Eigenschaften muss die Architektur haben, welche Sie auswählen?
 
@@ -801,6 +843,8 @@ Representation Learning:
 **Intuition:** Natürliche Bilder haben Struktur und Regularität - Representation Learning nutzt dies aus, um einen besser geeigneten "Koordinatenraum" zu finden.
 
 :::
+
+---
 
 2. Sie möchten eine App entwickeln, welche Bilder in "Screenshots" oder "Fotos" klassifiziert. Allerdings sollte es die Option geben, dass der Anwender zusätzliche Klassen hinzufügen kann. Welches Modell wählen Sie und warum?
 
@@ -850,6 +894,8 @@ Wichtige Implikationen:
 
 :::
 
+---
+
 2. Sie möchten ein Bildklassifikationsproblem modellieren. Welche der folgenden Modelle probieren Sie zuerst aus nachdem Sie ihre Pipeline validiert und eine Baseline etabliert haben? Begründen Sie ihre Antwort.
 - A: ResNet50 vortrainiert auf ImageNet bei dem Sie einen linearen Layer hinzufügen
 - B: ResNet50 vortrainiert auf ImageNet, welches Sie mit einem Squeeze-and-Excite Block und einem linearen Layer erweitern
@@ -888,6 +934,7 @@ Warum nicht C?
 
 :::
 
+---
 
 3. Sie möchten Bilder von Kamerafallen im Wald klassifizieren. Diese Kamerafallen werden durch Bewegung ausgelöst und enthalten viele False Positives (kein Tier im Bild). In einem ersten Schritt möchten Sie leere Bilder (kein Tier) von nicht-leeren Bildern (hat Tier) unterscheiden. Sie stellen fest, dass einige Spezies (Eichhörnchen!) sehr klein sind. Was müssen Sie beachten?
 
