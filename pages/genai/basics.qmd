@@ -25,7 +25,7 @@ Generative modeling is the process of learning the underlying distribution of a 
 
 ::: {#fig-genai-basics-types}
 
-![]({{< meta params.images_path >}}types_of_genai.png)
+![]({{< meta params.images_path >}}types_of_genai.png){width=400}
 
 Types of generative AI models, from @prince_understanding_2023.
 :::
