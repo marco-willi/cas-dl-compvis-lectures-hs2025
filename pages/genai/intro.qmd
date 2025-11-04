@@ -164,32 +164,32 @@ Major image generation providers and their offerings.
 
 ## Definition
 
-
-Let's define generative modeling for images more formally.
-
+Let's contrast generative modellin with a classification task (see @fig-genai-intro-basics-classifier). In classification the model has as input an image and models a probability distribution over all classes.
 
 ::: {#fig-genai-intro-basics-classifier}
 
 ![]({{< meta params.images_path >}}basics_classifier.png)
 
-Basics of a classifier
+Classification.
 :::
 
+In generative modelling the process is essentially reversed: The input (can) be a label, such as a class label, and the output is an image (see @fig-genai-intro-basics-elephant).
 
 ::: {#fig-genai-intro-basics-elephant}
 
 ![]({{< meta params.images_path >}}basics_elephant.png)
 
-Caption for elephant figure
+Generative modelling.
 :::
 
-One of the key considerstions is that one input (the label) should be associated with a diverse range of outputs (see @fig-genai-intro-basics-elephant-prob). Since neural networks are inherently deterministic we need a way to make the generator a **stochastic** function to enable sampling diverse outputs.
+One of the tricky aspects of generative modelling is that a specific input (e.g. the label "Elephant") should be associated with a distribution over possible elephants, i.e. it should not always generate the same image (see @fig-genai-intro-basics-elephant-prob). Since neural networks are inherently deterministic, we need a way to make the generator a **stochastic** function. This enables sampling to generate diverse outputs.
+
 
 ::: {#fig-genai-intro-basics-elephant-prob}
 
 ![]({{< meta params.images_path >}}basics_elephants_probabilistic.png)
 
-Caption for probabilistic elephant figure
+Generative modelling with a diverse set of outputs.
 :::
 
 ## References

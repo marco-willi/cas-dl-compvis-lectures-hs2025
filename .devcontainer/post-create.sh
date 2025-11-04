@@ -5,6 +5,9 @@ set -e
 
 echo "🚀 Running post-create setup..."
 
+
+curl -fsSL https://claude.ai/install.sh | bash
+
 # Ensure we're in the workspace
 cd /workspace
 
