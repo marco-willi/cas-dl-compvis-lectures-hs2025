@@ -7,7 +7,6 @@ project:
     - pages/background/*.qmd
     - pages/misc/*.qmd
     - pages/slides/*.qmd
-    - pages/genai/*.qmd
     - "index.qmd"
     - "!NOTES.md"
     - "!demos/*"
@@ -68,6 +67,8 @@ website:
           - pages/lectures/representation_learning.qmd
           - pages/lectures/practical.qmd
           - pages/lectures/recent_advances.qmd
+          - pages/lectures/intro_genai.qmd
+          - pages/lectures/generative_models.qmd
       # ------ SLIDES ---------------------------- #
       - section: Slides
         contents:
@@ -77,6 +78,8 @@ website:
           - pages/slides/representation_learning.qmd
           - pages/slides/practical.qmd
           - pages/slides/recent_advances.qmd
+          - pages/slides/intro_genai.qmd
+          - pages/slides/generative_models.qmd
       # ------ Exercises ---------------------------- #
       - text: "Exercises"
         href: pages/misc/exercises.qmd
@@ -95,7 +98,6 @@ website:
       - section: Generative AI
         contents:
           - pages/genai/intro.qmd
-          - pages/genai/basics.qmd
           - pages/genai/models.qmd
 
 bibliography: assets/references.bib

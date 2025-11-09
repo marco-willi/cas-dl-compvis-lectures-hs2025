@@ -1,3 +1,5 @@
 # Exercises
 
-Exercises can be found here: [Link](https://github.com/marco-willi/cas-dl-compvis-exercises-hs2025)
+Exercises CNNs & Classification can be found here: [Link](https://github.com/marco-willi/cas-dl-compvis-exercises-hs2025)
+
+Exercises Gen AI can be found here: [Link](https://github.com/marco-willi/cas-dl-genai-exercises-hs2025)

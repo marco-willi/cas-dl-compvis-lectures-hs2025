@@ -1,0 +1,608 @@
+---
+title: "Generative Models"
+params:
+   images_path: "/assets/images/genai/"
+---
+
+## Overview
+
+- Modelling Approaches
+  - Autoregressive, Diffusion, GANs, VAEs
+- Comparing Models (1D & 2D)
+- Conditional Generation
+- Pre-Trained Models & Fine-Tuning
+- Societal Implications
+
+
+::: {.content-hidden}
+$$
+{{< include /assets/_macros.tex >}}
+$$
+:::
+
+
+# Autoregressive Models
+
+## Sequential Generation
+
+![]({{< meta params.images_path >}}autoregressive_overview.png){.r-stretch}
+
+::: {.fragment}
+Predict one element at a time, conditioned on all previous elements
+:::
+
+## Factorization
+
+::: {.fragment}
+$$
+p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p(x_n|x_1,\ldots,x_{n-1})
+$$
+:::
+
+::: {.fragment}
+Each conditional $p(x_i|x_1,\ldots,x_{i-1})$ modeled by neural network
+:::
+
+::: {.fragment}
+**Advantage**: Exact likelihood computation
+
+**Limitation**: Sequential generation is slow (no parallelization)
+:::
+
+
+# Diffusion Models
+
+## Forward Diffusion Process
+
+![]({{< meta params.images_path >}}forward_diffusion_fcv.png){.r-stretch}
+
+::: {.fragment}
+Gradually add Gaussian noise over $T$ steps (typically 1000)
+:::
+
+## Forward Process Formula
+
+::: {.fragment}
+$$z_t = \sqrt{1-\beta_t} z_{t-1} + \sqrt{\beta_t} \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, I)$$
+:::
+
+::: {.fragment}
+- $\beta_t$: noise schedule (controls noise level)
+- Deterministic process, no neural network
+- Can jump to any timestep directly (efficient training)
+:::
+
+## Reverse Diffusion Process
+
+![]({{< meta params.images_path >}}reverse_diffusion_fcv.png){.r-stretch}
+
+::: {.fragment}
+Neural network learns to denoise, step by step
+:::
+
+## Training Objective
+
+::: {.fragment}
+Network predicts the noise $\epsilon_t$ that was added at each timestep
+
+$$\mathcal{L} = \mathbb{E}_{t, x, \epsilon} \| \epsilon - f_\theta(z_t, t) \|^2$$
+:::
+
+::: {.fragment}
+Network is **conditioned on timestep** $t$ (noise level varies)
+:::
+
+## Training & Sampling Algorithm
+
+![]({{< meta params.images_path >}}diffusion_algorithm.png){.r-stretch}
+
+::: {.fragment}
+Training: random timesteps & noise | Sampling: iterative denoising
+:::
+
+## U-Net Architecture
+
+![]({{< meta params.images_path >}}diffusion_unet.png){.r-stretch}
+
+::: {.fragment}
+Encoder-decoder with skip connections and timestep embeddings
+:::
+
+## Quiz: Pros and Cons {.center}
+
+::: {.r-fit-text}
+
+What are the main advantages and disadvantages of diffusion models?
+
+:::
+
+## Quiz: Pros and Cons {.center}
+
+::: {.r-fit-text}
+
+What are the main advantages and disadvantages of diffusion models?
+
+**Pros**: High quality, diverse outputs, stable training
+
+**Cons**: Slow inference, high compute cost
+
+:::
+
+## Cold Diffusion
+
+![]({{< meta params.images_path >}}cold_diffusion.png){.r-stretch}
+
+::: {.fragment}
+Gaussian noise not fundamental—any invertible degradation works
+:::
+
+
+# Generative Adversarial Networks
+
+## The Adversarial Game
+
+![]({{< meta params.images_path >}}gan-architecture.jpg){.r-stretch}
+
+::: {.fragment}
+Generator creates fakes | Discriminator judges real vs. fake
+:::
+
+## Minimax Objective
+
+::: {.fragment}
+$$\min_{g} \max_{d} \mathbb{E}_{\vect{x} \sim p_{data}}[\log d(\vect{x})] + \mathbb{E}_{\vect{z} \sim p_z}[\log(1 - d(g(\vect{z})))]$$
+:::
+
+::: {.fragment}
+- Discriminator $d$: maximize correct classification
+- Generator $g$: fool the discriminator
+- Alternate training steps
+:::
+
+## GAN Learning Process
+
+![]({{< meta params.images_path >}}gan_learning.png){.r-stretch}
+
+::: {.fragment}
+Generator distribution (green) moves toward real data (black dots)
+:::
+
+
+# Variational Autoencoders
+
+## VAE Architecture
+
+![]({{< meta params.images_path >}}vae_illustration.png){.r-stretch}
+
+::: {.fragment}
+Encoder $q_{\psi}(z|x)$ | Decoder $p_{\theta}(x|z)$
+:::
+
+## Reparameterization Trick
+
+![]({{< meta params.images_path >}}vae_illustration2.png){.r-stretch}
+
+::: {.fragment}
+$z = \mu + \epsilon \cdot \sigma$ where $\epsilon \sim \mathcal{N}(0, 1)$
+:::
+
+## ELBO Objective
+
+::: {.fragment}
+$$\text{ELBO} = \underbrace{\mathbb{E}_{z \sim q_{\psi}(z|x)}[\log p_{\theta}(x|z)]}_{\text{Reconstruction}} - \underbrace{\text{KL}(q_{\psi}(z|x) \| p(z))}_{\text{Regularization}}$$
+:::
+
+::: {.fragment}
+- Reconstruction: decoder recovers input
+- KL regularization: structured latent space (prior $p(z) = \mathcal{N}(0, I)$)
+:::
+
+## VAE Latent Space
+
+![]({{< meta params.images_path >}}vae_latent_space_face.png){.r-stretch}
+
+::: {.fragment}
+Smooth interpolation between faces in latent space
+:::
+
+## Quiz: VAE Properties {.center}
+
+::: {.r-fit-text}
+
+What is the key advantage of VAEs over GANs?
+
+What is a common limitation?
+
+:::
+
+## Quiz: VAE Properties {.center}
+
+::: {.r-fit-text}
+
+What is the key advantage of VAEs over GANs?
+
+**Advantage**: Structured latent space, stable training, can compute likelihood
+
+What is a common limitation?
+
+**Limitation**: Often produces blurry outputs
+
+:::
+
+
+# Comparing Models
+
+## 1D Distribution: True Data
+
+![]({{< meta params.images_path >}}1d_comparison/true_distribution.png){.r-stretch}
+
+::: {.fragment}
+Bimodal distribution the models must learn
+:::
+
+## 1D Training Progress
+
+::: {layout-ncol=3}
+
+![GAN]({{< meta params.images_path >}}1d_comparison/gan_training_progress.png)
+
+![VAE]({{< meta params.images_path >}}1d_comparison/vae_training_progress.png)
+
+![Diffusion]({{< meta params.images_path >}}1d_comparison/diffusion_training_progress.png)
+
+:::
+
+::: {.fragment}
+Different convergence behaviors and failure modes
+:::
+
+## 1D Final Comparison
+
+![]({{< meta params.images_path >}}1d_comparison/final_comparison.png){.r-stretch}
+
+::: {.fragment}
+GAN: sharp but mode collapse | VAE: smooth gaps | Diffusion: reliable
+:::
+
+## 2D Distribution: True Data
+
+![]({{< meta params.images_path >}}2d_comparison/true_distribution.png){.r-stretch}
+
+::: {.fragment}
+Complex spiral pattern in 2D space
+:::
+
+## 2D Training Progress
+
+::: {layout-ncol=3}
+
+![GAN]({{< meta params.images_path >}}2d_comparison/gan_training_progress.png)
+
+![VAE]({{< meta params.images_path >}}2d_comparison/vae_training_progress.png)
+
+![Diffusion]({{< meta params.images_path >}}2d_comparison/diffusion_training_progress.png)
+
+:::
+
+::: {.fragment}
+Models handle complex geometry differently
+:::
+
+## 2D Final Comparison
+
+![]({{< meta params.images_path >}}2d_comparison/final_comparison.png){.r-stretch}
+
+::: {.fragment}
+Each model type has distinct biases in capturing manifold structure
+:::
+
+## Quiz: Model Comparison {.center}
+
+::: {.r-fit-text}
+
+Which model is most prone to mode collapse?
+
+Which model tends to fill in gaps between modes?
+
+Which model is most reliable at capturing all modes?
+
+:::
+
+## Quiz: Model Comparison {.center}
+
+::: {.r-fit-text}
+
+Which model is most prone to mode collapse?
+
+**Answer**: GANs
+
+Which model tends to fill in gaps between modes?
+
+**Answer**: VAEs
+
+Which model is most reliable at capturing all modes?
+
+**Answer**: Diffusion models
+
+:::
+
+
+# Conditional Generation
+
+## Concept
+
+::: {.fragment}
+Learn $p(x|c)$ where $c$ is conditioning signal:
+:::
+
+::: {.incremental}
+- Text prompt: "A photo of a cat wearing sunglasses"
+- Class label: digit "7" or attribute "smiling"
+- Image: sketches to photos, grayscale to color
+- Other: depth maps, segmentation masks, audio
+:::
+
+## Conditional GAN
+
+![]({{< meta params.images_path >}}gan_conditional_generation.png){.r-stretch}
+
+::: {.fragment}
+Both generator and discriminator receive condition $c$
+:::
+
+## Conditional GAN Objective
+
+::: {.fragment}
+$$\min_{g} \max_{d} \mathbb{E}_{x, c}[\log d(\vect{x}, \vect{c})] + \mathbb{E}_{z, c}[\log(1 - d(g(\vect{z}, \vect{c}), \vect{c}))]$$
+:::
+
+::: {.fragment}
+Discriminator must judge if $\vect{x}$ matches condition $\vect{c}$
+:::
+
+## Conditioning Mechanisms
+
+::: {.incremental}
+- **Concatenation**: Merge $\vect{c}$ with $\vect{z}$ or $\vect{x}$
+- **Class embeddings**: Learn embedding vectors for discrete labels
+- **Cross-attention**: For complex conditions (text, images)
+- **ControlNet**: Spatial conditioning (edges, depth, pose) for diffusion
+:::
+
+
+# Pre-Trained Models
+
+## Stable Diffusion Examples
+
+![]({{< meta params.images_path >}}pract_stable_diffusion_xl_examples.png){.r-stretch}
+
+::: {.fragment}
+State-of-the-art text-to-image generation
+:::
+
+## Latent Diffusion Architecture
+
+![]({{< meta params.images_path >}}diffusion_sd_architecture_genbook.png){.r-stretch}
+
+::: {.fragment}
+VAE compresses images | Diffusion runs in latent space | CLIP encodes text
+:::
+
+## Why Latent Diffusion?
+
+::: {.incremental}
+- Running diffusion on 512×512×3 images is expensive
+- **Solution**: Pre-train VAE to compress to 64×64×4
+- Run diffusion in compressed latent space
+- Decode final latent back to pixels
+- **Result**: 8× reduction in memory & computation
+:::
+
+## Quiz: Latent Diffusion {.center}
+
+::: {.r-fit-text}
+
+Why is Latent Diffusion more efficient than pixel-space diffusion?
+
+:::
+
+## Quiz: Latent Diffusion {.center}
+
+::: {.r-fit-text}
+
+Why is Latent Diffusion more efficient than pixel-space diffusion?
+
+**Answer**: Runs diffusion in compressed VAE latent space (8× smaller), making high-resolution generation practical on consumer GPUs
+
+:::
+
+## Stable Diffusion Architecture Details
+
+![]({{< meta params.images_path >}}diffusion_latent_diff_architecture.png){.r-stretch}
+
+::: {.fragment}
+U-Net uses cross-attention to condition on text embeddings
+:::
+
+
+# Fine-Tuning: LoRA
+
+## LoRA Architecture
+
+![]({{< meta params.images_path >}}lora.png){.r-stretch}
+
+::: {.fragment}
+Train low-rank matrices $A$ and $B$ where $\Delta W = BA$
+:::
+
+## LoRA Key Idea
+
+::: {.fragment}
+Instead of updating full weight matrix $W$:
+
+- Learn low-rank update: $\Delta W = BA$
+- $B \in \mathbb{R}^{d \times r}$, $A \in \mathbb{R}^{r \times k}$
+- $r \ll \min(d, k)$ (typically $r = 4$ to $16$)
+- Original weights $W$ frozen
+:::
+
+::: {.fragment}
+**Result**: 1000× fewer trainable parameters
+:::
+
+## LoRA Benefits
+
+::: {.incremental}
+- Fine-tune on single consumer GPU
+- Hours instead of days
+- Easily share, combine, and switch adapters
+- **Use cases**: Style transfer, subject learning, domain adaptation
+:::
+
+
+# Hardware & Ecosystem
+
+## Inference Requirements
+
+::: {.incremental}
+- **Minimum**: 4-6 GB VRAM (SD 1.5 at 512×512)
+- **Recommended**: 8-12 GB VRAM (SDXL at 1024×1024)
+- **High-end**: 16+ GB VRAM (multiple models, video generation)
+- **CPU-only**: Possible but extremely slow
+:::
+
+## Fine-Tuning (LoRA)
+
+::: {.incremental}
+- **Minimum**: 12-16 GB VRAM (small batches)
+- **Recommended**: 24 GB VRAM (comfortable batches)
+:::
+
+## Full Training
+
+::: {.incremental}
+- **Minimum**: Multiple A100 GPUs (40-80 GB each)
+- **Typical**: Clusters with 100+ GPUs
+- **Duration**: Days to weeks
+- **Cost**: $10,000s to $100,000s
+:::
+
+::: {.fragment}
+**Recommendation**: Pre-trained models + LoRA for most use cases
+:::
+
+## Open-Source Ecosystem
+
+::: {.incremental}
+- **HuggingFace**: Diffusers library, model hub, comprehensive docs
+- **CivitAI**: Community models, styles, LoRAs
+- **Automatic1111**: Local web UI, full control, extensions
+:::
+
+## Commercial Platforms
+
+::: {.incremental}
+- **OpenAI**: 4o Image, strong text understanding, API
+- **Google Gemini**: High photorealism, multimodal
+- **Replicate**: Unified API, pay-per-use, custom models
+- **Midjourney**: Artistic focus, aesthetic quality, Discord
+:::
+
+
+# Societal Implications
+
+## Synthetic Data Pollution
+
+![]({{< meta params.images_path >}}deterioration_on_pollution.png){.r-stretch}
+
+::: {.fragment}
+Training on synthetic data causes quality degradation
+:::
+
+## Real or Fake?
+
+![]({{< meta params.images_path >}}real_or_not_musk.png){.r-stretch}
+
+::: {.fragment}
+Increasingly difficult to distinguish real from synthetic
+:::
+
+## AI Bias
+
+![]({{< meta params.images_path >}}ai_bias_wp_front.png){.r-stretch}
+
+::: {.fragment}
+Biases from internet-scale training data seep into models
+:::
+
+## Bias Examples
+
+![]({{< meta params.images_path >}}ai_bias_wp_examples.png){.r-stretch}
+
+::: {.fragment}
+Strong biases in depictions (e.g., "beautiful women")
+:::
+
+## Quiz: Ethics {.center}
+
+::: {.r-fit-text}
+
+What are three major societal concerns with generative AI?
+
+:::
+
+## Quiz: Ethics {.center}
+
+::: {.r-fit-text}
+
+What are three major societal concerns with generative AI?
+
+**Answers**:
+1. Synthetic data pollution (model degradation)
+2. Authenticity challenges (real vs. fake)
+3. Embedded biases from training data
+
+:::
+
+
+# Summary
+
+## Key Takeaways
+
+::: {.incremental}
+- **Four families**: Autoregressive, Diffusion, GANs, VAEs
+- **Different tradeoffs**: Speed, quality, coverage, likelihood
+- **Conditional generation**: Extend with text, images, labels
+- **Pre-trained models**: Stable Diffusion enables practical applications
+- **LoRA**: Efficient fine-tuning with minimal compute
+- **Societal impact**: Pollution, authenticity, bias
+:::
+
+## When to Use What?
+
+::: {.incremental}
+- **Autoregressive**: Need exact likelihood, can tolerate slow generation
+- **Diffusion**: Need highest quality and coverage, have compute budget
+- **GANs**: Need fast generation, can tolerate mode collapse risk
+- **VAEs**: Need structured latent space, interpretability
+:::
+
+## Practical Recommendation
+
+::: {.fragment}
+Start with **pre-trained Stable Diffusion** + **LoRA fine-tuning**
+:::
+
+::: {.fragment}
+Only train from scratch if highly specialized domain
+:::
+
+
+# References
+
+::: {style="font-size: 50%;"}
+
+::: {#refs}
+:::
+
+:::
