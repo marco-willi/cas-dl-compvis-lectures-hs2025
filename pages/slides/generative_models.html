@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../..//assets/cv_logo_small.png" rel="icon" type="image/png">
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-bb1cd4028f63a369ab283e072cb7d572.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
+
+  <meta name="author" content="Marco Willi">
+  <title>CAS Deep Learning - Computer Vision – Generative Models</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-b593fe19bbc53d5665e08ad100a1fb50.css">
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-97BR3FTSN1"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-97BR3FTSN1', { 'anonymize_ip': true});
+  </script>
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" data-background-image="../../assets/fhnw_bg.png" data-background-opacity="1.0" data-background-size="contain" class="quarto-title-block center">
+  <h1 class="title">Generative Models</h1>
+  <p class="subtitle">CAS Deep Learning - Computer Vision (Part1)</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Marco Willi 
+</div>
+        <p class="quarto-title-affiliation">
+            Institute for Data Science I4DS, FHNW
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<ul>
+<li>Modelling Approaches
+<ul>
+<li>Autoregressive, Diffusion, GANs, VAEs</li>
+</ul></li>
+<li>Comparing Models (1D &amp; 2D)</li>
+<li>Conditional Generation</li>
+<li>Pre-Trained Models &amp; Fine-Tuning</li>
+<li>Societal Implications</li>
+</ul>
+</section>
+<section>
+<section id="autoregressive-models" class="title-slide slide level1 center">
+<h1>Autoregressive Models</h1>
+
+</section>
+<section id="sequential-generation" class="slide level2">
+<h2>Sequential Generation</h2>
+<img data-src="../../assets/images/genai/autoregressive_overview.png" class="r-stretch">
+<div class="fragment">
+<p>Predict one element at a time, conditioned on all previous elements</p>
+</div>
+</section>
+<section id="factorization" class="slide level2">
+<h2>Factorization</h2>
+<div class="fragment">
+<p><span class="math display">\[
+p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p(x_n|x_1,\ldots,x_{n-1})
+\]</span></p>
+</div>
+<div class="fragment">
+<p>Each conditional <span class="math inline">\(p(x_i|x_1,\ldots,x_{i-1})\)</span> modeled by neural network</p>
+</div>
+<div class="fragment">
+<p><strong>Advantage</strong>: Exact likelihood computation</p>
+<p><strong>Limitation</strong>: Sequential generation is slow (no parallelization)</p>
+</div>
+</section></section>
+<section>
+<section id="diffusion-models" class="title-slide slide level1 center">
+<h1>Diffusion Models</h1>
+
+</section>
+<section id="forward-diffusion-process" class="slide level2">
+<h2>Forward Diffusion Process</h2>
+<img data-src="../../assets/images/genai/forward_diffusion_fcv.png" class="r-stretch">
+<div class="fragment">
+<p>Gradually add Gaussian noise over <span class="math inline">\(T\)</span> steps (typically 1000)</p>
+</div>
+</section>
+<section id="forward-process-formula" class="slide level2">
+<h2>Forward Process Formula</h2>
+<div class="fragment">
+<p><span class="math display">\[z_t = \sqrt{1-\beta_t} z_{t-1} + \sqrt{\beta_t} \epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, I)\]</span></p>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">\(\beta_t\)</span>: noise schedule (controls noise level)</li>
+<li>Deterministic process, no neural network</li>
+<li>Can jump to any timestep directly (efficient training)</li>
+</ul>
+</div>
+</section>
+<section id="reverse-diffusion-process" class="slide level2">
+<h2>Reverse Diffusion Process</h2>
+<img data-src="../../assets/images/genai/reverse_diffusion_fcv.png" class="r-stretch">
+<div class="fragment">
+<p>Neural network learns to denoise, step by step</p>
+</div>
+</section>
+<section id="training-objective" class="slide level2">
+<h2>Training Objective</h2>
+<div class="fragment">
+<p>Network predicts the noise <span class="math inline">\(\epsilon_t\)</span> that was added at each timestep</p>
+<p><span class="math display">\[\mathcal{L} = \mathbb{E}_{t, x, \epsilon} \| \epsilon - f_\theta(z_t, t) \|^2\]</span></p>
+</div>
+<div class="fragment">
+<p>Network is <strong>conditioned on timestep</strong> <span class="math inline">\(t\)</span> (noise level varies)</p>
+</div>
+</section>
+<section id="training-sampling-algorithm" class="slide level2">
+<h2>Training &amp; Sampling Algorithm</h2>
+<img data-src="../../assets/images/genai/diffusion_algorithm.png" class="r-stretch">
+<div class="fragment">
+<p>Training: random timesteps &amp; noise | Sampling: iterative denoising</p>
+</div>
+</section>
+<section id="u-net-architecture" class="slide level2">
+<h2>U-Net Architecture</h2>
+<img data-src="../../assets/images/genai/diffusion_unet.png" class="r-stretch">
+<div class="fragment">
+<p>Encoder-decoder with skip connections and timestep embeddings</p>
+</div>
+</section>
+<section id="quiz-pros-and-cons" class="slide level2 center">
+<h2>Quiz: Pros and Cons</h2>
+<div class="r-fit-text">
+<p>What are the main advantages and disadvantages of diffusion models?</p>
+</div>
+</section>
+<section id="quiz-pros-and-cons-1" class="slide level2 center">
+<h2>Quiz: Pros and Cons</h2>
+<div class="r-fit-text">
+<p>What are the main advantages and disadvantages of diffusion models?</p>
+<p><strong>Pros</strong>: High quality, diverse outputs, stable training</p>
+<p><strong>Cons</strong>: Slow inference, high compute cost</p>
+</div>
+</section>
+<section id="cold-diffusion" class="slide level2">
+<h2>Cold Diffusion</h2>
+<img data-src="../../assets/images/genai/cold_diffusion.png" class="r-stretch">
+<div class="fragment">
+<p>Gaussian noise not fundamental—any invertible degradation works</p>
+</div>
+</section></section>
+<section>
+<section id="generative-adversarial-networks" class="title-slide slide level1 center">
+<h1>Generative Adversarial Networks</h1>
+
+</section>
+<section id="the-adversarial-game" class="slide level2">
+<h2>The Adversarial Game</h2>
+<img data-src="../../assets/images/genai/gan-architecture.jpg" class="r-stretch">
+<div class="fragment">
+<p>Generator creates fakes | Discriminator judges real vs.&nbsp;fake</p>
+</div>
+</section>
+<section id="minimax-objective" class="slide level2">
+<h2>Minimax Objective</h2>
+<div class="fragment">
+<p><span class="math display">\[\min_{g} \max_{d} \mathbb{E}_{\mathbf{x} \sim p_{data}}[\log d(\mathbf{x})] + \mathbb{E}_{\mathbf{z} \sim p_z}[\log(1 - d(g(\mathbf{z})))]\]</span></p>
+</div>
+<div class="fragment">
+<ul>
+<li>Discriminator <span class="math inline">\(d\)</span>: maximize correct classification</li>
+<li>Generator <span class="math inline">\(g\)</span>: fool the discriminator</li>
+<li>Alternate training steps</li>
+</ul>
+</div>
+</section>
+<section id="gan-learning-process" class="slide level2">
+<h2>GAN Learning Process</h2>
+<img data-src="../../assets/images/genai/gan_learning.png" class="r-stretch">
+<div class="fragment">
+<p>Generator distribution (green) moves toward real data (black dots)</p>
+</div>
+</section></section>
+<section>
+<section id="variational-autoencoders" class="title-slide slide level1 center">
+<h1>Variational Autoencoders</h1>
+
+</section>
+<section id="vae-architecture" class="slide level2">
+<h2>VAE Architecture</h2>
+<img data-src="../../assets/images/genai/vae_illustration.png" class="r-stretch">
+<div class="fragment">
+<p>Encoder <span class="math inline">\(q_{\psi}(z|x)\)</span> | Decoder <span class="math inline">\(p_{\theta}(x|z)\)</span></p>
+</div>
+</section>
+<section id="reparameterization-trick" class="slide level2">
+<h2>Reparameterization Trick</h2>
+<img data-src="../../assets/images/genai/vae_illustration2.png" class="r-stretch">
+<div class="fragment">
+<p><span class="math inline">\(z = \mu + \epsilon \cdot \sigma\)</span> where <span class="math inline">\(\epsilon \sim \mathcal{N}(0, 1)\)</span></p>
+</div>
+</section>
+<section id="elbo-objective" class="slide level2">
+<h2>ELBO Objective</h2>
+<div class="fragment">
+<p><span class="math display">\[\text{ELBO} = \underbrace{\mathbb{E}_{z \sim q_{\psi}(z|x)}[\log p_{\theta}(x|z)]}_{\text{Reconstruction}} - \underbrace{\text{KL}(q_{\psi}(z|x) \| p(z))}_{\text{Regularization}}\]</span></p>
+</div>
+<div class="fragment">
+<ul>
+<li>Reconstruction: decoder recovers input</li>
+<li>KL regularization: structured latent space (prior <span class="math inline">\(p(z) = \mathcal{N}(0, I)\)</span>)</li>
+</ul>
+</div>
+</section>
+<section id="vae-latent-space" class="slide level2">
+<h2>VAE Latent Space</h2>
+<img data-src="../../assets/images/genai/vae_latent_space_face.png" class="r-stretch">
+<div class="fragment">
+<p>Smooth interpolation between faces in latent space</p>
+</div>
+</section>
+<section id="quiz-vae-properties" class="slide level2 center">
+<h2>Quiz: VAE Properties</h2>
+<div class="r-fit-text">
+<p>What is the key advantage of VAEs over GANs?</p>
+<p>What is a common limitation?</p>
+</div>
+</section>
+<section id="quiz-vae-properties-1" class="slide level2 center">
+<h2>Quiz: VAE Properties</h2>
+<div class="r-fit-text">
+<p>What is the key advantage of VAEs over GANs?</p>
+<p><strong>Advantage</strong>: Structured latent space, stable training, can compute likelihood</p>
+<p>What is a common limitation?</p>
+<p><strong>Limitation</strong>: Often produces blurry outputs</p>
+</div>
+</section></section>
+<section>
+<section id="comparing-models" class="title-slide slide level1 center">
+<h1>Comparing Models</h1>
+
+</section>
+<section id="d-distribution-true-data" class="slide level2">
+<h2>1D Distribution: True Data</h2>
+<img data-src="../../assets/images/genai/1d_comparison/true_distribution.png" class="r-stretch">
+<div class="fragment">
+<p>Bimodal distribution the models must learn</p>
+</div>
+</section>
+<section id="d-training-progress" class="slide level2">
+<h2>1D Training Progress</h2>
+<div class="quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/genai/1d_comparison/gan_training_progress.png"></p>
+<figcaption>GAN</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/genai/1d_comparison/vae_training_progress.png"></p>
+<figcaption>VAE</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/genai/1d_comparison/diffusion_training_progress.png"></p>
+<figcaption>Diffusion</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Different convergence behaviors and failure modes</p>
+</div>
+</section>
+<section id="d-final-comparison" class="slide level2">
+<h2>1D Final Comparison</h2>
+<img data-src="../../assets/images/genai/1d_comparison/final_comparison.png" class="r-stretch">
+<div class="fragment">
+<p>GAN: sharp but mode collapse | VAE: smooth gaps | Diffusion: reliable</p>
+</div>
+</section>
+<section id="d-distribution-true-data-1" class="slide level2">
+<h2>2D Distribution: True Data</h2>
+<img data-src="../../assets/images/genai/2d_comparison/true_distribution.png" class="r-stretch">
+<div class="fragment">
+<p>Complex spiral pattern in 2D space</p>
+</div>
+</section>
+<section id="d-training-progress-1" class="slide level2">
+<h2>2D Training Progress</h2>
+<div class="quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/genai/2d_comparison/gan_training_progress.png"></p>
+<figcaption>GAN</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/genai/2d_comparison/vae_training_progress.png"></p>
+<figcaption>VAE</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../../assets/images/genai/2d_comparison/diffusion_training_progress.png"></p>
+<figcaption>Diffusion</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Models handle complex geometry differently</p>
+</div>
+</section>
+<section id="d-final-comparison-1" class="slide level2">
+<h2>2D Final Comparison</h2>
+<img data-src="../../assets/images/genai/2d_comparison/final_comparison.png" class="r-stretch">
+<div class="fragment">
+<p>Each model type has distinct biases in capturing manifold structure</p>
+</div>
+</section>
+<section id="quiz-model-comparison" class="slide level2 center">
+<h2>Quiz: Model Comparison</h2>
+<div class="r-fit-text">
+<p>Which model is most prone to mode collapse?</p>
+<p>Which model tends to fill in gaps between modes?</p>
+<p>Which model is most reliable at capturing all modes?</p>
+</div>
+</section>
+<section id="quiz-model-comparison-1" class="slide level2 center">
+<h2>Quiz: Model Comparison</h2>
+<div class="r-fit-text">
+<p>Which model is most prone to mode collapse?</p>
+<p><strong>Answer</strong>: GANs</p>
+<p>Which model tends to fill in gaps between modes?</p>
+<p><strong>Answer</strong>: VAEs</p>
+<p>Which model is most reliable at capturing all modes?</p>
+<p><strong>Answer</strong>: Diffusion models</p>
+</div>
+</section></section>
+<section>
+<section id="conditional-generation" class="title-slide slide level1 center">
+<h1>Conditional Generation</h1>
+
+</section>
+<section id="concept" class="slide level2">
+<h2>Concept</h2>
+<div class="fragment">
+<p>Learn <span class="math inline">\(p(x|c)\)</span> where <span class="math inline">\(c\)</span> is conditioning signal:</p>
+</div>
+<ul>
+<li class="fragment">Text prompt: “A photo of a cat wearing sunglasses”</li>
+<li class="fragment">Class label: digit “7” or attribute “smiling”</li>
+<li class="fragment">Image: sketches to photos, grayscale to color</li>
+<li class="fragment">Other: depth maps, segmentation masks, audio</li>
+</ul>
+</section>
+<section id="conditional-gan" class="slide level2">
+<h2>Conditional GAN</h2>
+<img data-src="../../assets/images/genai/gan_conditional_generation.png" class="r-stretch">
+<div class="fragment">
+<p>Both generator and discriminator receive condition <span class="math inline">\(c\)</span></p>
+</div>
+</section>
+<section id="conditional-gan-objective" class="slide level2">
+<h2>Conditional GAN Objective</h2>
+<div class="fragment">
+<p><span class="math display">\[\min_{g} \max_{d} \mathbb{E}_{x, c}[\log d(\mathbf{x}, \mathbf{c})] + \mathbb{E}_{z, c}[\log(1 - d(g(\mathbf{z}, \mathbf{c}), \mathbf{c}))]\]</span></p>
+</div>
+<div class="fragment">
+<p>Discriminator must judge if <span class="math inline">\(\mathbf{x}\)</span> matches condition <span class="math inline">\(\mathbf{c}\)</span></p>
+</div>
+</section>
+<section id="conditioning-mechanisms" class="slide level2">
+<h2>Conditioning Mechanisms</h2>
+<ul>
+<li class="fragment"><strong>Concatenation</strong>: Merge <span class="math inline">\(\mathbf{c}\)</span> with <span class="math inline">\(\mathbf{z}\)</span> or <span class="math inline">\(\mathbf{x}\)</span></li>
+<li class="fragment"><strong>Class embeddings</strong>: Learn embedding vectors for discrete labels</li>
+<li class="fragment"><strong>Cross-attention</strong>: For complex conditions (text, images)</li>
+<li class="fragment"><strong>ControlNet</strong>: Spatial conditioning (edges, depth, pose) for diffusion</li>
+</ul>
+</section></section>
+<section>
+<section id="pre-trained-models" class="title-slide slide level1 center">
+<h1>Pre-Trained Models</h1>
+
+</section>
+<section id="stable-diffusion-examples" class="slide level2">
+<h2>Stable Diffusion Examples</h2>
+<img data-src="../../assets/images/genai/pract_stable_diffusion_xl_examples.png" class="r-stretch">
+<div class="fragment">
+<p>State-of-the-art text-to-image generation</p>
+</div>
+</section>
+<section id="latent-diffusion-architecture" class="slide level2">
+<h2>Latent Diffusion Architecture</h2>
+<img data-src="../../assets/images/genai/diffusion_sd_architecture_genbook.png" class="r-stretch">
+<div class="fragment">
+<p>VAE compresses images | Diffusion runs in latent space | CLIP encodes text</p>
+</div>
+</section>
+<section id="why-latent-diffusion" class="slide level2">
+<h2>Why Latent Diffusion?</h2>
+<ul>
+<li class="fragment">Running diffusion on 512×512×3 images is expensive</li>
+<li class="fragment"><strong>Solution</strong>: Pre-train VAE to compress to 64×64×4</li>
+<li class="fragment">Run diffusion in compressed latent space</li>
+<li class="fragment">Decode final latent back to pixels</li>
+<li class="fragment"><strong>Result</strong>: 8× reduction in memory &amp; computation</li>
+</ul>
+</section>
+<section id="quiz-latent-diffusion" class="slide level2 center">
+<h2>Quiz: Latent Diffusion</h2>
+<div class="r-fit-text">
+<p>Why is Latent Diffusion more efficient than pixel-space diffusion?</p>
+</div>
+</section>
+<section id="quiz-latent-diffusion-1" class="slide level2 center">
+<h2>Quiz: Latent Diffusion</h2>
+<div class="r-fit-text">
+<p>Why is Latent Diffusion more efficient than pixel-space diffusion?</p>
+<p><strong>Answer</strong>: Runs diffusion in compressed VAE latent space (8× smaller), making high-resolution generation practical on consumer GPUs</p>
+</div>
+</section>
+<section id="stable-diffusion-architecture-details" class="slide level2">
+<h2>Stable Diffusion Architecture Details</h2>
+<img data-src="../../assets/images/genai/diffusion_latent_diff_architecture.png" class="r-stretch">
+<div class="fragment">
+<p>U-Net uses cross-attention to condition on text embeddings</p>
+</div>
+</section></section>
+<section>
+<section id="fine-tuning-lora" class="title-slide slide level1 center">
+<h1>Fine-Tuning: LoRA</h1>
+
+</section>
+<section id="lora-architecture" class="slide level2">
+<h2>LoRA Architecture</h2>
+<img data-src="../../assets/images/genai/lora.png" class="r-stretch">
+<div class="fragment">
+<p>Train low-rank matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> where <span class="math inline">\(\Delta W = BA\)</span></p>
+</div>
+</section>
+<section id="lora-key-idea" class="slide level2">
+<h2>LoRA Key Idea</h2>
+<div class="fragment">
+<p>Instead of updating full weight matrix <span class="math inline">\(W\)</span>:</p>
+<ul>
+<li>Learn low-rank update: <span class="math inline">\(\Delta W = BA\)</span></li>
+<li><span class="math inline">\(B \in \mathbb{R}^{d \times r}\)</span>, <span class="math inline">\(A \in \mathbb{R}^{r \times k}\)</span></li>
+<li><span class="math inline">\(r \ll \min(d, k)\)</span> (typically <span class="math inline">\(r = 4\)</span> to <span class="math inline">\(16\)</span>)</li>
+<li>Original weights <span class="math inline">\(W\)</span> frozen</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Result</strong>: 1000× fewer trainable parameters</p>
+</div>
+</section>
+<section id="lora-benefits" class="slide level2">
+<h2>LoRA Benefits</h2>
+<ul>
+<li class="fragment">Fine-tune on single consumer GPU</li>
+<li class="fragment">Hours instead of days</li>
+<li class="fragment">Easily share, combine, and switch adapters</li>
+<li class="fragment"><strong>Use cases</strong>: Style transfer, subject learning, domain adaptation</li>
+</ul>
+</section></section>
+<section>
+<section id="hardware-ecosystem" class="title-slide slide level1 center">
+<h1>Hardware &amp; Ecosystem</h1>
+
+</section>
+<section id="inference-requirements" class="slide level2">
+<h2>Inference Requirements</h2>
+<ul>
+<li class="fragment"><strong>Minimum</strong>: 4-6 GB VRAM (SD 1.5 at 512×512)</li>
+<li class="fragment"><strong>Recommended</strong>: 8-12 GB VRAM (SDXL at 1024×1024)</li>
+<li class="fragment"><strong>High-end</strong>: 16+ GB VRAM (multiple models, video generation)</li>
+<li class="fragment"><strong>CPU-only</strong>: Possible but extremely slow</li>
+</ul>
+</section>
+<section id="fine-tuning-lora-1" class="slide level2">
+<h2>Fine-Tuning (LoRA)</h2>
+<ul>
+<li class="fragment"><strong>Minimum</strong>: 12-16 GB VRAM (small batches)</li>
+<li class="fragment"><strong>Recommended</strong>: 24 GB VRAM (comfortable batches)</li>
+</ul>
+</section>
+<section id="full-training" class="slide level2">
+<h2>Full Training</h2>
+<ul>
+<li class="fragment"><strong>Minimum</strong>: Multiple A100 GPUs (40-80 GB each)</li>
+<li class="fragment"><strong>Typical</strong>: Clusters with 100+ GPUs</li>
+<li class="fragment"><strong>Duration</strong>: Days to weeks</li>
+<li class="fragment"><strong>Cost</strong>: $10,000s to $100,000s</li>
+</ul>
+<div class="fragment">
+<p><strong>Recommendation</strong>: Pre-trained models + LoRA for most use cases</p>
+</div>
+</section>
+<section id="open-source-ecosystem" class="slide level2">
+<h2>Open-Source Ecosystem</h2>
+<ul>
+<li class="fragment"><strong>HuggingFace</strong>: Diffusers library, model hub, comprehensive docs</li>
+<li class="fragment"><strong>CivitAI</strong>: Community models, styles, LoRAs</li>
+<li class="fragment"><strong>Automatic1111</strong>: Local web UI, full control, extensions</li>
+</ul>
+</section>
+<section id="commercial-platforms" class="slide level2">
+<h2>Commercial Platforms</h2>
+<ul>
+<li class="fragment"><strong>OpenAI</strong>: 4o Image, strong text understanding, API</li>
+<li class="fragment"><strong>Google Gemini</strong>: High photorealism, multimodal</li>
+<li class="fragment"><strong>Replicate</strong>: Unified API, pay-per-use, custom models</li>
+<li class="fragment"><strong>Midjourney</strong>: Artistic focus, aesthetic quality, Discord</li>
+</ul>
+</section></section>
+<section>
+<section id="societal-implications" class="title-slide slide level1 center">
+<h1>Societal Implications</h1>
+
+</section>
+<section id="synthetic-data-pollution" class="slide level2">
+<h2>Synthetic Data Pollution</h2>
+<img data-src="../../assets/images/genai/deterioration_on_pollution.png" class="r-stretch">
+<div class="fragment">
+<p>Training on synthetic data causes quality degradation</p>
+</div>
+</section>
+<section id="real-or-fake" class="slide level2">
+<h2>Real or Fake?</h2>
+<img data-src="../../assets/images/genai/real_or_not_musk.png" class="r-stretch">
+<div class="fragment">
+<p>Increasingly difficult to distinguish real from synthetic</p>
+</div>
+</section>
+<section id="ai-bias" class="slide level2">
+<h2>AI Bias</h2>
+<img data-src="../../assets/images/genai/ai_bias_wp_front.png" class="r-stretch">
+<div class="fragment">
+<p>Biases from internet-scale training data seep into models</p>
+</div>
+</section>
+<section id="bias-examples" class="slide level2">
+<h2>Bias Examples</h2>
+<img data-src="../../assets/images/genai/ai_bias_wp_examples.png" class="r-stretch">
+<div class="fragment">
+<p>Strong biases in depictions (e.g., “beautiful women”)</p>
+</div>
+</section>
+<section id="quiz-ethics" class="slide level2 center">
+<h2>Quiz: Ethics</h2>
+<div class="r-fit-text">
+<p>What are three major societal concerns with generative AI?</p>
+</div>
+</section>
+<section id="quiz-ethics-1" class="slide level2 center">
+<h2>Quiz: Ethics</h2>
+<div class="r-fit-text">
+<p>What are three major societal concerns with generative AI?</p>
+<p><strong>Answers</strong>: 1. Synthetic data pollution (model degradation) 2. Authenticity challenges (real vs.&nbsp;fake) 3. Embedded biases from training data</p>
+</div>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li class="fragment"><strong>Four families</strong>: Autoregressive, Diffusion, GANs, VAEs</li>
+<li class="fragment"><strong>Different tradeoffs</strong>: Speed, quality, coverage, likelihood</li>
+<li class="fragment"><strong>Conditional generation</strong>: Extend with text, images, labels</li>
+<li class="fragment"><strong>Pre-trained models</strong>: Stable Diffusion enables practical applications</li>
+<li class="fragment"><strong>LoRA</strong>: Efficient fine-tuning with minimal compute</li>
+<li class="fragment"><strong>Societal impact</strong>: Pollution, authenticity, bias</li>
+</ul>
+</section>
+<section id="when-to-use-what" class="slide level2">
+<h2>When to Use What?</h2>
+<ul>
+<li class="fragment"><strong>Autoregressive</strong>: Need exact likelihood, can tolerate slow generation</li>
+<li class="fragment"><strong>Diffusion</strong>: Need highest quality and coverage, have compute budget</li>
+<li class="fragment"><strong>GANs</strong>: Need fast generation, can tolerate mode collapse risk</li>
+<li class="fragment"><strong>VAEs</strong>: Need structured latent space, interpretability</li>
+</ul>
+</section>
+<section id="practical-recommendation" class="slide level2">
+<h2>Practical Recommendation</h2>
+<div class="fragment">
+<p>Start with <strong>pre-trained Stable Diffusion</strong> + <strong>LoRA fine-tuning</strong></p>
+</div>
+<div class="fragment">
+<p>Only train from scratch if highly specialized domain</p>
+</div>
+</section></section>
+<section id="references" class="title-slide slide level1 smaller scrollable">
+<h1>References</h1>
+<div style="font-size: 50%;">
+<div id="refs" role="list">
+
+</div>
+</div>
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="../../assets/fhnw_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p><a href="https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025">https://marco-willi.github.io/cas-dl-compvis-lectures-hs2025/</a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/marco-willi\.github\.io\/cas-dl-compvis-lectures-hs2025\/");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

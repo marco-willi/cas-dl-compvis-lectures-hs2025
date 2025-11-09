@@ -1,0 +1,198 @@
+---
+title: "1 - Introduction"
+params:
+   images_path: "/assets/images/genai/"
+---
+
+::: {.callout-tip title="Learning Objectives"  collapse="true"}
+
+TODO
+
+:::
+
+
+::: {.callout-tip title="TLDR Recap" collapse="true"}
+
+TODO
+
+:::
+
+## Motivation
+
+Generative AI has a profound effect on our society and on businesses. The most prominent models generate natural language, which can be used in many applications, such as chat bots. Increasingly, the quality of image generative models and their adoption into multi-modal generative models, has increased dramatically. Nowaday, synthetic images can hardly be distinguished from real photographs (see @fig-genai-intro-receipt) and can be used in many domains. Ggenerating impressive images from scratch, however, is by far not the only task for generative models, as we will see.
+
+::: {#fig-genai-intro-receipt}
+
+![]({{< meta params.images_path >}}intro_receipt.jpg){height=300}
+
+[Source](https://x.com/deedydas/status/1905909215308447874)
+:::
+
+Creating highly creative and diverse images has been enabled by recent advances of models trained on internet-scale datasets. Different companies, such as Midjourney have built businesses around this capabilitie to make it easy for users to generate images (see @fig-genai-intro-midjourney).
+
+::: {#fig-genai-intro-midjourney}
+
+![]({{< meta params.images_path >}}intro_midjourney_images.png){width=600}
+
+[Source](https://www.midjourney.com)
+:::
+
+With recent advances in video generative modes (e.g. OpenAIs Sora2 and others), Midjourney also released a model capable of creating short videos (see @fig-genai-intro-midjourney-video).
+
+<!-- ::: {#fig-genai-intro-midjourney-video}
+
+{{< video {{< meta params.images_path >}}intro_midjourney_videos.mp4 >}}
+
+[Source](https://www.midjourney.com)
+::: -->
+
+
+::: {#fig-genai-intro-midjourney-video}
+
+{{< video https://docs.midjourney.com/hc/article_attachments/37460844248077 >}}
+
+[Source](https://www.midjourney.com)
+:::
+
+Integrating image understanding and generation into large language models requires high consistency across generations, as show impressively by OpenAI's most recent model (see @fig-genai-intro-openai).
+
+::: {#fig-genai-intro-openai layout-ncol=2}
+
+![]({{< meta params.images_path >}}intro_openai_1.webp)
+
+![]({{< meta params.images_path >}}intro_openai_2.webp)
+
+Examples from OpenAI image generation. The two images were generated in turn, following user instructions about how to change the first image. [Source](https://openai.com/index/introducing-4o-image-generation/)
+:::
+
+
+Generative models have changed what it means to view a photography: is this really how it happened? See an example from Google's Magic Editor in @fig-genai-intro-magic.
+
+::: {#fig-genai-intro-magic}
+
+{{< video https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4 width=800 >}}
+
+[Example from Google Magic Editor](https://www.google.com/intl/en/photos/editing/)
+
+:::
+
+Not all generative models create images from scratch. Image super resolution is a task where generative models up-sample images spatially and enrich detail (see @fig-genai-intro-superres).
+
+::: {#fig-genai-intro-superres}
+
+![]({{< meta params.images_path >}}intro_superres_images.png)
+
+Super-resolution example
+:::
+
+The sampe principle is used in the gaming industry. Interestingly, up-scaling images using neural networks is cheaper than computing images natively in such high resolutions (see @fig-genai-intro-nvidia-dlss).
+
+::: {#fig-genai-intro-nvidia-dlss}
+
+{{< video https://youtu.be/K8DddlREHEE?si=TvQIpHQUaLBf_M7Z&t=4 >}}
+
+NVIDIA generative AI models for gaming ([Link](https://www.nvidia.com/en-us/geforce/technologies/dlss/)).
+:::
+
+
+
+Other examples involve the computation of ray tracing, an expensive operation (see @fig-genai-intro-nvidia-rt).
+
+::: {#fig-genai-intro-nvidia-rt}
+
+{{< video https://youtu.be/bTJYvtPRRcM?si=Cc_9T87nnNeOO3pH >}}
+
+NVIDIA DLSS Ray Reconstruction for improved graphics  ([Link](https://www.nvidia.com/en-us/geforce/technologies/dlss/)).
+:::
+
+Generative AI is used in many domains nowadays. @fig-genai-intro-mri-to-ct shows an application where MRI images are converted to synthetic CT scans. CT scans expose the body to radiation and should thus avoided if possible. However, CT scans show bone structure much better than MRIs. This application helps get the best of both worlds.
+
+::: {#fig-genai-intro-mri-to-ct}
+
+![]({{< meta params.images_path >}}mri_to_ct.png)
+
+MRI to CT conversion example, from @scharer_improved_2023
+:::
+
+Commercial applications of generative AI include the virtual staging of rooms with objects (furniture). This helps realtors present their properties in a more appealing and "real" way (see @fig-genai-intro-virtual-staging).
+
+::: {#fig-genai-intro-virtual-staging layout-ncol=2}
+
+![]({{< meta params.images_path >}}virtual_staging1.jpg)
+
+![]({{< meta params.images_path >}}virtual_staging3.png)
+
+Virtual staging examples from [Link](https://www.spacely.ai/tools/ai-virtual-staging)
+:::
+
+
+
+Generative AI has come a long way. Almost nothing illustrates that better than the quality of generated images of human faces (see @fig-genai-intro-evolution).
+
+::: {#fig-genai-intro-evolution}
+
+![]({{< meta params.images_path >}}genai_evolution.png)
+
+Evolution of generative AI. From left to righ, top to bottom: @goodfellow_generative_2014, @liu_coupled_2016,@radford_unsupervised_2016, @karras_progressive_2018, @karras_style-based_2019, @karras_analyzing_2020, @ho_denoising_2020, @rombach_high-resolution_2022, @saharia_photorealistic_2022, @betker_improving_2023
+:::
+
+
+@tbl-genai-providers shows a few commercial providers of image generative models.
+
+
+::: {#tbl-genai-providers}
+
+| Provider | Product | Key Features |
+|----------|---------|--------------|
+| [OpenAI](https://platform.openai.com/docs/guides/images) | DALL·E 3 / Image API | API/ChatGPT integration, editing |
+| [Midjourney](https://www.midjourney.com) | Midjourney | High-quality, style-driven, Discord/app |
+| [Adobe](https://www.adobe.com/products/firefly.html) | Firefly | Creative Cloud integration, commercial-safe |
+| [Google Cloud](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview) | Imagen 3 | Enterprise API, safety controls |
+| [Stability AI](https://stability.ai) | Stable Diffusion SDXL | Open-source models, SDKs |
+| [AWS](https://aws.amazon.com/bedrock/titan/) | Titan Image | Managed service, editing, inpainting |
+| [Microsoft](https://azure.microsoft.com/products/ai-services/openai-service/) | Azure OpenAI | Enterprise governance, Designer |
+| [Leonardo AI](https://leonardo.ai) | Leonardo Platform | Web + API, styles, upscaling |
+| [Recraft](https://www.recraft.ai) | Recraft V3 | Raster & vector (SVG), brand styles |
+| [Canva](https://www.canva.com/ai-image-generator/) | Magic Media | Built-in design workflows |
+| [Getty Images](https://www.gettyimages.com/generativeai) | Generative AI | Stock-safe, clear licensing |
+| [Shutterstock](https://www.shutterstock.com/ai/image-generator) | AI Generator | Tied to licensing ecosystem |
+
+Major image generation providers and their offerings.
+
+:::
+
+
+## Definition
+
+Let's contrast generative modellin with a classification task (see @fig-genai-intro-basics-classifier). In classification the model has as input an image and models a probability distribution over all classes.
+
+::: {#fig-genai-intro-basics-classifier}
+
+![]({{< meta params.images_path >}}basics_classifier.png)
+
+Classification.
+:::
+
+In generative modelling the process is essentially reversed: The input (can) be a label, such as a class label, and the output is an image (see @fig-genai-intro-basics-elephant).
+
+::: {#fig-genai-intro-basics-elephant}
+
+![]({{< meta params.images_path >}}basics_elephant.png)
+
+Generative modelling.
+:::
+
+One of the tricky aspects of generative modelling is that a specific input (e.g. the label "Elephant") should be associated with a distribution over possible elephants, i.e. it should not always generate the same image (see @fig-genai-intro-basics-elephant-prob). Since neural networks are inherently deterministic, we need a way to make the generator a **stochastic** function. This enables sampling to generate diverse outputs.
+
+
+::: {#fig-genai-intro-basics-elephant-prob}
+
+![]({{< meta params.images_path >}}basics_elephants_probabilistic.png)
+
+Generative modelling with a diverse set of outputs.
+:::
+
+## References
+
+::: {#refs}
+:::
