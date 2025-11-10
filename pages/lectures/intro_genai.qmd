@@ -61,7 +61,7 @@ With recent advances in video generative modes (e.g. OpenAIs Sora2 and others), 
 
 ::: {#fig-genai-intro-midjourney-video}
 
-{{< video https://docs.midjourney.com/hc/article_attachments/37460844248077 >}}
+{{< video https://youtu.be/lEKeShkzKnE?si=kZLA1mWsJpVxeuhA&t=31 >}}
 
 [Source](https://www.midjourney.com)
 :::
