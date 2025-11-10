@@ -41,7 +41,7 @@ Creating highly creative and diverse images from text prompts
 
 ## Video Generation: Midjourney
 
-{{< video https://docs.midjourney.com/hc/article_attachments/37460844248077 >}}
+{{< video https://youtu.be/lEKeShkzKnE?si=kZLA1mWsJpVxeuhA&t=31 height="80%" width="100%" >}}
 
 ::: {.fragment}
 Recent advances enable short video generation
@@ -63,7 +63,7 @@ OpenAI's model generates consistent edits following instructions
 
 ## Magic Editing
 
-{{< video https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4 width=800 >}}
+{{< video https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4 width=1000 >}}
 
 ::: {.fragment}
 Google Magic Editor: Is this how it really happened?
@@ -79,7 +79,7 @@ Generative models can enhance detail and up-sample images spatially
 
 ## Gaming: NVIDIA DLSS
 
-{{< video https://youtu.be/K8DddlREHEE?si=TvQIpHQUaLBf_M7Z&t=4 >}}
+{{< video https://youtu.be/K8DddlREHEE?si=TvQIpHQUaLBf_M7Z&t=4 height="80%" width="100%" >}}
 
 ::: {.fragment}
 Up-scaling using neural networks is cheaper than native high-res rendering
@@ -87,7 +87,7 @@ Up-scaling using neural networks is cheaper than native high-res rendering
 
 ## Ray Tracing Reconstruction
 
-{{< video https://youtu.be/bTJYvtPRRcM?si=Cc_9T87nnNeOO3pH >}}
+{{< video https://youtu.be/bTJYvtPRRcM?si=Cc_9T87nnNeOO3pH height="80%" width="100%" >}}
 
 ::: {.fragment}
 Generative AI for expensive ray tracing operations
@@ -345,8 +345,7 @@ Why is there no generative model that achieves all desirable properties?
 
 :::
 
-
-# Comparing Approaches
+# Evaluation
 
 ## Model Comparison
 
@@ -357,18 +356,6 @@ Why is there no generative model that achieves all desirable properties?
 | **GANs** | ✅ | ❌ | ✅ |
 | **VAEs** | ✅ | ⚠️ | ✅ |
 
-## Key Observations
-
-::: {.incremental}
-- **No method achieves all properties**
-- **GANs**: Excellent quality & speed, no likelihood, mode collapse risk
-- **VAEs**: Good coverage, approximate likelihood, sometimes blurry
-- **Diffusion**: SOTA quality & coverage, slow sampling
-- **Autoregressive**: Exact likelihood, very slow generation
-:::
-
-
-# Evaluation
 
 ## Challenge
 
@@ -396,28 +383,6 @@ Uses classifier to evaluate quality and diversity
 - Good model generates images classifier predicts with high confidence
 - Marginal distribution should be uniform (all classes represented)
 - Only feasible for datasets with known classes (e.g., ImageNet)
-:::
-
-
-# Summary
-
-## Key Takeaways
-
-::: {.incremental}
-- **Generative AI** creates synthetic data resembling real data
-- **One-to-many mapping** requires latent variables for diversity
-- **Core objective**: Maximize $p_{\text{data}}(\hat{\vect{x}})$
-- **Tradeoffs**: Different approaches excel at different properties
-- **No perfect model**: Choose based on application requirements
-:::
-
-## Major Model Families
-
-::: {.incremental}
-- **Autoregressive**: Sequential generation, exact likelihood
-- **Diffusion**: State-of-the-art quality, iterative process
-- **GANs**: Fast generation, adversarial training
-- **VAEs**: Structured latent space, probabilistic framework
 :::
 
 

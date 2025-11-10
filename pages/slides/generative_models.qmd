@@ -237,32 +237,43 @@ What is a common limitation?
 ![]({{< meta params.images_path >}}1d_comparison/true_distribution.png){.r-stretch}
 
 ::: {.fragment}
-Bimodal distribution the models must learn
+Trimodal distribution the models must learn
 :::
 
 ## 1D Training Progress
 
-::: {layout-ncol=3}
+::: {.panel-tabset #fig-genai-1d-example}
+
+### GAN
+
+::: {#fig-genai-1d-example-gan}
 
 ![GAN]({{< meta params.images_path >}}1d_comparison/gan_training_progress.png)
 
+:::
+
+### VAE
+
+::: {#fig-genai-1d-example-vae}
+
 ![VAE]({{< meta params.images_path >}}1d_comparison/vae_training_progress.png)
+
+:::
+
+### Diffusion
+
+::: {#fig-genai-1d-example-gan-diffusion}
 
 ![Diffusion]({{< meta params.images_path >}}1d_comparison/diffusion_training_progress.png)
 
 :::
 
-::: {.fragment}
-Different convergence behaviors and failure modes
 :::
 
 ## 1D Final Comparison
 
 ![]({{< meta params.images_path >}}1d_comparison/final_comparison.png){.r-stretch}
 
-::: {.fragment}
-GAN: sharp but mode collapse | VAE: smooth gaps | Diffusion: reliable
-:::
 
 ## 2D Distribution: True Data
 
@@ -274,18 +285,33 @@ Complex spiral pattern in 2D space
 
 ## 2D Training Progress
 
-::: {layout-ncol=3}
+
+::: {.panel-tabset #fig-genai-2d-example}
+
+### GAN
+
+::: {#fig-genai-2d-example-gan}
 
 ![GAN]({{< meta params.images_path >}}2d_comparison/gan_training_progress.png)
 
+:::
+
+### VAE
+
+::: {#fig-genai-2d-example-vae}
+
 ![VAE]({{< meta params.images_path >}}2d_comparison/vae_training_progress.png)
+
+:::
+
+### Diffusion
+
+::: {#fig-genai-2d-example-gan-diffusion}
 
 ![Diffusion]({{< meta params.images_path >}}2d_comparison/diffusion_training_progress.png)
 
 :::
 
-::: {.fragment}
-Models handle complex geometry differently
 :::
 
 ## 2D Final Comparison
@@ -296,35 +322,6 @@ Models handle complex geometry differently
 Each model type has distinct biases in capturing manifold structure
 :::
 
-## Quiz: Model Comparison {.center}
-
-::: {.r-fit-text}
-
-Which model is most prone to mode collapse?
-
-Which model tends to fill in gaps between modes?
-
-Which model is most reliable at capturing all modes?
-
-:::
-
-## Quiz: Model Comparison {.center}
-
-::: {.r-fit-text}
-
-Which model is most prone to mode collapse?
-
-**Answer**: GANs
-
-Which model tends to fill in gaps between modes?
-
-**Answer**: VAEs
-
-Which model is most reliable at capturing all modes?
-
-**Answer**: Diffusion models
-
-:::
 
 
 # Conditional Generation
@@ -398,23 +395,7 @@ VAE compresses images | Diffusion runs in latent space | CLIP encodes text
 - **Result**: 8× reduction in memory & computation
 :::
 
-## Quiz: Latent Diffusion {.center}
 
-::: {.r-fit-text}
-
-Why is Latent Diffusion more efficient than pixel-space diffusion?
-
-:::
-
-## Quiz: Latent Diffusion {.center}
-
-::: {.r-fit-text}
-
-Why is Latent Diffusion more efficient than pixel-space diffusion?
-
-**Answer**: Runs diffusion in compressed VAE latent space (8× smaller), making high-resolution generation practical on consumer GPUs
-
-:::
 
 ## Stable Diffusion Architecture Details
 
@@ -543,59 +524,6 @@ Biases from internet-scale training data seep into models
 Strong biases in depictions (e.g., "beautiful women")
 :::
 
-## Quiz: Ethics {.center}
-
-::: {.r-fit-text}
-
-What are three major societal concerns with generative AI?
-
-:::
-
-## Quiz: Ethics {.center}
-
-::: {.r-fit-text}
-
-What are three major societal concerns with generative AI?
-
-**Answers**:
-1. Synthetic data pollution (model degradation)
-2. Authenticity challenges (real vs. fake)
-3. Embedded biases from training data
-
-:::
-
-
-# Summary
-
-## Key Takeaways
-
-::: {.incremental}
-- **Four families**: Autoregressive, Diffusion, GANs, VAEs
-- **Different tradeoffs**: Speed, quality, coverage, likelihood
-- **Conditional generation**: Extend with text, images, labels
-- **Pre-trained models**: Stable Diffusion enables practical applications
-- **LoRA**: Efficient fine-tuning with minimal compute
-- **Societal impact**: Pollution, authenticity, bias
-:::
-
-## When to Use What?
-
-::: {.incremental}
-- **Autoregressive**: Need exact likelihood, can tolerate slow generation
-- **Diffusion**: Need highest quality and coverage, have compute budget
-- **GANs**: Need fast generation, can tolerate mode collapse risk
-- **VAEs**: Need structured latent space, interpretability
-:::
-
-## Practical Recommendation
-
-::: {.fragment}
-Start with **pre-trained Stable Diffusion** + **LoRA fine-tuning**
-:::
-
-::: {.fragment}
-Only train from scratch if highly specialized domain
-:::
 
 
 # References

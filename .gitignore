@@ -112,6 +112,10 @@ logs/
 !AGENTS.md
 !TODO.md
 
+########## Exam ##########
+exam/*
+
+
 #############################################
 # Notes:
 # - Removed previous broad 'demos/*' ignore so that demo notebooks remain tracked.

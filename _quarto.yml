@@ -94,11 +94,6 @@ website:
           - pages/misc/links.qmd
           - pages/misc/notation.qmd
           - pages/misc/student_projects.qmd
-      # ------ Lecture ---------------------------- #
-      - section: Generative AI
-        contents:
-          - pages/genai/intro.qmd
-          - pages/genai/models.qmd
 
 bibliography: assets/references.bib
 
