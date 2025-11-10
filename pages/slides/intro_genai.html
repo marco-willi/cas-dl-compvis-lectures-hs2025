@@ -207,7 +207,7 @@ Marco Willi
 </section>
 <section id="video-generation-midjourney" class="slide level2">
 <h2>Video Generation: Midjourney</h2>
-<video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://docs.midjourney.com/hc/article_attachments/37460844248077"></video>
+<iframe data-external="1" src="https://www.youtube.com/embed/lEKeShkzKnE?si=kZLA1mWsJpVxeuhA&amp;t=31" width="100%" height="80%" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 <div class="fragment">
 <p>Recent advances enable short video generation</p>
 </div>
@@ -230,7 +230,7 @@ Marco Willi
 </section>
 <section id="magic-editing" class="slide level2">
 <h2>Magic Editing</h2>
-<video id="video_shortcode_videojs_video2" width="800" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4"></video>
+<video id="video_shortcode_videojs_video1" width="1000" class="video-js vjs-default-skin " controls="" preload="auto" data-setup="{}" title=""><source src="https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/6e54ed750f84538fd052b31818127f1e4df5711c.compressed.mp4"></video>
 <div class="fragment">
 <p>Google Magic Editor: Is this how it really happened?</p>
 </div>
@@ -244,14 +244,14 @@ Marco Willi
 </section>
 <section id="gaming-nvidia-dlss" class="slide level2">
 <h2>Gaming: NVIDIA DLSS</h2>
-<iframe data-external="1" src="https://www.youtube.com/embed/K8DddlREHEE?si=TvQIpHQUaLBf_M7Z&amp;t=4" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe data-external="1" src="https://www.youtube.com/embed/K8DddlREHEE?si=TvQIpHQUaLBf_M7Z&amp;t=4" width="100%" height="80%" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 <div class="fragment">
 <p>Up-scaling using neural networks is cheaper than native high-res rendering</p>
 </div>
 </section>
 <section id="ray-tracing-reconstruction" class="slide level2">
 <h2>Ray Tracing Reconstruction</h2>
-<iframe data-external="1" src="https://www.youtube.com/embed/bTJYvtPRRcM?si=Cc_9T87nnNeOO3pH" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<iframe data-external="1" src="https://www.youtube.com/embed/bTJYvtPRRcM?si=Cc_9T87nnNeOO3pH" width="100%" height="80%" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 <div class="fragment">
 <p>Generative AI for expensive ray tracing operations</p>
 </div>
@@ -501,8 +501,8 @@ Marco Willi
 </div>
 </section></section>
 <section>
-<section id="comparing-approaches" class="title-slide slide level1 center">
-<h1>Comparing Approaches</h1>
+<section id="evaluation" class="title-slide slide level1 center">
+<h1>Evaluation</h1>
 
 </section>
 <section id="model-comparison" class="slide level2">
@@ -544,21 +544,6 @@ Marco Willi
 </tbody>
 </table>
 </section>
-<section id="key-observations" class="slide level2">
-<h2>Key Observations</h2>
-<ul>
-<li class="fragment"><strong>No method achieves all properties</strong></li>
-<li class="fragment"><strong>GANs</strong>: Excellent quality &amp; speed, no likelihood, mode collapse risk</li>
-<li class="fragment"><strong>VAEs</strong>: Good coverage, approximate likelihood, sometimes blurry</li>
-<li class="fragment"><strong>Diffusion</strong>: SOTA quality &amp; coverage, slow sampling</li>
-<li class="fragment"><strong>Autoregressive</strong>: Exact likelihood, very slow generation</li>
-</ul>
-</section></section>
-<section>
-<section id="evaluation" class="title-slide slide level1 center">
-<h1>Evaluation</h1>
-
-</section>
 <section id="challenge" class="slide level2">
 <h2>Challenge</h2>
 <div class="fragment">
@@ -583,30 +568,6 @@ Marco Willi
 <li class="fragment">Good model generates images classifier predicts with high confidence</li>
 <li class="fragment">Marginal distribution should be uniform (all classes represented)</li>
 <li class="fragment">Only feasible for datasets with known classes (e.g., ImageNet)</li>
-</ul>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
-</section>
-<section id="key-takeaways" class="slide level2">
-<h2>Key Takeaways</h2>
-<ul>
-<li class="fragment"><strong>Generative AI</strong> creates synthetic data resembling real data</li>
-<li class="fragment"><strong>One-to-many mapping</strong> requires latent variables for diversity</li>
-<li class="fragment"><strong>Core objective</strong>: Maximize <span class="math inline">\(p_{\text{data}}(\hat{\mathbf{x}})\)</span></li>
-<li class="fragment"><strong>Tradeoffs</strong>: Different approaches excel at different properties</li>
-<li class="fragment"><strong>No perfect model</strong>: Choose based on application requirements</li>
-</ul>
-</section>
-<section id="major-model-families" class="slide level2">
-<h2>Major Model Families</h2>
-<ul>
-<li class="fragment"><strong>Autoregressive</strong>: Sequential generation, exact likelihood</li>
-<li class="fragment"><strong>Diffusion</strong>: State-of-the-art quality, iterative process</li>
-<li class="fragment"><strong>GANs</strong>: Fast generation, adversarial training</li>
-<li class="fragment"><strong>VAEs</strong>: Structured latent space, probabilistic framework</li>
 </ul>
 </section></section>
 <section id="references" class="title-slide slide level1 smaller scrollable">
@@ -1006,7 +967,6 @@ Marco Willi
       });
       </script>
     <script>videojs(video_shortcode_videojs_video1);</script>
-    <script>videojs(video_shortcode_videojs_video2);</script>
     
 
 </body></html>

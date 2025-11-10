@@ -613,17 +613,6 @@
     ]
   },
   {
-    "objectID": "pages/slides/intro_genai.html#key-observations",
-    "href": "pages/slides/intro_genai.html#key-observations",
-    "title": "Intro to Generative AI",
-    "section": "Key Observations",
-    "text": "Key Observations\n\nNo method achieves all properties\nGANs: Excellent quality & speed, no likelihood, mode collapse risk\nVAEs: Good coverage, approximate likelihood, sometimes blurry\nDiffusion: SOTA quality & coverage, slow sampling\nAutoregressive: Exact likelihood, very slow generation",
-    "crumbs": [
-      "Slides",
-      "Intro to Generative AI"
-    ]
-  },
-  {
     "objectID": "pages/slides/intro_genai.html#challenge",
     "href": "pages/slides/intro_genai.html#challenge",
     "title": "Intro to Generative AI",
@@ -651,28 +640,6 @@
     "title": "Intro to Generative AI",
     "section": "Inception Score Intuition",
     "text": "Inception Score Intuition\n\nGood model generates images classifier predicts with high confidence\nMarginal distribution should be uniform (all classes represented)\nOnly feasible for datasets with known classes (e.g., ImageNet)",
-    "crumbs": [
-      "Slides",
-      "Intro to Generative AI"
-    ]
-  },
-  {
-    "objectID": "pages/slides/intro_genai.html#key-takeaways",
-    "href": "pages/slides/intro_genai.html#key-takeaways",
-    "title": "Intro to Generative AI",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nGenerative AI creates synthetic data resembling real data\nOne-to-many mapping requires latent variables for diversity\nCore objective: Maximize \\(p_{\\text{data}}(\\hat{\\mathbf{x}})\\)\nTradeoffs: Different approaches excel at different properties\nNo perfect model: Choose based on application requirements",
-    "crumbs": [
-      "Slides",
-      "Intro to Generative AI"
-    ]
-  },
-  {
-    "objectID": "pages/slides/intro_genai.html#major-model-families",
-    "href": "pages/slides/intro_genai.html#major-model-families",
-    "title": "Intro to Generative AI",
-    "section": "Major Model Families",
-    "text": "Major Model Families\n\nAutoregressive: Sequential generation, exact likelihood\nDiffusion: State-of-the-art quality, iterative process\nGANs: Fast generation, adversarial training\nVAEs: Structured latent space, probabilistic framework",
     "crumbs": [
       "Slides",
       "Intro to Generative AI"
@@ -1401,7 +1368,7 @@
     "href": "pages/background/frameworks.html#tensors",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.2 Tensors",
-    "text": "2.2 Tensors\ntorch.Tensor is the central data structure in PyTorch. Essentially very similar to numpy.array, it can be easily loaded onto GPUs.\nTensors can be created in various ways. For example, from lists:\n\ndata = [[1, 2],[3, 4]]\nx_data = torch.tensor(data)\nprint(x_data)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from numpy.ndarray:\n\nnp_array = np.array(data)\nx_np = torch.from_numpy(np_array)\nprint(x_np)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from other tensors:\n\nx_ones = torch.ones_like(x_data) # retains the properties of x_data\nprint(f\"Ones Tensor: \\n {x_ones} \\n\")\n\nx_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data\nprint(f\"Random Tensor: \\n {x_rand} \\n\")\n\nOnes Tensor: \n tensor([[1, 1],\n        [1, 1]]) \n\nRandom Tensor: \n tensor([[0.6067, 0.1134],\n        [0.8995, 0.7034]]) \n\n\n\nOr with randomly generated numbers or constants:\n\nshape = (2,3,)\nrand_tensor = torch.rand(shape)\nones_tensor = torch.ones(shape)\nzeros_tensor = torch.zeros(shape)\n\nprint(f\"Random Tensor: \\n {rand_tensor} \\n\")\nprint(f\"Ones Tensor: \\n {ones_tensor} \\n\")\nprint(f\"Zeros Tensor: \\n {zeros_tensor}\")\n\nRandom Tensor: \n tensor([[0.8069, 0.3490, 0.8856],\n        [0.1851, 0.0279, 0.9489]]) \n\nOnes Tensor: \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n\nZeros Tensor: \n tensor([[0., 0., 0.],\n        [0., 0., 0.]])\n\n\nTensor attributes:\n\ntensor = torch.rand(3,4)\n\nprint(f\"Shape of tensor: {tensor.shape}\")\nprint(f\"Datatype of tensor: {tensor.dtype}\")\nprint(f\"Device tensor is stored on: {tensor.device}\")\n\nShape of tensor: torch.Size([3, 4])\nDatatype of tensor: torch.float32\nDevice tensor is stored on: cpu\n\n\nThere are over 100 operations that can be performed on a tensor. The full list is available here.\nIndexing and Slicing:\n\ntensor = torch.ones(4, 4)\nprint(f\"First row: {tensor[0]}\")\nprint(f\"First column: {tensor[:, 0]}\")\nprint(f\"Last column: {tensor[:, -1]}\")\ntensor[:,1] = 0\nprint(tensor)\n\nFirst row: tensor([1., 1., 1., 1.])\nFirst column: tensor([1., 1., 1., 1.])\nLast column: tensor([1., 1., 1., 1.])\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])\n\n\nJoining tensors:\n\nt1 = torch.cat([tensor, tensor, tensor], dim=1)\nprint(t1)\n\ntensor([[1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.]])\n\n\nArithmetic operations:\n\n# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value\ny1 = tensor @ tensor.T\ny2 = tensor.matmul(tensor.T)\n\ny3 = torch.rand_like(y1)\ntorch.matmul(tensor, tensor.T, out=y3)\n\n\n# This computes the element-wise product. z1, z2, z3 will have the same value\nz1 = tensor * tensor\nz2 = tensor.mul(tensor)\n\nz3 = torch.rand_like(tensor)\ntorch.mul(tensor, tensor, out=z3)\n\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])",
+    "text": "2.2 Tensors\ntorch.Tensor is the central data structure in PyTorch. Essentially very similar to numpy.array, it can be easily loaded onto GPUs.\nTensors can be created in various ways. For example, from lists:\n\ndata = [[1, 2],[3, 4]]\nx_data = torch.tensor(data)\nprint(x_data)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from numpy.ndarray:\n\nnp_array = np.array(data)\nx_np = torch.from_numpy(np_array)\nprint(x_np)\n\ntensor([[1, 2],\n        [3, 4]])\n\n\nOr from other tensors:\n\nx_ones = torch.ones_like(x_data) # retains the properties of x_data\nprint(f\"Ones Tensor: \\n {x_ones} \\n\")\n\nx_rand = torch.rand_like(x_data, dtype=torch.float) # overrides the datatype of x_data\nprint(f\"Random Tensor: \\n {x_rand} \\n\")\n\nOnes Tensor: \n tensor([[1, 1],\n        [1, 1]]) \n\nRandom Tensor: \n tensor([[0.6734, 0.9007],\n        [0.0119, 0.5301]]) \n\n\n\nOr with randomly generated numbers or constants:\n\nshape = (2,3,)\nrand_tensor = torch.rand(shape)\nones_tensor = torch.ones(shape)\nzeros_tensor = torch.zeros(shape)\n\nprint(f\"Random Tensor: \\n {rand_tensor} \\n\")\nprint(f\"Ones Tensor: \\n {ones_tensor} \\n\")\nprint(f\"Zeros Tensor: \\n {zeros_tensor}\")\n\nRandom Tensor: \n tensor([[0.3905, 0.9522, 0.3275],\n        [0.5733, 0.1516, 0.6426]]) \n\nOnes Tensor: \n tensor([[1., 1., 1.],\n        [1., 1., 1.]]) \n\nZeros Tensor: \n tensor([[0., 0., 0.],\n        [0., 0., 0.]])\n\n\nTensor attributes:\n\ntensor = torch.rand(3,4)\n\nprint(f\"Shape of tensor: {tensor.shape}\")\nprint(f\"Datatype of tensor: {tensor.dtype}\")\nprint(f\"Device tensor is stored on: {tensor.device}\")\n\nShape of tensor: torch.Size([3, 4])\nDatatype of tensor: torch.float32\nDevice tensor is stored on: cpu\n\n\nThere are over 100 operations that can be performed on a tensor. The full list is available here.\nIndexing and Slicing:\n\ntensor = torch.ones(4, 4)\nprint(f\"First row: {tensor[0]}\")\nprint(f\"First column: {tensor[:, 0]}\")\nprint(f\"Last column: {tensor[:, -1]}\")\ntensor[:,1] = 0\nprint(tensor)\n\nFirst row: tensor([1., 1., 1., 1.])\nFirst column: tensor([1., 1., 1., 1.])\nLast column: tensor([1., 1., 1., 1.])\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])\n\n\nJoining tensors:\n\nt1 = torch.cat([tensor, tensor, tensor], dim=1)\nprint(t1)\n\ntensor([[1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.],\n        [1., 0., 1., 1., 1., 0., 1., 1., 1., 0., 1., 1.]])\n\n\nArithmetic operations:\n\n# This computes the matrix multiplication between two tensors. y1, y2, y3 will have the same value\ny1 = tensor @ tensor.T\ny2 = tensor.matmul(tensor.T)\n\ny3 = torch.rand_like(y1)\ntorch.matmul(tensor, tensor.T, out=y3)\n\n\n# This computes the element-wise product. z1, z2, z3 will have the same value\nz1 = tensor * tensor\nz2 = tensor.mul(tensor)\n\nz3 = torch.rand_like(tensor)\ntorch.mul(tensor, tensor, out=z3)\n\ntensor([[1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.],\n        [1., 0., 1., 1.]])",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -1412,7 +1379,7 @@
     "href": "pages/background/frameworks.html#autograd",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.3 Autograd",
-    "text": "2.3 Autograd\nTo train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an auto-diff functionality: torch.autograd. This can automatically compute gradients for a computational graph.\n\n\n\n\n\n\nTipAutograd Key Points\n\n\n\n\nSet requires_grad=True on tensors you want to track for gradient computation\nCall .backward() on a scalar loss to compute all gradients\nAccess gradients via .grad attribute of tensors\nUse torch.no_grad() context for inference to save memory and speed up computation\n\n\n\nThe following is an example using a 1-layer neural network (see Figure 4 ):\n\n\n\n\n\n\nFigure 4: Source: PyTorch\n\n\n\nThe network from Figure 4 is defined in PyTorch code in Listing 4.\n\n\n\n\nListing 4: Example computational graph.\n\n\nimport torch\n\nx = torch.ones(5)  # input tensor\ny = torch.zeros(3)  # expected output\nw = torch.randn(5, 3, requires_grad=True)\nb = torch.randn(3, requires_grad=True)\nz = torch.matmul(x, w)+b\nloss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)\n\n\n\n\nWe can now use Autograd to compute the gradient:\n\nloss.backward()\nprint(w.grad)\nprint(b.grad)\n\ntensor([[0.1035, 0.3304, 0.3136],\n        [0.1035, 0.3304, 0.3136],\n        [0.1035, 0.3304, 0.3136],\n        [0.1035, 0.3304, 0.3136],\n        [0.1035, 0.3304, 0.3136]])\ntensor([0.1035, 0.3304, 0.3136])",
+    "text": "2.3 Autograd\nTo train neural networks, backpropagation is typically used. This calculates the gradient of the loss function with respect to the model parameters. To compute these gradients, PyTorch provides an auto-diff functionality: torch.autograd. This can automatically compute gradients for a computational graph.\n\n\n\n\n\n\nTipAutograd Key Points\n\n\n\n\nSet requires_grad=True on tensors you want to track for gradient computation\nCall .backward() on a scalar loss to compute all gradients\nAccess gradients via .grad attribute of tensors\nUse torch.no_grad() context for inference to save memory and speed up computation\n\n\n\nThe following is an example using a 1-layer neural network (see Figure 4 ):\n\n\n\n\n\n\nFigure 4: Source: PyTorch\n\n\n\nThe network from Figure 4 is defined in PyTorch code in Listing 4.\n\n\n\n\nListing 4: Example computational graph.\n\n\nimport torch\n\nx = torch.ones(5)  # input tensor\ny = torch.zeros(3)  # expected output\nw = torch.randn(5, 3, requires_grad=True)\nb = torch.randn(3, requires_grad=True)\nz = torch.matmul(x, w)+b\nloss = torch.nn.functional.binary_cross_entropy_with_logits(z, y)\n\n\n\n\nWe can now use Autograd to compute the gradient:\n\nloss.backward()\nprint(w.grad)\nprint(b.grad)\n\ntensor([[0.2957, 0.2432, 0.1619],\n        [0.2957, 0.2432, 0.1619],\n        [0.2957, 0.2432, 0.1619],\n        [0.2957, 0.2432, 0.1619],\n        [0.2957, 0.2432, 0.1619]])\ntensor([0.2957, 0.2432, 0.1619])",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -1423,7 +1390,7 @@
     "href": "pages/background/frameworks.html#torch.nn",
     "title": "3 - Software & Hardware for Deep Learning",
     "section": "2.4 torch.nn",
-    "text": "2.4 torch.nn\nPyTorch provides various building blocks for creating neural networks. These are available in torch.nn. Additionally, you can define any compositions of such building blocks that inherit from torch.nn.Module. A neural network is typically a torch.nn.Module. Each module implements the forward() method to define how data is processed.\n\n\n\n\n\n\nTipBuilding Blocks in torch.nn\n\n\n\nCommon layers:\n\nnn.Linear: Fully connected layer\nnn.Conv2d: 2D convolutional layer\nnn.MaxPool2d: Max pooling layer\nnn.Dropout: Regularization via random dropout\nnn.BatchNorm2d: Batch normalization\n\nCommon activations:\n\nnn.ReLU(), nn.LeakyReLU(), nn.GELU()\nnn.Sigmoid(), nn.Softmax()\n\nLoss functions:\n\nnn.CrossEntropyLoss(): Classification\nnn.BCEWithLogitsLoss(): Binary classification\nnn.MSELoss(): Regression\n\n\n\nListing 5 depicts an example of a class that inherits from torch.nn.Module.\n\n\n\n\nListing 5: Example nn.Module.\n\n\nfrom torch import nn\n\nclass NeuralNetwork(nn.Module):\n    def __init__(self):\n        super(NeuralNetwork, self).__init__()\n        self.flatten = nn.Flatten()\n        self.linear_relu_stack = nn.Sequential(\n            nn.Linear(28*28, 512),\n            nn.ReLU(),\n            nn.Linear(512, 512),\n            nn.ReLU(),\n            nn.Linear(512, 10),\n        )\n\n    def forward(self, x):\n        x = self.flatten(x)\n        logits = self.linear_relu_stack(x)\n        return logits\n\n\n\n\nYou can also visualize the model:\n\nmodel = NeuralNetwork()\nprint(model)\n\nNeuralNetwork(\n  (flatten): Flatten(start_dim=1, end_dim=-1)\n  (linear_relu_stack): Sequential(\n    (0): Linear(in_features=784, out_features=512, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=512, out_features=512, bias=True)\n    (3): ReLU()\n    (4): Linear(in_features=512, out_features=10, bias=True)\n  )\n)\n\n\nTo use the model, you can pass input data. This will execute the forward() method, along with background operations.\n\nX = torch.rand(1, 28, 28)\nlogits = model(X)\npred_probab = nn.Softmax(dim=1)(logits)\ny_pred = pred_probab.argmax(1)\nprint(f\"Predicted class: {y_pred}\")\n\nPredicted class: tensor([9])\n\n\nThe executed operations will look like this:\n\nfrom torchviz import make_dot\nmake_dot(logits)\n\n\n\n\n\n\n\n\nFor more in-depth information about the model you can use the external library torchinfo as seen in Listing 6.\n\n\n\n\nListing 6: Example output of torchinfo.\n\n\nfrom torchinfo import summary\nmodel = NeuralNetwork()\nsummary(model, input_size=(128, 1, 28, 28))\n\n\n\n\n==========================================================================================\nLayer (type:depth-idx)                   Output Shape              Param #\n==========================================================================================\nNeuralNetwork                            [128, 10]                 --\n├─Flatten: 1-1                           [128, 784]                --\n├─Sequential: 1-2                        [128, 10]                 --\n│    └─Linear: 2-1                       [128, 512]                401,920\n│    └─ReLU: 2-2                         [128, 512]                --\n│    └─Linear: 2-3                       [128, 512]                262,656\n│    └─ReLU: 2-4                         [128, 512]                --\n│    └─Linear: 2-5                       [128, 10]                 5,130\n==========================================================================================\nTotal params: 669,706\nTrainable params: 669,706\nNon-trainable params: 0\nTotal mult-adds (Units.MEGABYTES): 85.72\n==========================================================================================\nInput size (MB): 0.40\nForward/backward pass size (MB): 1.06\nParams size (MB): 2.68\nEstimated Total Size (MB): 4.14\n==========================================================================================",
+    "text": "2.4 torch.nn\nPyTorch provides various building blocks for creating neural networks. These are available in torch.nn. Additionally, you can define any compositions of such building blocks that inherit from torch.nn.Module. A neural network is typically a torch.nn.Module. Each module implements the forward() method to define how data is processed.\n\n\n\n\n\n\nTipBuilding Blocks in torch.nn\n\n\n\nCommon layers:\n\nnn.Linear: Fully connected layer\nnn.Conv2d: 2D convolutional layer\nnn.MaxPool2d: Max pooling layer\nnn.Dropout: Regularization via random dropout\nnn.BatchNorm2d: Batch normalization\n\nCommon activations:\n\nnn.ReLU(), nn.LeakyReLU(), nn.GELU()\nnn.Sigmoid(), nn.Softmax()\n\nLoss functions:\n\nnn.CrossEntropyLoss(): Classification\nnn.BCEWithLogitsLoss(): Binary classification\nnn.MSELoss(): Regression\n\n\n\nListing 5 depicts an example of a class that inherits from torch.nn.Module.\n\n\n\n\nListing 5: Example nn.Module.\n\n\nfrom torch import nn\n\nclass NeuralNetwork(nn.Module):\n    def __init__(self):\n        super(NeuralNetwork, self).__init__()\n        self.flatten = nn.Flatten()\n        self.linear_relu_stack = nn.Sequential(\n            nn.Linear(28*28, 512),\n            nn.ReLU(),\n            nn.Linear(512, 512),\n            nn.ReLU(),\n            nn.Linear(512, 10),\n        )\n\n    def forward(self, x):\n        x = self.flatten(x)\n        logits = self.linear_relu_stack(x)\n        return logits\n\n\n\n\nYou can also visualize the model:\n\nmodel = NeuralNetwork()\nprint(model)\n\nNeuralNetwork(\n  (flatten): Flatten(start_dim=1, end_dim=-1)\n  (linear_relu_stack): Sequential(\n    (0): Linear(in_features=784, out_features=512, bias=True)\n    (1): ReLU()\n    (2): Linear(in_features=512, out_features=512, bias=True)\n    (3): ReLU()\n    (4): Linear(in_features=512, out_features=10, bias=True)\n  )\n)\n\n\nTo use the model, you can pass input data. This will execute the forward() method, along with background operations.\n\nX = torch.rand(1, 28, 28)\nlogits = model(X)\npred_probab = nn.Softmax(dim=1)(logits)\ny_pred = pred_probab.argmax(1)\nprint(f\"Predicted class: {y_pred}\")\n\nPredicted class: tensor([3])\n\n\nThe executed operations will look like this:\n\nfrom torchviz import make_dot\nmake_dot(logits)\n\n\n\n\n\n\n\n\nFor more in-depth information about the model you can use the external library torchinfo as seen in Listing 6.\n\n\n\n\nListing 6: Example output of torchinfo.\n\n\nfrom torchinfo import summary\nmodel = NeuralNetwork()\nsummary(model, input_size=(128, 1, 28, 28))\n\n\n\n\n==========================================================================================\nLayer (type:depth-idx)                   Output Shape              Param #\n==========================================================================================\nNeuralNetwork                            [128, 10]                 --\n├─Flatten: 1-1                           [128, 784]                --\n├─Sequential: 1-2                        [128, 10]                 --\n│    └─Linear: 2-1                       [128, 512]                401,920\n│    └─ReLU: 2-2                         [128, 512]                --\n│    └─Linear: 2-3                       [128, 512]                262,656\n│    └─ReLU: 2-4                         [128, 512]                --\n│    └─Linear: 2-5                       [128, 10]                 5,130\n==========================================================================================\nTotal params: 669,706\nTrainable params: 669,706\nNon-trainable params: 0\nTotal mult-adds (Units.MEGABYTES): 85.72\n==========================================================================================\nInput size (MB): 0.40\nForward/backward pass size (MB): 1.06\nParams size (MB): 2.68\nEstimated Total Size (MB): 4.14\n==========================================================================================",
     "crumbs": [
       "Background & Preparation",
       "3 - Software & Hardware for Deep Learning"
@@ -3219,7 +3186,7 @@
     "href": "pages/slides/generative_models.html#d-distribution-true-data",
     "title": "Generative Models",
     "section": "1D Distribution: True Data",
-    "text": "1D Distribution: True Data\n\n\nBimodal distribution the models must learn",
+    "text": "1D Distribution: True Data\n\n\nTrimodal distribution the models must learn",
     "crumbs": [
       "Slides",
       "Generative Models"
@@ -3230,7 +3197,7 @@
     "href": "pages/slides/generative_models.html#d-training-progress",
     "title": "Generative Models",
     "section": "1D Training Progress",
-    "text": "1D Training Progress\n\n\n\n\n\n\nGAN\n\n\n\n\n\n\n\nVAE\n\n\n\n\n\n\n\nDiffusion\n\n\n\n\n\n\nDifferent convergence behaviors and failure modes",
+    "text": "1D Training Progress\n\nGANVAEDiffusion\n\n\n\n\n\n\n\n\nGAN\n\n\n\n\nFigure 1\n\n\n\n\n\n\n\n\n\n\n\nVAE\n\n\n\n\nFigure 2\n\n\n\n\n\n\n\n\n\n\n\nDiffusion\n\n\n\n\nFigure 3",
     "crumbs": [
       "Slides",
       "Generative Models"
@@ -3241,7 +3208,7 @@
     "href": "pages/slides/generative_models.html#d-final-comparison",
     "title": "Generative Models",
     "section": "1D Final Comparison",
-    "text": "1D Final Comparison\n\n\nGAN: sharp but mode collapse | VAE: smooth gaps | Diffusion: reliable",
+    "text": "1D Final Comparison",
     "crumbs": [
       "Slides",
       "Generative Models"
@@ -3263,7 +3230,7 @@
     "href": "pages/slides/generative_models.html#d-training-progress-1",
     "title": "Generative Models",
     "section": "2D Training Progress",
-    "text": "2D Training Progress\n\n\n\n\n\n\nGAN\n\n\n\n\n\n\n\nVAE\n\n\n\n\n\n\n\nDiffusion\n\n\n\n\n\n\nModels handle complex geometry differently",
+    "text": "2D Training Progress\n\nGANVAEDiffusion\n\n\n\n\n\n\n\n\nGAN\n\n\n\n\nFigure 4\n\n\n\n\n\n\n\n\n\n\n\nVAE\n\n\n\n\nFigure 5\n\n\n\n\n\n\n\n\n\n\n\nDiffusion\n\n\n\n\nFigure 6",
     "crumbs": [
       "Slides",
       "Generative Models"
@@ -3275,28 +3242,6 @@
     "title": "Generative Models",
     "section": "2D Final Comparison",
     "text": "2D Final Comparison\n\n\nEach model type has distinct biases in capturing manifold structure",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#quiz-model-comparison",
-    "href": "pages/slides/generative_models.html#quiz-model-comparison",
-    "title": "Generative Models",
-    "section": "Quiz: Model Comparison",
-    "text": "Quiz: Model Comparison\n\nWhich model is most prone to mode collapse?\nWhich model tends to fill in gaps between modes?\nWhich model is most reliable at capturing all modes?",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#quiz-model-comparison-1",
-    "href": "pages/slides/generative_models.html#quiz-model-comparison-1",
-    "title": "Generative Models",
-    "section": "Quiz: Model Comparison",
-    "text": "Quiz: Model Comparison\n\nWhich model is most prone to mode collapse?\nAnswer: GANs\nWhich model tends to fill in gaps between modes?\nAnswer: VAEs\nWhich model is most reliable at capturing all modes?\nAnswer: Diffusion models",
     "crumbs": [
       "Slides",
       "Generative Models"
@@ -3374,28 +3319,6 @@
     "title": "Generative Models",
     "section": "Why Latent Diffusion?",
     "text": "Why Latent Diffusion?\n\nRunning diffusion on 512×512×3 images is expensive\nSolution: Pre-train VAE to compress to 64×64×4\nRun diffusion in compressed latent space\nDecode final latent back to pixels\nResult: 8× reduction in memory & computation",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#quiz-latent-diffusion",
-    "href": "pages/slides/generative_models.html#quiz-latent-diffusion",
-    "title": "Generative Models",
-    "section": "Quiz: Latent Diffusion",
-    "text": "Quiz: Latent Diffusion\n\nWhy is Latent Diffusion more efficient than pixel-space diffusion?",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#quiz-latent-diffusion-1",
-    "href": "pages/slides/generative_models.html#quiz-latent-diffusion-1",
-    "title": "Generative Models",
-    "section": "Quiz: Latent Diffusion",
-    "text": "Quiz: Latent Diffusion\n\nWhy is Latent Diffusion more efficient than pixel-space diffusion?\nAnswer: Runs diffusion in compressed VAE latent space (8× smaller), making high-resolution generation practical on consumer GPUs",
     "crumbs": [
       "Slides",
       "Generative Models"
@@ -3539,61 +3462,6 @@
     "title": "Generative Models",
     "section": "Bias Examples",
     "text": "Bias Examples\n\n\nStrong biases in depictions (e.g., “beautiful women”)",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#quiz-ethics",
-    "href": "pages/slides/generative_models.html#quiz-ethics",
-    "title": "Generative Models",
-    "section": "Quiz: Ethics",
-    "text": "Quiz: Ethics\n\nWhat are three major societal concerns with generative AI?",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#quiz-ethics-1",
-    "href": "pages/slides/generative_models.html#quiz-ethics-1",
-    "title": "Generative Models",
-    "section": "Quiz: Ethics",
-    "text": "Quiz: Ethics\n\nWhat are three major societal concerns with generative AI?\nAnswers: 1. Synthetic data pollution (model degradation) 2. Authenticity challenges (real vs. fake) 3. Embedded biases from training data",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#key-takeaways",
-    "href": "pages/slides/generative_models.html#key-takeaways",
-    "title": "Generative Models",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nFour families: Autoregressive, Diffusion, GANs, VAEs\nDifferent tradeoffs: Speed, quality, coverage, likelihood\nConditional generation: Extend with text, images, labels\nPre-trained models: Stable Diffusion enables practical applications\nLoRA: Efficient fine-tuning with minimal compute\nSocietal impact: Pollution, authenticity, bias",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#when-to-use-what",
-    "href": "pages/slides/generative_models.html#when-to-use-what",
-    "title": "Generative Models",
-    "section": "When to Use What?",
-    "text": "When to Use What?\n\nAutoregressive: Need exact likelihood, can tolerate slow generation\nDiffusion: Need highest quality and coverage, have compute budget\nGANs: Need fast generation, can tolerate mode collapse risk\nVAEs: Need structured latent space, interpretability",
-    "crumbs": [
-      "Slides",
-      "Generative Models"
-    ]
-  },
-  {
-    "objectID": "pages/slides/generative_models.html#practical-recommendation",
-    "href": "pages/slides/generative_models.html#practical-recommendation",
-    "title": "Generative Models",
-    "section": "Practical Recommendation",
-    "text": "Practical Recommendation\n\nStart with pre-trained Stable Diffusion + LoRA fine-tuning\n\n\nOnly train from scratch if highly specialized domain",
     "crumbs": [
       "Slides",
       "Generative Models"

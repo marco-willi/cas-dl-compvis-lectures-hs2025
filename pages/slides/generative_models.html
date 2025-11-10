@@ -385,14 +385,18 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 <h2>1D Distribution: True Data</h2>
 <img data-src="../../assets/images/genai/1d_comparison/true_distribution.png" class="r-stretch">
 <div class="fragment">
-<p>Bimodal distribution the models must learn</p>
+<p>Trimodal distribution the models must learn</p>
 </div>
 </section>
 <section id="d-training-progress" class="slide level2">
 <h2>1D Training Progress</h2>
-<div class="quarto-layout-panel" data-layout-ncol="3">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-genai-1d-example" class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">GAN</a></li><li><a href="#tabset-1-2">VAE</a></li><li><a href="#tabset-1-3">Diffusion</a></li></ul>
+<div id="fig-genai-1d-example" class="tab-content">
+<div id="tabset-1-1">
+<div id="fig-genai-1d-example-gan" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-genai-1d-example-gan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/genai/1d_comparison/gan_training_progress.png"></p>
@@ -400,7 +404,16 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-1d-example-gan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-1-2">
+<div id="fig-genai-1d-example-vae" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-genai-1d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/genai/1d_comparison/vae_training_progress.png"></p>
@@ -408,7 +421,16 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-1d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-1-3">
+<div id="fig-genai-1d-example-gan-diffusion" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-genai-1d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/genai/1d_comparison/diffusion_training_progress.png"></p>
@@ -416,18 +438,18 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </figure>
 </div>
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-1d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
 </div>
 </div>
-<div class="fragment">
-<p>Different convergence behaviors and failure modes</p>
+</div>
 </div>
 </section>
 <section id="d-final-comparison" class="slide level2">
 <h2>1D Final Comparison</h2>
 <img data-src="../../assets/images/genai/1d_comparison/final_comparison.png" class="r-stretch">
-<div class="fragment">
-<p>GAN: sharp but mode collapse | VAE: smooth gaps | Diffusion: reliable</p>
-</div>
 </section>
 <section id="d-distribution-true-data-1" class="slide level2">
 <h2>2D Distribution: True Data</h2>
@@ -438,9 +460,13 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </section>
 <section id="d-training-progress-1" class="slide level2">
 <h2>2D Training Progress</h2>
-<div class="quarto-layout-panel" data-layout-ncol="3">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-genai-2d-example" class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">GAN</a></li><li><a href="#tabset-2-2">VAE</a></li><li><a href="#tabset-2-3">Diffusion</a></li></ul>
+<div id="fig-genai-2d-example" class="tab-content">
+<div id="tabset-2-1">
+<div id="fig-genai-2d-example-gan" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-genai-2d-example-gan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/genai/2d_comparison/gan_training_progress.png"></p>
@@ -448,7 +474,16 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-2d-example-gan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-2">
+<div id="fig-genai-2d-example-vae" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-genai-2d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/genai/2d_comparison/vae_training_progress.png"></p>
@@ -456,7 +491,16 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-2d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-3">
+<div id="fig-genai-2d-example-gan-diffusion" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-genai-2d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="../../assets/images/genai/2d_comparison/diffusion_training_progress.png"></p>
@@ -464,10 +508,13 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 </figure>
 </div>
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-2d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6
+</figcaption>
+</figure>
 </div>
 </div>
-<div class="fragment">
-<p>Models handle complex geometry differently</p>
+</div>
 </div>
 </section>
 <section id="d-final-comparison-1" class="slide level2">
@@ -475,25 +522,6 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 <img data-src="../../assets/images/genai/2d_comparison/final_comparison.png" class="r-stretch">
 <div class="fragment">
 <p>Each model type has distinct biases in capturing manifold structure</p>
-</div>
-</section>
-<section id="quiz-model-comparison" class="slide level2 center">
-<h2>Quiz: Model Comparison</h2>
-<div class="r-fit-text">
-<p>Which model is most prone to mode collapse?</p>
-<p>Which model tends to fill in gaps between modes?</p>
-<p>Which model is most reliable at capturing all modes?</p>
-</div>
-</section>
-<section id="quiz-model-comparison-1" class="slide level2 center">
-<h2>Quiz: Model Comparison</h2>
-<div class="r-fit-text">
-<p>Which model is most prone to mode collapse?</p>
-<p><strong>Answer</strong>: GANs</p>
-<p>Which model tends to fill in gaps between modes?</p>
-<p><strong>Answer</strong>: VAEs</p>
-<p>Which model is most reliable at capturing all modes?</p>
-<p><strong>Answer</strong>: Diffusion models</p>
 </div>
 </section></section>
 <section>
@@ -566,19 +594,6 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 <li class="fragment">Decode final latent back to pixels</li>
 <li class="fragment"><strong>Result</strong>: 8× reduction in memory &amp; computation</li>
 </ul>
-</section>
-<section id="quiz-latent-diffusion" class="slide level2 center">
-<h2>Quiz: Latent Diffusion</h2>
-<div class="r-fit-text">
-<p>Why is Latent Diffusion more efficient than pixel-space diffusion?</p>
-</div>
-</section>
-<section id="quiz-latent-diffusion-1" class="slide level2 center">
-<h2>Quiz: Latent Diffusion</h2>
-<div class="r-fit-text">
-<p>Why is Latent Diffusion more efficient than pixel-space diffusion?</p>
-<p><strong>Answer</strong>: Runs diffusion in compressed VAE latent space (8× smaller), making high-resolution generation practical on consumer GPUs</p>
-</div>
 </section>
 <section id="stable-diffusion-architecture-details" class="slide level2">
 <h2>Stable Diffusion Architecture Details</h2>
@@ -704,53 +719,6 @@ p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2|x_1) \cdot p(x_3|x_1,x_2) \cdots p
 <img data-src="../../assets/images/genai/ai_bias_wp_examples.png" class="r-stretch">
 <div class="fragment">
 <p>Strong biases in depictions (e.g., “beautiful women”)</p>
-</div>
-</section>
-<section id="quiz-ethics" class="slide level2 center">
-<h2>Quiz: Ethics</h2>
-<div class="r-fit-text">
-<p>What are three major societal concerns with generative AI?</p>
-</div>
-</section>
-<section id="quiz-ethics-1" class="slide level2 center">
-<h2>Quiz: Ethics</h2>
-<div class="r-fit-text">
-<p>What are three major societal concerns with generative AI?</p>
-<p><strong>Answers</strong>: 1. Synthetic data pollution (model degradation) 2. Authenticity challenges (real vs.&nbsp;fake) 3. Embedded biases from training data</p>
-</div>
-</section></section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
-
-</section>
-<section id="key-takeaways" class="slide level2">
-<h2>Key Takeaways</h2>
-<ul>
-<li class="fragment"><strong>Four families</strong>: Autoregressive, Diffusion, GANs, VAEs</li>
-<li class="fragment"><strong>Different tradeoffs</strong>: Speed, quality, coverage, likelihood</li>
-<li class="fragment"><strong>Conditional generation</strong>: Extend with text, images, labels</li>
-<li class="fragment"><strong>Pre-trained models</strong>: Stable Diffusion enables practical applications</li>
-<li class="fragment"><strong>LoRA</strong>: Efficient fine-tuning with minimal compute</li>
-<li class="fragment"><strong>Societal impact</strong>: Pollution, authenticity, bias</li>
-</ul>
-</section>
-<section id="when-to-use-what" class="slide level2">
-<h2>When to Use What?</h2>
-<ul>
-<li class="fragment"><strong>Autoregressive</strong>: Need exact likelihood, can tolerate slow generation</li>
-<li class="fragment"><strong>Diffusion</strong>: Need highest quality and coverage, have compute budget</li>
-<li class="fragment"><strong>GANs</strong>: Need fast generation, can tolerate mode collapse risk</li>
-<li class="fragment"><strong>VAEs</strong>: Need structured latent space, interpretability</li>
-</ul>
-</section>
-<section id="practical-recommendation" class="slide level2">
-<h2>Practical Recommendation</h2>
-<div class="fragment">
-<p>Start with <strong>pre-trained Stable Diffusion</strong> + <strong>LoRA fine-tuning</strong></p>
-</div>
-<div class="fragment">
-<p>Only train from scratch if highly specialized domain</p>
 </div>
 </section></section>
 <section id="references" class="title-slide slide level1 smaller scrollable">
