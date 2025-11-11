@@ -623,7 +623,7 @@ Example: Deterioration of generated image quality under pollution or domain shif
 Furthermore, synthetic imagery has obvious consequences on all of us. The lines between real and synthetic are starting to blur and it becomes increasingly difficult to distinguish both. See the following quote with respect to @fig-genai-real-or-not-musk.
 
 
-> Blockquote Zunächst hatte die Polizei … die Aktion habe nicht stattgefunden, das Bild davon sei ein »Fake«. ... Auf Anfrage des SPIEGEL sagte ein Sprecher der Brandenburger Polizei: »Ob die Projektion tatsächlich so ablief, ist Teil dieser Ermittlungen. Derzeit können wir es jedenfalls nicht ausschließen.«
+> Zunächst hatte die Polizei … die Aktion habe nicht stattgefunden, das Bild davon sei ein »Fake«. ... Auf Anfrage des SPIEGEL sagte ein Sprecher der Brandenburger Polizei: »Ob die Projektion tatsächlich so ablief, ist Teil dieser Ermittlungen. Derzeit können wir es jedenfalls nicht ausschließen.«
 
 
 ::: {#fig-genai-real-or-not-musk}
