@@ -657,7 +657,7 @@ Figure&nbsp;6: Cold Diffusion: Various degradation operators (blur, downsampling
 </section>
 <section id="generative-adversarial-networks" class="level3" data-number="1.3">
 <h3 data-number="1.3" class="anchored" data-anchor-id="generative-adversarial-networks"><span class="header-section-number">1.3</span> Generative Adversarial Networks</h3>
-<p>GANs, see <span class="citation" data-cites="goodfellow_generative_2014">Goodfellow et al. (<a href="#ref-goodfellow_generative_2014" role="doc-biblioref">2014</a>)</span>, frame generative modeling as an <strong>adversarial game</strong> between two neural networks: a <strong>generator</strong> <span class="math inline">\(g(\mathbf{z})\)</span> that creates fake samples, and a <strong>discriminator</strong> <span class="math inline">\(d(\mathbf{x})\)</span> that tries to distinguish real data from generated fakes. This adversarial setup drives both networks to improve: the generator learns to create increasingly realistic samples, while the discriminator becomes better at spotting fakes.</p>
+<p>GANs, see <span class="citation" data-cites="goodfellow_generative_2014">Goodfellow et al. (<a href="#ref-goodfellow_generative_2014" role="doc-biblioref">2014</a>)</span>, frame generative modeling as an <strong>adversarial game</strong> between two neural networks: a <strong>generator</strong> <span class="math inline">\(g(\mathbf{z})\)</span> that creates fake samples, and a <strong>discriminator</strong> <span class="math inline">\(d(\mathbf{x})\)</span> that tries to distinguish real data from generated fakes (see <a href="#fig-genai-gan-idea" class="quarto-xref">Figure&nbsp;7</a>). This adversarial setup drives both networks to improve: the generator learns to create increasingly realistic samples, while the discriminator becomes better at spotting fakes.</p>
 <div id="fig-genai-gan-idea" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-gan-idea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -672,7 +672,7 @@ Figure&nbsp;7: GAN idea: The generator creates fake samples from random noise <s
 <p><span class="math display">\[
 \min_{g} \max_{d} \mathbb{E}_{\mathbf{x} \sim p_{data}}[\log d(\mathbf{x})] + \mathbb{E}_{\mathbf{z} \sim p_z}[\log(1 - d(g(\mathbf{z})))]
 \]</span></p>
-<p>The discriminator <span class="math inline">\(d\)</span> maximizes its ability to correctly classify real (<span class="math inline">\(d(\mathbf{x}) \approx 1\)</span>) vs.&nbsp;fake (<span class="math inline">\(d(g(\mathbf{z})) \approx 0\)</span>) samples. The generator <span class="math inline">\(G\)</span> minimizes the discriminator’s success, trying to produce samples where <span class="math inline">\(d(g(\mathbf{z})) \approx 1\)</span> (fooling the discriminator).</p>
+<p>The discriminator <span class="math inline">\(d\)</span> maximizes its ability to correctly classify real (<span class="math inline">\(d(\mathbf{x}) \approx 1\)</span>) vs.&nbsp;fake (<span class="math inline">\(d(g(\mathbf{z})) \approx 0\)</span>) samples. The generator <span class="math inline">\(G\)</span> minimizes the discriminator’s success, trying to produce samples where <span class="math inline">\(d(g(\mathbf{z})) \approx 1\)</span> (fooling the discriminator). See <a href="#fig-genai-gan-learning" class="quarto-xref">Figure&nbsp;8</a> for an illustration.</p>
 <p>In practice, training alternates between: 1. <strong>Discriminator step</strong>: Update <span class="math inline">\(d\)</span> to better distinguish real from fake 2. <strong>Generator step</strong>: Update <span class="math inline">\(g\)</span> to better fool the current discriminator</p>
 <div id="fig-genai-gan-learning" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -684,16 +684,10 @@ Figure&nbsp;8: GAN learning process: As training progresses, the generator’s d
 </figcaption>
 </figure>
 </div>
-<p>The figure above illustrates how the generator progressively learns to match the data distribution. Initially, the generator produces poor samples and the discriminator easily separates real from fake. As training continues, the generator improves and the discriminator’s task becomes harder, until ideally the generator perfectly matches the real data distribution.</p>
 </section>
 <section id="variational-autoencoders" class="level3" data-number="1.4">
 <h3 data-number="1.4" class="anchored" data-anchor-id="variational-autoencoders"><span class="header-section-number">1.4</span> Variational Autoencoders</h3>
-<p>VAEs <span class="citation" data-cites="Kingma2014">Kingma and Welling (<a href="#ref-Kingma2014" role="doc-biblioref">2014</a>)</span> take a different approach to generative modeling, building on the autoencoder architecture but with a crucial probabilistic twist. A VAE learns two networks that perform (approximate) inverse operations:</p>
-<ul>
-<li><strong>Encoder</strong> <span class="math inline">\(q_{\psi}(z|x)\)</span>: Maps data <span class="math inline">\(x\)</span> to a distribution over latent codes <span class="math inline">\(z\)</span></li>
-<li><strong>Decoder</strong> <span class="math inline">\(p_{\theta}(x|z)\)</span>: Maps latent codes <span class="math inline">\(z\)</span> back to data <span class="math inline">\(x\)</span></li>
-</ul>
-<p>Unlike standard autoencoders, VAEs enforce structure on the latent space through probabilistic modeling, ensuring that randomly sampled latent codes produce meaningful outputs.</p>
+<p>Variational Autoencoders (VAEs) <span class="citation" data-cites="Kingma2014">(<a href="#ref-Kingma2014" role="doc-biblioref">Kingma and Welling 2014</a>)</span> take a different approach to generative modeling, building on the autoencoder architecture (see <a href="#fig-genai-vae-illustration" class="quarto-xref">Figure&nbsp;9</a>) but with a crucial probabilistic twist.</p>
 <div id="fig-genai-vae-illustration" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-vae-illustration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -704,6 +698,12 @@ Figure&nbsp;9: VAE architecture: The encoder maps inputs to latent distributions
 </figcaption>
 </figure>
 </div>
+<p>A VAE learns two networks that perform (approximate) inverse operations:</p>
+<ul>
+<li><strong>Encoder</strong> <span class="math inline">\(q_{\psi}(z|x)\)</span>: Maps data <span class="math inline">\(x\)</span> to a distribution over latent codes <span class="math inline">\(z\)</span></li>
+<li><strong>Decoder</strong> <span class="math inline">\(p_{\theta}(x|z)\)</span>: Maps latent codes <span class="math inline">\(z\)</span> back to data <span class="math inline">\(x\)</span></li>
+</ul>
+<p>Unlike standard autoencoders, VAEs enforce structure on the latent space through probabilistic modeling (see <a href="#fig-genai-vae-illustration2" class="quarto-xref">Figure&nbsp;10</a>), ensuring that randomly sampled latent codes produce meaningful outputs.</p>
 <div id="fig-genai-vae-illustration2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-vae-illustration2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -769,40 +769,62 @@ Figure&nbsp;12: True 1D data distribution: A bimodal distribution that the gener
 </figcaption>
 </figure>
 </div>
-<div id="fig-genai-1d-comparison" class="quarto-layout-panel">
+<div class="tabset-margin-container"></div><div id="fig-genai-1d-example" class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">GAN</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">VAE</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Diffusion</a></li></ul>
+<div id="fig-genai-1d-example" class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div id="fig-genai-1d-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-1d-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../assets/images/genai/1d_comparison/gan_training_progress.png" class="img-fluid figure-img"></p>
-<figcaption>GAN training</figcaption>
+<figcaption>GAN</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-1d-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div id="fig-genai-1d-example-vae" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-genai-1d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../assets/images/genai/1d_comparison/vae_training_progress.png" class="img-fluid figure-img"></p>
-<figcaption>VAE training</figcaption>
+<figcaption>VAE</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-1d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div id="fig-genai-1d-example-gan-diffusion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-genai-1d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../assets/images/genai/1d_comparison/diffusion_training_progress.png" class="img-fluid figure-img"></p>
-<figcaption>Diffusion training</figcaption>
+<figcaption>Diffusion</figcaption>
 </figure>
 </div>
 </div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-1d-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13: Training progression on 1D bimodal distribution. Each panel shows how the learned distribution (orange) approaches the true distribution (blue) over training iterations. GANs converge quickly but risk mode collapse; VAEs converge smoothly but may oversmooth between modes; Diffusion models reliably capture both modes with stable convergence.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-1d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15
 </figcaption>
 </figure>
+</div>
+<p>Training progression on 1D bimodal distribution. Each panel shows how the learned distribution (orange) approaches the true distribution (blue) over training iterations.</p>
+</div>
+</div>
 </div>
 <div id="fig-genai-1d-final" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -810,16 +832,10 @@ Figure&nbsp;13: Training progression on 1D bimodal distribution. Each panel show
 <img src="../../assets/images/genai/1d_comparison/final_comparison.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-1d-final-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14: Final comparison: All three models after convergence, showing their different biases in capturing the bimodal distribution.
+Figure&nbsp;16: Final comparison: All three models after convergence, showing their different biases in capturing the bimodal distribution.
 </figcaption>
 </figure>
 </div>
-<p><strong>Key observations</strong>:</p>
-<ul>
-<li><strong>GANs</strong>: Sharp samples matching the data manifold, but prone to <strong>mode collapse</strong>—missing entire modes of the distribution</li>
-<li><strong>VAEs</strong>: Smooth distributions that can <strong>fill in gaps</strong> between modes, producing samples in low-density regions</li>
-<li><strong>Diffusion</strong>: Reliably captures all modes with high fidelity, though at computational cost</li>
-</ul>
 </section>
 <section id="d-distribution-comparison-1" class="level4" data-number="1.5.2">
 <h4 data-number="1.5.2" class="anchored" data-anchor-id="d-distribution-comparison-1"><span class="header-section-number">1.5.2</span> 2D Distribution Comparison</h4>
@@ -829,44 +845,66 @@ Figure&nbsp;14: Final comparison: All three models after convergence, showing th
 <img src="../../assets/images/genai/2d_comparison/true_distribution.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-2d-true-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15: True 2D data distribution: A complex spiral pattern in 2D space.
+Figure&nbsp;17: True 2D data distribution: A complex spiral pattern in 2D space.
 </figcaption>
 </figure>
 </div>
-<div id="fig-genai-2d-comparison" class="quarto-layout-panel">
+<div class="tabset-margin-container"></div><div id="fig-genai-2d-comparison" class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">GAN</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">VAE</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false" href="">Diffusion</a></li></ul>
+<div id="fig-genai-2d-comparison" class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div id="fig-genai-2d-example-gan" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-genai-2d-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div aria-describedby="fig-genai-2d-example-gan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../assets/images/genai/2d_comparison/gan_training_progress.png" class="img-fluid figure-img"></p>
-<figcaption>GAN training</figcaption>
+<figcaption>GAN</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-2d-example-gan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div id="fig-genai-2d-example-vae" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-genai-2d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../assets/images/genai/2d_comparison/vae_training_progress.png" class="img-fluid figure-img"></p>
-<figcaption>VAE training</figcaption>
+<figcaption>VAE</figcaption>
 </figure>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-2d-example-vae-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div id="fig-genai-2d-example-gan-diffusion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-genai-2d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../../assets/images/genai/2d_comparison/diffusion_training_progress.png" class="img-fluid figure-img"></p>
-<figcaption>Diffusion training</figcaption>
+<figcaption>Diffusion</figcaption>
 </figure>
 </div>
 </div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-2d-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;16: Training progression on 2D spiral distribution. The models must learn a complex curved manifold. GANs produce sharp samples along the spiral but may miss regions; VAEs spread probability mass more smoothly but may blur the structure; Diffusion models capture fine geometric details reliably.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-genai-2d-example-gan-diffusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20
 </figcaption>
 </figure>
+</div>
+<p>Training progression on 2D spiral distribution. The models must learn a complex curved manifold.</p>
+</div>
+</div>
 </div>
 <div id="fig-genai-2d-final" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -874,7 +912,7 @@ Figure&nbsp;16: Training progression on 2D spiral distribution. The models must 
 <img src="../../assets/images/genai/2d_comparison/final_comparison.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-2d-final-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;17: Final 2D comparison: Converged distributions overlaid on the true spiral. Notice how each model type handles the complex geometry differently.
+Figure&nbsp;21: Final 2D comparison: Converged distributions overlaid on the true spiral. Notice how each model type handles the complex geometry differently.
 </figcaption>
 </figure>
 </div>
@@ -883,27 +921,27 @@ Figure&nbsp;17: Final 2D comparison: Converged distributions overlaid on the tru
 </section>
 <section id="conditional-generation" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="conditional-generation"><span class="header-section-number">2</span> Conditional Generation</h2>
-<p>So far, we have discussed <strong>unconditional generation</strong>: models that learn <span class="math inline">\(p(x)\)</span> or generate samples from the full training distribution. But many applications require <strong>conditional generation</strong>: producing outputs that match specific requirements or inputs.</p>
-<p>Conditional generation models learn <span class="math inline">\(p(x|c)\)</span>, where <span class="math inline">\(c\)</span> is a conditioning signal:</p>
+<p>So far, we have discussed <strong>unconditional generation</strong>: models that learn <span class="math inline">\(p(\mathbf{x})\)</span> or generate samples from the full training distribution. But many applications require <strong>conditional generation</strong>: producing outputs that match specific requirements or inputs.</p>
+<p>Conditional generation models learn <span class="math inline">\(p(\mathbf{x}|\mathbf{c})\)</span>, where <span class="math inline">\(\mathbf{c}\)</span> is a conditioning signal:</p>
 <ul>
 <li><strong>Text prompt</strong>: “A photo of a cat wearing sunglasses”</li>
 <li><strong>Class label</strong>: Generate a digit “7” or a face with “smiling” attribute</li>
 <li><strong>Image</strong>: Translate sketches to photos, colorize grayscale images</li>
 <li><strong>Other modalities</strong>: Depth maps, segmentation masks, audio, etc.</li>
 </ul>
-<p>The core modification is simple: provide the condition <span class="math inline">\(c\)</span> as additional input to the model. However, the architectural integration varies by model family.</p>
-<p>One example are conditional GANs. As shown in <a href="#fig-genai-gan-conditional" class="quarto-xref">Figure&nbsp;18</a>. Both generator and discriminator receive the conditioning information <span class="math inline">\(g(\mathbf{z}, \mathbf{c})\)</span> and <span class="math inline">\(d(\mathbf{x}, \mathbf{c})\)</span>.</p>
+<p>The core modification is simple: provide the condition <span class="math inline">\(\mathbf{c}\)</span> as additional input to the model. However, the architectural integration varies by model family.</p>
+<p>One example are conditional GANs. As shown in <a href="#fig-genai-gan-conditional" class="quarto-xref">Figure&nbsp;22</a>. In this case typically only the generator receives the conditioning information <span class="math inline">\(g(\mathbf{z}, \mathbf{c})\)</span> and <span class="math inline">\(d(\mathbf{x})\)</span>. The discriminator does not require <span class="math inline">\(\mathbf{c}\)</span> in this case because input-output consistency is enforced with other losses that compare input and output (e.g.&nbsp;<span class="math inline">\(L_2\)</span> norm).</p>
 <div id="fig-genai-gan-conditional" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-gan-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../../assets/images/genai/gan_conditional_generation.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-gan-conditional-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;18: Conditional GAN architecture: Both generator and discriminator receive the conditioning input, enabling controlled generation. From <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#ref-prince_understanding_2023" role="doc-biblioref">2023</a>)</span>.
+Figure&nbsp;22: Conditional GAN architecture: Generator receives the conditioning input, enabling controlled generation. From <span class="citation" data-cites="prince_understanding_2023">Prince (<a href="#ref-prince_understanding_2023" role="doc-biblioref">2023</a>)</span>.
 </figcaption>
 </figure>
 </div>
-<p>The discriminator now solves a harder task: it must judge whether <span class="math inline">\(\mathbf{x}\)</span> matches the condition <span class="math inline">\(\mathbf{c}\)</span>, not just whether <span class="math inline">\(\mathbf{x}\)</span> looks realistic. This forces the generator to respect the conditioning signal to fool the discriminator.</p>
+<p>Often, the discriminator needs to be conditioned on <span class="math inline">\(\mathbf{c}\)</span> as well. The discriminator thus must judge whether <span class="math inline">\(\mathbf{x}\)</span> matches the condition <span class="math inline">\(\mathbf{c}\)</span>, not just whether <span class="math inline">\(\mathbf{x}\)</span> looks realistic. This forces the generator to respect the conditioning signal to fool the discriminator.</p>
 <p><strong>Training objective</strong>: <span class="math display">\[\begin{equation}
 \min_{g} \max_{d} \mathbb{E}_{x, c}[\log d(\mathbf{x}, \mathbf{c})] + \mathbb{E}_{z, c}[\log(1 - d(g(\mathbf{z}, \mathbf{c}), \mathbf{c}))]
 \end{equation}\]</span></p>
@@ -952,14 +990,14 @@ Figure&nbsp;18: Conditional GAN architecture: Both generator and discriminator r
 </div>
 <section id="stable-diffusion-practical-state-of-the-art" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="stable-diffusion-practical-state-of-the-art"><span class="header-section-number">3.1</span> Stable Diffusion: Practical State-of-the-Art</h3>
-<p><strong>Stable Diffusion</strong> <span class="citation" data-cites="rombach_high-resolution_2022">(<a href="#ref-rombach_high-resolution_2022" role="doc-biblioref">Rombach et al. 2022</a>)</span> is an open-source text-to-image model that has become the de facto standard for accessible, high-quality image generation. See <a href="#fig-genai-stable-diffusion-xl-examples" class="quarto-xref">Figure&nbsp;19</a> for some examples.</p>
+<p><strong>Stable Diffusion</strong> <span class="citation" data-cites="rombach_high-resolution_2022">(<a href="#ref-rombach_high-resolution_2022" role="doc-biblioref">Rombach et al. 2022</a>)</span> is an open-source text-to-image model that has become the de facto standard for accessible, high-quality image generation. See <a href="#fig-genai-stable-diffusion-xl-examples" class="quarto-xref">Figure&nbsp;23</a> for some examples.</p>
 <div id="fig-genai-stable-diffusion-xl-examples" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-stable-diffusion-xl-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../../assets/images/genai/pract_stable_diffusion_xl_examples.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-stable-diffusion-xl-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;19: Stable Diffusion XL: Example generations showing diverse styles and subjects from text prompts. <a href="https://huggingface.co/stabilityai/stable-diffusion-3.5-large">Source</a>.
+Figure&nbsp;23: Stable Diffusion XL: Example generations showing diverse styles and subjects from text prompts. <a href="https://huggingface.co/stabilityai/stable-diffusion-3.5-large">Source</a>.
 </figcaption>
 </figure>
 </div>
@@ -970,7 +1008,7 @@ Figure&nbsp;19: Stable Diffusion XL: Example generations showing diverse styles 
 <img src="../../assets/images/genai/diffusion_sd_architecture_genbook.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-diffusion-sd-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;20: Stable Diffusion pipeline: Text is encoded via CLIP, diffusion runs in VAE latent space (much smaller than pixel space), and the VAE decoder produces the final image. Adapted from GenBook.
+Figure&nbsp;24: Stable Diffusion pipeline: Text is encoded via CLIP, diffusion runs in VAE latent space (much smaller than pixel space), and the VAE decoder produces the final image. Adapted from GenBook.
 </figcaption>
 </figure>
 </div>
@@ -1000,14 +1038,14 @@ Figure&nbsp;20: Stable Diffusion pipeline: Text is encoded via CLIP, diffusion r
 <img src="../../assets/images/genai/diffusion_latent_diff_architecture.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-diffusion-latent-diff-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;21: Latent Diffusion architecture: The denoising U-Net operates in VAE latent space and uses cross-attention to condition on text (or other modalities). From <span class="citation" data-cites="rombach_high-resolution_2022">Rombach et al. (<a href="#ref-rombach_high-resolution_2022" role="doc-biblioref">2022</a>)</span>.
+Figure&nbsp;25: Latent Diffusion architecture: The denoising U-Net operates in VAE latent space and uses cross-attention to condition on text (or other modalities). From <span class="citation" data-cites="rombach_high-resolution_2022">Rombach et al. (<a href="#ref-rombach_high-resolution_2022" role="doc-biblioref">2022</a>)</span>.
 </figcaption>
 </figure>
 </div>
 </section>
 <section id="fine-tuning-with-lora" class="level3" data-number="3.4">
 <h3 data-number="3.4" class="anchored" data-anchor-id="fine-tuning-with-lora"><span class="header-section-number">3.4</span> Fine-Tuning with LoRA</h3>
-<p>While pre-trained models are powerful, you often want to adapt them to specific styles, subjects, or domains. Traditional fine-tuning updates all model parameters (billions of weights!), requiring massive memory and compute. <strong>LoRA (Low-Rank Adaptation)</strong>, see <a href="#fig-genai-lora-architecture" class="quarto-xref">Figure&nbsp;22</a>, offers a far more efficient alternative.</p>
+<p>While pre-trained models are powerful, you often want to adapt them to specific styles, subjects, or domains. Traditional fine-tuning updates all model parameters (billions of weights!), requiring massive memory and compute. <strong>LoRA (Low-Rank Adaptation)</strong>, see <a href="#fig-genai-lora-architecture" class="quarto-xref">Figure&nbsp;26</a>, offers a far more efficient alternative.</p>
 <p><strong>Key idea</strong>: Instead of updating the full weight matrix <span class="math inline">\(W\)</span>, LoRA learns a low-rank update <span class="math inline">\(\Delta W = BA\)</span> where:</p>
 <ul>
 <li><span class="math inline">\(B \in \mathbb{R}^{d \times r}\)</span> and <span class="math inline">\(A \in \mathbb{R}^{r \times k}\)</span></li>
@@ -1027,7 +1065,7 @@ Figure&nbsp;21: Latent Diffusion architecture: The denoising U-Net operates in V
 <img src="../../assets/images/genai/lora.png" class="img-fluid figure-img" width="600">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-lora-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;22: LoRA (Low-Rank Adaptation): Instead of fine-tuning all weights <span class="math inline">\(W\)</span>, LoRA trains low-rank matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> where <span class="math inline">\(\Delta W = BA\)</span>. This drastically reduces trainable parameters. From <span class="citation" data-cites="hu_lora_2021">Hu et al. (<a href="#ref-hu_lora_2021" role="doc-biblioref">2021</a>)</span>.
+Figure&nbsp;26: LoRA (Low-Rank Adaptation): Instead of fine-tuning all weights <span class="math inline">\(W\)</span>, LoRA trains low-rank matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> where <span class="math inline">\(\Delta W = BA\)</span>. This drastically reduces trainable parameters. From <span class="citation" data-cites="hu_lora_2021">Hu et al. (<a href="#ref-hu_lora_2021" role="doc-biblioref">2021</a>)</span>.
 </figcaption>
 </figure>
 </div>
@@ -1172,18 +1210,18 @@ Figure&nbsp;22: LoRA (Low-Rank Adaptation): Instead of fine-tuning all weights <
 </section>
 <section id="conclusions-discussions" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="conclusions-discussions"><span class="header-section-number">4</span> Conclusions &amp; Discussions</h2>
-<p>An interesting thought: What happens if models are trained (inadvertedly) on synhetic data? <span class="citation" data-cites="alemohammad_self-consuming_2023">Alemohammad et al. (<a href="#ref-alemohammad_self-consuming_2023" role="doc-biblioref">2023</a>)</span> studies this and found remarkable degradation, see <a href="#fig-genai-deterioration-on-pollution" class="quarto-xref">Figure&nbsp;23</a>.</p>
+<p>An interesting thought: What happens if models are trained (inadvertedly) on synhetic data? <span class="citation" data-cites="alemohammad_self-consuming_2023">Alemohammad et al. (<a href="#ref-alemohammad_self-consuming_2023" role="doc-biblioref">2023</a>)</span> studies this and found remarkable degradation, see <a href="#fig-genai-deterioration-on-pollution" class="quarto-xref">Figure&nbsp;27</a>.</p>
 <div id="fig-genai-deterioration-on-pollution" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-deterioration-on-pollution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../../assets/images/genai/deterioration_on_pollution.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-deterioration-on-pollution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;23: Example: Deterioration of generated image quality under pollution or domain shift. From <span class="citation" data-cites="alemohammad_self-consuming_2023">Alemohammad et al. (<a href="#ref-alemohammad_self-consuming_2023" role="doc-biblioref">2023</a>)</span>.
+Figure&nbsp;27: Example: Deterioration of generated image quality under pollution or domain shift. From <span class="citation" data-cites="alemohammad_self-consuming_2023">Alemohammad et al. (<a href="#ref-alemohammad_self-consuming_2023" role="doc-biblioref">2023</a>)</span>.
 </figcaption>
 </figure>
 </div>
-<p>Furthermore, synthetic imagery has obvious consequences on all of us. The lines between real and synthetic are starting to blur and it becomes increasingly difficult to distinguish both. See the following quote with respect to <a href="#fig-genai-real-or-not-musk" class="quarto-xref">Figure&nbsp;24</a>.</p>
+<p>Furthermore, synthetic imagery has obvious consequences on all of us. The lines between real and synthetic are starting to blur and it becomes increasingly difficult to distinguish both. See the following quote with respect to <a href="#fig-genai-real-or-not-musk" class="quarto-xref">Figure&nbsp;28</a>.</p>
 <blockquote class="blockquote">
 <p>Blockquote Zunächst hatte die Polizei … die Aktion habe nicht stattgefunden, das Bild davon sei ein »Fake«. … Auf Anfrage des SPIEGEL sagte ein Sprecher der Brandenburger Polizei: »Ob die Projektion tatsächlich so ablief, ist Teil dieser Ermittlungen. Derzeit können wir es jedenfalls nicht ausschließen.«</p>
 </blockquote>
@@ -1193,29 +1231,29 @@ Figure&nbsp;23: Example: Deterioration of generated image quality under pollutio
 <img src="../../assets/images/genai/real_or_not_musk.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-real-or-not-musk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;24: “Real or Not?” <a href="https://www.spiegel.de/panorama/elon-musk-staatsschutz-ermittelt-nach-projektion-tesla-werk-in-gruenheide-a-8268048f-050b-4ae7-adf8-bb9cf572cf25?sara_ref=re-so-app-sh">Link</a>
+Figure&nbsp;28: “Real or Not?” <a href="https://www.spiegel.de/panorama/elon-musk-staatsschutz-ermittelt-nach-projektion-tesla-werk-in-gruenheide-a-8268048f-050b-4ae7-adf8-bb9cf572cf25?sara_ref=re-so-app-sh">Link</a>
 </figcaption>
 </figure>
 </div>
-<p>Furthermore, biases from the internet-scale data the models have been trained on seep into the models. An interesting article by the Washington post <a href="https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/">Link</a> investigated this <a href="#fig-genai-ai-bias-wp-front" class="quarto-xref">Figure&nbsp;25</a>.</p>
+<p>Furthermore, biases from the internet-scale data the models have been trained on seep into the models. An interesting article by the Washington post <a href="https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/">Link</a> investigated this <a href="#fig-genai-ai-bias-wp-front" class="quarto-xref">Figure&nbsp;29</a>.</p>
 <div id="fig-genai-ai-bias-wp-front" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-ai-bias-wp-front-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../../assets/images/genai/ai_bias_wp_front.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-ai-bias-wp-front-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;25: AI bias: Example from a whitepaper front page. <a href="https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/">Link</a>
+Figure&nbsp;29: AI bias: Example from a whitepaper front page. <a href="https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/">Link</a>
 </figcaption>
 </figure>
 </div>
-<p>They found strong biases, for example, with respect to the depiction of <em>beautiful women</em>, see <a href="#fig-genai-ai-bias-wp-examples" class="quarto-xref">Figure&nbsp;26</a>.</p>
+<p>They found strong biases, for example, with respect to the depiction of <em>beautiful women</em>, see <a href="#fig-genai-ai-bias-wp-examples" class="quarto-xref">Figure&nbsp;30</a>.</p>
 <div id="fig-genai-ai-bias-wp-examples" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-genai-ai-bias-wp-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../../assets/images/genai/ai_bias_wp_examples.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-genai-ai-bias-wp-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;26: AI bias: Additional examples. <a href="https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/">Link</a>
+Figure&nbsp;30: AI bias: Additional examples. <a href="https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/">Link</a>
 </figcaption>
 </figure>
 </div>
@@ -1889,7 +1927,7 @@ Torralba, A., P. Isola, and W. T. Freeman. 2024. <em>Foundations of <span>Comput
 <span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### Generative Adversarial Networks</span></span>
 <span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>GANs, see @goodfellow_generative_2014, frame generative modeling as an **adversarial game** between two neural networks: a **generator** $g(\vect{z})$ that creates fake samples, and a **discriminator** $d(\vect{x})$ that tries to distinguish real data from generated fakes. This adversarial setup drives both networks to improve: the generator learns to create increasingly realistic samples, while the discriminator becomes better at spotting fakes.</span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>GANs, see @goodfellow_generative_2014, frame generative modeling as an **adversarial game** between two neural networks: a **generator** $g(\vect{z})$ that creates fake samples, and a **discriminator** $d(\vect{x})$ that tries to distinguish real data from generated fakes (see @fig-genai-gan-idea). This adversarial setup drives both networks to improve: the generator learns to create increasingly realistic samples, while the discriminator becomes better at spotting fakes.</span>
 <span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-gan-idea}</span>
 <span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a></span>
@@ -1904,7 +1942,7 @@ Torralba, A., P. Isola, and W. T. Freeman. 2024. <em>Foundations of <span>Comput
 <span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a>\min_{g} \max_{d} \mathbb{E}_{\vect{x} \sim p_{data}}[\log d(\vect{x})] + \mathbb{E}_{\vect{z} \sim p_z}<span class="co">[</span><span class="ot">\log(1 - d(g(\vect{z})))</span><span class="co">]</span></span>
 <span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>The discriminator $d$ maximizes its ability to correctly classify real ($d(\vect{x}) \approx 1$) vs. fake ($d(g(\vect{z})) \approx 0$) samples. The generator $G$ minimizes the discriminator's success, trying to produce samples where $d(g(\vect{z})) \approx 1$ (fooling the discriminator).</span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a>The discriminator $d$ maximizes its ability to correctly classify real ($d(\vect{x}) \approx 1$) vs. fake ($d(g(\vect{z})) \approx 0$) samples. The generator $G$ minimizes the discriminator's success, trying to produce samples where $d(g(\vect{z})) \approx 1$ (fooling the discriminator). See @fig-genai-gan-learning for an illustration.</span>
 <span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a>In practice, training alternates between:</span>
 <span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Discriminator step**: Update $d$ to better distinguish real from fake</span>
@@ -1918,442 +1956,474 @@ Torralba, A., P. Isola, and W. T. Freeman. 2024. <em>Foundations of <span>Comput
 <span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a>GAN learning process: As training progresses, the generator's distribution (green) moves closer to the real data distribution (black dots). The discriminator's decision boundary (blue) adapts accordingly. From @foster_generative_2023</span>
 <span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a>The figure above illustrates how the generator progressively learns to match the data distribution. Initially, the generator produces poor samples and the discriminator easily separates real from fake. As training continues, the generator improves and the discriminator's task becomes harder, until ideally the generator perfectly matches the real data distribution.</span>
-<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variational Autoencoders</span></span>
 <span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variational Autoencoders</span></span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a>Variational Autoencoders (VAEs) <span class="co">[</span><span class="ot">@Kingma2014</span><span class="co">]</span> take a different approach to generative modeling, building on the autoencoder architecture (see @fig-genai-vae-illustration) but with a crucial probabilistic twist.</span>
 <span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a>VAEs @Kingma2014 take a different approach to generative modeling, building on the autoencoder architecture but with a crucial probabilistic twist. A VAE learns two networks that perform (approximate) inverse operations:</span>
-<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Encoder** $q_{\psi}(z|x)$: Maps data $x$ to a distribution over latent codes $z$</span>
-<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Decoder** $p_{\theta}(x|z)$: Maps latent codes $z$ back to data $x$</span>
-<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a>Unlike standard autoencoders, VAEs enforce structure on the latent space through probabilistic modeling, ensuring that randomly sampled latent codes produce meaningful outputs.</span>
-<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-vae-illustration}</span>
-<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}vae_illustration.png)</span></span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-vae-illustration}</span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}vae_illustration.png)</span></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a>VAE architecture: The encoder maps inputs to latent distributions $q(z|x)$, while the decoder reconstructs from latent samples. From <span class="co">[</span><span class="ot">Source</span><span class="co">](https://lilianweng.github.io/posts/2018-08-12-vae/)</span>.</span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a>A VAE learns two networks that perform (approximate) inverse operations:</span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Encoder** $q_{\psi}(z|x)$: Maps data $x$ to a distribution over latent codes $z$</span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Decoder** $p_{\theta}(x|z)$: Maps latent codes $z$ back to data $x$</span>
 <span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a>VAE architecture: The encoder maps inputs to latent distributions $q(z|x)$, while the decoder reconstructs from latent samples. From <span class="co">[</span><span class="ot">Source</span><span class="co">](https://lilianweng.github.io/posts/2018-08-12-vae/)</span>.</span>
-<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-vae-illustration2}</span>
-<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}vae_illustration2.png)</span></span>
-<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a>VAE computational graph: The encoder outputs mean $\mu$ and variance $\sigma^2$ for each latent dimension. The **reparameterization trick** ($z = \mu + \epsilon \cdot \sigma$, where $\epsilon \sim \mathcal{N}(0, 1)$) enables gradient-based optimization. From <span class="co">[</span><span class="ot">Source</span><span class="co">](https://lilianweng.github.io/posts/2018-08-12-vae/)</span>.</span>
-<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a>Unlike standard autoencoders, VAEs enforce structure on the latent space through probabilistic modeling (see @fig-genai-vae-illustration2), ensuring that randomly sampled latent codes produce meaningful outputs.</span>
+<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-vae-illustration2}</span>
+<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}vae_illustration2.png)</span></span>
+<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a>VAE computational graph: The encoder outputs mean $\mu$ and variance $\sigma^2$ for each latent dimension. The **reparameterization trick** ($z = \mu + \epsilon \cdot \sigma$, where $\epsilon \sim \mathcal{N}(0, 1)$) enables gradient-based optimization. From <span class="co">[</span><span class="ot">Source</span><span class="co">](https://lilianweng.github.io/posts/2018-08-12-vae/)</span>.</span>
+<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a>VAEs optimize the **Evidence Lower Bound (ELBO)**, which consists of two terms:</span>
-<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a>\text{ELBO} = \underbrace{\mathbb{E}_{z \sim q_{\psi}(z|x)}[\log p_{\theta}(x|z)]}_{\text{Reconstruction}} - \underbrace{\text{KL}(q_{\psi}(z|x) \| p(z))}_{\text{Regularization}}</span>
-<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a>The **reconstruction term** ensures the decoder can recover the input from the latent code. The **KL regularization term** (typically with prior $p(z) = \mathcal{N}(0, I)$) prevents the latent space from developing "gaps and tendrils"—ensuring that random samples from $\mathcal{N}(0, I)$ decode to meaningful outputs.</span>
-<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a>This balance is key to VAE behavior: the reconstruction loss wants to use the latent space flexibly, while KL regularization pushes latent codes toward a standard normal distribution. The result is a **structured, continuous latent space** where interpolation and attribute manipulation work smoothly.</span>
-<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-vae-latent-space}</span>
-<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}vae_latent_space_face.png)</span></span>
-<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a>VAE latent space: Traversing the latent space produces smooth interpolations between faces, demonstrating the structured representation learned by the model. From @prince_understanding_2023.</span>
-<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Pros and Cons of VAEs"}</span>
-<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a>**Pros**</span>
-<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Principled probabilistic foundation</span>
-<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Latent space structure: can interpolate in latent space and interpret factors</span>
-<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stable training</span>
-<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be used for representation learning</span>
-<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a>**Cons**</span>
-<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Blurry outputs (more complex variants can reduce this)</span>
-<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a>VAEs optimize the **Evidence Lower Bound (ELBO)**, which consists of two terms:</span>
+<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a>\text{ELBO} = \underbrace{\mathbb{E}_{z \sim q_{\psi}(z|x)}[\log p_{\theta}(x|z)]}_{\text{Reconstruction}} - \underbrace{\text{KL}(q_{\psi}(z|x) \| p(z))}_{\text{Regularization}}</span>
+<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a>The **reconstruction term** ensures the decoder can recover the input from the latent code. The **KL regularization term** (typically with prior $p(z) = \mathcal{N}(0, I)$) prevents the latent space from developing "gaps and tendrils"—ensuring that random samples from $\mathcal{N}(0, I)$ decode to meaningful outputs.</span>
+<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a>This balance is key to VAE behavior: the reconstruction loss wants to use the latent space flexibly, while KL regularization pushes latent codes toward a standard normal distribution. The result is a **structured, continuous latent space** where interpolation and attribute manipulation work smoothly.</span>
+<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-vae-latent-space}</span>
+<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}vae_latent_space_face.png)</span></span>
+<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a>VAE latent space: Traversing the latent space produces smooth interpolations between faces, demonstrating the structured representation learned by the model. From @prince_understanding_2023.</span>
+<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Pros and Cons of VAEs"}</span>
+<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a>**Pros**</span>
+<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Principled probabilistic foundation</span>
+<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Latent space structure: can interpolate in latent space and interpret factors</span>
+<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stable training</span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can be used for representation learning</span>
+<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a>**Cons**</span>
+<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Blurry outputs (more complex variants can reduce this)</span>
+<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-252"><a href="#cb2-252" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-253"><a href="#cb2-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparing GANs, VAEs, and Diffusion Models</span></span>
-<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a>Having explored each model family, how do they actually behave differently? Let's examine their behavior on simple 1D and 2D distributions to build intuition about their strengths and failure modes.</span>
-<span id="cb2-258"><a href="#cb2-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-259"><a href="#cb2-259" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 1D Distribution Comparison</span></span>
-<span id="cb2-260"><a href="#cb2-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-261"><a href="#cb2-261" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-true}</span>
-<span id="cb2-262"><a href="#cb2-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-263"><a href="#cb2-263" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}1d_comparison/true_distribution.png)</span></span>
-<span id="cb2-264"><a href="#cb2-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-265"><a href="#cb2-265" aria-hidden="true" tabindex="-1"></a>True 1D data distribution: A bimodal distribution that the generative models must learn to reproduce.</span>
-<span id="cb2-266"><a href="#cb2-266" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-267"><a href="#cb2-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-268"><a href="#cb2-268" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-comparison layout-ncol=3}</span>
-<span id="cb2-269"><a href="#cb2-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-270"><a href="#cb2-270" aria-hidden="true" tabindex="-1"></a><span class="al">![GAN training]({{&lt; meta params.images_path &gt;}}1d_comparison/gan_training_progress.png)</span></span>
-<span id="cb2-271"><a href="#cb2-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-272"><a href="#cb2-272" aria-hidden="true" tabindex="-1"></a><span class="al">![VAE training]({{&lt; meta params.images_path &gt;}}1d_comparison/vae_training_progress.png)</span></span>
-<span id="cb2-273"><a href="#cb2-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-274"><a href="#cb2-274" aria-hidden="true" tabindex="-1"></a><span class="al">![Diffusion training]({{&lt; meta params.images_path &gt;}}1d_comparison/diffusion_training_progress.png)</span></span>
-<span id="cb2-275"><a href="#cb2-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-276"><a href="#cb2-276" aria-hidden="true" tabindex="-1"></a>Training progression on 1D bimodal distribution. Each panel shows how the learned distribution (orange) approaches the true distribution (blue) over training iterations. GANs converge quickly but risk mode collapse; VAEs converge smoothly but may oversmooth between modes; Diffusion models reliably capture both modes with stable convergence.</span>
-<span id="cb2-277"><a href="#cb2-277" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparing GANs, VAEs, and Diffusion Models</span></span>
+<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a>Having explored each model family, how do they actually behave differently? Let's examine their behavior on simple 1D and 2D distributions to build intuition about their strengths and failure modes.</span>
+<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-258"><a href="#cb2-258" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 1D Distribution Comparison</span></span>
+<span id="cb2-259"><a href="#cb2-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-260"><a href="#cb2-260" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-true}</span>
+<span id="cb2-261"><a href="#cb2-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-262"><a href="#cb2-262" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}1d_comparison/true_distribution.png)</span></span>
+<span id="cb2-263"><a href="#cb2-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-264"><a href="#cb2-264" aria-hidden="true" tabindex="-1"></a>True 1D data distribution: A bimodal distribution that the generative models must learn to reproduce.</span>
+<span id="cb2-265"><a href="#cb2-265" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-266"><a href="#cb2-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-267"><a href="#cb2-267" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset #fig-genai-1d-example}</span>
+<span id="cb2-268"><a href="#cb2-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-269"><a href="#cb2-269" aria-hidden="true" tabindex="-1"></a><span class="fu">### GAN</span></span>
+<span id="cb2-270"><a href="#cb2-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-271"><a href="#cb2-271" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-comparison}</span>
+<span id="cb2-272"><a href="#cb2-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-273"><a href="#cb2-273" aria-hidden="true" tabindex="-1"></a><span class="al">![GAN]({{&lt; meta params.images_path &gt;}}1d_comparison/gan_training_progress.png)</span></span>
+<span id="cb2-274"><a href="#cb2-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-275"><a href="#cb2-275" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-276"><a href="#cb2-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-277"><a href="#cb2-277" aria-hidden="true" tabindex="-1"></a><span class="fu">### VAE</span></span>
 <span id="cb2-278"><a href="#cb2-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-279"><a href="#cb2-279" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-final}</span>
+<span id="cb2-279"><a href="#cb2-279" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-example-vae}</span>
 <span id="cb2-280"><a href="#cb2-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-281"><a href="#cb2-281" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}1d_comparison/final_comparison.png)</span></span>
+<span id="cb2-281"><a href="#cb2-281" aria-hidden="true" tabindex="-1"></a><span class="al">![VAE]({{&lt; meta params.images_path &gt;}}1d_comparison/vae_training_progress.png)</span></span>
 <span id="cb2-282"><a href="#cb2-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-283"><a href="#cb2-283" aria-hidden="true" tabindex="-1"></a>Final comparison: All three models after convergence, showing their different biases in capturing the bimodal distribution.</span>
-<span id="cb2-284"><a href="#cb2-284" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-286"><a href="#cb2-286" aria-hidden="true" tabindex="-1"></a>**Key observations**:</span>
-<span id="cb2-287"><a href="#cb2-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-288"><a href="#cb2-288" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GANs**: Sharp samples matching the data manifold, but prone to **mode collapse**—missing entire modes of the distribution</span>
-<span id="cb2-289"><a href="#cb2-289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**VAEs**: Smooth distributions that can **fill in gaps** between modes, producing samples in low-density regions</span>
-<span id="cb2-290"><a href="#cb2-290" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Diffusion**: Reliably captures all modes with high fidelity, though at computational cost</span>
-<span id="cb2-291"><a href="#cb2-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-292"><a href="#cb2-292" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2D Distribution Comparison</span></span>
-<span id="cb2-293"><a href="#cb2-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-294"><a href="#cb2-294" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-true}</span>
+<span id="cb2-283"><a href="#cb2-283" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-284"><a href="#cb2-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a><span class="fu">### Diffusion</span></span>
+<span id="cb2-286"><a href="#cb2-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-287"><a href="#cb2-287" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-example-gan-diffusion}</span>
+<span id="cb2-288"><a href="#cb2-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-289"><a href="#cb2-289" aria-hidden="true" tabindex="-1"></a><span class="al">![Diffusion]({{&lt; meta params.images_path &gt;}}1d_comparison/diffusion_training_progress.png)</span></span>
+<span id="cb2-290"><a href="#cb2-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-291"><a href="#cb2-291" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-292"><a href="#cb2-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-293"><a href="#cb2-293" aria-hidden="true" tabindex="-1"></a>Training progression on 1D bimodal distribution. Each panel shows how the learned distribution (orange) approaches the true distribution (blue) over training iterations.</span>
+<span id="cb2-294"><a href="#cb2-294" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-295"><a href="#cb2-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-296"><a href="#cb2-296" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}2d_comparison/true_distribution.png)</span></span>
+<span id="cb2-296"><a href="#cb2-296" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-1d-final}</span>
 <span id="cb2-297"><a href="#cb2-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-298"><a href="#cb2-298" aria-hidden="true" tabindex="-1"></a>True 2D data distribution: A complex spiral pattern in 2D space.</span>
-<span id="cb2-299"><a href="#cb2-299" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-300"><a href="#cb2-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-301"><a href="#cb2-301" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-comparison layout-ncol=3}</span>
+<span id="cb2-298"><a href="#cb2-298" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}1d_comparison/final_comparison.png)</span></span>
+<span id="cb2-299"><a href="#cb2-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-300"><a href="#cb2-300" aria-hidden="true" tabindex="-1"></a>Final comparison: All three models after convergence, showing their different biases in capturing the bimodal distribution.</span>
+<span id="cb2-301"><a href="#cb2-301" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-302"><a href="#cb2-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-303"><a href="#cb2-303" aria-hidden="true" tabindex="-1"></a><span class="al">![GAN training]({{&lt; meta params.images_path &gt;}}2d_comparison/gan_training_progress.png)</span></span>
-<span id="cb2-304"><a href="#cb2-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-305"><a href="#cb2-305" aria-hidden="true" tabindex="-1"></a><span class="al">![VAE training]({{&lt; meta params.images_path &gt;}}2d_comparison/vae_training_progress.png)</span></span>
-<span id="cb2-306"><a href="#cb2-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-307"><a href="#cb2-307" aria-hidden="true" tabindex="-1"></a><span class="al">![Diffusion training]({{&lt; meta params.images_path &gt;}}2d_comparison/diffusion_training_progress.png)</span></span>
-<span id="cb2-308"><a href="#cb2-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-309"><a href="#cb2-309" aria-hidden="true" tabindex="-1"></a>Training progression on 2D spiral distribution. The models must learn a complex curved manifold. GANs produce sharp samples along the spiral but may miss regions; VAEs spread probability mass more smoothly but may blur the structure; Diffusion models capture fine geometric details reliably.</span>
-<span id="cb2-310"><a href="#cb2-310" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-311"><a href="#cb2-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-312"><a href="#cb2-312" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-final}</span>
+<span id="cb2-303"><a href="#cb2-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-304"><a href="#cb2-304" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2D Distribution Comparison</span></span>
+<span id="cb2-305"><a href="#cb2-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-306"><a href="#cb2-306" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-true}</span>
+<span id="cb2-307"><a href="#cb2-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-308"><a href="#cb2-308" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}2d_comparison/true_distribution.png)</span></span>
+<span id="cb2-309"><a href="#cb2-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-310"><a href="#cb2-310" aria-hidden="true" tabindex="-1"></a>True 2D data distribution: A complex spiral pattern in 2D space.</span>
+<span id="cb2-311"><a href="#cb2-311" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-312"><a href="#cb2-312" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-313"><a href="#cb2-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-314"><a href="#cb2-314" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}2d_comparison/final_comparison.png)</span></span>
+<span id="cb2-314"><a href="#cb2-314" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset #fig-genai-2d-comparison}</span>
 <span id="cb2-315"><a href="#cb2-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-316"><a href="#cb2-316" aria-hidden="true" tabindex="-1"></a>Final 2D comparison: Converged distributions overlaid on the true spiral. Notice how each model type handles the complex geometry differently.</span>
-<span id="cb2-317"><a href="#cb2-317" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-318"><a href="#cb2-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-316"><a href="#cb2-316" aria-hidden="true" tabindex="-1"></a><span class="fu">### GAN</span></span>
+<span id="cb2-317"><a href="#cb2-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-318"><a href="#cb2-318" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-example-gan}</span>
 <span id="cb2-319"><a href="#cb2-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-320"><a href="#cb2-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-321"><a href="#cb2-321" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conditional Generation</span></span>
-<span id="cb2-322"><a href="#cb2-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-323"><a href="#cb2-323" aria-hidden="true" tabindex="-1"></a>So far, we have discussed **unconditional generation**: models that learn $p(x)$ or generate samples from the full training distribution. But many applications require **conditional generation**: producing outputs that match specific requirements or inputs.</span>
-<span id="cb2-324"><a href="#cb2-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-325"><a href="#cb2-325" aria-hidden="true" tabindex="-1"></a>Conditional generation models learn $p(x|c)$, where $c$ is a conditioning signal:</span>
-<span id="cb2-326"><a href="#cb2-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-327"><a href="#cb2-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Text prompt**: "A photo of a cat wearing sunglasses"</span>
-<span id="cb2-328"><a href="#cb2-328" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Class label**: Generate a digit "7" or a face with "smiling" attribute</span>
-<span id="cb2-329"><a href="#cb2-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Image**: Translate sketches to photos, colorize grayscale images</span>
-<span id="cb2-330"><a href="#cb2-330" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Other modalities**: Depth maps, segmentation masks, audio, etc.</span>
+<span id="cb2-320"><a href="#cb2-320" aria-hidden="true" tabindex="-1"></a><span class="al">![GAN]({{&lt; meta params.images_path &gt;}}2d_comparison/gan_training_progress.png)</span></span>
+<span id="cb2-321"><a href="#cb2-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-322"><a href="#cb2-322" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-323"><a href="#cb2-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-324"><a href="#cb2-324" aria-hidden="true" tabindex="-1"></a><span class="fu">### VAE</span></span>
+<span id="cb2-325"><a href="#cb2-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-326"><a href="#cb2-326" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-example-vae}</span>
+<span id="cb2-327"><a href="#cb2-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-328"><a href="#cb2-328" aria-hidden="true" tabindex="-1"></a><span class="al">![VAE]({{&lt; meta params.images_path &gt;}}2d_comparison/vae_training_progress.png)</span></span>
+<span id="cb2-329"><a href="#cb2-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-330"><a href="#cb2-330" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-331"><a href="#cb2-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-332"><a href="#cb2-332" aria-hidden="true" tabindex="-1"></a>The core modification is simple: provide the condition $c$ as additional input to the model. However, the architectural integration varies by model family.</span>
+<span id="cb2-332"><a href="#cb2-332" aria-hidden="true" tabindex="-1"></a><span class="fu">### Diffusion</span></span>
 <span id="cb2-333"><a href="#cb2-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-334"><a href="#cb2-334" aria-hidden="true" tabindex="-1"></a>One example are conditional GANs. As shown in @fig-genai-gan-conditional. Both generator and discriminator receive the conditioning information $g(\vect{z}, \vect{c})$ and $d(\vect{x}, \vect{c})$.</span>
+<span id="cb2-334"><a href="#cb2-334" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-example-gan-diffusion}</span>
 <span id="cb2-335"><a href="#cb2-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-336"><a href="#cb2-336" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-337"><a href="#cb2-337" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-gan-conditional}</span>
-<span id="cb2-338"><a href="#cb2-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-339"><a href="#cb2-339" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}gan_conditional_generation.png)</span></span>
-<span id="cb2-340"><a href="#cb2-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-341"><a href="#cb2-341" aria-hidden="true" tabindex="-1"></a>Conditional GAN architecture: Both generator and discriminator receive the conditioning input, enabling controlled generation. From @prince_understanding_2023.</span>
+<span id="cb2-336"><a href="#cb2-336" aria-hidden="true" tabindex="-1"></a><span class="al">![Diffusion]({{&lt; meta params.images_path &gt;}}2d_comparison/diffusion_training_progress.png)</span></span>
+<span id="cb2-337"><a href="#cb2-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-338"><a href="#cb2-338" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-339"><a href="#cb2-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-340"><a href="#cb2-340" aria-hidden="true" tabindex="-1"></a>Training progression on 2D spiral distribution. The models must learn a complex curved manifold.</span>
+<span id="cb2-341"><a href="#cb2-341" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-342"><a href="#cb2-342" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-343"><a href="#cb2-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-344"><a href="#cb2-344" aria-hidden="true" tabindex="-1"></a>The discriminator now solves a harder task: it must judge whether $\vect{x}$ matches the condition $\vect{c}$, not just whether $\vect{x}$ looks realistic. This forces the generator to respect the conditioning signal to fool the discriminator.</span>
+<span id="cb2-344"><a href="#cb2-344" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-2d-final}</span>
 <span id="cb2-345"><a href="#cb2-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-346"><a href="#cb2-346" aria-hidden="true" tabindex="-1"></a>**Training objective**:</span>
-<span id="cb2-347"><a href="#cb2-347" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
-<span id="cb2-348"><a href="#cb2-348" aria-hidden="true" tabindex="-1"></a>\min_{g} \max_{d} \mathbb{E}_{x, c}[\log d(\vect{x}, \vect{c})] + \mathbb{E}_{z, c}<span class="co">[</span><span class="ot">\log(1 - d(g(\vect{z}, \vect{c}), \vect{c}))</span><span class="co">]</span></span>
-<span id="cb2-349"><a href="#cb2-349" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb2-346"><a href="#cb2-346" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}2d_comparison/final_comparison.png)</span></span>
+<span id="cb2-347"><a href="#cb2-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-348"><a href="#cb2-348" aria-hidden="true" tabindex="-1"></a>Final 2D comparison: Converged distributions overlaid on the true spiral. Notice how each model type handles the complex geometry differently.</span>
+<span id="cb2-349"><a href="#cb2-349" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-350"><a href="#cb2-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-351"><a href="#cb2-351" aria-hidden="true" tabindex="-1"></a>**Common conditioning mechanisms**:</span>
+<span id="cb2-351"><a href="#cb2-351" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-352"><a href="#cb2-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-353"><a href="#cb2-353" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Concatenation**: Concatenate $\vect{c}$ with $\vect{z}$ for generator, with $\vect{x}$ for discriminator</span>
-<span id="cb2-354"><a href="#cb2-354" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Class embeddings**: For discrete labels, learn embedding vectors</span>
-<span id="cb2-355"><a href="#cb2-355" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cross-attention**: For complex conditions (text, images), use attention mechanisms</span>
+<span id="cb2-353"><a href="#cb2-353" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conditional Generation</span></span>
+<span id="cb2-354"><a href="#cb2-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-355"><a href="#cb2-355" aria-hidden="true" tabindex="-1"></a>So far, we have discussed **unconditional generation**: models that learn $p(\vect{x})$ or generate samples from the full training distribution. But many applications require **conditional generation**: producing outputs that match specific requirements or inputs.</span>
 <span id="cb2-356"><a href="#cb2-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-357"><a href="#cb2-357" aria-hidden="true" tabindex="-1"></a>Beyond GANs, other model families support conditioning:</span>
+<span id="cb2-357"><a href="#cb2-357" aria-hidden="true" tabindex="-1"></a>Conditional generation models learn $p(\vect{x}|\vect{c})$, where $\vect{c}$ is a conditioning signal:</span>
 <span id="cb2-358"><a href="#cb2-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-359"><a href="#cb2-359" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Conditional VAEs**: Condition both encoder and decoder on $c$, useful for disentangling style from content</span>
-<span id="cb2-360"><a href="#cb2-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Autoregressive models**: Condition each step on $c$, e.g., PixelCNN for class-conditional generation</span>
-<span id="cb2-361"><a href="#cb2-361" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ControlNet**: Add spatial conditioning (edges, depth, pose) to pre-trained diffusion models without retraining from scratch</span>
-<span id="cb2-362"><a href="#cb2-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-359"><a href="#cb2-359" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Text prompt**: "A photo of a cat wearing sunglasses"</span>
+<span id="cb2-360"><a href="#cb2-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Class label**: Generate a digit "7" or a face with "smiling" attribute</span>
+<span id="cb2-361"><a href="#cb2-361" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Image**: Translate sketches to photos, colorize grayscale images</span>
+<span id="cb2-362"><a href="#cb2-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Other modalities**: Depth maps, segmentation masks, audio, etc.</span>
 <span id="cb2-363"><a href="#cb2-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-364"><a href="#cb2-364" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pre-Trained Models</span></span>
+<span id="cb2-364"><a href="#cb2-364" aria-hidden="true" tabindex="-1"></a>The core modification is simple: provide the condition $\vect{c}$ as additional input to the model. However, the architectural integration varies by model family.</span>
 <span id="cb2-365"><a href="#cb2-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-366"><a href="#cb2-366" aria-hidden="true" tabindex="-1"></a>Training generative models from scratch requires massive datasets (millions of images), significant compute resources (weeks on multiple GPUs), and careful hyperparameter tuning. For most practical applications, **pre-trained models** provide a much more accessible starting point.</span>
+<span id="cb2-366"><a href="#cb2-366" aria-hidden="true" tabindex="-1"></a>One example are conditional GANs. As shown in @fig-genai-gan-conditional. In this case typically only the generator receives the conditioning information $g(\vect{z}, \vect{c})$ and $d(\vect{x})$. The discriminator does not require $\vect{c}$ in this case because input-output consistency is enforced with other losses that compare input and output (e.g. $L_2$ norm).</span>
 <span id="cb2-367"><a href="#cb2-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-368"><a href="#cb2-368" aria-hidden="true" tabindex="-1"></a>The landscape has been transformed by models like **Stable Diffusion**, which bring state-of-the-art generation capabilities to consumer hardware. These models are trained on billions of image-text pairs and can generate high-quality, diverse images from text prompts—with minimal customization required for many use cases.</span>
-<span id="cb2-369"><a href="#cb2-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-370"><a href="#cb2-370" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Pros and Cons of Pre-Trained Models"}</span>
-<span id="cb2-371"><a href="#cb2-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-372"><a href="#cb2-372" aria-hidden="true" tabindex="-1"></a>**Pros**</span>
-<span id="cb2-373"><a href="#cb2-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-374"><a href="#cb2-374" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>High-quality image generation out-of-the-box</span>
-<span id="cb2-375"><a href="#cb2-375" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Generate images via natural language prompts</span>
-<span id="cb2-376"><a href="#cb2-376" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Easy to customize or fine-tune with minimal investment (LoRA, DreamBooth)</span>
-<span id="cb2-377"><a href="#cb2-377" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Active community sharing models, techniques, and improvements</span>
-<span id="cb2-378"><a href="#cb2-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-379"><a href="#cb2-379" aria-hidden="true" tabindex="-1"></a>**Cons**</span>
-<span id="cb2-380"><a href="#cb2-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-381"><a href="#cb2-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Not suitable if your data is from a highly specific domain (e.g., medical imaging, satellite imagery)</span>
-<span id="cb2-382"><a href="#cb2-382" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>May not work well for very specific output constraints (e.g., exact branding requirements)</span>
-<span id="cb2-383"><a href="#cb2-383" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Biases from training data may propagate to outputs</span>
-<span id="cb2-384"><a href="#cb2-384" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Licensing considerations for commercial use</span>
-<span id="cb2-385"><a href="#cb2-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-386"><a href="#cb2-386" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-387"><a href="#cb2-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-388"><a href="#cb2-388" aria-hidden="true" tabindex="-1"></a><span class="fu">### Stable Diffusion: Practical State-of-the-Art</span></span>
-<span id="cb2-389"><a href="#cb2-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-390"><a href="#cb2-390" aria-hidden="true" tabindex="-1"></a>**Stable Diffusion** <span class="co">[</span><span class="ot">@rombach_high-resolution_2022</span><span class="co">]</span> is an open-source text-to-image model that has become the de facto standard for accessible, high-quality image generation. See @fig-genai-stable-diffusion-xl-examples for some examples.</span>
-<span id="cb2-391"><a href="#cb2-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-392"><a href="#cb2-392" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-stable-diffusion-xl-examples}</span>
-<span id="cb2-393"><a href="#cb2-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-394"><a href="#cb2-394" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}pract_stable_diffusion_xl_examples.png)</span></span>
+<span id="cb2-368"><a href="#cb2-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-369"><a href="#cb2-369" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-gan-conditional}</span>
+<span id="cb2-370"><a href="#cb2-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-371"><a href="#cb2-371" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}gan_conditional_generation.png)</span></span>
+<span id="cb2-372"><a href="#cb2-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-373"><a href="#cb2-373" aria-hidden="true" tabindex="-1"></a>Conditional GAN architecture: Generator receives the conditioning input, enabling controlled generation. From @prince_understanding_2023.</span>
+<span id="cb2-374"><a href="#cb2-374" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-375"><a href="#cb2-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-376"><a href="#cb2-376" aria-hidden="true" tabindex="-1"></a>Often, the discriminator needs to be conditioned on $\vect{c}$ as well. The discriminator thus must judge whether $\vect{x}$ matches the condition $\vect{c}$, not just whether $\vect{x}$ looks realistic. This forces the generator to respect the conditioning signal to fool the discriminator.</span>
+<span id="cb2-377"><a href="#cb2-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-378"><a href="#cb2-378" aria-hidden="true" tabindex="-1"></a>**Training objective**:</span>
+<span id="cb2-379"><a href="#cb2-379" aria-hidden="true" tabindex="-1"></a>\begin{equation}</span>
+<span id="cb2-380"><a href="#cb2-380" aria-hidden="true" tabindex="-1"></a>\min_{g} \max_{d} \mathbb{E}_{x, c}[\log d(\vect{x}, \vect{c})] + \mathbb{E}_{z, c}<span class="co">[</span><span class="ot">\log(1 - d(g(\vect{z}, \vect{c}), \vect{c}))</span><span class="co">]</span></span>
+<span id="cb2-381"><a href="#cb2-381" aria-hidden="true" tabindex="-1"></a>\end{equation}</span>
+<span id="cb2-382"><a href="#cb2-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-383"><a href="#cb2-383" aria-hidden="true" tabindex="-1"></a>**Common conditioning mechanisms**:</span>
+<span id="cb2-384"><a href="#cb2-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-385"><a href="#cb2-385" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Concatenation**: Concatenate $\vect{c}$ with $\vect{z}$ for generator, with $\vect{x}$ for discriminator</span>
+<span id="cb2-386"><a href="#cb2-386" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Class embeddings**: For discrete labels, learn embedding vectors</span>
+<span id="cb2-387"><a href="#cb2-387" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cross-attention**: For complex conditions (text, images), use attention mechanisms</span>
+<span id="cb2-388"><a href="#cb2-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-389"><a href="#cb2-389" aria-hidden="true" tabindex="-1"></a>Beyond GANs, other model families support conditioning:</span>
+<span id="cb2-390"><a href="#cb2-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-391"><a href="#cb2-391" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Conditional VAEs**: Condition both encoder and decoder on $c$, useful for disentangling style from content</span>
+<span id="cb2-392"><a href="#cb2-392" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Autoregressive models**: Condition each step on $c$, e.g., PixelCNN for class-conditional generation</span>
+<span id="cb2-393"><a href="#cb2-393" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**ControlNet**: Add spatial conditioning (edges, depth, pose) to pre-trained diffusion models without retraining from scratch</span>
+<span id="cb2-394"><a href="#cb2-394" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-395"><a href="#cb2-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-396"><a href="#cb2-396" aria-hidden="true" tabindex="-1"></a>Stable Diffusion XL: Example generations showing diverse styles and subjects from text prompts. <span class="co">[</span><span class="ot">Source</span><span class="co">](https://huggingface.co/stabilityai/stable-diffusion-3.5-large)</span>.</span>
-<span id="cb2-397"><a href="#cb2-397" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-398"><a href="#cb2-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-399"><a href="#cb2-399" aria-hidden="true" tabindex="-1"></a>Unlike pure pixel-space diffusion (which is computationally expensive), Stable Diffusion uses **latent diffusion**—running the diffusion process in a compressed latent space.</span>
-<span id="cb2-400"><a href="#cb2-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-401"><a href="#cb2-401" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-diffusion-sd-architecture}</span>
-<span id="cb2-402"><a href="#cb2-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-403"><a href="#cb2-403" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}diffusion_sd_architecture_genbook.png)</span></span>
-<span id="cb2-404"><a href="#cb2-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-405"><a href="#cb2-405" aria-hidden="true" tabindex="-1"></a>Stable Diffusion pipeline: Text is encoded via CLIP, diffusion runs in VAE latent space (much smaller than pixel space), and the VAE decoder produces the final image. Adapted from GenBook.</span>
-<span id="cb2-406"><a href="#cb2-406" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-407"><a href="#cb2-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-408"><a href="#cb2-408" aria-hidden="true" tabindex="-1"></a><span class="fu">### Why Latent Diffusion?</span></span>
-<span id="cb2-409"><a href="#cb2-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-410"><a href="#cb2-410" aria-hidden="true" tabindex="-1"></a>Running diffusion directly on high-resolution images (e.g., 512×512×3) is computationally expensive—the U-Net must process millions of values at each denoising step. **Latent Diffusion** solves this by:</span>
-<span id="cb2-411"><a href="#cb2-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-412"><a href="#cb2-412" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pre-training a VAE** to compress images into a lower-dimensional latent space (e.g., 64×64×4)</span>
-<span id="cb2-413"><a href="#cb2-413" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Running diffusion in the latent space** (much faster!)</span>
-<span id="cb2-414"><a href="#cb2-414" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Decoding** the final latent representation back to pixel space</span>
-<span id="cb2-415"><a href="#cb2-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-416"><a href="#cb2-416" aria-hidden="true" tabindex="-1"></a>This provides an **8× reduction** in memory and computation, making high-resolution generation practical on consumer GPUs.</span>
+<span id="cb2-396"><a href="#cb2-396" aria-hidden="true" tabindex="-1"></a><span class="fu">## Pre-Trained Models</span></span>
+<span id="cb2-397"><a href="#cb2-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-398"><a href="#cb2-398" aria-hidden="true" tabindex="-1"></a>Training generative models from scratch requires massive datasets (millions of images), significant compute resources (weeks on multiple GPUs), and careful hyperparameter tuning. For most practical applications, **pre-trained models** provide a much more accessible starting point.</span>
+<span id="cb2-399"><a href="#cb2-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-400"><a href="#cb2-400" aria-hidden="true" tabindex="-1"></a>The landscape has been transformed by models like **Stable Diffusion**, which bring state-of-the-art generation capabilities to consumer hardware. These models are trained on billions of image-text pairs and can generate high-quality, diverse images from text prompts—with minimal customization required for many use cases.</span>
+<span id="cb2-401"><a href="#cb2-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-402"><a href="#cb2-402" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Pros and Cons of Pre-Trained Models"}</span>
+<span id="cb2-403"><a href="#cb2-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-404"><a href="#cb2-404" aria-hidden="true" tabindex="-1"></a>**Pros**</span>
+<span id="cb2-405"><a href="#cb2-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-406"><a href="#cb2-406" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>High-quality image generation out-of-the-box</span>
+<span id="cb2-407"><a href="#cb2-407" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Generate images via natural language prompts</span>
+<span id="cb2-408"><a href="#cb2-408" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Easy to customize or fine-tune with minimal investment (LoRA, DreamBooth)</span>
+<span id="cb2-409"><a href="#cb2-409" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Active community sharing models, techniques, and improvements</span>
+<span id="cb2-410"><a href="#cb2-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-411"><a href="#cb2-411" aria-hidden="true" tabindex="-1"></a>**Cons**</span>
+<span id="cb2-412"><a href="#cb2-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-413"><a href="#cb2-413" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Not suitable if your data is from a highly specific domain (e.g., medical imaging, satellite imagery)</span>
+<span id="cb2-414"><a href="#cb2-414" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>May not work well for very specific output constraints (e.g., exact branding requirements)</span>
+<span id="cb2-415"><a href="#cb2-415" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Biases from training data may propagate to outputs</span>
+<span id="cb2-416"><a href="#cb2-416" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Licensing considerations for commercial use</span>
 <span id="cb2-417"><a href="#cb2-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-418"><a href="#cb2-418" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conditioning on Text (and More)</span></span>
+<span id="cb2-418"><a href="#cb2-418" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-419"><a href="#cb2-419" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-420"><a href="#cb2-420" aria-hidden="true" tabindex="-1"></a>Stable Diffusion supports **text-conditional generation** via cross-attention to CLIP text embeddings. The U-Net attends to text features at multiple scales, enabling precise control over generated content. Beyond text, the framework supports conditioning on:</span>
+<span id="cb2-420"><a href="#cb2-420" aria-hidden="true" tabindex="-1"></a><span class="fu">### Stable Diffusion: Practical State-of-the-Art</span></span>
 <span id="cb2-421"><a href="#cb2-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-422"><a href="#cb2-422" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Images**: For inpainting, outpainting, and image-to-image translation</span>
-<span id="cb2-423"><a href="#cb2-423" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Depth maps**: For 3D-aware generation</span>
-<span id="cb2-424"><a href="#cb2-424" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Segmentation masks**: For spatial control</span>
-<span id="cb2-425"><a href="#cb2-425" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Style embeddings**: For artistic control</span>
-<span id="cb2-426"><a href="#cb2-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-427"><a href="#cb2-427" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-diffusion-latent-diff-architecture}</span>
-<span id="cb2-428"><a href="#cb2-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-429"><a href="#cb2-429" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}diffusion_latent_diff_architecture.png)</span></span>
+<span id="cb2-422"><a href="#cb2-422" aria-hidden="true" tabindex="-1"></a>**Stable Diffusion** <span class="co">[</span><span class="ot">@rombach_high-resolution_2022</span><span class="co">]</span> is an open-source text-to-image model that has become the de facto standard for accessible, high-quality image generation. See @fig-genai-stable-diffusion-xl-examples for some examples.</span>
+<span id="cb2-423"><a href="#cb2-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-424"><a href="#cb2-424" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-stable-diffusion-xl-examples}</span>
+<span id="cb2-425"><a href="#cb2-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-426"><a href="#cb2-426" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}pract_stable_diffusion_xl_examples.png)</span></span>
+<span id="cb2-427"><a href="#cb2-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-428"><a href="#cb2-428" aria-hidden="true" tabindex="-1"></a>Stable Diffusion XL: Example generations showing diverse styles and subjects from text prompts. <span class="co">[</span><span class="ot">Source</span><span class="co">](https://huggingface.co/stabilityai/stable-diffusion-3.5-large)</span>.</span>
+<span id="cb2-429"><a href="#cb2-429" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-430"><a href="#cb2-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-431"><a href="#cb2-431" aria-hidden="true" tabindex="-1"></a>Latent Diffusion architecture: The denoising U-Net operates in VAE latent space and uses cross-attention to condition on text (or other modalities). From @rombach_high-resolution_2022.</span>
-<span id="cb2-432"><a href="#cb2-432" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-433"><a href="#cb2-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-431"><a href="#cb2-431" aria-hidden="true" tabindex="-1"></a>Unlike pure pixel-space diffusion (which is computationally expensive), Stable Diffusion uses **latent diffusion**—running the diffusion process in a compressed latent space.</span>
+<span id="cb2-432"><a href="#cb2-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-433"><a href="#cb2-433" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-diffusion-sd-architecture}</span>
 <span id="cb2-434"><a href="#cb2-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-435"><a href="#cb2-435" aria-hidden="true" tabindex="-1"></a><span class="fu">### Fine-Tuning with LoRA</span></span>
+<span id="cb2-435"><a href="#cb2-435" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}diffusion_sd_architecture_genbook.png)</span></span>
 <span id="cb2-436"><a href="#cb2-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-437"><a href="#cb2-437" aria-hidden="true" tabindex="-1"></a>While pre-trained models are powerful, you often want to adapt them to specific styles, subjects, or domains. Traditional fine-tuning updates all model parameters (billions of weights!), requiring massive memory and compute. **LoRA (Low-Rank Adaptation)**, see @fig-genai-lora-architecture, offers a far more efficient alternative.</span>
-<span id="cb2-438"><a href="#cb2-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-439"><a href="#cb2-439" aria-hidden="true" tabindex="-1"></a>**Key idea**: Instead of updating the full weight matrix $W$, LoRA learns a low-rank update $\Delta W = BA$ where:</span>
-<span id="cb2-440"><a href="#cb2-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-441"><a href="#cb2-441" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$</span>
-<span id="cb2-442"><a href="#cb2-442" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$r \ll \min(d, k)$ (typically $r = 4$ to $16$)</span>
-<span id="cb2-443"><a href="#cb2-443" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Only $A$ and $B$ are trained; original weights $W$ remain frozen</span>
-<span id="cb2-444"><a href="#cb2-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-445"><a href="#cb2-445" aria-hidden="true" tabindex="-1"></a>This reduces trainable parameters by **1000×** or more, enabling fine-tuning on a single consumer GPU in hours rather than days. LoRA adapters can be easily shared, combined, and switched, creating a thriving ecosystem of specialized models.</span>
-<span id="cb2-446"><a href="#cb2-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-447"><a href="#cb2-447" aria-hidden="true" tabindex="-1"></a>**Popular use cases**:</span>
-<span id="cb2-448"><a href="#cb2-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-449"><a href="#cb2-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Style transfer**: Train on artworks to mimic specific artistic styles</span>
-<span id="cb2-450"><a href="#cb2-450" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Subject learning**: DreamBooth + LoRA to generate images of specific people/objects</span>
-<span id="cb2-451"><a href="#cb2-451" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Domain adaptation**: Adapt to specialized domains (anime, architecture, product photography)</span>
-<span id="cb2-452"><a href="#cb2-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-437"><a href="#cb2-437" aria-hidden="true" tabindex="-1"></a>Stable Diffusion pipeline: Text is encoded via CLIP, diffusion runs in VAE latent space (much smaller than pixel space), and the VAE decoder produces the final image. Adapted from GenBook.</span>
+<span id="cb2-438"><a href="#cb2-438" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-439"><a href="#cb2-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-440"><a href="#cb2-440" aria-hidden="true" tabindex="-1"></a><span class="fu">### Why Latent Diffusion?</span></span>
+<span id="cb2-441"><a href="#cb2-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-442"><a href="#cb2-442" aria-hidden="true" tabindex="-1"></a>Running diffusion directly on high-resolution images (e.g., 512×512×3) is computationally expensive—the U-Net must process millions of values at each denoising step. **Latent Diffusion** solves this by:</span>
+<span id="cb2-443"><a href="#cb2-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-444"><a href="#cb2-444" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pre-training a VAE** to compress images into a lower-dimensional latent space (e.g., 64×64×4)</span>
+<span id="cb2-445"><a href="#cb2-445" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Running diffusion in the latent space** (much faster!)</span>
+<span id="cb2-446"><a href="#cb2-446" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Decoding** the final latent representation back to pixel space</span>
+<span id="cb2-447"><a href="#cb2-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-448"><a href="#cb2-448" aria-hidden="true" tabindex="-1"></a>This provides an **8× reduction** in memory and computation, making high-resolution generation practical on consumer GPUs.</span>
+<span id="cb2-449"><a href="#cb2-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-450"><a href="#cb2-450" aria-hidden="true" tabindex="-1"></a><span class="fu">### Conditioning on Text (and More)</span></span>
+<span id="cb2-451"><a href="#cb2-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-452"><a href="#cb2-452" aria-hidden="true" tabindex="-1"></a>Stable Diffusion supports **text-conditional generation** via cross-attention to CLIP text embeddings. The U-Net attends to text features at multiple scales, enabling precise control over generated content. Beyond text, the framework supports conditioning on:</span>
 <span id="cb2-453"><a href="#cb2-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-454"><a href="#cb2-454" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-lora-architecture}</span>
-<span id="cb2-455"><a href="#cb2-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-456"><a href="#cb2-456" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}lora.png)</span>{width=600}</span>
-<span id="cb2-457"><a href="#cb2-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-458"><a href="#cb2-458" aria-hidden="true" tabindex="-1"></a>LoRA (Low-Rank Adaptation): Instead of fine-tuning all weights $W$, LoRA trains low-rank matrices $A$ and $B$ where $\Delta W = BA$. This drastically reduces trainable parameters. From @hu_lora_2021.</span>
-<span id="cb2-459"><a href="#cb2-459" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-454"><a href="#cb2-454" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Images**: For inpainting, outpainting, and image-to-image translation</span>
+<span id="cb2-455"><a href="#cb2-455" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Depth maps**: For 3D-aware generation</span>
+<span id="cb2-456"><a href="#cb2-456" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Segmentation masks**: For spatial control</span>
+<span id="cb2-457"><a href="#cb2-457" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Style embeddings**: For artistic control</span>
+<span id="cb2-458"><a href="#cb2-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-459"><a href="#cb2-459" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-diffusion-latent-diff-architecture}</span>
 <span id="cb2-460"><a href="#cb2-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-461"><a href="#cb2-461" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-462"><a href="#cb2-462" aria-hidden="true" tabindex="-1"></a><span class="fu">### Hardware Requirements</span></span>
-<span id="cb2-463"><a href="#cb2-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-464"><a href="#cb2-464" aria-hidden="true" tabindex="-1"></a>The computational demands vary significantly between inference and training:</span>
+<span id="cb2-461"><a href="#cb2-461" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}diffusion_latent_diff_architecture.png)</span></span>
+<span id="cb2-462"><a href="#cb2-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-463"><a href="#cb2-463" aria-hidden="true" tabindex="-1"></a>Latent Diffusion architecture: The denoising U-Net operates in VAE latent space and uses cross-attention to condition on text (or other modalities). From @rombach_high-resolution_2022.</span>
+<span id="cb2-464"><a href="#cb2-464" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-465"><a href="#cb2-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-466"><a href="#cb2-466" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Inference (Image Generation)</span></span>
-<span id="cb2-467"><a href="#cb2-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-468"><a href="#cb2-468" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Minimum**: 4-6 GB VRAM (GPU)</span>
-<span id="cb2-469"><a href="#cb2-469" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Stable Diffusion 1.5 at 512×512 resolution</span>
-<span id="cb2-470"><a href="#cb2-470" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Longer generation times, limited batch sizes</span>
-<span id="cb2-471"><a href="#cb2-471" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recommended**: 8-12 GB VRAM</span>
-<span id="cb2-472"><a href="#cb2-472" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Stable Diffusion XL at 1024×1024</span>
-<span id="cb2-473"><a href="#cb2-473" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Comfortable batch sizes, faster generation</span>
-<span id="cb2-474"><a href="#cb2-474" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**High-end**: 16+ GB VRAM</span>
-<span id="cb2-475"><a href="#cb2-475" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple models loaded simultaneously</span>
-<span id="cb2-476"><a href="#cb2-476" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Video generation, 3D-aware models</span>
-<span id="cb2-477"><a href="#cb2-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-478"><a href="#cb2-478" aria-hidden="true" tabindex="-1"></a>**CPU-only** inference is possible but **extremely slow** (minutes per image vs. seconds). Many optimization techniques exist: quantization, attention slicing, model offloading.</span>
-<span id="cb2-479"><a href="#cb2-479" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-480"><a href="#cb2-480" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Fine-Tuning (LoRA)</span></span>
-<span id="cb2-481"><a href="#cb2-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-482"><a href="#cb2-482" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Minimum**: 12-16 GB VRAM</span>
-<span id="cb2-483"><a href="#cb2-483" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>LoRA fine-tuning with small batch sizes</span>
-<span id="cb2-484"><a href="#cb2-484" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Gradient checkpointing, mixed precision required</span>
-<span id="cb2-485"><a href="#cb2-485" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recommended**: 24 GB VRAM</span>
-<span id="cb2-486"><a href="#cb2-486" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Comfortable batch sizes for faster convergence</span>
-<span id="cb2-487"><a href="#cb2-487" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple LoRA ranks simultaneously</span>
-<span id="cb2-488"><a href="#cb2-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-489"><a href="#cb2-489" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Full Training (From Scratch)</span></span>
-<span id="cb2-490"><a href="#cb2-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-491"><a href="#cb2-491" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Minimum**: Multiple A100 GPUs (40-80 GB each)</span>
-<span id="cb2-492"><a href="#cb2-492" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Typical**: Clusters with 100+ GPUs</span>
-<span id="cb2-493"><a href="#cb2-493" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duration**: Days to weeks</span>
-<span id="cb2-494"><a href="#cb2-494" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cost**: $10,000s to $100,000s</span>
+<span id="cb2-466"><a href="#cb2-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-467"><a href="#cb2-467" aria-hidden="true" tabindex="-1"></a><span class="fu">### Fine-Tuning with LoRA</span></span>
+<span id="cb2-468"><a href="#cb2-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-469"><a href="#cb2-469" aria-hidden="true" tabindex="-1"></a>While pre-trained models are powerful, you often want to adapt them to specific styles, subjects, or domains. Traditional fine-tuning updates all model parameters (billions of weights!), requiring massive memory and compute. **LoRA (Low-Rank Adaptation)**, see @fig-genai-lora-architecture, offers a far more efficient alternative.</span>
+<span id="cb2-470"><a href="#cb2-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-471"><a href="#cb2-471" aria-hidden="true" tabindex="-1"></a>**Key idea**: Instead of updating the full weight matrix $W$, LoRA learns a low-rank update $\Delta W = BA$ where:</span>
+<span id="cb2-472"><a href="#cb2-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-473"><a href="#cb2-473" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r \times k}$</span>
+<span id="cb2-474"><a href="#cb2-474" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$r \ll \min(d, k)$ (typically $r = 4$ to $16$)</span>
+<span id="cb2-475"><a href="#cb2-475" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Only $A$ and $B$ are trained; original weights $W$ remain frozen</span>
+<span id="cb2-476"><a href="#cb2-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-477"><a href="#cb2-477" aria-hidden="true" tabindex="-1"></a>This reduces trainable parameters by **1000×** or more, enabling fine-tuning on a single consumer GPU in hours rather than days. LoRA adapters can be easily shared, combined, and switched, creating a thriving ecosystem of specialized models.</span>
+<span id="cb2-478"><a href="#cb2-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-479"><a href="#cb2-479" aria-hidden="true" tabindex="-1"></a>**Popular use cases**:</span>
+<span id="cb2-480"><a href="#cb2-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-481"><a href="#cb2-481" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Style transfer**: Train on artworks to mimic specific artistic styles</span>
+<span id="cb2-482"><a href="#cb2-482" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Subject learning**: DreamBooth + LoRA to generate images of specific people/objects</span>
+<span id="cb2-483"><a href="#cb2-483" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Domain adaptation**: Adapt to specialized domains (anime, architecture, product photography)</span>
+<span id="cb2-484"><a href="#cb2-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-485"><a href="#cb2-485" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-486"><a href="#cb2-486" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-lora-architecture}</span>
+<span id="cb2-487"><a href="#cb2-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-488"><a href="#cb2-488" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}lora.png)</span>{width=600}</span>
+<span id="cb2-489"><a href="#cb2-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-490"><a href="#cb2-490" aria-hidden="true" tabindex="-1"></a>LoRA (Low-Rank Adaptation): Instead of fine-tuning all weights $W$, LoRA trains low-rank matrices $A$ and $B$ where $\Delta W = BA$. This drastically reduces trainable parameters. From @hu_lora_2021.</span>
+<span id="cb2-491"><a href="#cb2-491" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-492"><a href="#cb2-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-493"><a href="#cb2-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-494"><a href="#cb2-494" aria-hidden="true" tabindex="-1"></a><span class="fu">### Hardware Requirements</span></span>
 <span id="cb2-495"><a href="#cb2-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-496"><a href="#cb2-496" aria-hidden="true" tabindex="-1"></a>For most researchers and practitioners, pre-trained models + LoRA fine-tuning offer the best trade-off.</span>
+<span id="cb2-496"><a href="#cb2-496" aria-hidden="true" tabindex="-1"></a>The computational demands vary significantly between inference and training:</span>
 <span id="cb2-497"><a href="#cb2-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-498"><a href="#cb2-498" aria-hidden="true" tabindex="-1"></a><span class="fu">### Open-Source Ecosystem</span></span>
+<span id="cb2-498"><a href="#cb2-498" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Inference (Image Generation)</span></span>
 <span id="cb2-499"><a href="#cb2-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-500"><a href="#cb2-500" aria-hidden="true" tabindex="-1"></a>The open-source community has created a rich ecosystem of tools, models, and resources:</span>
-<span id="cb2-501"><a href="#cb2-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-502"><a href="#cb2-502" aria-hidden="true" tabindex="-1"></a><span class="fu">#### HuggingFace</span></span>
-<span id="cb2-503"><a href="#cb2-503" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-504"><a href="#cb2-504" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">HuggingFace</span><span class="co">](https://huggingface.co/)</span> is the central hub for open-source generative models:</span>
-<span id="cb2-505"><a href="#cb2-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-506"><a href="#cb2-506" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Diffusers library**: Unified Python API for diffusion models with extensive documentation</span>
-<span id="cb2-507"><a href="#cb2-507" aria-hidden="true" tabindex="-1"></a>  <span class="in">```python</span></span>
-<span id="cb2-508"><a href="#cb2-508" aria-hidden="true" tabindex="-1"></a>  <span class="im">from</span> diffusers <span class="im">import</span> StableDiffusionPipeline</span>
-<span id="cb2-509"><a href="#cb2-509" aria-hidden="true" tabindex="-1"></a>  pipe <span class="op">=</span> StableDiffusionPipeline.from_pretrained(<span class="st">"stabilityai/stable-diffusion-2-1"</span>)</span>
-<span id="cb2-510"><a href="#cb2-510" aria-hidden="true" tabindex="-1"></a>  image <span class="op">=</span> pipe(<span class="st">"A photo of a cat wearing sunglasses"</span>).images[<span class="dv">0</span>]</span>
-<span id="cb2-511"><a href="#cb2-511" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
-<span id="cb2-512"><a href="#cb2-512" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Model Hub**: 100,000+ models including base models, fine-tunes, and LoRA adapters</span>
-<span id="cb2-513"><a href="#cb2-513" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Spaces**: Interactive demos for trying models before downloading</span>
-<span id="cb2-514"><a href="#cb2-514" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Documentation**: Comprehensive guides for inference, fine-tuning, and training</span>
-<span id="cb2-515"><a href="#cb2-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-516"><a href="#cb2-516" aria-hidden="true" tabindex="-1"></a>**Best for**: Programmatic access, research, production deployments, custom workflows</span>
-<span id="cb2-517"><a href="#cb2-517" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-518"><a href="#cb2-518" aria-hidden="true" tabindex="-1"></a><span class="fu">#### CivitAI</span></span>
-<span id="cb2-519"><a href="#cb2-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-520"><a href="#cb2-520" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">CivitAI</span><span class="co">](https://civitai.com/)</span> is a community-driven platform specializing in Stable Diffusion models:</span>
-<span id="cb2-521"><a href="#cb2-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-522"><a href="#cb2-522" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Extensive model library**: Thousands of community-created models, LoRAs, and embeddings</span>
-<span id="cb2-523"><a href="#cb2-523" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Style-focused**: Strong emphasis on artistic styles, anime, photorealism</span>
-<span id="cb2-524"><a href="#cb2-524" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Preview images**: See example outputs before downloading</span>
-<span id="cb2-525"><a href="#cb2-525" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Version control**: Track model updates and improvements</span>
-<span id="cb2-526"><a href="#cb2-526" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-527"><a href="#cb2-527" aria-hidden="true" tabindex="-1"></a>**Best for**: Exploring diverse styles, finding specialized models, community engagement</span>
-<span id="cb2-528"><a href="#cb2-528" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-529"><a href="#cb2-529" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Automatic1111 WebUI</span></span>
-<span id="cb2-530"><a href="#cb2-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-531"><a href="#cb2-531" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Automatic1111</span><span class="co">](https://github.com/AUTOMATIC1111/stable-diffusion-webui)</span> provides a feature-rich web interface for local generation:</span>
-<span id="cb2-532"><a href="#cb2-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-533"><a href="#cb2-533" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Local execution**: Run models on your own hardware with full control</span>
-<span id="cb2-534"><a href="#cb2-534" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Advanced features**: Inpainting, img2img, ControlNet, depth guidance</span>
-<span id="cb2-535"><a href="#cb2-535" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Extensions ecosystem**: Hundreds of community plugins</span>
-<span id="cb2-536"><a href="#cb2-536" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Batch processing**: Generate and iterate efficiently</span>
+<span id="cb2-500"><a href="#cb2-500" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Minimum**: 4-6 GB VRAM (GPU)</span>
+<span id="cb2-501"><a href="#cb2-501" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Stable Diffusion 1.5 at 512×512 resolution</span>
+<span id="cb2-502"><a href="#cb2-502" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Longer generation times, limited batch sizes</span>
+<span id="cb2-503"><a href="#cb2-503" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recommended**: 8-12 GB VRAM</span>
+<span id="cb2-504"><a href="#cb2-504" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Stable Diffusion XL at 1024×1024</span>
+<span id="cb2-505"><a href="#cb2-505" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Comfortable batch sizes, faster generation</span>
+<span id="cb2-506"><a href="#cb2-506" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**High-end**: 16+ GB VRAM</span>
+<span id="cb2-507"><a href="#cb2-507" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple models loaded simultaneously</span>
+<span id="cb2-508"><a href="#cb2-508" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Video generation, 3D-aware models</span>
+<span id="cb2-509"><a href="#cb2-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-510"><a href="#cb2-510" aria-hidden="true" tabindex="-1"></a>**CPU-only** inference is possible but **extremely slow** (minutes per image vs. seconds). Many optimization techniques exist: quantization, attention slicing, model offloading.</span>
+<span id="cb2-511"><a href="#cb2-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-512"><a href="#cb2-512" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Fine-Tuning (LoRA)</span></span>
+<span id="cb2-513"><a href="#cb2-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-514"><a href="#cb2-514" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Minimum**: 12-16 GB VRAM</span>
+<span id="cb2-515"><a href="#cb2-515" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>LoRA fine-tuning with small batch sizes</span>
+<span id="cb2-516"><a href="#cb2-516" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Gradient checkpointing, mixed precision required</span>
+<span id="cb2-517"><a href="#cb2-517" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recommended**: 24 GB VRAM</span>
+<span id="cb2-518"><a href="#cb2-518" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Comfortable batch sizes for faster convergence</span>
+<span id="cb2-519"><a href="#cb2-519" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Multiple LoRA ranks simultaneously</span>
+<span id="cb2-520"><a href="#cb2-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-521"><a href="#cb2-521" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Full Training (From Scratch)</span></span>
+<span id="cb2-522"><a href="#cb2-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-523"><a href="#cb2-523" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Minimum**: Multiple A100 GPUs (40-80 GB each)</span>
+<span id="cb2-524"><a href="#cb2-524" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Typical**: Clusters with 100+ GPUs</span>
+<span id="cb2-525"><a href="#cb2-525" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duration**: Days to weeks</span>
+<span id="cb2-526"><a href="#cb2-526" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cost**: $10,000s to $100,000s</span>
+<span id="cb2-527"><a href="#cb2-527" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-528"><a href="#cb2-528" aria-hidden="true" tabindex="-1"></a>For most researchers and practitioners, pre-trained models + LoRA fine-tuning offer the best trade-off.</span>
+<span id="cb2-529"><a href="#cb2-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-530"><a href="#cb2-530" aria-hidden="true" tabindex="-1"></a><span class="fu">### Open-Source Ecosystem</span></span>
+<span id="cb2-531"><a href="#cb2-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-532"><a href="#cb2-532" aria-hidden="true" tabindex="-1"></a>The open-source community has created a rich ecosystem of tools, models, and resources:</span>
+<span id="cb2-533"><a href="#cb2-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-534"><a href="#cb2-534" aria-hidden="true" tabindex="-1"></a><span class="fu">#### HuggingFace</span></span>
+<span id="cb2-535"><a href="#cb2-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-536"><a href="#cb2-536" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">HuggingFace</span><span class="co">](https://huggingface.co/)</span> is the central hub for open-source generative models:</span>
 <span id="cb2-537"><a href="#cb2-537" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-538"><a href="#cb2-538" aria-hidden="true" tabindex="-1"></a>**Best for**: Interactive experimentation, full control over generation, no API costs</span>
-<span id="cb2-539"><a href="#cb2-539" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-540"><a href="#cb2-540" aria-hidden="true" tabindex="-1"></a><span class="fu">### Closed-Source Platforms</span></span>
-<span id="cb2-541"><a href="#cb2-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-542"><a href="#cb2-542" aria-hidden="true" tabindex="-1"></a>Commercial platforms offer convenient APIs and frontier models:</span>
-<span id="cb2-543"><a href="#cb2-543" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-544"><a href="#cb2-544" aria-hidden="true" tabindex="-1"></a><span class="fu">#### OpenAI</span></span>
-<span id="cb2-545"><a href="#cb2-545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-546"><a href="#cb2-546" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Latest model**: 4o Image with enhanced prompt following and coherence</span>
-<span id="cb2-547"><a href="#cb2-547" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**API access**: Programmatic generation, inpainting, variations</span>
-<span id="cb2-548"><a href="#cb2-548" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pricing**: Pay per image generated</span>
-<span id="cb2-549"><a href="#cb2-549" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Strengths**: Strong text understanding, safe outputs, reliable API</span>
-<span id="cb2-550"><a href="#cb2-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-551"><a href="#cb2-551" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Google Gemini (Imagen)</span></span>
-<span id="cb2-552"><a href="#cb2-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-553"><a href="#cb2-553" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**High photorealism**: Particularly strong at realistic images</span>
-<span id="cb2-554"><a href="#cb2-554" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Multimodal**: Integration with Gemini's broader capabilities</span>
-<span id="cb2-555"><a href="#cb2-555" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Controlled access**: Available through Google Cloud</span>
-<span id="cb2-556"><a href="#cb2-556" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Strengths**: Photo-quality outputs, factual accuracy</span>
-<span id="cb2-557"><a href="#cb2-557" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-558"><a href="#cb2-558" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Replicate</span></span>
-<span id="cb2-559"><a href="#cb2-559" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-560"><a href="#cb2-560" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Hybrid platform**: Both open- and closed-source models via unified API</span>
-<span id="cb2-561"><a href="#cb2-561" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pay-per-use**: No infrastructure management, pay only for inference</span>
-<span id="cb2-562"><a href="#cb2-562" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Host custom models**: Deploy your own fine-tuned models</span>
-<span id="cb2-563"><a href="#cb2-563" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Wide selection**: SDXL, Midjourney alternatives, domain-specific models</span>
+<span id="cb2-538"><a href="#cb2-538" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Diffusers library**: Unified Python API for diffusion models with extensive documentation</span>
+<span id="cb2-539"><a href="#cb2-539" aria-hidden="true" tabindex="-1"></a>  <span class="in">```python</span></span>
+<span id="cb2-540"><a href="#cb2-540" aria-hidden="true" tabindex="-1"></a>  <span class="im">from</span> diffusers <span class="im">import</span> StableDiffusionPipeline</span>
+<span id="cb2-541"><a href="#cb2-541" aria-hidden="true" tabindex="-1"></a>  pipe <span class="op">=</span> StableDiffusionPipeline.from_pretrained(<span class="st">"stabilityai/stable-diffusion-2-1"</span>)</span>
+<span id="cb2-542"><a href="#cb2-542" aria-hidden="true" tabindex="-1"></a>  image <span class="op">=</span> pipe(<span class="st">"A photo of a cat wearing sunglasses"</span>).images[<span class="dv">0</span>]</span>
+<span id="cb2-543"><a href="#cb2-543" aria-hidden="true" tabindex="-1"></a>  <span class="in">```</span></span>
+<span id="cb2-544"><a href="#cb2-544" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Model Hub**: 100,000+ models including base models, fine-tunes, and LoRA adapters</span>
+<span id="cb2-545"><a href="#cb2-545" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Spaces**: Interactive demos for trying models before downloading</span>
+<span id="cb2-546"><a href="#cb2-546" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Documentation**: Comprehensive guides for inference, fine-tuning, and training</span>
+<span id="cb2-547"><a href="#cb2-547" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-548"><a href="#cb2-548" aria-hidden="true" tabindex="-1"></a>**Best for**: Programmatic access, research, production deployments, custom workflows</span>
+<span id="cb2-549"><a href="#cb2-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-550"><a href="#cb2-550" aria-hidden="true" tabindex="-1"></a><span class="fu">#### CivitAI</span></span>
+<span id="cb2-551"><a href="#cb2-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-552"><a href="#cb2-552" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">CivitAI</span><span class="co">](https://civitai.com/)</span> is a community-driven platform specializing in Stable Diffusion models:</span>
+<span id="cb2-553"><a href="#cb2-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-554"><a href="#cb2-554" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Extensive model library**: Thousands of community-created models, LoRAs, and embeddings</span>
+<span id="cb2-555"><a href="#cb2-555" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Style-focused**: Strong emphasis on artistic styles, anime, photorealism</span>
+<span id="cb2-556"><a href="#cb2-556" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Preview images**: See example outputs before downloading</span>
+<span id="cb2-557"><a href="#cb2-557" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Version control**: Track model updates and improvements</span>
+<span id="cb2-558"><a href="#cb2-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-559"><a href="#cb2-559" aria-hidden="true" tabindex="-1"></a>**Best for**: Exploring diverse styles, finding specialized models, community engagement</span>
+<span id="cb2-560"><a href="#cb2-560" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-561"><a href="#cb2-561" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Automatic1111 WebUI</span></span>
+<span id="cb2-562"><a href="#cb2-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-563"><a href="#cb2-563" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Automatic1111</span><span class="co">](https://github.com/AUTOMATIC1111/stable-diffusion-webui)</span> provides a feature-rich web interface for local generation:</span>
 <span id="cb2-564"><a href="#cb2-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-565"><a href="#cb2-565" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Midjourney</span></span>
-<span id="cb2-566"><a href="#cb2-566" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-567"><a href="#cb2-567" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Artistic focus**: Highly curated, aesthetic, and stylized outputs</span>
-<span id="cb2-568"><a href="#cb2-568" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Discord interface**: Community-driven prompt engineering</span>
-<span id="cb2-569"><a href="#cb2-569" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No API**: Interface only, no programmatic access</span>
-<span id="cb2-570"><a href="#cb2-570" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Strengths**: Artistic coherence, aesthetic quality, strong defaults</span>
+<span id="cb2-565"><a href="#cb2-565" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Local execution**: Run models on your own hardware with full control</span>
+<span id="cb2-566"><a href="#cb2-566" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Advanced features**: Inpainting, img2img, ControlNet, depth guidance</span>
+<span id="cb2-567"><a href="#cb2-567" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Extensions ecosystem**: Hundreds of community plugins</span>
+<span id="cb2-568"><a href="#cb2-568" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Batch processing**: Generate and iterate efficiently</span>
+<span id="cb2-569"><a href="#cb2-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-570"><a href="#cb2-570" aria-hidden="true" tabindex="-1"></a>**Best for**: Interactive experimentation, full control over generation, no API costs</span>
 <span id="cb2-571"><a href="#cb2-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-572"><a href="#cb2-572" aria-hidden="true" tabindex="-1"></a>**Choosing a platform**:</span>
+<span id="cb2-572"><a href="#cb2-572" aria-hidden="true" tabindex="-1"></a><span class="fu">### Closed-Source Platforms</span></span>
 <span id="cb2-573"><a href="#cb2-573" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-574"><a href="#cb2-574" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For prototyping**: HuggingFace Spaces or Replicate (fast, no setup)</span>
-<span id="cb2-575"><a href="#cb2-575" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For production**: HuggingFace Diffusers or OpenAI API (reliable, scalable)</span>
-<span id="cb2-576"><a href="#cb2-576" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For experimentation**: Automatic1111 (full control, no API costs)</span>
-<span id="cb2-577"><a href="#cb2-577" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For art/design**: Midjourney or CivitAI models (aesthetic quality)</span>
-<span id="cb2-578"><a href="#cb2-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-579"><a href="#cb2-579" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusions &amp; Discussions</span></span>
-<span id="cb2-580"><a href="#cb2-580" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-581"><a href="#cb2-581" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-582"><a href="#cb2-582" aria-hidden="true" tabindex="-1"></a>An interesting thought: What happens if models are trained (inadvertedly) on synhetic data? @alemohammad_self-consuming_2023 studies this and found remarkable degradation, see @fig-genai-deterioration-on-pollution.</span>
-<span id="cb2-583"><a href="#cb2-583" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-584"><a href="#cb2-584" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-deterioration-on-pollution}</span>
-<span id="cb2-585"><a href="#cb2-585" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-586"><a href="#cb2-586" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}deterioration_on_pollution.png)</span></span>
-<span id="cb2-587"><a href="#cb2-587" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-588"><a href="#cb2-588" aria-hidden="true" tabindex="-1"></a>Example: Deterioration of generated image quality under pollution or domain shift. From @alemohammad_self-consuming_2023.</span>
-<span id="cb2-589"><a href="#cb2-589" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-590"><a href="#cb2-590" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-591"><a href="#cb2-591" aria-hidden="true" tabindex="-1"></a>Furthermore, synthetic imagery has obvious consequences on all of us. The lines between real and synthetic are starting to blur and it becomes increasingly difficult to distinguish both. See the following quote with respect to @fig-genai-real-or-not-musk.</span>
-<span id="cb2-592"><a href="#cb2-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-593"><a href="#cb2-593" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-594"><a href="#cb2-594" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Blockquote Zunächst hatte die Polizei … die Aktion habe nicht stattgefunden, das Bild davon sei ein »Fake«. ... Auf Anfrage des SPIEGEL sagte ein Sprecher der Brandenburger Polizei: »Ob die Projektion tatsächlich so ablief, ist Teil dieser Ermittlungen. Derzeit können wir es jedenfalls nicht ausschließen.«</span></span>
-<span id="cb2-595"><a href="#cb2-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-574"><a href="#cb2-574" aria-hidden="true" tabindex="-1"></a>Commercial platforms offer convenient APIs and frontier models:</span>
+<span id="cb2-575"><a href="#cb2-575" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-576"><a href="#cb2-576" aria-hidden="true" tabindex="-1"></a><span class="fu">#### OpenAI</span></span>
+<span id="cb2-577"><a href="#cb2-577" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-578"><a href="#cb2-578" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Latest model**: 4o Image with enhanced prompt following and coherence</span>
+<span id="cb2-579"><a href="#cb2-579" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**API access**: Programmatic generation, inpainting, variations</span>
+<span id="cb2-580"><a href="#cb2-580" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pricing**: Pay per image generated</span>
+<span id="cb2-581"><a href="#cb2-581" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Strengths**: Strong text understanding, safe outputs, reliable API</span>
+<span id="cb2-582"><a href="#cb2-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-583"><a href="#cb2-583" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Google Gemini (Imagen)</span></span>
+<span id="cb2-584"><a href="#cb2-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-585"><a href="#cb2-585" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**High photorealism**: Particularly strong at realistic images</span>
+<span id="cb2-586"><a href="#cb2-586" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Multimodal**: Integration with Gemini's broader capabilities</span>
+<span id="cb2-587"><a href="#cb2-587" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Controlled access**: Available through Google Cloud</span>
+<span id="cb2-588"><a href="#cb2-588" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Strengths**: Photo-quality outputs, factual accuracy</span>
+<span id="cb2-589"><a href="#cb2-589" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-590"><a href="#cb2-590" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Replicate</span></span>
+<span id="cb2-591"><a href="#cb2-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-592"><a href="#cb2-592" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Hybrid platform**: Both open- and closed-source models via unified API</span>
+<span id="cb2-593"><a href="#cb2-593" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pay-per-use**: No infrastructure management, pay only for inference</span>
+<span id="cb2-594"><a href="#cb2-594" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Host custom models**: Deploy your own fine-tuned models</span>
+<span id="cb2-595"><a href="#cb2-595" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Wide selection**: SDXL, Midjourney alternatives, domain-specific models</span>
 <span id="cb2-596"><a href="#cb2-596" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-597"><a href="#cb2-597" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-real-or-not-musk}</span>
+<span id="cb2-597"><a href="#cb2-597" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Midjourney</span></span>
 <span id="cb2-598"><a href="#cb2-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-599"><a href="#cb2-599" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}real_or_not_musk.png)</span></span>
-<span id="cb2-600"><a href="#cb2-600" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-601"><a href="#cb2-601" aria-hidden="true" tabindex="-1"></a>"Real or Not?" <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.spiegel.de/panorama/elon-musk-staatsschutz-ermittelt-nach-projektion-tesla-werk-in-gruenheide-a-8268048f-050b-4ae7-adf8-bb9cf572cf25?sara_ref=re-so-app-sh)</span></span>
-<span id="cb2-602"><a href="#cb2-602" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-599"><a href="#cb2-599" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Artistic focus**: Highly curated, aesthetic, and stylized outputs</span>
+<span id="cb2-600"><a href="#cb2-600" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Discord interface**: Community-driven prompt engineering</span>
+<span id="cb2-601"><a href="#cb2-601" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No API**: Interface only, no programmatic access</span>
+<span id="cb2-602"><a href="#cb2-602" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Strengths**: Artistic coherence, aesthetic quality, strong defaults</span>
 <span id="cb2-603"><a href="#cb2-603" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-604"><a href="#cb2-604" aria-hidden="true" tabindex="-1"></a>Furthermore, biases from the internet-scale data the models have been trained on seep into the models. An interesting article by the Washington post <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/)</span> investigated this @fig-genai-ai-bias-wp-front.</span>
+<span id="cb2-604"><a href="#cb2-604" aria-hidden="true" tabindex="-1"></a>**Choosing a platform**:</span>
 <span id="cb2-605"><a href="#cb2-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-606"><a href="#cb2-606" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-ai-bias-wp-front}</span>
-<span id="cb2-607"><a href="#cb2-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-608"><a href="#cb2-608" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}ai_bias_wp_front.png)</span></span>
-<span id="cb2-609"><a href="#cb2-609" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-610"><a href="#cb2-610" aria-hidden="true" tabindex="-1"></a>AI bias: Example from a whitepaper front page. <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/)</span></span>
-<span id="cb2-611"><a href="#cb2-611" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-606"><a href="#cb2-606" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For prototyping**: HuggingFace Spaces or Replicate (fast, no setup)</span>
+<span id="cb2-607"><a href="#cb2-607" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For production**: HuggingFace Diffusers or OpenAI API (reliable, scalable)</span>
+<span id="cb2-608"><a href="#cb2-608" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For experimentation**: Automatic1111 (full control, no API costs)</span>
+<span id="cb2-609"><a href="#cb2-609" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**For art/design**: Midjourney or CivitAI models (aesthetic quality)</span>
+<span id="cb2-610"><a href="#cb2-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-611"><a href="#cb2-611" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusions &amp; Discussions</span></span>
 <span id="cb2-612"><a href="#cb2-612" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-613"><a href="#cb2-613" aria-hidden="true" tabindex="-1"></a>They found strong biases, for example, with respect to the depiction of _beautiful women_, see @fig-genai-ai-bias-wp-examples.</span>
-<span id="cb2-614"><a href="#cb2-614" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-615"><a href="#cb2-615" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-ai-bias-wp-examples}</span>
-<span id="cb2-616"><a href="#cb2-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-617"><a href="#cb2-617" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}ai_bias_wp_examples.png)</span></span>
-<span id="cb2-618"><a href="#cb2-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-619"><a href="#cb2-619" aria-hidden="true" tabindex="-1"></a>AI bias: Additional examples. <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/)</span></span>
-<span id="cb2-620"><a href="#cb2-620" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-621"><a href="#cb2-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-613"><a href="#cb2-613" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-614"><a href="#cb2-614" aria-hidden="true" tabindex="-1"></a>An interesting thought: What happens if models are trained (inadvertedly) on synhetic data? @alemohammad_self-consuming_2023 studies this and found remarkable degradation, see @fig-genai-deterioration-on-pollution.</span>
+<span id="cb2-615"><a href="#cb2-615" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-616"><a href="#cb2-616" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-deterioration-on-pollution}</span>
+<span id="cb2-617"><a href="#cb2-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-618"><a href="#cb2-618" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}deterioration_on_pollution.png)</span></span>
+<span id="cb2-619"><a href="#cb2-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-620"><a href="#cb2-620" aria-hidden="true" tabindex="-1"></a>Example: Deterioration of generated image quality under pollution or domain shift. From @alemohammad_self-consuming_2023.</span>
+<span id="cb2-621"><a href="#cb2-621" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb2-622"><a href="#cb2-622" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-623"><a href="#cb2-623" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-624"><a href="#cb2-624" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb2-623"><a href="#cb2-623" aria-hidden="true" tabindex="-1"></a>Furthermore, synthetic imagery has obvious consequences on all of us. The lines between real and synthetic are starting to blur and it becomes increasingly difficult to distinguish both. See the following quote with respect to @fig-genai-real-or-not-musk.</span>
+<span id="cb2-624"><a href="#cb2-624" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-625"><a href="#cb2-625" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-626"><a href="#cb2-626" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb2-627"><a href="#cb2-627" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb2-626"><a href="#cb2-626" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Blockquote Zunächst hatte die Polizei … die Aktion habe nicht stattgefunden, das Bild davon sei ein »Fake«. ... Auf Anfrage des SPIEGEL sagte ein Sprecher der Brandenburger Polizei: »Ob die Projektion tatsächlich so ablief, ist Teil dieser Ermittlungen. Derzeit können wir es jedenfalls nicht ausschließen.«</span></span>
+<span id="cb2-627"><a href="#cb2-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-628"><a href="#cb2-628" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-629"><a href="#cb2-629" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-real-or-not-musk}</span>
+<span id="cb2-630"><a href="#cb2-630" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-631"><a href="#cb2-631" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}real_or_not_musk.png)</span></span>
+<span id="cb2-632"><a href="#cb2-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-633"><a href="#cb2-633" aria-hidden="true" tabindex="-1"></a>"Real or Not?" <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.spiegel.de/panorama/elon-musk-staatsschutz-ermittelt-nach-projektion-tesla-werk-in-gruenheide-a-8268048f-050b-4ae7-adf8-bb9cf572cf25?sara_ref=re-so-app-sh)</span></span>
+<span id="cb2-634"><a href="#cb2-634" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-635"><a href="#cb2-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-636"><a href="#cb2-636" aria-hidden="true" tabindex="-1"></a>Furthermore, biases from the internet-scale data the models have been trained on seep into the models. An interesting article by the Washington post <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/)</span> investigated this @fig-genai-ai-bias-wp-front.</span>
+<span id="cb2-637"><a href="#cb2-637" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-638"><a href="#cb2-638" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-ai-bias-wp-front}</span>
+<span id="cb2-639"><a href="#cb2-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-640"><a href="#cb2-640" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}ai_bias_wp_front.png)</span></span>
+<span id="cb2-641"><a href="#cb2-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-642"><a href="#cb2-642" aria-hidden="true" tabindex="-1"></a>AI bias: Example from a whitepaper front page. <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/)</span></span>
+<span id="cb2-643"><a href="#cb2-643" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-644"><a href="#cb2-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-645"><a href="#cb2-645" aria-hidden="true" tabindex="-1"></a>They found strong biases, for example, with respect to the depiction of _beautiful women_, see @fig-genai-ai-bias-wp-examples.</span>
+<span id="cb2-646"><a href="#cb2-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-647"><a href="#cb2-647" aria-hidden="true" tabindex="-1"></a>::: {#fig-genai-ai-bias-wp-examples}</span>
+<span id="cb2-648"><a href="#cb2-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-649"><a href="#cb2-649" aria-hidden="true" tabindex="-1"></a><span class="al">![]({{&lt; meta params.images_path &gt;}}ai_bias_wp_examples.png)</span></span>
+<span id="cb2-650"><a href="#cb2-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-651"><a href="#cb2-651" aria-hidden="true" tabindex="-1"></a>AI bias: Additional examples. <span class="co">[</span><span class="ot">Link</span><span class="co">](https://www.washingtonpost.com/technology/interactive/2024/ai-bias-beautiful-women-ugly-images/)</span></span>
+<span id="cb2-652"><a href="#cb2-652" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-653"><a href="#cb2-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-654"><a href="#cb2-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-655"><a href="#cb2-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-656"><a href="#cb2-656" aria-hidden="true" tabindex="-1"></a><span class="fu">## References</span></span>
+<span id="cb2-657"><a href="#cb2-657" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-658"><a href="#cb2-658" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb2-659"><a href="#cb2-659" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
