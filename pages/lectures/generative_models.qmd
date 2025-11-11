@@ -160,7 +160,7 @@ This generalization reveals that diffusion's success stems from the gradual, mul
 ### Generative Adversarial Networks
 
 
-GANs, see @goodfellow_generative_2014, frame generative modeling as an **adversarial game** between two neural networks: a **generator** $g(\vect{z})$ that creates fake samples, and a **discriminator** $d(\vect{x})$ that tries to distinguish real data from generated fakes. This adversarial setup drives both networks to improve: the generator learns to create increasingly realistic samples, while the discriminator becomes better at spotting fakes.
+GANs, see @goodfellow_generative_2014, frame generative modeling as an **adversarial game** between two neural networks: a **generator** $g(\vect{z})$ that creates fake samples, and a **discriminator** $d(\vect{x})$ that tries to distinguish real data from generated fakes (see @fig-genai-gan-idea). This adversarial setup drives both networks to improve: the generator learns to create increasingly realistic samples, while the discriminator becomes better at spotting fakes.
 
 ::: {#fig-genai-gan-idea}
 
@@ -175,7 +175,7 @@ $$
 \min_{g} \max_{d} \mathbb{E}_{\vect{x} \sim p_{data}}[\log d(\vect{x})] + \mathbb{E}_{\vect{z} \sim p_z}[\log(1 - d(g(\vect{z})))]
 $$
 
-The discriminator $d$ maximizes its ability to correctly classify real ($d(\vect{x}) \approx 1$) vs. fake ($d(g(\vect{z})) \approx 0$) samples. The generator $G$ minimizes the discriminator's success, trying to produce samples where $d(g(\vect{z})) \approx 1$ (fooling the discriminator).
+The discriminator $d$ maximizes its ability to correctly classify real ($d(\vect{x}) \approx 1$) vs. fake ($d(g(\vect{z})) \approx 0$) samples. The generator $G$ minimizes the discriminator's success, trying to produce samples where $d(g(\vect{z})) \approx 1$ (fooling the discriminator). See @fig-genai-gan-learning for an illustration.
 
 In practice, training alternates between:
 1. **Discriminator step**: Update $d$ to better distinguish real from fake
@@ -189,19 +189,11 @@ In practice, training alternates between:
 GAN learning process: As training progresses, the generator's distribution (green) moves closer to the real data distribution (black dots). The discriminator's decision boundary (blue) adapts accordingly. From @foster_generative_2023
 :::
 
-The figure above illustrates how the generator progressively learns to match the data distribution. Initially, the generator produces poor samples and the discriminator easily separates real from fake. As training continues, the generator improves and the discriminator's task becomes harder, until ideally the generator perfectly matches the real data distribution.
-
-
 
 ### Variational Autoencoders
 
 
-VAEs @Kingma2014 take a different approach to generative modeling, building on the autoencoder architecture but with a crucial probabilistic twist. A VAE learns two networks that perform (approximate) inverse operations:
-
-- **Encoder** $q_{\psi}(z|x)$: Maps data $x$ to a distribution over latent codes $z$
-- **Decoder** $p_{\theta}(x|z)$: Maps latent codes $z$ back to data $x$
-
-Unlike standard autoencoders, VAEs enforce structure on the latent space through probabilistic modeling, ensuring that randomly sampled latent codes produce meaningful outputs.
+Variational Autoencoders (VAEs) [@Kingma2014] take a different approach to generative modeling, building on the autoencoder architecture (see @fig-genai-vae-illustration) but with a crucial probabilistic twist.
 
 ::: {#fig-genai-vae-illustration}
 
@@ -209,6 +201,13 @@ Unlike standard autoencoders, VAEs enforce structure on the latent space through
 
 VAE architecture: The encoder maps inputs to latent distributions $q(z|x)$, while the decoder reconstructs from latent samples. From [Source](https://lilianweng.github.io/posts/2018-08-12-vae/).
 :::
+
+A VAE learns two networks that perform (approximate) inverse operations:
+
+- **Encoder** $q_{\psi}(z|x)$: Maps data $x$ to a distribution over latent codes $z$
+- **Decoder** $p_{\theta}(x|z)$: Maps latent codes $z$ back to data $x$
+
+Unlike standard autoencoders, VAEs enforce structure on the latent space through probabilistic modeling (see @fig-genai-vae-illustration2), ensuring that randomly sampled latent codes produce meaningful outputs.
 
 ::: {#fig-genai-vae-illustration2}
 
@@ -265,15 +264,33 @@ Having explored each model family, how do they actually behave differently? Let'
 True 1D data distribution: A bimodal distribution that the generative models must learn to reproduce.
 :::
 
-::: {#fig-genai-1d-comparison layout-ncol=3}
+::: {.panel-tabset #fig-genai-1d-example}
 
-![GAN training]({{< meta params.images_path >}}1d_comparison/gan_training_progress.png)
+### GAN
 
-![VAE training]({{< meta params.images_path >}}1d_comparison/vae_training_progress.png)
+::: {#fig-genai-1d-comparison}
 
-![Diffusion training]({{< meta params.images_path >}}1d_comparison/diffusion_training_progress.png)
+![GAN]({{< meta params.images_path >}}1d_comparison/gan_training_progress.png)
 
-Training progression on 1D bimodal distribution. Each panel shows how the learned distribution (orange) approaches the true distribution (blue) over training iterations. GANs converge quickly but risk mode collapse; VAEs converge smoothly but may oversmooth between modes; Diffusion models reliably capture both modes with stable convergence.
+:::
+
+### VAE
+
+::: {#fig-genai-1d-example-vae}
+
+![VAE]({{< meta params.images_path >}}1d_comparison/vae_training_progress.png)
+
+:::
+
+### Diffusion
+
+::: {#fig-genai-1d-example-gan-diffusion}
+
+![Diffusion]({{< meta params.images_path >}}1d_comparison/diffusion_training_progress.png)
+
+:::
+
+Training progression on 1D bimodal distribution. Each panel shows how the learned distribution (orange) approaches the true distribution (blue) over training iterations.
 :::
 
 ::: {#fig-genai-1d-final}
@@ -283,11 +300,6 @@ Training progression on 1D bimodal distribution. Each panel shows how the learne
 Final comparison: All three models after convergence, showing their different biases in capturing the bimodal distribution.
 :::
 
-**Key observations**:
-
-- **GANs**: Sharp samples matching the data manifold, but prone to **mode collapse**—missing entire modes of the distribution
-- **VAEs**: Smooth distributions that can **fill in gaps** between modes, producing samples in low-density regions
-- **Diffusion**: Reliably captures all modes with high fidelity, though at computational cost
 
 #### 2D Distribution Comparison
 
@@ -298,15 +310,35 @@ Final comparison: All three models after convergence, showing their different bi
 True 2D data distribution: A complex spiral pattern in 2D space.
 :::
 
-::: {#fig-genai-2d-comparison layout-ncol=3}
 
-![GAN training]({{< meta params.images_path >}}2d_comparison/gan_training_progress.png)
+::: {.panel-tabset #fig-genai-2d-comparison}
 
-![VAE training]({{< meta params.images_path >}}2d_comparison/vae_training_progress.png)
+### GAN
 
-![Diffusion training]({{< meta params.images_path >}}2d_comparison/diffusion_training_progress.png)
+::: {#fig-genai-2d-example-gan}
 
-Training progression on 2D spiral distribution. The models must learn a complex curved manifold. GANs produce sharp samples along the spiral but may miss regions; VAEs spread probability mass more smoothly but may blur the structure; Diffusion models capture fine geometric details reliably.
+![GAN]({{< meta params.images_path >}}2d_comparison/gan_training_progress.png)
+
+:::
+
+### VAE
+
+::: {#fig-genai-2d-example-vae}
+
+![VAE]({{< meta params.images_path >}}2d_comparison/vae_training_progress.png)
+
+:::
+
+### Diffusion
+
+::: {#fig-genai-2d-example-gan-diffusion}
+
+![Diffusion]({{< meta params.images_path >}}2d_comparison/diffusion_training_progress.png)
+
+:::
+
+Training progression on 2D spiral distribution. The models must learn a complex curved manifold.
+
 :::
 
 ::: {#fig-genai-2d-final}
@@ -320,28 +352,28 @@ Final 2D comparison: Converged distributions overlaid on the true spiral. Notice
 
 ## Conditional Generation
 
-So far, we have discussed **unconditional generation**: models that learn $p(x)$ or generate samples from the full training distribution. But many applications require **conditional generation**: producing outputs that match specific requirements or inputs.
+So far, we have discussed **unconditional generation**: models that learn $p(\vect{x})$ or generate samples from the full training distribution. But many applications require **conditional generation**: producing outputs that match specific requirements or inputs.
 
-Conditional generation models learn $p(x|c)$, where $c$ is a conditioning signal:
+Conditional generation models learn $p(\vect{x}|\vect{c})$, where $\vect{c}$ is a conditioning signal:
 
 - **Text prompt**: "A photo of a cat wearing sunglasses"
 - **Class label**: Generate a digit "7" or a face with "smiling" attribute
 - **Image**: Translate sketches to photos, colorize grayscale images
 - **Other modalities**: Depth maps, segmentation masks, audio, etc.
 
-The core modification is simple: provide the condition $c$ as additional input to the model. However, the architectural integration varies by model family.
+The core modification is simple: provide the condition $\vect{c}$ as additional input to the model. However, the architectural integration varies by model family.
 
-One example are conditional GANs. As shown in @fig-genai-gan-conditional. Both generator and discriminator receive the conditioning information $g(\vect{z}, \vect{c})$ and $d(\vect{x}, \vect{c})$.
+One example are conditional GANs. As shown in @fig-genai-gan-conditional. In this case typically only the generator receives the conditioning information $g(\vect{z}, \vect{c})$ and $d(\vect{x})$. The discriminator does not require $\vect{c}$ in this case because input-output consistency is enforced with other losses that compare input and output (e.g. $L_2$ norm).
 
 
 ::: {#fig-genai-gan-conditional}
 
 ![]({{< meta params.images_path >}}gan_conditional_generation.png)
 
-Conditional GAN architecture: Both generator and discriminator receive the conditioning input, enabling controlled generation. From @prince_understanding_2023.
+Conditional GAN architecture: Generator receives the conditioning input, enabling controlled generation. From @prince_understanding_2023.
 :::
 
-The discriminator now solves a harder task: it must judge whether $\vect{x}$ matches the condition $\vect{c}$, not just whether $\vect{x}$ looks realistic. This forces the generator to respect the conditioning signal to fool the discriminator.
+Often, the discriminator needs to be conditioned on $\vect{c}$ as well. The discriminator thus must judge whether $\vect{x}$ matches the condition $\vect{c}$, not just whether $\vect{x}$ looks realistic. This forces the generator to respect the conditioning signal to fool the discriminator.
 
 **Training objective**:
 \begin{equation}

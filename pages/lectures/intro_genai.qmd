@@ -31,7 +31,7 @@ After this lecture you should be able to:
 
 ## Motivation
 
-Generative AI has a profound effect on our society and on businesses. The most prominent models generate natural language, which can be used in many applications, such as chat bots. Increasingly, the quality of image generative models and their adoption into multi-modal generative models, has increased dramatically. Nowaday, synthetic images can hardly be distinguished from real photographs (see @fig-genai-intro-receipt) and can be used in many domains. Ggenerating impressive images from scratch, however, is by far not the only task for generative models, as we will see.
+Generative AI has a profound effect on our society and on businesses. The most prominent models generate natural language, which can be used in many applications, such as chat bots. Increasingly, the quality of image generative models and their adoption into multi-modal generative models, has increased dramatically. Nowadays, synthetic images can hardly be distinguished from real photographs (see @fig-genai-intro-receipt) and can be used in many domains. Generating impressive images from scratch, however, is by far not the only task for generative models, as we will see.
 
 ::: {#fig-genai-intro-receipt}
 
@@ -127,7 +127,7 @@ MRI to CT conversion example, from @scharer_improved_2023
 :::
 
 
-Generative models are also used to create synthetic training data for predictice models, such as for solar flare prediction (see @fig-genai-intro-solar-flares).
+Generative models are also used to create synthetic training data for predictive models, such as for solar flare prediction (see @fig-genai-intro-solar-flares).
 
 ::: {#fig-genai-intro-solar-flares}
 
@@ -187,9 +187,9 @@ Major image generation providers and their offerings.
 
 ## What is Generative Modelling?
 
-Let's contrast generative modelling with a classification task (see @fig-genai-intro-basics-classifier). Let's use $f(\vect{x}) = \vect{y}$ for a classifier, and $g(\vect{y}) = \vect{x}$ for a generative model.
+Let's contrast generative modelling with a classification task (see @fig-genai-intro-basics-classifier). Let's denote $f(\vect{x}) = \vect{y}$ for a classifier, and $g(\vect{y}) = \vect{x}$ for a generative model.
 
-In classification the model has as input an image $\vect{x}^{(i)}$ and models a probability distribution over all classes $\vect{y}^{(i)}$.
+In classification the model has as input an image $\vect{x}^{(i)}$ and models a probability distribution over all classes $\vect{\hat{y}}^{(i)}$ which ideally matches the true label $\vect{y}^{(i)}$.
 
 
 ::: {#fig-genai-intro-basics-classifier}
@@ -215,7 +215,7 @@ Looking at the input and the output of @fig-genai-intro-basics-elephant. What co
 <details>
 <summary>Click for result</summary>
 
-If the input to a generative model is (only) a label, such as elephant, how can the model generate not just that one elephant?
+If the input (in this case) to the generative model is a label, such as elephant, how can the model generate not just that one elephant?
 
 </details>
 
@@ -241,7 +241,7 @@ One way to think about $\vect{z}$ is that of a **latent variable**. A latent var
 
 
 ::: {.callout-note title="Conditional vs. Unconditional Generation"}
-In general we distinguish between **conditional** and **unconditional** generation. If we condition the input on a piece of data, such as a label vector, we refer to **conditional generation** $g(\vect{y})$. If we just generate images we refer to **unconditional generation** $g()$. In the following we often use $g()$ to simplify notation.
+In general we distinguish between **conditional** and **unconditional** generation. If we condition the input on a piece of data, such as a label vector, we refer to **conditional generation** $g(\vect{c})$. If we just generate images we refer to **unconditional generation** $g()$. In the following we often use $g()$ to simplify notation.
 :::
 
 ::: {.callout-note title="Latent Variables Intuition" collapse="false"}
@@ -286,9 +286,7 @@ Shown is the true distribution (blue) of some 1-D data. Green are plausible synt
 :::
 
 
-In general there are two approaches to generative modelling
-
-### Direct: Implicit Models
+In general there are two approaches to generative modelling:
 
 The **direct** (or implicit) approach learns a function that directly generates samples: $g(\vect{z}) = \vect{x}$.
 
@@ -320,11 +318,14 @@ Example of learning a density model in 1D.
 **Examples:** Variational Autoencoders (VAEs), normalizing flows, autoregressive models
 
 
+**Note:** Once $p_{\theta}$ is modelled, a generative model needs a mechanism to sample from it. Otherwise we can only evaluate the likelihood of a data point. For example, to detect outliers.
+
+
 ## Desirable Properties of Generative Models
 
-When evaluating generative models, we consider several important properties. Unfortunately, **no single approach achieves all these properties simultaneously** - different models involve different tradeoffs.
+When evaluating generative models, we consider several important properties. Unfortunately, **no single approach achieves all these properties simultaneously**.
 
-### 1. Efficient Sampling
+### Efficient Sampling
 
 The ability to generate new samples quickly. This is crucial for practical applications.
 
@@ -332,7 +333,7 @@ The ability to generate new samples quickly. This is crucial for practical appli
 - **Which models excel:** GANs and normalizing flows typically have efficient sampling (single forward pass)
 - **Which models struggle:** Autoregressive models and some diffusion models require many sequential steps
 
-### 2. High-Quality Sampling
+### High-Quality Sampling
 
 Generated samples should be realistic, detailed, and indistinguishable from real data.
 
@@ -340,7 +341,7 @@ Generated samples should be realistic, detailed, and indistinguishable from real
 - **Which models excel:** Modern GANs, diffusion models, and large-scale autoregressive models
 - **Trade-off:** Often achieved at the cost of computational expense or training complexity
 
-### 3. Coverage (Diversity)
+### Coverage (Diversity)
 
 The model should be able to generate the full diversity present in the training data, not just a subset of common examples.
 
@@ -348,7 +349,7 @@ The model should be able to generate the full diversity present in the training 
 - **Common failure:** Mode collapse in GANs, where the generator produces limited variety
 - **Which models excel:** VAEs tend to have good coverage but sometimes at the cost of sample quality
 
-### 4. Well-Behaved Latent Space
+###  Well-Behaved Latent Space
 
 The latent space $\mathbf{Z}$ should have smooth, meaningful structure where similar $\mathbf{z}$ values produce similar outputs.
 
@@ -356,7 +357,7 @@ The latent space $\mathbf{Z}$ should have smooth, meaningful structure where sim
 - **Example:** Linearly interpolating between two latent codes should produce a smooth transition between outputs
 - **Which models excel:** VAEs explicitly encourage this through their training objective
 
-### 5. Disentangled Latent Space
+### Disentangled Latent Space
 
 Different dimensions of $\mathbf{z}$ should control independent factors of variation in the output.
 
@@ -365,7 +366,7 @@ Different dimensions of $\mathbf{z}$ should control independent factors of varia
 - **Challenge:** Difficult to achieve without explicit architectural design or training objectives
 - **Applications:** Critical for controllable generation and interpretable models
 
-### 6. Efficient Likelihood Computation
+### Efficient Likelihood Computation
 
 The ability to evaluate $p_{\theta}(\mathbf{x})$ for any given sample $\mathbf{x}$.
 

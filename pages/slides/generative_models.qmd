@@ -344,7 +344,7 @@ Learn $p(x|c)$ where $c$ is conditioning signal:
 ![]({{< meta params.images_path >}}gan_conditional_generation.png){.r-stretch}
 
 ::: {.fragment}
-Both generator and discriminator receive condition $c$
+Typically, both generator and discriminator receive condition $c$ (but not in this case - superresolution)
 :::
 
 ## Conditional GAN Objective
