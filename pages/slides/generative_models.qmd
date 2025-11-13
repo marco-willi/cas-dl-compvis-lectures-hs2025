@@ -108,25 +108,6 @@ Training: random timesteps & noise | Sampling: iterative denoising
 Encoder-decoder with skip connections and timestep embeddings
 :::
 
-## Quiz: Pros and Cons {.center}
-
-::: {.r-fit-text}
-
-What are the main advantages and disadvantages of diffusion models?
-
-:::
-
-## Quiz: Pros and Cons {.center}
-
-::: {.r-fit-text}
-
-What are the main advantages and disadvantages of diffusion models?
-
-**Pros**: High quality, diverse outputs, stable training
-
-**Cons**: Slow inference, high compute cost
-
-:::
 
 ## Cold Diffusion
 
@@ -205,29 +186,6 @@ $$\text{ELBO} = \underbrace{\mathbb{E}_{z \sim q_{\psi}(z|x)}[\log p_{\theta}(x|
 Smooth interpolation between faces in latent space
 :::
 
-## Quiz: VAE Properties {.center}
-
-::: {.r-fit-text}
-
-What is the key advantage of VAEs over GANs?
-
-What is a common limitation?
-
-:::
-
-## Quiz: VAE Properties {.center}
-
-::: {.r-fit-text}
-
-What is the key advantage of VAEs over GANs?
-
-**Advantage**: Structured latent space, stable training, can compute likelihood
-
-What is a common limitation?
-
-**Limitation**: Often produces blurry outputs
-
-:::
 
 
 # Comparing Models
